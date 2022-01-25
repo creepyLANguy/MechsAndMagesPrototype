@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "bQxIoPZR68/em8ePwzux3in7FSZ1jCLd+k+ze/aZpL8Z4QDc4vyH80DI5DF6JnfeXC5O/ms7DinKFgXM5jilBQ==",
+  "dgSpecHash": "9TN6saU6qykVNgl0czjiJG32gLMz+lAaiGvjQnYWDVSZxBpHDiEK76MAFJRV+9egQ5nqd8w4Bpz2MaTC1wOIGg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\altam\\Desktop\\FR\\TryJsonToObject\\TryJsonToObject\\TryJsonToObject.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\altam\\OneDrive\\Documents\\GIT\\MechsAndMagesPrototype\\TryJsonToObject\\TryJsonToObject\\TryJsonToObject.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\altam\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }
