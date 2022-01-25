@@ -1,0 +1,49 @@
+﻿Qty;Name;Type;Guild;Cost;Defense;Shield;DefaultAbilities;GuildBonuses;AllyBonuses;ShredBonuses;Id
+1;Blob Alpha;Unit;Borg;6;;;A10;;;;8282740006
+3;Blob Miner;Unit;Borg;2;;;T3;;;2A;1256193835
+2;Burrower;Unit;Borg;3;;;A5;D1;;T4;2346808158
+2;Crusher;Unit;Borg;3;;;T2;A6;;;3656600127
+1;Hive Queen;Unit;Borg;7;;;A6;A3;A3;;3897706780
+1;Infested Moon;Base;Borg;6;5;;A4;A3;D1;;2947673258
+2;Moonwurm Hatchling;Unit;Borg;4;;;T3;A3;A3;;8835478167
+1;Nesting Ground;Base;Borg;4;5;;T2;A4;;;7663369621
+1;Pulverizer;Unit;Borg;5;;;C1;D1;;;5614214617
+2;Spike Cluster;Base;Borg;2;3;;A2;T1;;;5400490038
+3;Stinger;Unit;Borg;1;;;A3;A3;;T1;6224380897
+1;Swarm Cluster;Base;Borg;8;8;1;A5;A3;A3;;8523673765
+3;Builder Bot;Unit;Mech;1;;;T1;T1;;A2;7092406485
+1;Conversion Yard;Base;Mech;5;;4;S1;A4;;;4191153697
+2;Defense System;Base;Mech;4;;5;A2;A2;;;3608410624
+3;Destroyer Bot;Unit;Mech;3;;;A2;S1;;;2138318046
+1;Enforcer Mech;Unit;Mech;5;;;A5;D1;D2;;2163442066
+2;Integration Port;Base;Mech;3;;5;T1;;;;2977277737
+1;Nanobot Swarm;Unit;Mech;8;;;A5,S2;D2;;;6427515457
+1;Neural Nexus;Base;Mech;7;;6;C1;D1;;;5188934721
+3;Plasma Bot;Unit;Mech;2;;;A3;A2;S1;;6896158852
+1;Reclamation Station;Base;Mech;6;;6;C1;S1;C1;;6480947135
+2;Repair Mech;Unit;Mech;4;;;T3;;S1;S1;7536879423
+2;Captured Outpost;Base;Necro;3;;3;D1;;;;9138299945
+3;Cargo Craft;Unit;Necro;2;;;T2;A4;O1;;1927231361
+2;Farm Unit;Unit;Necro;4;;;T3,D1;;A4;;5823208200
+3;Frontier Hawk;Unit;Necro;1;;;A3;D1;;;2591765715
+1;Hammerhead;Unit;Necro;5;;;O2,A1;D1,A1;D1;;4366773613
+1;Imperial FlagUnit;Unit;Necro;8;;;A7;D2;O1;;3698326108
+1;Jamming Terminal;Base;Necro;5;6;;A2;O1;;;2374435373
+3;Light Cruiser;Unit;Necro;3;;;A4;A2,O1;D1;;6005198638
+2;Orbital Gun Platform;Base;Necro;4;;4;A3;;;T3;6929413832
+1;Siege Fortress;Base;Necro;7;;5;A5;A4;;C1;6234708996
+1;Warpgate Cruiser;Unit;Necro;6;;;C2,D1;D1;;;53572519
+1;Federation BattleUnit;Unit;Mage;7;;;A5,H5;D1;H10;;4621237811
+1;Federation Cruiser;Unit;Mage;5;;;A5,H4;;A2,H2;;7681080006
+3;Frontier Runner;Unit;Mage;1;;;T2;H2;;;5472664839
+1;GateUnit;Unit;Mage;6;;;T6;A5;;;5525421105
+1;Ion Station;Base;Mage;5;;5;T2;T1;A4,H5;;6357411821
+2;Long Hauler;Unit;Mage;4;;;T3;T2;;C1;657641768
+2;Mobile Market;Base;Mage;4;;4;T2;;;H2,D2;7724889953
+3;Orbital Shuttle;Unit;Mage;2;;;T3;D1;;;7860239230
+3;Outland Station;Base;Mage;3;4;;T1,H2;T1,H1;;D1;6279620818
+3;Patrol Boat;Unit;Mage;3;;;A4,H3;;A2;;4281683881
+1;Transit Nexus;Base;Mage;8;6;2;A3,T4,H5;;;;3830224058
+16;Explorer;Unit;Neutral;2;;;T2;;;A2;251986146
+32;Scout;Unit;Neutral;;;;T1;;;;2531734572
+8;Viper;Unit;Neutral;;;;A1;;;;7901034010
