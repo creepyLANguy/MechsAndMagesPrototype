@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Aspose.Cells;
+using Aspose.Cells.Utility;
 using Newtonsoft.Json;
 
 namespace TryJsonToObject
@@ -158,12 +159,31 @@ namespace TryJsonToObject
       return int.Parse(stripped);
     }
 
+    private static string ExcelToJson(string excelFile)
+    {
+      // load XLSX file with an instance of Workbook
+      var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));
+      // access CellsCollection of the worksheet containing data to be converted
+      var cells = workbook.Worksheets[0].Cells;
+      // create & set ExportRangeToJsonOptions for advanced options
+      var exportOptions = new ExportRangeToJsonOptions();
+      // create a range of cells containing data to be exported
+      var range = cells.CreateRange(0, 0, cells.LastCell.Row + 1, cells.LastCell.Column + 1);
+      // export range as JSON data
+      string json = JsonUtility.ExportRangeToJson(range, exportOptions);
+      // write data file to disc in JSON format
+      //System.IO.File.WriteAllText("output.json", jsonData);
+      return json;
+    }
+
     static void Main(string[] args)
     {
-      var jsonFile = "Cards.json";
-      Console.WriteLine("Reading in " + jsonFile);
+      //var jsonFile = "Cards.json";
+      //var json = System.IO.File.ReadAllText(jsonFile);
 
-      var json = System.IO.File.ReadAllText(jsonFile);
+      const string excelFile = "Cards.xlsx";
+      var json = ExcelToJson(excelFile);
+
       var intermediateCards = JsonConvert.DeserializeObject<List<JsonIntermediateCard>>(json);
 
       var cards = new List<Card>();

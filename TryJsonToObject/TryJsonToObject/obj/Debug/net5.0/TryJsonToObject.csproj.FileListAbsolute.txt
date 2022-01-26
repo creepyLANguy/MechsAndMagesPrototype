@@ -32,3 +32,9 @@ C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\Try
 C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Debug\net5.0\ref\TryJsonToObject.dll
 C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Debug\net5.0\TryJsonToObject.pdb
 C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Debug\net5.0\TryJsonToObject.genruntimeconfig.cache
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Debug\net5.0\Aspose.Cells.dll
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Debug\net5.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Debug\net5.0\System.Drawing.Common.dll
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
