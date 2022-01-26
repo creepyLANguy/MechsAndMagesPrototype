@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\altam\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\altam\\.nuget\\packages"
-    ]
-  }
-}
