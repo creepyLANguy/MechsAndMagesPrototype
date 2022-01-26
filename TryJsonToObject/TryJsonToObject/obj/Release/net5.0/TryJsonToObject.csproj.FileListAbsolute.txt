@@ -1,0 +1,17 @@
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Release\net5.0\TryJsonToObject.exe
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Release\net5.0\TryJsonToObject.deps.json
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Release\net5.0\TryJsonToObject.runtimeconfig.json
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Release\net5.0\TryJsonToObject.runtimeconfig.dev.json
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Release\net5.0\TryJsonToObject.dll
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Release\net5.0\ref\TryJsonToObject.dll
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Release\net5.0\TryJsonToObject.pdb
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\bin\Release\net5.0\Newtonsoft.Json.dll
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Release\net5.0\TryJsonToObject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Release\net5.0\TryJsonToObject.AssemblyInfoInputs.cache
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Release\net5.0\TryJsonToObject.AssemblyInfo.cs
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Release\net5.0\TryJsonToObject.csproj.CoreCompileInputs.cache
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Release\net5.0\TryJsonToObject.csproj.CopyComplete
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Release\net5.0\TryJsonToObject.dll
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Release\net5.0\ref\TryJsonToObject.dll
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Release\net5.0\TryJsonToObject.pdb
+C:\Users\altam\OneDrive\Documents\GIT\MechsAndMagesPrototype\TryJsonToObject\TryJsonToObject\obj\Release\net5.0\TryJsonToObject.genruntimeconfig.cache

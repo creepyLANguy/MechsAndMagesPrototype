@@ -24,7 +24,7 @@
   "DefaultAbilities": "T3",
   "GuildBonuses": null,
   "AllyBonuses": null,
-  "ScrapBonuses": "2A",
+  "ScrapBonuses": "A2",
   "Id": 72286
  },
  {
@@ -644,7 +644,7 @@
   "Id": 982232
  },
  {
-  "Quantity": 32,
+  "Quantity": 8,
   "Name": "Scout",
   "Type": "Unit",
   "Guild": "Neutral",
@@ -658,7 +658,7 @@
   "Id": 61414
  },
  {
-  "Quantity": 8,
+  "Quantity": 2,
   "Name": "Viper",
   "Type": "Unit",
   "Guild": "Neutral",

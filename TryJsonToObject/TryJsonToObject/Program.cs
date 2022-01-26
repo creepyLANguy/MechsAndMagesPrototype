@@ -1,26 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 namespace TryJsonToObject
 {
-  public enum CardType
+  public static class CardTypes
   {
-    Unit,
-    Base,
-    Unknown
+    public const string Unit     = "Unit";
+    public const string Base     = "Base";
+    public const string Unknown  = "Unknown";
+
+    public static readonly List<string> Set = new List<string>() { Unit, Base, Unknown };
   }
 
-  public enum Guild
+  public static class Guilds
   {
-    Borg,
-    Mech,
-    Mage,
-    Necro,
-    Neutral
+    public const string Borg    = "Borg";
+    public const string Mech    = "Mech";
+    public const string Mage    = "Mage";
+    public const string Necro   = "Necro";
+    public const string Neutral = "Neutral";
+
+    public static readonly List<string> Set = new List<string>() { Borg, Mech, Mage, Necro, Neutral };
+  }
+  public static class Abilities
+  {
+    public const string Attack           = "A";
+    public const string Trade            = "T";
+    public const string Draw             = "D";
+    public const string Scrap            = "S";
+    public const string Consume          = "C";
+    public const string OpponentDiscard  = "O";
+    public const string Heal             = "H";
+
+    public static List<string> Set = new List<string>() { Attack, Trade, Draw, Scrap, Consume, OpponentDiscard, Heal };
   }
 
   public class AbilitySet
@@ -34,7 +47,7 @@ namespace TryJsonToObject
     public int Heal { get; set; }
   }
 
-  public class JSON_Intermediate_Card
+  public class JsonIntermediateCard
   {
     public int? Quantity { get; set; }
     public string Name { get; set; }
@@ -56,8 +69,8 @@ namespace TryJsonToObject
 
     public Card(
       string name, 
-      CardType type, 
-      Guild guild,
+      string type, 
+      string guild,
       int cost,
       int defense,
       int shield,
@@ -82,8 +95,8 @@ namespace TryJsonToObject
     }
 
     public string Name { get; set; }
-    public CardType Type { get; set; }
-    public Guild Guild { get; set; }
+    public string Type { get; set; }
+    public string Guild { get; set; }
     public int Cost { get; set; }
     public int Defense { get; set; }
     public int Shield { get; set; }
@@ -96,49 +109,53 @@ namespace TryJsonToObject
 
   class Program
   {
-    private static CardType DetermineType(string type)
-    {
-      return type switch
-      {
-        "Base" => CardType.Base,
-        "Unit" => CardType.Unit,
-        _ => CardType.Unknown
-      };
-    }
+    public static string Delim = ",";
 
-    private static Guild DetermineGuild(string guild)
-    {
-      return guild switch
-      {
-        "Borg" => Guild.Borg,
-        "Mech" => Guild.Mech,
-        "Mage" => Guild.Mage,
-        "Necro" => Guild.Necro,
-        _ => Guild.Neutral
-      };
-    }
-
-    private static AbilitySet DetermineAbilitySet(string abs)
+    private static AbilitySet ConstructAbilitySet(string abs)
     {
       if (abs == null) return new AbilitySet();
 
-      var a = "A".ToLower();
-      var t = "T".ToLower();
-      var d = "D".ToLower();
-      var s = "S".ToLower();
-      var o = "O".ToLower();
-      var c = "C".ToLower();
-      var h = "H".ToLower();
-
-      var list = abs.Split(',');
-
       var set = new AbilitySet();
 
-      //AL.
-      //TODO
-      //foreach string, check what kinda value it is, strip the markup away and convert the value and assign to correct field.
+      var absList = abs.Split(Delim);
+
+      foreach (var ab in absList)
+      {
+        int? val;
+
+        val = GetAbilityValue(ab, Abilities.Attack);
+        set.Attack = val ?? set.Attack;
+
+        val = GetAbilityValue(ab, Abilities.Draw);
+        set.Draw = val ?? set.Draw;
+
+        val = GetAbilityValue(ab, Abilities.Scrap);
+        set.Scrap = val ?? set.Scrap;
+
+        val = GetAbilityValue(ab, Abilities.OpponentDiscard);
+        set.OpponentDiscard = val ?? set.OpponentDiscard;
+
+        val = GetAbilityValue(ab, Abilities.Consume);
+        set.Consume = val ?? set.Consume;
+
+        val = GetAbilityValue(ab, Abilities.Heal);
+        set.Heal = val ?? set.Heal;
+
+        val = GetAbilityValue(ab, Abilities.Trade);
+        set.Draw = val ?? set.Draw;
+      }
 
       return set;
+    }
+
+    private static int? GetAbilityValue(string str, string ability)
+    {
+      if (str.Contains(ability) == false) return null;
+
+      //str = str.Replace(ability, "");
+      var stripped = str.Substring(ability.Length);
+      
+      return int.Parse(stripped);
     }
 
     static void Main(string[] args)
@@ -146,8 +163,8 @@ namespace TryJsonToObject
       var jsonFile = "Cards.json";
       Console.WriteLine("Reading in " + jsonFile);
 
-      string json = System.IO.File.ReadAllText(jsonFile);
-      var intermediateCards = JsonConvert.DeserializeObject<List<JSON_Intermediate_Card>>(json);
+      var json = System.IO.File.ReadAllText(jsonFile);
+      var intermediateCards = JsonConvert.DeserializeObject<List<JsonIntermediateCard>>(json);
 
       var cards = new List<Card>();
 
@@ -155,15 +172,15 @@ namespace TryJsonToObject
       {
         var card = new Card(
           ic.Name,
-          DetermineType(ic.Type),
-          DetermineGuild(ic.Guild),
+          ic.Type,
+          ic.Guild,
           ic.Cost ?? 0,
           ic.Defense ?? 0,
           ic.Shield ?? 0,
-          DetermineAbilitySet(ic.DefaultAbilities),
-          DetermineAbilitySet(ic.GuildBonuses),
-          DetermineAbilitySet(ic.AllyBonuses),
-          DetermineAbilitySet(ic.ScrapBonuses),
+          ConstructAbilitySet(ic.DefaultAbilities),
+          ConstructAbilitySet(ic.GuildBonuses),
+          ConstructAbilitySet(ic.AllyBonuses),
+          ConstructAbilitySet(ic.ScrapBonuses),
           ic.Id ?? 0
         );
 
