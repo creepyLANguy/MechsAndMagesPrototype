@@ -72,7 +72,7 @@ namespace TryJsonToObject
       return set;
     }
 
-    private static void PopulateCardsFromJsonIntermediates(List<JsonIntermediateCard> intermediateCards, ref List<Card> cards)
+    private static void PopulateCardsFromJsonIntermediates(ref List<JsonIntermediateCard> intermediateCards, ref List<Card> cards)
     {
       foreach (var ic in intermediateCards)
       {
@@ -97,6 +97,11 @@ namespace TryJsonToObject
       }
     }
 
+    private static List<JsonIntermediateCard> GetIntermediateCardsFromJson(ref string json)
+    {
+      return JsonConvert.DeserializeObject<List<JsonIntermediateCard>>(json);
+    }
+
     private static string ExcelToJson(string excelFile)
     {
       var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));
@@ -107,7 +112,7 @@ namespace TryJsonToObject
       
       var exportOptions = new ExportRangeToJsonOptions();
       
-      string json = JsonUtility.ExportRangeToJson(range, exportOptions);
+      var json = JsonUtility.ExportRangeToJson(range, exportOptions);
       
       //System.IO.File.WriteAllText("output.json", jsonData);
       
@@ -118,9 +123,9 @@ namespace TryJsonToObject
     {
       var json = ExcelToJson(excelFile);
 
-      var intermediateCards = JsonConvert.DeserializeObject<List<JsonIntermediateCard>>(json);
-      
-      PopulateCardsFromJsonIntermediates(intermediateCards, ref cards);
+      var intermediateCards = GetIntermediateCardsFromJson(ref json);
+
+      PopulateCardsFromJsonIntermediates(ref intermediateCards, ref cards);
     }
   }
 }
