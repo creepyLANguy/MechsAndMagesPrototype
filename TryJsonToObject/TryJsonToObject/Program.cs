@@ -161,17 +161,11 @@ namespace TryJsonToObject
 
     private static string ExcelToJson(string excelFile)
     {
-      // load XLSX file with an instance of Workbook
       var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));
-      // access CellsCollection of the worksheet containing data to be converted
       var cells = workbook.Worksheets[0].Cells;
-      // create & set ExportRangeToJsonOptions for advanced options
-      var exportOptions = new ExportRangeToJsonOptions();
-      // create a range of cells containing data to be exported
       var range = cells.CreateRange(0, 0, cells.LastCell.Row + 1, cells.LastCell.Column + 1);
-      // export range as JSON data
+      var exportOptions = new ExportRangeToJsonOptions();
       string json = JsonUtility.ExportRangeToJson(range, exportOptions);
-      // write data file to disc in JSON format
       //System.IO.File.WriteAllText("output.json", jsonData);
       return json;
     }
