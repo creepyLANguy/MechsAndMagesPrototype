@@ -46,28 +46,19 @@ namespace TryJsonToObject
 
       foreach (var action in actions)
       {
-        int? val;
+        set.Attack = GetCardActionValue(action, Actions.Attack) ?? set.Attack;
 
-        val = GetCardActionValue(action, Actions.Attack);
-        set.Attack = val ?? set.Attack;
+        set.Draw = GetCardActionValue(action, Actions.Draw) ?? set.Draw;
 
-        val = GetCardActionValue(action, Actions.Draw);
-        set.Draw = val ?? set.Draw;
+        set.Scrap = GetCardActionValue(action, Actions.Scrap) ?? set.Scrap;
 
-        val = GetCardActionValue(action, Actions.Scrap);
-        set.Scrap = val ?? set.Scrap;
+        set.OpponentDiscard = GetCardActionValue(action, Actions.OpponentDiscard) ?? set.OpponentDiscard;
 
-        val = GetCardActionValue(action, Actions.OpponentDiscard);
-        set.OpponentDiscard = val ?? set.OpponentDiscard;
+        set.Consume = GetCardActionValue(action, Actions.Consume) ?? set.Consume;
 
-        val = GetCardActionValue(action, Actions.Consume);
-        set.Consume = val ?? set.Consume;
+        set.Heal = GetCardActionValue(action, Actions.Heal) ?? set.Heal;
 
-        val = GetCardActionValue(action, Actions.Heal);
-        set.Heal = val ?? set.Heal;
-
-        val = GetCardActionValue(action, Actions.Trade);
-        set.Trade = val ?? set.Trade;
+        set.Trade = GetCardActionValue(action, Actions.Trade) ?? set.Trade;
       }
 
       return set;
