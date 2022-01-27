@@ -8,18 +8,18 @@ namespace TryJsonToObject
 {
   internal class JsonIntermediateCard
   {
-    public int? Quantity { get; set; }
-    public string Name { get; set; }
-    public string Type { get; set; }
-    public string Guild { get; set; }
-    public int? Cost { get; set; }
-    public int? Defense { get; set; }
-    public int? Shield { get; set; }
-    public string DefaultAbilities { get; set; }
-    public string GuildBonuses { get; set; }
-    public string AllyBonuses { get; set; }
-    public string ScrapBonuses { get; set; }
-    public int? Id { get; set; }
+    public int?     Quantity { get; set; }
+    public string   Name { get; set; }
+    public string   Type { get; set; }
+    public string   Guild { get; set; }
+    public int?     Cost { get; set; }
+    public int?     Defense { get; set; }
+    public int?     Shield { get; set; }
+    public string   DefaultAbilities { get; set; }
+    public string   GuildBonuses { get; set; }
+    public string   AllyBonuses { get; set; }
+    public string   ScrapBonuses { get; set; }
+    public int?     Id { get; set; }
   }
 
   public static class CardReader

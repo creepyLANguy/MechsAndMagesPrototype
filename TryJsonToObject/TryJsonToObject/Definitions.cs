@@ -4,12 +4,12 @@ namespace TryJsonToObject
 {
   public class KeyValuePair<TK, TV>
   {
-    public TK Key { get; set; }
-    public TV Value { get; set; }
+    internal TK Key   { get; set; }
+    internal TV Value { get; set; }
 
-    public KeyValuePair(TK key, TV value)
+    protected KeyValuePair(TK key, TV value)
     {
-      Key = key;
+      Key   = key;
       Value = value;
     }
   }
@@ -17,14 +17,15 @@ namespace TryJsonToObject
   public class Guild: KeyValuePair<string, int> { public Guild(string key, int val) : base(key, val) { } }
   public static class Guilds
   {
-    public static Guild Neutral = new Guild("Neutral", 0);
-    public static Guild Borg    = new Guild("Borg",    1);
-    public static Guild Mech    = new Guild("Mech",    2);
-    public static Guild Mage    = new Guild("Mage",    3);
-    public static Guild Necro   = new Guild("Necro",   4);
+    public static readonly Guild Neutral = new Guild("Neutral", 0);
+    public static readonly Guild Borg    = new Guild("Borg",    1);
+    public static readonly Guild Mech    = new Guild("Mech",    2);
+    public static readonly Guild Mage    = new Guild("Mage",    3);
+    public static readonly Guild Necro   = new Guild("Necro",   4);
 
     public static readonly List<Guild> All = new List<Guild>() { Borg, Mech, Mage, Necro, Neutral };
   }
+
   public class Action : KeyValuePair<string, int> { public Action(string key, int val) : base(key, val) { } }
   public static class Actions
   {
@@ -41,13 +42,13 @@ namespace TryJsonToObject
 
   public class ActionsValuesSet
   {
-    public int Attack { get; set; }
-    public int Trade { get; set; }
-    public int Draw { get; set; }
-    public int Scrap { get; set; }
-    public int Consume { get; set; }
+    public int Attack          { get; set; }
+    public int Trade           { get; set; }  
+    public int Draw            { get; set; }
+    public int Scrap           { get; set; }
+    public int Consume         { get; set; }
     public int OpponentDiscard { get; set; }
-    public int Heal { get; set; }
+    public int Heal            { get; set; }
   }
 
   public class CardType : KeyValuePair<string, int> { public CardType(string key, int val) : base(key, val) { } }
@@ -91,17 +92,17 @@ namespace TryJsonToObject
       ScrapBonuses = scrapActionsValues;
     }
 
-    public string Name { get; set; }
-    public CardType Type { get; set; }
-    public Guild Guild { get; set; }
-    public int Cost { get; set; }
-    public int Defense { get; set; }
-    public int Shield { get; set; }
-    public ActionsValuesSet DefaultAbilities { get; set; }
-    public ActionsValuesSet GuildBonuses { get; set; }
-    public ActionsValuesSet AllyBonuses { get; set; }
-    public ActionsValuesSet ScrapBonuses { get; set; }
-    public int Id { get; set; }
+    public string            Name              { get; set; }
+    public CardType          Type              { get; set; }
+    public Guild             Guild             { get; set; }
+    public int               Cost              { get; set; }
+    public int               Defense           { get; set; }
+    public int               Shield            { get; set; }
+    public ActionsValuesSet  DefaultAbilities  { get; set; }
+    public ActionsValuesSet  GuildBonuses      { get; set; }
+    public ActionsValuesSet  AllyBonuses       { get; set; }
+    public ActionsValuesSet  ScrapBonuses      { get; set; }
+    public int               Id                { get; set; }
   }
 
 }
