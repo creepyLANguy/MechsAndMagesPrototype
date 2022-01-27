@@ -79,17 +79,17 @@ namespace TryJsonToObject
       ActionsValuesSet scrapActionsValues
     )
     {
-      Id = id;
-      Name = name;
-      Type = type;
-      Guild = guild;
-      Cost = cost;
-      Defense = defense;
-      Shield = shield;
-      DefaultAbilities = defaultActionsValues;
-      GuildBonuses = guildActionsValues;
-      AllyBonuses = allyActionsValues;
-      ScrapBonuses = scrapActionsValues;
+      Id                = id;
+      Name              = name;
+      Type              = type;
+      Guild             = guild;
+      Cost              = cost;
+      Defense           = defense;
+      Shield            = shield;
+      DefaultAbilities  = defaultActionsValues;
+      GuildBonuses      = guildActionsValues;
+      AllyBonuses       = allyActionsValues;
+      ScrapBonuses      = scrapActionsValues;
     }
 
     public string            Name              { get; set; }
