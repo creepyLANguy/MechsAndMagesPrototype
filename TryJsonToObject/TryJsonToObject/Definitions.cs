@@ -2,31 +2,44 @@
 
 namespace TryJsonToObject
 {
+  public class KeyValuePair<TK, TV>
+  {
+    public TK Key { get; set; }
+    public TV Value { get; set; }
+
+    public KeyValuePair(TK key, TV value)
+    {
+      Key = key;
+      Value = value;
+    }
+  }
+
+  public class Guild: KeyValuePair<string, int> { public Guild(string key, int val) : base(key, val) { } }
   public static class Guilds
   {
-    public const string Borg = "Borg";
-    public const string Mech = "Mech";
-    public const string Mage = "Mage";
-    public const string Necro = "Necro";
-    public const string Neutral = "Neutral";
+    public static Guild Neutral = new Guild("Neutral", 0);
+    public static Guild Borg    = new Guild("Borg",    1);
+    public static Guild Mech    = new Guild("Mech",    2);
+    public static Guild Mage    = new Guild("Mage",    3);
+    public static Guild Necro   = new Guild("Necro",   4);
 
-    public static readonly List<string> All = new List<string>() { Borg, Mech, Mage, Necro, Neutral };
+    public static readonly List<Guild> All = new List<Guild>() { Borg, Mech, Mage, Necro, Neutral };
   }
-
+  public class Action : KeyValuePair<string, int> { public Action(string key, int val) : base(key, val) { } }
   public static class Actions
   {
-    public const string Attack = "A";
-    public const string Trade = "T";
-    public const string Draw = "D";
-    public const string Scrap = "S";
-    public const string Consume = "C";
-    public const string OpponentDiscard = "O";
-    public const string Heal = "H";
+    public static Action Attack          = new Action("A", 1);
+    public static Action Trade           = new Action("T", 2);
+    public static Action Draw            = new Action("D", 3);
+    public static Action Scrap           = new Action("S", 4);
+    public static Action Consume         = new Action("C", 5);
+    public static Action OpponentDiscard = new Action("O", 6);
+    public static Action Heal            = new Action("H", 7);
 
-    public static List<string> All = new List<string>() { Attack, Trade, Draw, Scrap, Consume, OpponentDiscard, Heal };
+    public static List<Action> All = new List<Action>() { Attack, Trade, Draw, Scrap, Consume, OpponentDiscard, Heal };
   }
 
-  public class ActionSet
+  public class ActionsValuesSet
   {
     public int Attack { get; set; }
     public int Trade { get; set; }
@@ -36,13 +49,15 @@ namespace TryJsonToObject
     public int OpponentDiscard { get; set; }
     public int Heal { get; set; }
   }
+
+  public class CardType : KeyValuePair<string, int> { public CardType(string key, int val) : base(key, val) { } }
   public static class CardTypes
   {
-    public const string Unit = "Unit";
-    public const string Base = "Base";
-    public const string Unknown = "Unknown";
+    public static CardType Unknown = new CardType("Unknown", 0);
+    public static CardType Unit    = new CardType("Unit",    1);
+    public static CardType Base    = new CardType("Base",    2);
 
-    public static readonly List<string> All = new List<string>() { Unit, Base, Unknown };
+    public static readonly List<CardType> All = new List<CardType>() { Unit, Base, Unknown };
   }
 
   public class Card
@@ -52,15 +67,15 @@ namespace TryJsonToObject
     public Card(
       int id,
       string name,
-      string type,
-      string guild,
+      CardType type,
+      Guild guild,
       int cost,
       int defense,
       int shield,
-      ActionSet defaultActions,
-      ActionSet guildActions,
-      ActionSet allyActions,
-      ActionSet scrapActions
+      ActionsValuesSet defaultActionsValues,
+      ActionsValuesSet guildActionsValues,
+      ActionsValuesSet allyActionsValues,
+      ActionsValuesSet scrapActionsValues
     )
     {
       Id = id;
@@ -70,22 +85,22 @@ namespace TryJsonToObject
       Cost = cost;
       Defense = defense;
       Shield = shield;
-      DefaultAbilities = defaultActions;
-      GuildBonuses = guildActions;
-      AllyBonuses = allyActions;
-      ScrapBonuses = scrapActions;
+      DefaultAbilities = defaultActionsValues;
+      GuildBonuses = guildActionsValues;
+      AllyBonuses = allyActionsValues;
+      ScrapBonuses = scrapActionsValues;
     }
 
     public string Name { get; set; }
-    public string Type { get; set; }
-    public string Guild { get; set; }
+    public CardType Type { get; set; }
+    public Guild Guild { get; set; }
     public int Cost { get; set; }
     public int Defense { get; set; }
     public int Shield { get; set; }
-    public ActionSet DefaultAbilities { get; set; }
-    public ActionSet GuildBonuses { get; set; }
-    public ActionSet AllyBonuses { get; set; }
-    public ActionSet ScrapBonuses { get; set; }
+    public ActionsValuesSet DefaultAbilities { get; set; }
+    public ActionsValuesSet GuildBonuses { get; set; }
+    public ActionsValuesSet AllyBonuses { get; set; }
+    public ActionsValuesSet ScrapBonuses { get; set; }
     public int Id { get; set; }
   }
 

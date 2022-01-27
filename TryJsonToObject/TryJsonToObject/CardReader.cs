@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Aspose.Cells;
 using Aspose.Cells.Utility;
 using Newtonsoft.Json;
@@ -25,21 +26,21 @@ namespace TryJsonToObject
   {
     private static readonly string JoinedActionDelim = ",";
 
-    private static int? GetActionValue(string str, string action)
+    private static int? GetCardActionValue(string str, Action action)
     {
-      if (str.Contains(action) == false) return null;
+      if (str.Contains(action.Key) == false) return null;
 
       //str = str.Replace(action, "");
-      var stripped = str.Substring(action.Length);
+      var stripped = str.Substring(action.Key.Length);
 
       return int.Parse(stripped);
     }
 
-    private static ActionSet ConstructActionSet(string actionString)
+    private static ActionsValuesSet ConstructActionSet(string actionString)
     {
-      if (actionString == null) return new ActionSet();
+      if (actionString == null) return new ActionsValuesSet();
 
-      var set = new ActionSet();
+      var set = new ActionsValuesSet();
 
       var actions = actionString.Split(JoinedActionDelim);
 
@@ -47,25 +48,25 @@ namespace TryJsonToObject
       {
         int? val;
 
-        val = GetActionValue(action, Actions.Attack);
+        val = GetCardActionValue(action, Actions.Attack);
         set.Attack = val ?? set.Attack;
 
-        val = GetActionValue(action, Actions.Draw);
+        val = GetCardActionValue(action, Actions.Draw);
         set.Draw = val ?? set.Draw;
 
-        val = GetActionValue(action, Actions.Scrap);
+        val = GetCardActionValue(action, Actions.Scrap);
         set.Scrap = val ?? set.Scrap;
 
-        val = GetActionValue(action, Actions.OpponentDiscard);
+        val = GetCardActionValue(action, Actions.OpponentDiscard);
         set.OpponentDiscard = val ?? set.OpponentDiscard;
 
-        val = GetActionValue(action, Actions.Consume);
+        val = GetCardActionValue(action, Actions.Consume);
         set.Consume = val ?? set.Consume;
 
-        val = GetActionValue(action, Actions.Heal);
+        val = GetCardActionValue(action, Actions.Heal);
         set.Heal = val ?? set.Heal;
 
-        val = GetActionValue(action, Actions.Trade);
+        val = GetCardActionValue(action, Actions.Trade);
         set.Trade = val ?? set.Trade;
       }
 
@@ -76,11 +77,15 @@ namespace TryJsonToObject
     {
       foreach (var ic in intermediateCards)
       {
+        var cardType = CardTypes.All.SingleOrDefault(s => s.Key == ic.Type) ?? CardTypes.Unknown; 
+        
+        var guild = Guilds.All.SingleOrDefault(s => s.Key == ic.Guild) ?? Guilds.Neutral;
+
         var card = new Card(
           ic.Id ?? 0,
           ic.Name,
-          ic.Type,
-          ic.Guild,
+          cardType,
+          guild,
           ic.Cost ?? 0,
           ic.Defense ?? 0,
           ic.Shield ?? 0,

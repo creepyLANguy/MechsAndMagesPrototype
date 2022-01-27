@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TryJsonToObject
 {
@@ -12,6 +11,14 @@ namespace TryJsonToObject
 
       var cards = new List<Card>();
       CardReader.GetCardsFromExcel("Cards.xlsx", ref cards);
+
+      //create player
+
+      //assign player's deck, etc
+
+      //generate map and its nodes, etc
+
+      //
     }
   }
 }
