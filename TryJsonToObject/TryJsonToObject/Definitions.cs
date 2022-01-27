@@ -105,4 +105,71 @@ namespace TryJsonToObject
     public int               Id                { get; set; }
   }
 
+  public class Potion
+  {
+    public int Id   { get; set; }
+    public int Cost { get; set; }
+    //AL. 
+    //TODO - figure out how to structure the rest of this. Effects gonna be tricky to implement.
+  }
+
+  public class Player
+  {
+    public Player() {}
+
+    public Player(
+      bool isComputer,
+      string name,
+      List<Guild> guilds,
+      int health,
+      int maxHealth,
+      int coin,
+      int vision,
+      int tradeRowSize,
+      int shield,
+      int manna,
+      Stack<Card> deck,
+      Stack<Card> drawPile,
+      Stack<Card> discardPile,
+      Stack<Card> tradeRow,
+      Stack<Card> tradePool,
+      List<Potion> potions
+    )
+    {
+      IsComputer = isComputer;
+      Name = name;
+      Guilds = guilds;
+      Health = health;
+      MaxHealth = maxHealth;
+      Coin = coin;
+      Vision = vision;
+      TradeRowSize = tradeRowSize;
+      Shield = shield;
+      Manna = manna;
+      Deck = deck;
+      DrawPile = drawPile;
+      DiscardPile = discardPile;
+      TradeRow = tradeRow;
+      TradePool = tradePool;
+      Potions = potions;
+    }
+
+    public bool         IsComputer    { get; set; }
+    public string       Name          { get; set; }
+    public List<Guild>  Guilds        { get; set; }
+    public int          Health        { get; set; }
+    public int          MaxHealth     { get; set; }
+    public int          Coin          { get; set; }
+    public int          Vision        { get; set; }
+    public int          TradeRowSize  { get; set; }
+    public int          Shield        { get; set; }
+    public int          Manna         { get; set; }
+    public Stack<Card>  Deck          { get; set; }
+    public Stack<Card>  DrawPile      { get; set; }
+    public Stack<Card>  DiscardPile   { get; set; }
+    public Stack<Card>  TradeRow      { get; set; }
+    public Stack<Card>  TradePool     { get; set; }
+    public List<Potion> Potions       { get; set; }
+  }
+
 }
