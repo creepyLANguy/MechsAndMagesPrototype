@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace TryJsonToObject
 {
@@ -63,7 +63,7 @@ namespace TryJsonToObject
 
   public class Card
   {
-    public Card() {}
+    public Card() { }
 
     public Card(
       int id,
@@ -109,49 +109,49 @@ namespace TryJsonToObject
   {
     public int Id   { get; set; }
     public int Cost { get; set; }
-    //AL. 
+
     //TODO - figure out how to structure the rest of this. Effects gonna be tricky to implement.
   }
 
   public class Player
   {
-    public Player() {}
+    public Player() { }
 
     public Player(
-      bool isComputer,
-      string name,
-      List<Guild> guilds,
-      int health,
-      int maxHealth,
-      int coin,
-      int vision,
-      int tradeRowSize,
-      int shield,
-      int manna,
-      Stack<Card> deck,
-      Stack<Card> drawPile,
-      Stack<Card> discardPile,
-      Stack<Card> tradeRow,
-      Stack<Card> tradePool,
-      List<Potion> potions
+      bool          isComputer,
+      string        name,
+      List<Guild>   guilds,
+      int           health,
+      int           maxHealth,
+      int           coin,
+      int           vision,
+      int           tradeRowSize,
+      int           shield,
+      int           manna,
+      Stack<Card>   deck,
+      Stack<Card>   drawPile,
+      Stack<Card>   discardPile,
+      Stack<Card>   tradeRow,
+      Stack<Card>   tradePool,
+      List<Potion>  potions
     )
     {
-      IsComputer = isComputer;
-      Name = name;
-      Guilds = guilds;
-      Health = health;
-      MaxHealth = maxHealth;
-      Coin = coin;
-      Vision = vision;
-      TradeRowSize = tradeRowSize;
-      Shield = shield;
-      Manna = manna;
-      Deck = deck;
-      DrawPile = drawPile;
-      DiscardPile = discardPile;
-      TradeRow = tradeRow;
-      TradePool = tradePool;
-      Potions = potions;
+      IsComputer    = isComputer;
+      Name          = name;
+      Guilds        = guilds;
+      Health        = health;
+      MaxHealth     = maxHealth;
+      Coin          = coin;
+      Vision        = vision;
+      TradeRowSize  = tradeRowSize;
+      Shield        = shield;
+      Manna         = manna;
+      Deck          = deck;
+      DrawPile      = drawPile;
+      DiscardPile   = discardPile;
+      TradeRow      = tradeRow;
+      TradePool     = tradePool;
+      Potions       = potions;
     }
 
     public bool         IsComputer    { get; set; }
@@ -170,6 +170,98 @@ namespace TryJsonToObject
     public Stack<Card>  TradeRow      { get; set; }
     public Stack<Card>  TradePool     { get; set; }
     public List<Potion> Potions       { get; set; }
+  }
+
+  public class Node
+  {
+    public Node() { }
+
+    //TODO - full constructor
+
+    public bool         IsMystery     { get; set; }
+    public bool         IsVisible     { get; set; }
+    public int          Index          { get; set; }
+    public bool         IsComplete    { get; set; }
+    public List<Guild>  Guilds        { get; set; }
+  }
+  
+  public class Campsite : Node
+  {
+    public Campsite()
+    {
+    }
+
+    //TODO - full constructor and call to base constructor
+
+    public List<Card>   Recruits  { get; set; }
+    public List<Potion> Potions   { get; set; }
+
+    //TODO - implement these types
+    //public List<HealingKit> HealingKits { get; set; }
+    //public List<VisionUpgrade> VisionUpgrades { get; set; }
+    //public List<HealthUpgrade> HealthUpgrades { get; set; }
+    //public Scrapper Scrapper { get; set; }
+  }
+  public enum ConflictType
+  {
+    Normal,
+    Elite,
+    Boss
+  }
+
+  public class Conflict : Node
+  {
+    public Conflict() { }
+
+    public Conflict(
+      List<Player>  opponents,
+      int           maxRounds,
+      int           currentRound,
+      List<Potion>  rewardPotions,
+      List<Potion>  rewardRecruits,
+      ConflictType  conflictType
+      //TODO - complete this constructor and call to base constructor
+    )
+    {
+      Opponents       = opponents;
+      MaxRounds       = maxRounds;
+      CurrentRound    = currentRound;
+      RewardPotions   = rewardPotions;
+      RewardRecruits  = rewardRecruits;
+      ConflictType    = conflictType;
+    }
+
+    public List<Player> Opponents       { get; set; }
+    public int          MaxRounds       { get; set; }
+    public int          CurrentRound    { get; set; }
+    public List<Potion> RewardPotions   { get; set; }
+    public List<Potion> RewardRecruits  { get; set; }
+    public ConflictType ConflictType    { get; set; }
+  }
+
+  public class Map
+  {
+    public Map() { }
+    public Map(LinkedList<Node> nodes)
+    {
+      Nodes = nodes;
+    }
+
+    //TODO - implement the directed graph version of this. 
+    //public DirectedGraph<Node> Nodes { get; set; }
+    public LinkedList<Node> Nodes { get; set; }
+  }
+
+  public class Journey
+  {
+    public Journey() { }
+
+    public Journey(List<Map> maps)
+    {
+      Maps = maps;
+    }
+
+    public List<Map> Maps { get; set; }
   }
 
 }
