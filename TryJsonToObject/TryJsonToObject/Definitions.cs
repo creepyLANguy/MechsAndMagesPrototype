@@ -63,8 +63,6 @@ namespace TryJsonToObject
 
   public class Card
   {
-    public Card() { }
-
     public Card(
       int id,
       string name,
@@ -172,26 +170,63 @@ namespace TryJsonToObject
     public List<Potion> Potions       { get; set; }
   }
 
+  public enum NodeType
+  {
+    Blank,
+    CampSite,
+    Conflict,
+  }
+
   public class Node
   {
-    public Node() { }
+    public Node(
+      NodeType  nodeType,
+      bool      isMystery,
+      bool      isVisible,
+      int       x,
+      int       y,
+      bool      isComplete
+    )
+    {
+      NodeType    = nodeType;
+      IsMystery   = isMystery;
+      IsVisible   = isVisible;
+      X           = x;
+      Y           = y;
+      IsComplete  = isComplete;
+    }
 
-    //TODO - full constructor
-
-    public bool         IsMystery     { get; set; }
-    public bool         IsVisible     { get; set; }
-    public int          Index          { get; set; }
-    public bool         IsComplete    { get; set; }
-    public List<Guild>  Guilds        { get; set; }
+    public NodeType NodeType      { get; set; }
+    public bool     IsMystery     { get; set; }
+    public bool     IsVisible     { get; set; }
+    public int      X             { get; set; }
+    public int      Y             { get; set; }
+    public bool     IsComplete    { get; set; }
   }
   
   public class Campsite : Node
   {
-    public Campsite()
+    public Campsite(
+      NodeType      nodeType,
+      bool          isMystery,
+      bool          isVisible,
+      int           x,
+      int           y,
+      bool          isComplete,
+      List<Card>    recruits,
+      List<Potion>  potions
+    ) : base(
+      nodeType,
+      isMystery,
+      isVisible,
+      x,
+      y,
+      isComplete
+    )
     {
+      Recruits  = recruits;
+      Potions   = potions;
     }
-
-    //TODO - full constructor and call to base constructor
 
     public List<Card>   Recruits  { get; set; }
     public List<Potion> Potions   { get; set; }
@@ -202,66 +237,65 @@ namespace TryJsonToObject
     //public List<HealthUpgrade> HealthUpgrades { get; set; }
     //public Scrapper Scrapper { get; set; }
   }
-  public enum ConflictType
+
+  public enum FightType
   {
     Normal,
     Elite,
     Boss
   }
 
-  public class Conflict : Node
+  public class Fight : Node
   {
-    public Conflict() { }
-
-    public Conflict(
+    public Fight(
+      NodeType      nodeType,
+      bool          isMystery,
+      bool          isVisible,
+      int           x,
+      int           y,
+      bool          isComplete,
+      FightType     fightType,
+      List<Guild>   guilds,
       List<Player>  opponents,
       int           maxRounds,
       int           currentRound,
       List<Potion>  rewardPotions,
-      List<Potion>  rewardRecruits,
-      ConflictType  conflictType
-      //TODO - complete this constructor and call to base constructor
+      List<Potion>  rewardRecruits
+    ) : base(
+      nodeType,
+      isMystery,
+      isVisible,
+      x,
+      y,
+      isComplete
     )
     {
+      FightType       = fightType;
+      Guilds          = guilds;
       Opponents       = opponents;
       MaxRounds       = maxRounds;
       CurrentRound    = currentRound;
       RewardPotions   = rewardPotions;
       RewardRecruits  = rewardRecruits;
-      ConflictType    = conflictType;
     }
 
+    public FightType FightType { get; set; }
+    public List<Guild> Guilds { get; set; }
     public List<Player> Opponents       { get; set; }
     public int          MaxRounds       { get; set; }
     public int          CurrentRound    { get; set; }
     public List<Potion> RewardPotions   { get; set; }
     public List<Potion> RewardRecruits  { get; set; }
-    public ConflictType ConflictType    { get; set; }
   }
 
   public class Map
   {
-    public Map() { }
-    public Map(LinkedList<Node> nodes)
-    {
-      Nodes = nodes;
-    }
-
-    //TODO - implement the directed graph version of this. 
-    //public DirectedGraph<Node> Nodes { get; set; }
-    public LinkedList<Node> Nodes { get; set; }
+    public Node[,] Nodes { get; set; }
   }
 
   public class Journey
   {
-    public Journey() { }
-
-    public Journey(List<Map> maps)
-    {
-      Maps = maps;
-    }
-
-    public List<Map> Maps { get; set; }
+    public List<Map> Maps = new List<Map>();
   }
 
 }
