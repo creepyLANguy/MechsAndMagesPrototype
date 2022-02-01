@@ -65,17 +65,17 @@ namespace TryJsonToObject
   public class Card
   {
     public Card(
-      int id,
-      string name,
-      CardType type,
-      Guild guild,
-      int cost,
-      int defense,
-      int shield,
-      ActionsValuesSet defaultActionsValues,
-      ActionsValuesSet guildActionsValues,
-      ActionsValuesSet allyActionsValues,
-      ActionsValuesSet scrapActionsValues
+      int               id,
+      string            name,
+      CardType          type,
+      Guild             guild,
+      int               cost,
+      int               defense,
+      int               shield,
+      ActionsValuesSet  defaultActionsValues,
+      ActionsValuesSet  guildActionsValues,
+      ActionsValuesSet  allyActionsValues,
+      ActionsValuesSet  scrapActionsValues
     )
     {
       Id                = id;
@@ -175,11 +175,23 @@ namespace TryJsonToObject
   {
     Blank,
     CampSite,
-    Conflict,
+    Fight,
   }
 
   public class Node
   {
+    public Node(Node node)
+    {
+      NodeType      = node.NodeType;
+      IsMystery     = node.IsMystery;    
+      IsVisible     = node.IsVisible;    
+      X             = node.X;            
+      Y             = node.Y;            
+      IsComplete    = node.IsComplete;
+      IsDestination = node.IsDestination;
+      Destinations  = node.Destinations;
+    }
+
     public Node(
       NodeType                  nodeType,
       bool                      isMystery,
@@ -214,29 +226,23 @@ namespace TryJsonToObject
   public class Campsite : Node
   {
     public Campsite(
-      NodeType                  nodeType,
-      bool                      isMystery,
-      bool                      isVisible,
-      int                       x,
-      int                       y,
-      bool                      isComplete,
-      bool                      isDestination,
-      HashSet<Tuple<int, int>>  destinations,
-      List<Card>                recruits,
-      List<Potion>              potions
+      Node         baseNode,
+      List<Card>   recruits,
+      List<Potion> potions
     ) : base(
-      nodeType,
-      isMystery,
-      isVisible,
-      x,
-      y,
-      isComplete,
-      isDestination,
-      destinations
+      baseNode.NodeType,
+      baseNode.IsMystery,
+      baseNode.IsVisible,
+      baseNode.X,
+      baseNode.Y,
+      baseNode.IsComplete,
+      baseNode.IsDestination,
+      baseNode.Destinations
     )
     {
       Recruits  = recruits;
       Potions   = potions;
+      NodeType = NodeType.CampSite;
     }
 
     public List<Card>   Recruits  { get; set; }
@@ -259,30 +265,23 @@ namespace TryJsonToObject
   public class Fight : Node
   {
     public Fight(
-      NodeType                  nodeType,
-      bool                      isMystery,
-      bool                      isVisible,
-      int                       x,
-      int                       y,
-      bool                      isComplete,
-      FightType                 fightType,
-      List<Guild>               guilds,
-      List<Player>              opponents,
-      int                       maxRounds,
-      int                       currentRound,
-      List<Potion>              rewardPotions,
-      List<Potion>              rewardRecruits,
-      bool                      isDestination,
-      HashSet<Tuple<int, int>>  destinations
+      Node         baseNode,
+      FightType    fightType,
+      List<Guild>  guilds,
+      List<Player> opponents,
+      int          maxRounds,
+      int          currentRound,
+      List<Potion> rewardPotions,
+      List<Potion> rewardRecruits
     ) : base(
-      nodeType,
-      isMystery,
-      isVisible,
-      x,
-      y,
-      isComplete,
-      isDestination,
-      destinations
+      baseNode.NodeType,
+      baseNode.IsMystery,
+      baseNode.IsVisible,
+      baseNode.X,
+      baseNode.Y,
+      baseNode.IsComplete,
+      baseNode.IsDestination,
+      baseNode.Destinations
     )
     {
       FightType       = fightType;
@@ -292,10 +291,11 @@ namespace TryJsonToObject
       CurrentRound    = currentRound;
       RewardPotions   = rewardPotions;
       RewardRecruits  = rewardRecruits;
+      NodeType        = NodeType.Fight;
     }
 
-    public FightType FightType { get; set; }
-    public List<Guild> Guilds { get; set; }
+    public FightType    FightType       { get; set; }
+    public List<Guild>  Guilds          { get; set; }
     public List<Player> Opponents       { get; set; }
     public int          MaxRounds       { get; set; }
     public int          CurrentRound    { get; set; }
@@ -307,19 +307,40 @@ namespace TryJsonToObject
   {
     public Map(int width, int height)
     {
-      Width = width;
-      Height = height;
-      Nodes = new Node[width, height];
+      Width   = width;
+      Height  = height;
+      Nodes   = new Node[width, height];
     }
 
-    public Node[,] Nodes  { get; set; }
-    public int Width      { get; set; }
-    public int Height     { get; set; }
+    public Node[,]  Nodes  { get; set; }
+    public int      Width  { get; set; }
+    public int      Height { get; set; }
   }
 
   public class Journey
   {
     public List<Map> Maps = new List<Map>();
+  }
+
+  public struct MapConfig
+  {
+    public int    width;
+    public int    height;
+    public int    pathDensity;
+
+    public double campsiteFrequency;
+    public double mysteryFrequency;
+    public double eliteFrequency;
+
+    public MapConfig(int width, int height, int pathDensity, double campsiteFrequency, double mysteryFrequency, double eliteFrequency)
+    {
+      this.width              = width;
+      this.height             = height;
+      this.pathDensity        = pathDensity;
+      this.campsiteFrequency  = campsiteFrequency;
+      this.mysteryFrequency   = mysteryFrequency;
+      this.eliteFrequency     = eliteFrequency;
+    }
   }
 
 }
