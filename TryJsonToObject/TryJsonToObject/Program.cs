@@ -5,23 +5,22 @@ namespace TryJsonToObject
 {
   class Program
   {
-    static readonly string ExcelFile = "Cards.xlsx";
-    static readonly int JourneyLength = 3;
-    static readonly int MapWidth = 7;
-    static readonly int MapHeight = 15;
+    private static readonly string  ExcelFile       = "Cards.xlsx";
+    private static readonly int     JourneyLength   = 3;
+    private static readonly int     MapWidth        = 7;
+    private static readonly int     MapHeight       = 15;
+    private static readonly int     PathDensity     = 6;
 
-    static readonly Random Random = new Random((int)DateTime.Now.Ticks);
+    private static readonly Random Random = new Random((int)DateTime.Now.Ticks);
 
     static void Main(string[] args)
     {
       //var jsonFile = "Cards.json";
       //var json = System.IO.File.ReadAllText(jsonFile);
 
-      var cards = new List<Card>();
-      CardReader.GetCardsFromExcel(ExcelFile, ref cards);
+      var cards = CardReader.GetCardsFromExcel(ExcelFile);
 
-      var journey = new Journey();
-      JourneyGenerator.GenerateJourney(JourneyLength, MapWidth, MapHeight, Random, ref journey);
+      var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapWidth, MapHeight, PathDensity, Random);
 
       //create player
       //assign player's deck, etc

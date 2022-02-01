@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace TryJsonToObject
@@ -180,48 +181,58 @@ namespace TryJsonToObject
   public class Node
   {
     public Node(
-      NodeType  nodeType,
-      bool      isMystery,
-      bool      isVisible,
-      int       x,
-      int       y,
-      bool      isComplete
+      NodeType                  nodeType,
+      bool                      isMystery,
+      bool                      isVisible,
+      int                       x,
+      int                       y,
+      bool                      isComplete,
+      bool                      isDestination,
+      HashSet<Tuple<int, int>>  destinations
     )
     {
-      NodeType    = nodeType;
-      IsMystery   = isMystery;
-      IsVisible   = isVisible;
-      X           = x;
-      Y           = y;
-      IsComplete  = isComplete;
+      NodeType      = nodeType;
+      IsMystery     = isMystery;
+      IsVisible     = isVisible;
+      X             = x;
+      Y             = y;
+      IsComplete    = isComplete;
+      IsDestination = isDestination;
+      Destinations  = destinations;
     }
 
-    public NodeType NodeType      { get; set; }
-    public bool     IsMystery     { get; set; }
-    public bool     IsVisible     { get; set; }
-    public int      X             { get; set; }
-    public int      Y             { get; set; }
-    public bool     IsComplete    { get; set; }
+    public NodeType                 NodeType       { get; set; }
+    public bool                     IsMystery      { get; set; }
+    public bool                     IsVisible      { get; set; }
+    public int                      X              { get; set; }
+    public int                      Y              { get; set; }
+    public bool                     IsComplete     { get; set; }    
+    public bool                     IsDestination  { get; set; }
+    public HashSet<Tuple<int, int>> Destinations   { get; set; }
   }
   
   public class Campsite : Node
   {
     public Campsite(
-      NodeType      nodeType,
-      bool          isMystery,
-      bool          isVisible,
-      int           x,
-      int           y,
-      bool          isComplete,
-      List<Card>    recruits,
-      List<Potion>  potions
+      NodeType                  nodeType,
+      bool                      isMystery,
+      bool                      isVisible,
+      int                       x,
+      int                       y,
+      bool                      isComplete,
+      bool                      isDestination,
+      HashSet<Tuple<int, int>>  destinations,
+      List<Card>                recruits,
+      List<Potion>              potions
     ) : base(
       nodeType,
       isMystery,
       isVisible,
       x,
       y,
-      isComplete
+      isComplete,
+      isDestination,
+      destinations
     )
     {
       Recruits  = recruits;
@@ -248,26 +259,30 @@ namespace TryJsonToObject
   public class Fight : Node
   {
     public Fight(
-      NodeType      nodeType,
-      bool          isMystery,
-      bool          isVisible,
-      int           x,
-      int           y,
-      bool          isComplete,
-      FightType     fightType,
-      List<Guild>   guilds,
-      List<Player>  opponents,
-      int           maxRounds,
-      int           currentRound,
-      List<Potion>  rewardPotions,
-      List<Potion>  rewardRecruits
+      NodeType                  nodeType,
+      bool                      isMystery,
+      bool                      isVisible,
+      int                       x,
+      int                       y,
+      bool                      isComplete,
+      FightType                 fightType,
+      List<Guild>               guilds,
+      List<Player>              opponents,
+      int                       maxRounds,
+      int                       currentRound,
+      List<Potion>              rewardPotions,
+      List<Potion>              rewardRecruits,
+      bool                      isDestination,
+      HashSet<Tuple<int, int>>  destinations
     ) : base(
       nodeType,
       isMystery,
       isVisible,
       x,
       y,
-      isComplete
+      isComplete,
+      isDestination,
+      destinations
     )
     {
       FightType       = fightType;
@@ -290,7 +305,16 @@ namespace TryJsonToObject
 
   public class Map
   {
-    public Node[,] Nodes { get; set; }
+    public Map(int width, int height)
+    {
+      Width = width;
+      Height = height;
+      Nodes = new Node[width, height];
+    }
+
+    public Node[,] Nodes  { get; set; }
+    public int Width      { get; set; }
+    public int Height     { get; set; }
   }
 
   public class Journey
