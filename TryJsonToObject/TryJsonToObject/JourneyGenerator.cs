@@ -243,10 +243,7 @@ namespace TryJsonToObject
           foreach (var destination in node.Destinations)
           {
             var destinationName = GetNodeName(map.Nodes[destination.Item1, destination.Item2]);
-            if (destinationName != "")
-            {
-              mainBuffer += nodeName + "->" + destinationName + ";" + "\n";
-            }
+            mainBuffer += nodeName + "->" + destinationName + ";" + "\n";
           }
         }
       }
@@ -260,11 +257,12 @@ namespace TryJsonToObject
     {
       if (node == null || node.NodeType == NodeType.Blank)
       {
-        return "";
+        return "???????";
       }
 
       var nodeName = "";
-      nodeName = "x" + node.X + "y" + node.Y;
+
+      nodeName = "x" + node.X + "y" + node.Y + "_";
 
       switch (node.NodeType)
       {
@@ -290,9 +288,9 @@ namespace TryJsonToObject
         }
       }
 
-      if (node != null && node.IsMystery)
+      if (node.IsMystery)
       {
-        nodeName += "?";
+        nodeName += "_?";
       }
 
       return nodeName;
