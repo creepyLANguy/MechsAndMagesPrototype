@@ -33,9 +33,9 @@ namespace TryJsonToObject
 
       for (var i = 0; i < journey.Maps.Count; ++i)
       {
-        var dotFileString = JourneyGenerator.GenerateDotFileString(journey.Maps[i], "Map_"+(i+1));
+        var dotFileString = Utilities.GenerateDotFileString(journey.Maps[i], "Map_"+(i+1));
         var dotFileName = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
-        JourneyGenerator.SaveFile(dotFileName, dotFileString);
+        Utilities.SaveFile(dotFileName, dotFileString);
       }
 
       //create player
