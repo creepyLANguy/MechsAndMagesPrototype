@@ -36,6 +36,12 @@ namespace TryJsonToObject
 
           var nodeName = GetNodeName(node);
 
+          if (node.Destinations == null || node.Destinations.Count == 0)
+          {
+            mainBuffer += nodeName + ";" + "\n";
+            continue;
+          }
+
           foreach (var destination in node.Destinations)
           {
             var destinationName = GetNodeName(map.Nodes[destination.Item1, destination.Item2]);

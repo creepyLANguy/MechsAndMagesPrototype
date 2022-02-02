@@ -34,8 +34,8 @@ namespace TryJsonToObject
         SetDestinationForNode(ref map, x, 0, ref random);
       }
 
-      //Complete paths from row 1 -> second row from the top
-      for (var y = 1; y < height-1; ++y)
+      //Complete paths from row 1 -> third row from the top
+      for (var y = 1; y < height-2; ++y)
       {
         for (var x = 0; x < width; ++x)
         {
@@ -151,8 +151,24 @@ namespace TryJsonToObject
         }
       }
 
-      //TODO - attach campsite 
-      //TODO - attach BOSS node 
+      //Attach final campsite 
+      var finalCampsite = new Campsite(new Node(NodeType.CampSite, false, false, 0, map.Height-2, false, true, new HashSet<Tuple<int, int>>()), null, null);
+      for (var x = 0; x < map.Width; ++x)
+      {
+        if (map.Nodes[x, finalCampsite.Y- 1] == null)
+        {
+          continue;
+        }
+
+        map.Nodes[x, finalCampsite.Y-1].Destinations.Clear();
+        map.Nodes[x, finalCampsite.Y-1].Destinations.Add(new Tuple<int, int>(finalCampsite.X, finalCampsite.Y));
+      }
+      map.Nodes[finalCampsite.X, finalCampsite.Y] = finalCampsite;
+
+      //Attach BOSS node
+      var bossNode = new Fight(new Node(NodeType.Fight, false, false, 0, map.Height-1, false, true, null), FightType.Boss, null, null, 0, 0, null, null);
+      map.Nodes[finalCampsite.X, finalCampsite.Y].Destinations.Add(new Tuple<int, int>(bossNode.X, bossNode.Y));
+      map.Nodes[bossNode.X, bossNode.Y] = bossNode;
 
       return map;
     }
@@ -169,9 +185,7 @@ namespace TryJsonToObject
     }
 
     private static void SetDestinationForNode(ref Map map, int x, int y, ref Random random)
-    {      
-      //TODO - investigate preventing crossed edges
-
+    {
       if (map.Nodes[x, y].Destinations != null && map.Nodes[x, y].Destinations.Count == 3)
       {
         return;
