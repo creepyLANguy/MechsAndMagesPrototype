@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace TryJsonToObject
 {
@@ -294,6 +295,13 @@ namespace TryJsonToObject
       }
 
       return nodeName;
+    }
+
+    public static void SaveFile(string filename, string content)
+    {
+      Console.WriteLine("Saving " + filename);
+      File.WriteAllTextAsync(filename, content);
+      Console.WriteLine("Saved");
     }
 
   }
