@@ -137,9 +137,9 @@ namespace TryJsonToObject
       }
 
       //Set some of the nodes as mysteries
-      for (var x = 1; x < map.Width; ++x)
+      for (var x = 0; x < map.Width; ++x)
       {
-        for (var y = 0; y < map.Height-1; ++y)
+        for (var y = 1; y < map.Height; ++y)
         {
           if (map.Nodes[x, y] == null) //|| map.Nodes[x, y].NodeType != NodeType.Blank)
           {
@@ -210,7 +210,7 @@ namespace TryJsonToObject
       }
     }
 
-    public static void Shuffle<T>(this IList<T> list, ref Random random)
+    private static void Shuffle<T>(this IList<T> list, ref Random random)
     {
       var n = list.Count;
       while (n > 1)
@@ -221,6 +221,81 @@ namespace TryJsonToObject
         list[k] = list[n];
         list[n] = value;
       }
+    }
+
+    public static string GenerateDotFileString(Map map, string mapName)
+    {
+      var mainBuffer = "digraph " + mapName + " {" + "\n";
+
+      for (var y = 0; y < map.Height; ++y)
+      {
+        for (var x = 0; x < map.Width; ++x)
+        {
+          var node = map.Nodes[x, y];
+
+          if (node == null)
+          {
+            continue;
+          }
+
+          var nodeName = GetNodeName(node);
+
+          foreach (var destination in node.Destinations)
+          {
+            var destinationName = GetNodeName(map.Nodes[destination.Item1, destination.Item2]);
+            if (destinationName != "")
+            {
+              mainBuffer += nodeName + "->" + destinationName + ";" + "\n";
+            }
+          }
+        }
+      }
+
+      mainBuffer += "}";
+
+      return mainBuffer;
+    }
+
+    private static string GetNodeName(Node node)
+    {
+      if (node == null || node.NodeType == NodeType.Blank)
+      {
+        return "";
+      }
+
+      var nodeName = "";
+      nodeName = "x" + node.X + "y" + node.Y;
+
+      switch (node.NodeType)
+      {
+        case NodeType.CampSite:
+          nodeName += "C";
+          break;
+        case NodeType.Fight:
+        {
+          var fight = (Fight) node;
+          switch (fight.FightType)
+          {
+            case FightType.Normal:
+              nodeName += "N";
+              break;
+            case FightType.Elite:
+              nodeName += "E";
+              break;
+            case FightType.Boss:
+              nodeName += "B";
+              break;
+          }
+          break;
+        }
+      }
+
+      if (node != null && node.IsMystery)
+      {
+        nodeName += "?";
+      }
+
+      return nodeName;
     }
 
   }

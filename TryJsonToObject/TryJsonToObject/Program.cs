@@ -10,12 +10,11 @@ namespace TryJsonToObject
     
     private static readonly int       MapWidth          = 7;
     private static readonly int       MapHeight         = 15;
-    private static readonly int       PathDensity       = 6;
+    private static readonly int       PathDensity       = 16;
 
     private static readonly double    CampsiteFrequency = 0.175;
-    private static readonly double    MysteryFrequency  = 0.175;
     private static readonly double    EliteFrequency    = 0.2;
-
+    private static readonly double    MysteryFrequency  = 0.2;
 
     private static readonly int       RandomSeed        = (int)DateTime.Now.Ticks;
 
@@ -32,8 +31,14 @@ namespace TryJsonToObject
 
       var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapWidth, MapHeight, PathDensity, MapConfig, RandomSeed);
 
+      for (var i = 0; i < journey.Maps.Count; ++i)
+      {
+        JourneyGenerator.GenerateDotFileString(journey.Maps[i], "Map_"+(i+1));
+      }
+
       //create player
       //assign player's deck, etc
+      //setup the nodes fully
       //...
     }
   }
