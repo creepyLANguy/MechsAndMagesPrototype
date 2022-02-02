@@ -127,6 +127,8 @@ namespace TryJsonToObject
       int           tradeRowSize,
       int           shield,
       int           manna,
+      int           basicHandSize,
+      int           toDiscard,
       Stack<Card>   deck,
       Stack<Card>   drawPile,
       Stack<Card>   discardPile,
@@ -145,6 +147,8 @@ namespace TryJsonToObject
       TradeRowSize  = tradeRowSize;
       Shield        = shield;
       Manna         = manna;
+      BasicHandSize = basicHandSize;
+      ToDiscard     = toDiscard;
       Deck          = deck;
       DrawPile      = drawPile;
       DiscardPile   = discardPile;
@@ -163,6 +167,8 @@ namespace TryJsonToObject
     public int          TradeRowSize  { get; set; }
     public int          Shield        { get; set; }
     public int          Manna         { get; set; }
+    public int          ToDiscard     { get; set; }
+    public int          BasicHandSize { get; set; }
     public Stack<Card>  Deck          { get; set; }
     public Stack<Card>  DrawPile      { get; set; }
     public Stack<Card>  DiscardPile   { get; set; }
