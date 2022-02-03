@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TryJsonToObject": {
+      "commandName": "Project",
+      "workingDirectory": "..\\..\\..\\MechsAndMagesPrototype"
+    }
+  }
+}

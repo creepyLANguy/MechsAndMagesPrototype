@@ -27,13 +27,13 @@ namespace TryJsonToObject
 
       //AL.
       //TODO - uncomment this after debugging. 
-      //var cards = CardReader.GetCardsFromExcel(ExcelFile);
+      var cards = CardReader.GetCardsFromExcel(ExcelFile);
 
       var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapWidth, MapHeight, PathDensity, MapConfig, RandomSeed);
 
       for (var i = 0; i < journey.Maps.Count; ++i)
       {
-        var dotFileString = Utilities.GenerateDotFileString(journey.Maps[i], "Map_"+(i+1));
+        var dotFileString = Utilities.GenerateDotFileString(journey.Maps[i], "Map_" + (i + 1));
         var dotFileName = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
         Utilities.SaveFile(dotFileName, dotFileString);
       }
