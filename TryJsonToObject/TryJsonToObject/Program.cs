@@ -40,7 +40,7 @@ namespace TryJsonToObject
 
       //create player
       //assign player's deck, etc
-      //setup the nodes fully
+      //setup each node fully
       //...
     }
   }

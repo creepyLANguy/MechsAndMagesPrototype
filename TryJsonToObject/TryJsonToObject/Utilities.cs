@@ -23,6 +23,7 @@ namespace TryJsonToObject
     {
       var mainBuffer = "digraph " + mapName + " {" + "\n";
 
+      mainBuffer += "\n//Relationships : \n";
       for (var y = 0; y < map.Height; ++y)
       {
         for (var x = 0; x < map.Width; ++x)
@@ -50,6 +51,24 @@ namespace TryJsonToObject
         }
       }
 
+      mainBuffer += "\n//Labels : \n"; ;
+      for (var y = 0; y < map.Height; ++y)
+      {
+        for (var x = 0; x < map.Width; ++x)
+        {
+          var node = map.Nodes[x, y];
+
+          if (node == null)
+          {
+            continue;
+          }
+
+          var nodeLabel = GetNodeLabel(node);
+
+          mainBuffer += nodeLabel + "\n";
+        }
+      }
+
       mainBuffer += "}";
 
       return mainBuffer;
@@ -57,45 +76,20 @@ namespace TryJsonToObject
 
     private static string GetNodeName(Node node)
     {
-      if (node == null || node.NodeType == NodeType.Blank)
-      {
-        return "???????";
-      }
+      var nodeName = "x" + node.X + "y" + node.Y + "_";
 
-      var nodeName = "";
-
-      nodeName = "x" + node.X + "y" + node.Y + "_";
-
-      switch (node.NodeType)
-      {
-        case NodeType.CampSite:
-          nodeName += "C";
-          break;
-        case NodeType.Fight:
-          {
-            var fight = (Fight)node;
-            switch (fight.FightType)
-            {
-              case FightType.Normal:
-                nodeName += "N";
-                break;
-              case FightType.Elite:
-                nodeName += "E";
-                break;
-              case FightType.Boss:
-                nodeName += "B";
-                break;
-            }
-            break;
-          }
-      }
-
-      if (node.IsMystery)
-      {
-        nodeName += "_?";
-      }
+      nodeName += GetNodeTypeMarker(node);
 
       return nodeName;
+    }
+    
+    private static string GetNodeLabel(Node node)
+    {
+      var nodeLabel = GetNodeTypeMarker(node);
+
+      nodeLabel = GetNodeName(node) + "[label = \"" + nodeLabel + "\"];";
+
+      return nodeLabel;
     }
 
     public static void SaveFile(string filename, string content)
@@ -104,5 +98,48 @@ namespace TryJsonToObject
       File.WriteAllTextAsync(filename, content);
       Console.WriteLine("Saved");
     }
+
+    private static string GetNodeTypeMarker(Node node)
+    {
+      var str = "???????";
+
+      if (node == null || node.NodeType == NodeType.Blank)
+      {
+        return str;
+      }
+
+      switch (node.NodeType)
+      {
+        case NodeType.CampSite:
+          str = "Campsite";
+          break;
+        case NodeType.Fight:
+        {
+          var fight = (Fight)node;
+          switch (fight.FightType)
+          {
+            case FightType.Normal:
+              str = "Normal";
+              break;
+            case FightType.Elite:
+              str = "Elite";
+              break;
+            case FightType.Boss:
+              str = "Boss";
+              break;
+          }
+
+          break;
+        }
+      }
+
+      if (node.IsMystery)
+      {
+        str += "_Mystery";
+      }
+
+      return str;
+    }
+
   }
 }
