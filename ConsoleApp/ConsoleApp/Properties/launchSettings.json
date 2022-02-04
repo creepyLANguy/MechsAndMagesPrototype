@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "TryJsonToObject": {
+    "ConsoleApp": {
       "commandName": "Project",
       "workingDirectory": "..\\..\\..\\MechsAndMagesPrototype"
     }

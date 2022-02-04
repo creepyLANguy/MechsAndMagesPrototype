@@ -22,11 +22,6 @@ namespace TryJsonToObject
 
     static void Main(string[] args)
     {
-      //var jsonFile = "Cards.json";
-      //var json = System.IO.File.ReadAllText(jsonFile);
-
-      //AL.
-      //TODO - uncomment this after debugging. 
       var cards = CardReader.GetCardsFromExcel(ExcelFile);
 
       var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapWidth, MapHeight, PathDensity, MapConfig, RandomSeed);
