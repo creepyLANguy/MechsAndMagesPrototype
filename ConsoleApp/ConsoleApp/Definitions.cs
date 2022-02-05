@@ -235,7 +235,6 @@ namespace MaM
   {
     public Campsite(
       Node         baseNode,
-      List<Card>   recruits,
       List<Potion> potions
     ) : base(
       baseNode.NodeType,
@@ -247,12 +246,10 @@ namespace MaM
       baseNode.Destinations
     )
     {
-      Recruits  = recruits;
       Potions   = potions;
       NodeType = NodeType.CampSite;
     }
 
-    public List<Card>   Recruits  { get; set; }
     public List<Potion> Potions   { get; set; }
 
     //TODO - implement these types
