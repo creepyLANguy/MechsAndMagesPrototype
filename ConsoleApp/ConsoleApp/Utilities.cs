@@ -19,7 +19,7 @@ namespace MaM
       }
     }
 
-    public static string GenerateDotFileString(Map map, string mapName)
+    public static string GenerateDotFileContents(Map map, string mapName)
     {
       var mainBuffer = "digraph " + mapName + " {" + "\n";
 
@@ -78,14 +78,14 @@ namespace MaM
     {
       var nodeName = "x" + node.X + "y" + node.Y + "_";
 
-      nodeName += GetNodeTypeMarker(node);
+      nodeName += GetNodeTypeDescriptor(node);
 
       return nodeName;
     }
     
     private static string GetNodeLabel(Node node)
     {
-      var nodeLabel = GetNodeTypeMarker(node);
+      var nodeLabel = GetNodeTypeDescriptor(node);
 
       nodeLabel = GetNodeName(node) + "[label = \"" + nodeLabel + "\"];";
 
@@ -99,7 +99,7 @@ namespace MaM
       Console.WriteLine("Saved");
     }
 
-    private static string GetNodeTypeMarker(Node node)
+    private static string GetNodeTypeDescriptor(Node node)
     {
       var str = "???????";
 

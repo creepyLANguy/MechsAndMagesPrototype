@@ -28,7 +28,7 @@ namespace MaM
 
       for (var i = 0; i < journey.Maps.Count; ++i)
       {
-        var dotFileString = Utilities.GenerateDotFileString(journey.Maps[i], "Map_" + (i + 1));
+        var dotFileString = Utilities.GenerateDotFileContents(journey.Maps[i], "Map_" + (i + 1));
         var dotFileName = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
         Utilities.SaveFile(dotFileName, dotFileString);
       }
