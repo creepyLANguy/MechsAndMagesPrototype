@@ -26,34 +26,28 @@ namespace MaM
 
       PopulateMapWithBlankNodes(ref map);
 
-      //Randomly set the destinations for first row nodes.
       SetDestinationsForFirstRowNodes(ref map, mapConfig, ref random);
 
-      //Complete paths from row 1 -> third row from the top
+      //Row 1 -> third row from the top
       CompletePathsForEffectiveNodes(ref map, mapConfig, ref random);
 
       NullifyUnconnectedNodes(ref map);
 
-      //Set first floor's active nodes as normal fights
       SetFirstFloorActiveNodesAsNormalFights(ref map);
 
-      //Note, fights in the bag are actually representative of Elites. 
+      //Note, fights in the bag are all Elites. 
       //Normal fights are filled in later for all unassigned nodes.
       var bag = GenerateNodeTypeDistributionBag(ref map, mapConfig, ref random);
 
-      //Assign bag items to non-null nodes from row 1 -> top row
+      //Row 1 -> top row
       AssignBagItems(ref map, ref bag);
 
-      //Just set the rest of the blank nodes as normal fights.
       AssignNormalFightsToRemainingBlankNodes(ref map);
 
-      //Set some of the nodes as mysteries
       AssignMysteryNodes(ref map, mapConfig, ref random);
 
-      //Attach final campsite
       AttachFinalCampsiteNode(ref map);
 
-      //Attach BOSS node
       AttachBossNode(ref map);
 
       return map;
@@ -140,11 +134,13 @@ namespace MaM
     {
       for (var x = 0; x < map.Width; ++x)
       {
-        if (map.Nodes[x, 0] != null)
+        if (map.Nodes[x, 0] == null)
         {
-          var baseNode = new Node(map.Nodes[x, 0]);
-          map.Nodes[x, 0] = new Fight(baseNode, FightType.Normal, null, null, 0, 0, null, null);
+          continue;
         }
+
+        var baseNode = new Node(map.Nodes[x, 0]);
+        map.Nodes[x, 0] = new Fight(baseNode, FightType.Normal, null, null, 0, 0, null, null);
       }
     }
 
@@ -237,7 +233,7 @@ namespace MaM
       {
         for (var y = 1; y < map.Height; ++y)
         {
-          if (map.Nodes[x, y] == null) //|| map.Nodes[x, y].NodeType != NodeType.Blank)
+          if (map.Nodes[x, y] == null)
           {
             continue;
           }
@@ -270,8 +266,11 @@ namespace MaM
     private static void AttachBossNode(ref Map map)
     {
       var baseNodeForBoss = new Node(NodeType.Fight, false, 0, map.Height - 1, false, true, null);
+
       var bossNode = new Fight(baseNodeForBoss, FightType.Boss, null, null, 0, 0, null, null);
+
       map.Nodes[0, map.Height - 2].Destinations.Add(new Tuple<int, int>(bossNode.X, bossNode.Y));
+
       map.Nodes[bossNode.X, bossNode.Y] = bossNode;
     }
 
