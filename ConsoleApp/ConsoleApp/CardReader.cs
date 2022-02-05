@@ -4,7 +4,7 @@ using Aspose.Cells;
 using Aspose.Cells.Utility;
 using Newtonsoft.Json;
 
-namespace TryJsonToObject
+namespace MaM
 {
   internal class JsonIntermediateCard
   {

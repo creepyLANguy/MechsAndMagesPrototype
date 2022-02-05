@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TryJsonToObject
+namespace MaM
 {
   public class KeyValuePair<TK, TV>
   {
@@ -30,13 +30,13 @@ namespace TryJsonToObject
   public class Action : KeyValuePair<string, int> { public Action(string key, int val) : base(key, val) { } }
   public static class Actions
   {
-    public static Action Attack          = new Action("A", 1);
-    public static Action Trade           = new Action("T", 2);
-    public static Action Draw            = new Action("D", 3);
-    public static Action Scrap           = new Action("S", 4);
-    public static Action Consume         = new Action("C", 5);
-    public static Action OpponentDiscard = new Action("O", 6);
-    public static Action Heal            = new Action("H", 7);
+    public static readonly Action Attack          = new Action("A", 1);
+    public static readonly Action Trade           = new Action("T", 2);
+    public static readonly Action Draw            = new Action("D", 3);
+    public static readonly Action Scrap           = new Action("S", 4);
+    public static readonly Action Consume         = new Action("C", 5);
+    public static readonly Action OpponentDiscard = new Action("O", 6);
+    public static readonly Action Heal            = new Action("H", 7);
 
     public static List<Action> All = new List<Action>() { Attack, Trade, Draw, Scrap, Consume, OpponentDiscard, Heal };
   }
@@ -55,9 +55,9 @@ namespace TryJsonToObject
   public class CardType : KeyValuePair<string, int> { public CardType(string key, int val) : base(key, val) { } }
   public static class CardTypes
   {
-    public static CardType Unknown = new CardType("Unknown", 0);
-    public static CardType Unit    = new CardType("Unit",    1);
-    public static CardType Base    = new CardType("Base",    2);
+    public static readonly CardType Unknown = new CardType("Unknown", 0);
+    public static readonly CardType Unit    = new CardType("Unit",    1);
+    public static readonly CardType Base    = new CardType("Base",    2);
 
     public static readonly List<CardType> All = new List<CardType>() { Unit, Base, Unknown };
   }
@@ -124,6 +124,8 @@ namespace TryJsonToObject
       int           maxHealth,
       int           coin,
       int           vision,
+      int           awareness,
+      int           insight,
       int           tradeRowSize,
       int           shield,
       int           manna,
@@ -144,6 +146,8 @@ namespace TryJsonToObject
       MaxHealth     = maxHealth;
       Coin          = coin;
       Vision        = vision;
+      Awareness     = awareness;
+      Insight       = insight;
       TradeRowSize  = tradeRowSize;
       Shield        = shield;
       Manna         = manna;
@@ -163,7 +167,9 @@ namespace TryJsonToObject
     public int          Health        { get; set; }
     public int          MaxHealth     { get; set; }
     public int          Coin          { get; set; }
-    public int          Vision        { get; set; }
+    public int          Vision        { get; set; } //How many nodes and paths ahead you can simply see
+    public int          Awareness     { get; set; } //How many of the visible nodes ahead have their types revealed
+    public int          Insight       { get; set; } //How many of the nodes ahead have their Guild distributions revealed
     public int          TradeRowSize  { get; set; }
     public int          Shield        { get; set; }
     public int          Manna         { get; set; }
@@ -189,8 +195,7 @@ namespace TryJsonToObject
     public Node(Node node)
     {
       NodeType      = node.NodeType;
-      IsMystery     = node.IsMystery;    
-      IsVisible     = node.IsVisible;    
+      IsMystery     = node.IsMystery;
       X             = node.X;            
       Y             = node.Y;            
       IsComplete    = node.IsComplete;
@@ -201,7 +206,6 @@ namespace TryJsonToObject
     public Node(
       NodeType                  nodeType,
       bool                      isMystery,
-      bool                      isVisible,
       int                       x,
       int                       y,
       bool                      isComplete,
@@ -211,7 +215,6 @@ namespace TryJsonToObject
     {
       NodeType      = nodeType;
       IsMystery     = isMystery;
-      IsVisible     = isVisible;
       X             = x;
       Y             = y;
       IsComplete    = isComplete;
@@ -221,7 +224,6 @@ namespace TryJsonToObject
 
     public NodeType                 NodeType       { get; set; }
     public bool                     IsMystery      { get; set; }
-    public bool                     IsVisible      { get; set; }
     public int                      X              { get; set; }
     public int                      Y              { get; set; }
     public bool                     IsComplete     { get; set; }    
@@ -238,7 +240,6 @@ namespace TryJsonToObject
     ) : base(
       baseNode.NodeType,
       baseNode.IsMystery,
-      baseNode.IsVisible,
       baseNode.X,
       baseNode.Y,
       baseNode.IsComplete,
@@ -282,7 +283,6 @@ namespace TryJsonToObject
     ) : base(
       baseNode.NodeType,
       baseNode.IsMystery,
-      baseNode.IsVisible,
       baseNode.X,
       baseNode.Y,
       baseNode.IsComplete,

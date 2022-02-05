@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace TryJsonToObject
+namespace MaM
 {
   static class Utilities
   {

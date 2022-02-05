@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TryJsonToObject
+namespace MaM
 {
   public static class JourneyGenerator
   {
-    public static Journey GenerateJourney(int journeyLength, int mapWidth, int mapHeight, int pathDensity, MapConfig mapConfig, int randomSeed)
+    public static Journey GenerateJourney(int journeyLength, MapConfig mapConfig, int randomSeed)
     {
       var random = new Random(randomSeed);
 
@@ -13,31 +13,31 @@ namespace TryJsonToObject
 
       for (var i = 0; i < journeyLength; ++i)
       {
-        var map = GenerateMap(mapWidth, mapHeight, pathDensity, mapConfig, ref random);
+        var map = GenerateMap(mapConfig, ref random);
         journey.Maps.Add(map);
       }
 
       return journey;
     }
 
-    private static Map GenerateMap(int width, int height, int pathDensity, MapConfig mapConfig, ref Random random)
+    private static Map GenerateMap(MapConfig mapConfig, ref Random random)
     {
-      var map = new Map(width, height);
+      var map = new Map(mapConfig.width, mapConfig.height);
 
       PopulateMapWithBlankNodes(ref map);
 
       //Randomly set the destinations for first row nodes.
-      for (var i = 0; i < pathDensity; ++i)
+      for (var i = 0; i < mapConfig.pathDensity; ++i)
       {
-        var x = random.Next(0, width);
+        var x = random.Next(0, mapConfig.width);
 
         SetDestinationForNode(ref map, x, 0, ref random);
       }
 
       //Complete paths from row 1 -> third row from the top
-      for (var y = 1; y < height-2; ++y)
+      for (var y = 1; y < mapConfig.height - 2; ++y)
       {
-        for (var x = 0; x < width; ++x)
+        for (var x = 0; x < mapConfig.width; ++x)
         {
           if (map.Nodes[x, y].IsDestination == false)
           {
@@ -152,7 +152,7 @@ namespace TryJsonToObject
       }
 
       //Attach final campsite 
-      var finalCampsite = new Campsite(new Node(NodeType.CampSite, false, false, 0, map.Height-2, false, true, new HashSet<Tuple<int, int>>()), null, null);
+      var finalCampsite = new Campsite(new Node(NodeType.CampSite, false, 0, map.Height-2, false, true, new HashSet<Tuple<int, int>>()), null, null);
       for (var x = 0; x < map.Width; ++x)
       {
         if (map.Nodes[x, finalCampsite.Y- 1] == null)
@@ -166,7 +166,7 @@ namespace TryJsonToObject
       map.Nodes[finalCampsite.X, finalCampsite.Y] = finalCampsite;
 
       //Attach BOSS node
-      var bossNode = new Fight(new Node(NodeType.Fight, false, false, 0, map.Height-1, false, true, null), FightType.Boss, null, null, 0, 0, null, null);
+      var bossNode = new Fight(new Node(NodeType.Fight, false, 0, map.Height-1, false, true, null), FightType.Boss, null, null, 0, 0, null, null);
       map.Nodes[finalCampsite.X, finalCampsite.Y].Destinations.Add(new Tuple<int, int>(bossNode.X, bossNode.Y));
       map.Nodes[bossNode.X, bossNode.Y] = bossNode;
 
@@ -179,7 +179,7 @@ namespace TryJsonToObject
       {
         for (var y = 0; y < map.Height; ++y)
         {
-          map.Nodes[x, y] = new Node(NodeType.Blank, false, false, x, y, false, false, null);
+          map.Nodes[x, y] = new Node(NodeType.Blank, false, x, y, false, false, null);
         }
       }
     }

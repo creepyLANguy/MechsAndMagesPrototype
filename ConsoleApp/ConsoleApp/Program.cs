@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TryJsonToObject
+namespace MaM
 {
   class Program
   {
@@ -24,7 +24,7 @@ namespace TryJsonToObject
     {
       var cards = CardReader.GetCardsFromExcel(ExcelFile);
 
-      var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapWidth, MapHeight, PathDensity, MapConfig, RandomSeed);
+      var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapConfig, RandomSeed);
 
       for (var i = 0; i < journey.Maps.Count; ++i)
       {
