@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace MaM
 {
-  static class Utilities
+  static class GraphVis
   {
-    public static void Shuffle<T>(this IList<T> list, ref Random random)
+    public static void SaveMapsAsDotFiles(ref Journey journey)
     {
-      var n = list.Count;
-      while (n > 1)
+      for (var i = 0; i < journey.Maps.Count; ++i)
       {
-        n--;
-        var k = random.Next(n + 1);
-        var value = list[k];
-        list[k] = list[n];
-        list[n] = value;
+        var dotFileString = GenerateDotFileContents(journey.Maps[i], "Map_" + (i + 1));
+        var dotFileName = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
+        FileIO.SaveFile(dotFileName, dotFileString);
       }
     }
 
-    public static string GenerateDotFileContents(Map map, string mapName)
+    private static string GenerateDotFileContents(Map map, string mapName)
     {
       var mainBuffer = "digraph " + mapName + " {" + "\n";
 
@@ -82,7 +77,7 @@ namespace MaM
 
       return nodeName;
     }
-    
+
     private static string GetNodeLabel(Node node)
     {
       var nodeLabel = GetNodeTypeDescriptor(node);
@@ -90,13 +85,6 @@ namespace MaM
       nodeLabel = GetNodeName(node) + "[label = \"" + nodeLabel + "\"];";
 
       return nodeLabel;
-    }
-
-    public static void SaveFile(string filename, string content)
-    {
-      Console.WriteLine("Saving " + filename);
-      File.WriteAllTextAsync(filename, content);
-      Console.WriteLine("Saved");
     }
 
     private static string GetNodeTypeDescriptor(Node node)
@@ -114,23 +102,23 @@ namespace MaM
           str = "Campsite";
           break;
         case NodeType.Fight:
-        {
-          var fight = (Fight)node;
-          switch (fight.FightType)
           {
-            case FightType.Normal:
-              str = "Normal";
-              break;
-            case FightType.Elite:
-              str = "Elite";
-              break;
-            case FightType.Boss:
-              str = "Boss";
-              break;
-          }
+            var fight = (Fight)node;
+            switch (fight.FightType)
+            {
+              case FightType.Normal:
+                str = "Normal";
+                break;
+              case FightType.Elite:
+                str = "Elite";
+                break;
+              case FightType.Boss:
+                str = "Boss";
+                break;
+            }
 
-          break;
-        }
+            break;
+          }
       }
 
       if (node.IsMystery)
@@ -140,6 +128,5 @@ namespace MaM
 
       return str;
     }
-
   }
 }

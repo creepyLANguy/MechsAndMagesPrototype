@@ -26,16 +26,15 @@ namespace MaM
 
       var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapConfig, RandomSeed);
 
-      for (var i = 0; i < journey.Maps.Count; ++i)
-      {
-        var dotFileString = Utilities.GenerateDotFileContents(journey.Maps[i], "Map_" + (i + 1));
-        var dotFileName = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
-        Utilities.SaveFile(dotFileName, dotFileString);
-      }
+#if DEBUG
+      GraphVis.SaveMapsAsDotFiles(ref journey);
+#endif
+
+      //setup each node fully
 
       //create player
       //assign player's deck, etc
-      //setup each node fully
+      //consider reading in savefile?
       //...
     }
   }
