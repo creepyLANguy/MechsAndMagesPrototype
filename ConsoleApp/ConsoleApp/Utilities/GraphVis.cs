@@ -46,7 +46,7 @@ namespace MaM
         }
       }
 
-      mainBuffer += "\n//Labels : \n"; ;
+      mainBuffer += "\n//Labels : \n";
       for (var y = 0; y < map.Height; ++y)
       {
         for (var x = 0; x < map.Width; ++x)
@@ -103,8 +103,7 @@ namespace MaM
           break;
         case NodeType.Fight:
           {
-            var fight = (Fight)node;
-            switch (fight.FightType)
+            switch (((Fight)node).FightType)
             {
               case FightType.Normal:
                 str = "Normal";

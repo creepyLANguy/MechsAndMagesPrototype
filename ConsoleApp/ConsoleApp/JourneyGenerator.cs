@@ -50,6 +50,8 @@ namespace MaM
 
       AttachBossNode(ref map);
 
+      CompleteSetupOfAllNodes(ref map);
+
       return map;
     }
 
@@ -272,6 +274,68 @@ namespace MaM
       map.Nodes[0, map.Height - 2].Destinations.Add(new Tuple<int, int>(bossNode.X, bossNode.Y));
 
       map.Nodes[bossNode.X, bossNode.Y] = bossNode;
+    }
+
+    private static void CompleteSetupOfAllNodes(ref Map map)
+    {
+      for (var x = 0; x < map.Width; ++x)
+      {
+        for (var y = 0; y < map.Height; ++y)
+        {
+          var node = map.Nodes[x, y];
+
+          if (node == null || node.NodeType == NodeType.Blank)
+          {
+            continue;
+          }
+
+          switch (node.NodeType)
+          {
+            case NodeType.CampSite:
+              SetupCampsite(ref node);
+              break;
+            case NodeType.Fight:
+            {
+              switch (((Fight)node).FightType)
+              {
+                case FightType.Normal:
+                  SetupNormalFight(ref node);
+                  break;
+                case FightType.Elite:
+                  SetupEliteFight(ref node);
+                  break;
+                case FightType.Boss:
+                  SetupBoss(ref node);
+                  break;
+              }
+
+              break;
+            }
+          }
+
+          map.Nodes[x, y] = node; //TODO - test if this actually does the assignment as expected. 
+        }
+      }
+    }
+
+    private static void SetupCampsite(ref Node node)
+    {
+      //TODO - implement
+    }
+    
+    private static void SetupNormalFight(ref Node node)
+    {
+      //TODO - implement
+    }
+
+    private static void SetupEliteFight(ref Node node)
+    {
+      //TODO - implement
+    }
+
+    private static void SetupBoss(ref Node node)
+    {
+      //TODO - implement
     }
 
   }
