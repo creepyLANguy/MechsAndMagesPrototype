@@ -1,28 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MaM
 {
   public static class JourneyGenerator
   {
-    public static Journey GenerateJourney(int journeyLength, MapConfig mapConfig, int randomSeed)
+    public static Journey GenerateJourney(
+      int journeyLength, 
+      MapConfig mapConfig, 
+      EnemyConfig normalEnemyConfig, 
+      EnemyConfig eliteEnemyConfig,
+      List<Card> cards, 
+      ref Random random
+      )
     {
-      var random = new Random(randomSeed);
-
       var journey = new Journey();
 
-      for (var i = 0; i < journeyLength; ++i)
+      for (var index = 0; index < journeyLength; ++index)
       {
-        var map = GenerateMap(mapConfig, ref random);
+        var map = GenerateMap(index, mapConfig, normalEnemyConfig, eliteEnemyConfig, ref cards, ref random);
         journey.Maps.Add(map);
       }
 
       return journey;
     }
 
-    private static Map GenerateMap(MapConfig mapConfig, ref Random random)
+    private static Map GenerateMap(
+      int index, 
+      MapConfig mapConfig, 
+      EnemyConfig normalEnemyConfig, 
+      EnemyConfig eliteEnemyConfig,
+      ref List<Card> cards, 
+      ref Random random
+      )
     {
-      var map = new Map(mapConfig.width, mapConfig.height);
+      var map = new Map(index, mapConfig.width, mapConfig.height);
 
       PopulateMapWithBlankNodes(ref map);
 
@@ -50,7 +63,7 @@ namespace MaM
 
       AttachBossNode(ref map);
 
-      CompleteSetupOfAllNodes(ref map);
+      CompleteSetupOfAllNodes(ref map, normalEnemyConfig, eliteEnemyConfig, ref cards, ref random);
 
       return map;
     }
@@ -142,7 +155,7 @@ namespace MaM
         }
 
         var baseNode = new Node(map.Nodes[x, 0]);
-        map.Nodes[x, 0] = new Fight(baseNode, FightType.Normal, null, null, 0, 0, null, null);
+        map.Nodes[x, 0] = new Fight(baseNode, FightType.Normal, null);
       }
     }
 
@@ -203,7 +216,7 @@ namespace MaM
               map.Nodes[x, y] = new Campsite(baseNode, null);
               break;
             case NodeType.Fight:
-              map.Nodes[x, y] = new Fight(baseNode, FightType.Elite, null, null, 0, 0, null, null);
+              map.Nodes[x, y] = new Fight(baseNode, FightType.Elite, null);
               break;
           }
 
@@ -224,7 +237,7 @@ namespace MaM
           }
 
           var baseNode = new Node(map.Nodes[x, y]);
-          map.Nodes[x, y] = new Fight(baseNode, FightType.Normal, null, null, 0, 0, null, null);
+          map.Nodes[x, y] = new Fight(baseNode, FightType.Normal, null);
         }
       }
     }
@@ -269,14 +282,20 @@ namespace MaM
     {
       var baseNodeForBoss = new Node(NodeType.Fight, false, 0, map.Height - 1, false, true, null);
 
-      var bossNode = new Fight(baseNodeForBoss, FightType.Boss, null, null, 0, 0, null, null);
+      var bossNode = new Fight(baseNodeForBoss, FightType.Boss, null);
 
       map.Nodes[0, map.Height - 2].Destinations.Add(new Tuple<int, int>(bossNode.X, bossNode.Y));
 
       map.Nodes[bossNode.X, bossNode.Y] = bossNode;
     }
 
-    private static void CompleteSetupOfAllNodes(ref Map map)
+    private static void CompleteSetupOfAllNodes(
+      ref Map map, 
+      EnemyConfig normalEnemyConfig, 
+      EnemyConfig eliteEnemyConfig,
+      ref List<Card> cards, 
+      ref Random random
+      )
     {
       for (var x = 0; x < map.Width; ++x)
       {
@@ -299,10 +318,10 @@ namespace MaM
               switch (((Fight)node).FightType)
               {
                 case FightType.Normal:
-                  SetupNormalFight(ref node);
+                  SetupEnemy(ref node, normalEnemyConfig, map.Index, cards, ref random);
                   break;
                 case FightType.Elite:
-                  SetupEliteFight(ref node);
+                  SetupEnemy(ref node, eliteEnemyConfig, map.Index, cards, ref random);
                   break;
                 case FightType.Boss:
                   SetupBoss(ref node);
@@ -323,19 +342,54 @@ namespace MaM
       //TODO - implement
     }
     
-    private static void SetupNormalFight(ref Node node)
+    private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, int mapIndex, List<Card> cards, ref Random random)
     {
-      //TODO - implement
-    }
+      cards.Shuffle(ref random);
 
-    private static void SetupEliteFight(ref Node node)
-    {
-      //TODO - implement
+      var enemy = new Player(
+        true,
+        GetEnemyName(),
+        null,
+        enemyConfig.baseHealth * (1 + mapIndex),
+        enemyConfig.baseHealth * (1 + mapIndex), 
+        0, 
+        0, 
+        0, 
+        0,
+        enemyConfig.baseTradeRowSize + mapIndex, 
+        0, 
+        0, 
+        enemyConfig.baseManna + mapIndex, 
+        enemyConfig.baseHandSize + mapIndex, 
+        0, 
+        0, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null
+        );
+
+      var deck = cards
+          .Where(card => card.Cost >= enemyConfig.minCardCost && card.Cost <= enemyConfig.maxCardCost)
+          .Take(enemyConfig.baseDeckSize)
+          .ToList();
+      
+      enemy.Deck = deck;
+      
+      ((Fight) node).Enemy = enemy;
     }
 
     private static void SetupBoss(ref Node node)
     {
       //TODO - implement
+    }
+
+    private static string GetEnemyName()
+    {
+      //TODO - implement
+      return "";
     }
 
   }
