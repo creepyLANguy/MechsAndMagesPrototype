@@ -8,7 +8,7 @@ namespace MaM
     public static void SaveFile(string filename, string content)
     {
       Console.WriteLine("Saving " + filename);
-      File.WriteAllTextAsync(filename, content);
+      File.WriteAllText(filename, content);
       Console.WriteLine("Saved");
     }
 
