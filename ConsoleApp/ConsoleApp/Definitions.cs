@@ -259,7 +259,7 @@ namespace MaM
     //TODO - implement these types
     //public List<HealingKit> HealingKits { get; set; }
     //public List<VisionUpgrade> VisionUpgrades { get; set; }
-    //public List<HealthUpgrade> HealthUpgrades { get; set; }
+    //public List<MaxHealthUpgrade> HealthUpgrades { get; set; }
     //public Scrapper Scrapper { get; set; }
   }
 

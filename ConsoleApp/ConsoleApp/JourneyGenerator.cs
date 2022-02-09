@@ -324,15 +324,13 @@ namespace MaM
                   SetupEnemy(ref node, eliteEnemyConfig, map.Index, cards, ref random);
                   break;
                 case FightType.Boss:
-                  SetupBoss(ref node);
+                  SetupBoss(ref node, map.Index, cards, ref random); //TODO - change the call when implementing this properly
                   break;
               }
 
               break;
             }
           }
-
-          map.Nodes[x, y] = node; //TODO - test if this actually does the assignment as expected. 
         }
       }
     }
@@ -348,7 +346,7 @@ namespace MaM
 
       var enemy = new Player(
         true,
-        GetEnemyName(),
+        "", //TODO - implement
         null,
         enemyConfig.baseHealth * (1 + mapIndex),
         enemyConfig.baseHealth * (1 + mapIndex), 
@@ -381,15 +379,14 @@ namespace MaM
       ((Fight) node).Enemy = enemy;
     }
 
-    private static void SetupBoss(ref Node node)
+    private static void SetupBoss(ref Node node,int mapIndex, List<Card> cards, ref Random random)
     {
-      //TODO - implement
-    }
+      //TODO - implement loading bosses from file
 
-    private static string GetEnemyName()
-    {
-      //TODO - implement
-      return "";
+      //This is just a temporary solution for now:
+      var bossConfig = new EnemyConfig(120, 3, 12, 5, 6, 5, 10);
+      SetupEnemy(ref node, bossConfig, mapIndex, cards, ref random);
+      //
     }
 
   }
