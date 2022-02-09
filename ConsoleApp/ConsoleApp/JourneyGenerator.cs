@@ -324,7 +324,7 @@ namespace MaM
                   SetupEnemy(ref node, eliteEnemyConfig, map.Index, cards, ref random);
                   break;
                 case FightType.Boss:
-                  SetupBoss(ref node, map.Index, cards, ref random); //TODO - change the call when implementing this properly
+                  SetupBoss(ref node, map.Index, cards, ref random);
                   break;
               }
 

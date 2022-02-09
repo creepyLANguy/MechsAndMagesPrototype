@@ -83,9 +83,8 @@ namespace MaM
 #endif
 
       //create player
-      //assign player's deck, etc
-      //consider reading in savefile?
-      //...
+
+      //run game
     }
   }
 }
