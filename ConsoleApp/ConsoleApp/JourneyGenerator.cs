@@ -11,6 +11,7 @@ namespace MaM
       MapConfig mapConfig, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig,
+      ref List<Player> bosses,
       List<Card> cards, 
       ref Random random
       )
@@ -19,7 +20,7 @@ namespace MaM
 
       for (var index = 0; index < journeyLength; ++index)
       {
-        var map = GenerateMap(index, mapConfig, normalEnemyConfig, eliteEnemyConfig, ref cards, ref random);
+        var map = GenerateMap(index, mapConfig, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
         journey.Maps.Add(map);
       }
 
@@ -31,6 +32,7 @@ namespace MaM
       MapConfig mapConfig, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig,
+      ref List<Player> bosses,
       ref List<Card> cards, 
       ref Random random
       )
@@ -63,7 +65,7 @@ namespace MaM
 
       AttachBossNode(ref map);
 
-      CompleteSetupOfAllNodes(ref map, normalEnemyConfig, eliteEnemyConfig, ref cards, ref random);
+      CompleteSetupOfAllNodes(ref map, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
 
       return map;
     }
@@ -293,7 +295,8 @@ namespace MaM
       ref Map map, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig,
-      ref List<Card> cards, 
+      ref List<Player> bosses,
+      ref List<Card> cards,
       ref Random random
       )
     {
@@ -324,7 +327,7 @@ namespace MaM
                   SetupEnemy(ref node, eliteEnemyConfig, map.Index, cards, ref random);
                   break;
                 case FightType.Boss:
-                  SetupBoss(ref node, map.Index, cards, ref random);
+                  SetupBoss(ref node, map.Index, ref bosses, ref random);
                   break;
               }
 
@@ -379,14 +382,10 @@ namespace MaM
       ((Fight) node).Enemy = enemy;
     }
 
-    private static void SetupBoss(ref Node node,int mapIndex, List<Card> cards, ref Random random)
+    private static void SetupBoss(ref Node node, int mapIndex, ref List<Player> bosses, ref Random random)
     {
-      //TODO - implement loading bosses from file
-
-      //This is just a temporary solution for now:
-      var bossConfig = new EnemyConfig(120, 3, 12, 5, 6, 5, 10);
-      SetupEnemy(ref node, bossConfig, mapIndex, cards, ref random);
-      //
+      //TODO - implement choosing a random boss and removing it from the list for next more limited selection.
+      //TODO - don't forget to implement scaling for the mapindex
     }
 
   }

@@ -1,25 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Aspose.Cells;
-using Aspose.Cells.Utility;
 using Newtonsoft.Json;
 
 namespace MaM
 {
   internal class JsonIntermediateCard
   {
-    public int?     Quantity { get; set; }
-    public string   Name { get; set; }
-    public string   Type { get; set; }
-    public string   Guild { get; set; }
-    public int?     Cost { get; set; }
-    public int?     Defense { get; set; }
-    public int?     Shield { get; set; }
-    public string   DefaultAbilities { get; set; }
-    public string   GuildBonuses { get; set; }
-    public string   AllyBonuses { get; set; }
-    public string   ScrapBonuses { get; set; }
-    public int?     Id { get; set; }
+    public int?     Quantity          { get; set; }
+    public string   Name              { get; set; }
+    public string   Type              { get; set; }
+    public string   Guild             { get; set; }
+    public int?     Cost              { get; set; }
+    public int?     Defense           { get; set; }
+    public int?     Shield            { get; set; }
+    public string   DefaultAbilities  { get; set; }
+    public string   GuildBonuses      { get; set; }
+    public string   AllyBonuses       { get; set; }
+    public string   ScrapBonuses      { get; set; }
+    public string   Id                { get; set; }
   }
 
   public static class CardReader
@@ -42,7 +40,7 @@ namespace MaM
 
       var set = new ActionsValuesSet();
 
-      var actions = actionString.Split(JoinedActionDelim);
+      var actions = actionString.Replace(" ", "").Split(JoinedActionDelim);
 
       foreach (var action in actions)
       {
@@ -75,7 +73,7 @@ namespace MaM
         var guild = Guilds.All.SingleOrDefault(s => s.Key == ic.Guild) ?? Guilds.Neutral;
 
         var card = new Card(
-          ic.Id ?? 0,
+          ic.Id,
           ic.Name,
           cardType,
           guild,
@@ -97,26 +95,9 @@ namespace MaM
       return cards;
     }
 
-    private static string ExcelToJson(string excelFile)
-    {
-      var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));
-
-      var cells = workbook.Worksheets[0].Cells;
-      
-      var range = cells.CreateRange(0, 0, cells.LastCell.Row + 1, cells.LastCell.Column + 1);
-      
-      var exportOptions = new ExportRangeToJsonOptions();
-      
-      var json = JsonUtility.ExportRangeToJson(range, exportOptions);
-      
-      //System.IO.File.WriteAllText("output.json", jsonData);
-      
-      return json;
-    }
-
     public static List<Card> GetCardsFromExcel(string excelFile)
     {
-      var json = ExcelToJson(excelFile);
+      var json = FileIO.ExcelToJson(excelFile);
 
       var intermediateCards = JsonConvert.DeserializeObject<List<JsonIntermediateCard>>(json);
 

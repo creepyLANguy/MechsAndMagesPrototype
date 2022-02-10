@@ -6,7 +6,8 @@ namespace MaM
   {
     private static readonly int               RandomSeed              = (int)DateTime.Now.Ticks;
 
-    private static readonly string            ExcelFile               = "Cards.xlsx";
+    private static readonly string            CardsExcelFile          = "Cards.xlsx";
+    private static readonly string            BossesExcelFile         = "Bosses.xlsx";
                                                                       
     private static readonly int               JourneyLength           = 3;
                                                                       
@@ -74,9 +75,11 @@ namespace MaM
 
       var random = new Random(RandomSeed);
 
-      var cards = CardReader.GetCardsFromExcel(ExcelFile);
+      var cards = CardReader.GetCardsFromExcel(CardsExcelFile);
 
-      var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapConfig, NormalEnemyConfig, EliteEnemyConfig, cards, ref random);
+      var bosses = BossReader.GetBossesFromExcel(BossesExcelFile, ref cards);
+
+      var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapConfig, NormalEnemyConfig, EliteEnemyConfig, ref bosses, cards, ref random);
 
 #if DEBUG
       GraphVis.SaveMapsAsDotFiles(ref journey);

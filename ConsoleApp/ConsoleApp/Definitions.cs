@@ -65,7 +65,7 @@ namespace MaM
   public class Card
   {
     public Card(
-      int               id,
+      string            id,
       string            name,
       CardType          type,
       Guild             guild,
@@ -101,7 +101,7 @@ namespace MaM
     public ActionsValuesSet  GuildBonuses      { get; set; }
     public ActionsValuesSet  AllyBonuses       { get; set; }
     public ActionsValuesSet  ScrapBonuses      { get; set; }
-    public int               Id                { get; set; }
+    public string            Id                { get; set; }
   }
 
   public class Potion
