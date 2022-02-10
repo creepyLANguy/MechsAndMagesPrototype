@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Aspose.Cells;
 using Aspose.Cells.Utility;
 
@@ -11,7 +12,7 @@ namespace MaM
     {
       var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));
 
-      var cells = workbook.Worksheets[0].Cells;
+      var cells = workbook.Worksheets.First().Cells;
 
       var range = cells.CreateRange(0, 0, cells.LastCell.Row + 1, cells.LastCell.Column + 1);
 

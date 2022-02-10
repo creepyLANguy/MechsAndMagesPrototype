@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -18,18 +18,17 @@ namespace MaM
     {
       //TODO - implement
 
-      var cardIds = intermediatePlayer.Cards.Replace(" ", "").Split(JoinedCardDelim);
+      //var cardIds = intermediatePlayer.Cards.Replace(" ", "").Split(JoinedCardDelim);
 
-      var playerCards = new List<Card>();
+      //var playerCards = new List<Card>();
 
-      foreach (var cardId in cardIds)
-      {
-        var card = cards.Find(it => it.Id == cardId);
-        playerCards.Add(card);
-      }
+      //foreach (var cardId in cardIds)
+      //{
+      //  var card = cards.Find(it => it.Id == cardId);
+      //  playerCards.Add(card);
+      //}
 
-      var player = new Player(
-      );
+      var player = new Player();
 
       return player;
     }

@@ -114,6 +114,9 @@ namespace MaM
 
   public class Player
   {
+    //TODO - remove this empty constructor.
+    public Player(){}
+
     public Player(
       bool          isComputer,
       string        name,

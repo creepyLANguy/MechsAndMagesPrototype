@@ -212,7 +212,7 @@ namespace MaM
 
           var baseNode = new Node(map.Nodes[x, y]);
 
-          switch (bag[0])
+          switch (bag.First())
           {
             case NodeType.CampSite:
               map.Nodes[x, y] = new Campsite(baseNode, null);
@@ -222,7 +222,7 @@ namespace MaM
               break;
           }
 
-          bag.RemoveAt(0);
+          bag.Remove(bag.First());
         }
       }
     }
@@ -384,8 +384,18 @@ namespace MaM
 
     private static void SetupBoss(ref Node node, int mapIndex, ref List<Player> bosses, ref Random random)
     {
-      //TODO - implement choosing a random boss and removing it from the list for next more limited selection.
-      //TODO - don't forget to implement scaling for the mapindex
+      bosses.Shuffle(ref random);
+
+      var boss = bosses.First();
+
+      boss.BasicHandSize += mapIndex;
+      boss.BasicManna += mapIndex;
+      boss.Health *= (1 + mapIndex);
+      boss.TradeRowSize += mapIndex;
+
+      ((Fight) node).Enemy = boss;
+
+      bosses.Remove(boss);
     }
 
   }

@@ -67,7 +67,7 @@ namespace MaM
         EliteEnemyHandSize,
         EliteEnemyMinCardCost,
         EliteEnemyMaxCardCost
-      );
+        );
 
 
     private static void Main(string[] args)
@@ -78,7 +78,10 @@ namespace MaM
 
       var cards = CardReader.GetCardsFromExcel(CardsExcelFile);
 
-      var player = PlayerReader.GetPlayerFromExcel(PlayerExcelFile, ref cards);
+      //AL.
+      //TODO - implement.
+      //var player = PlayerReader.GetPlayerFromExcel(PlayerExcelFile, ref cards);
+      var player = new Player();
 
       var bosses = BossReader.GetBossesFromExcel(BossesExcelFile, ref cards);
 
