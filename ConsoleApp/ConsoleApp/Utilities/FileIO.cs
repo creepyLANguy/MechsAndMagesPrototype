@@ -5,7 +5,7 @@ using Aspose.Cells.Utility;
 
 namespace MaM
 {
-  static class FileIO
+  internal static class FileIO
   {
     public static string ExcelToJson(string excelFile)
     {

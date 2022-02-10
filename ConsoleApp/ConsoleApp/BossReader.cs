@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace MaM
 {
-    internal class JsonIntermediateBoss
+  internal class JsonIntermediateBoss
   {
     public string   Id            { get; set; }
     public string   Name          { get; set; }

@@ -2,12 +2,13 @@
 
 namespace MaM
 {
-  class Program
+  internal static class Program
   {
     private static readonly int               RandomSeed              = (int)DateTime.Now.Ticks;
 
     private static readonly string            CardsExcelFile          = "Cards.xlsx";
     private static readonly string            BossesExcelFile         = "Bosses.xlsx";
+    private static readonly string            PlayerExcelFile         = "Player.xlsx";
                                                                       
     private static readonly int               JourneyLength           = 3;
                                                                       
@@ -69,13 +70,15 @@ namespace MaM
       );
 
 
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
       Console.WriteLine("Seed: " + RandomSeed);
 
       var random = new Random(RandomSeed);
 
       var cards = CardReader.GetCardsFromExcel(CardsExcelFile);
+
+      var player = PlayerReader.GetPlayerFromExcel(PlayerExcelFile, ref cards);
 
       var bosses = BossReader.GetBossesFromExcel(BossesExcelFile, ref cards);
 
@@ -85,9 +88,7 @@ namespace MaM
       GraphVis.SaveMapsAsDotFiles(ref journey);
 #endif
 
-      //create player
-
-      //run game
+      GameLogic.ContinueJourney(ref player, ref journey, ref cards, ref random);
     }
   }
 }

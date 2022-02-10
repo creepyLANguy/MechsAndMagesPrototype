@@ -2,7 +2,7 @@
 
 namespace MaM
 {
-  static class GraphVis
+  internal static class GraphVis
   {
     public static void SaveMapsAsDotFiles(ref Journey journey)
     {
