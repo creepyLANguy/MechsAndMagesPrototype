@@ -1,4 +1,5 @@
 ﻿using System;
+using MaM.Utilities;
 
 namespace MaM
 {
@@ -70,7 +71,7 @@ namespace MaM
         );
 
 
-    private static void Main(string[] args)
+    private static void Main()
     {
       Console.WriteLine("Seed: " + RandomSeed);
 
@@ -78,7 +79,9 @@ namespace MaM
 
       var cards = CardReader.GetCardsFromExcel(CardsExcelFile);
 
-      var player = PlayerReader.GetPlayerFromExcel(PlayerExcelFile, ref cards);
+      //TODO - implement.
+      //var player = PlayerReader.GetPlayerFromExcel(PlayerExcelFile, ref cards);
+      var player = new Player();
 
       var bosses = BossReader.GetBossesFromExcel(BossesExcelFile, ref cards);
 

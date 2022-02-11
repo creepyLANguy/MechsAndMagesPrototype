@@ -4,7 +4,7 @@ using System.Linq;
 using Aspose.Cells;
 using Aspose.Cells.Utility;
 
-namespace MaM
+namespace MaM.Utilities
 {
   internal static class FileIO
   {

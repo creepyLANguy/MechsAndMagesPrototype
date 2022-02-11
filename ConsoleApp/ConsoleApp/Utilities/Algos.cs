@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MaM
+namespace MaM.Utilities
 {
   internal static class Algos
   {

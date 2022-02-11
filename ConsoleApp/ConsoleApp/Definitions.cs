@@ -358,7 +358,7 @@ namespace MaM
       this.baseTradeRowSize = baseTradeRowSize;
       this.baseHandSize     = baseHandSize;
       this.minCardCost      = minCardCost;
-      this.maxCardCost = maxCardCost;
+      this.maxCardCost      = maxCardCost;
     }
   }
 

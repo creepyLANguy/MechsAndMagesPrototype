@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MaM
+namespace MaM.Utilities
 {
   internal static class GraphVis
   {
@@ -38,9 +38,9 @@ namespace MaM
             continue;
           }
 
-          foreach (var destination in node.Destinations)
+          foreach (var (destX, destY) in node.Destinations)
           {
-            var destinationName = GetNodeName(map.Nodes[destination.Item1, destination.Item2]);
+            var destinationName = GetNodeName(map.Nodes[destX, destY]);
             mainBuffer += nodeName + "->" + destinationName + ";" + "\n";
           }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MaM.Utilities;
 
 namespace MaM
 {
@@ -341,6 +342,7 @@ namespace MaM
     private static void SetupCampsite(ref Node node)
     {
       //TODO - implement
+      ((Campsite) node).Potions = null;
     }
     
     private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, int mapIndex, List<Card> cards, ref Random random)
