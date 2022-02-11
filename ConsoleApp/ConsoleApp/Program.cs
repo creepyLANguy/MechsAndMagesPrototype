@@ -88,7 +88,7 @@ namespace MaM
       var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapConfig, NormalEnemyConfig, EliteEnemyConfig, ref bosses, cards, ref random);
 
 #if DEBUG
-      GraphVis.SaveMapsAsDotFiles(ref journey);
+      GraphVis.SaveMapsAsDotFiles(ref journey, false);
 #endif
 
       GameLogic.ContinueJourney(ref player, ref journey, ref cards, ref random);

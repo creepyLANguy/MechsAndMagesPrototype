@@ -4,17 +4,17 @@ namespace MaM
 {
   internal static class GraphVis
   {
-    public static void SaveMapsAsDotFiles(ref Journey journey)
+    public static void SaveMapsAsDotFiles(ref Journey journey, bool verbose)
     {
       for (var i = 0; i < journey.Maps.Count; ++i)
       {
-        var dotFileString = GenerateDotFileContents(journey.Maps[i], "Map_" + (i + 1));
+        var dotFileString = GenerateDotFileContents(journey.Maps[i], "Map_" + (i + 1), verbose);
         var dotFileName = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
         FileIO.SaveFile(dotFileName, dotFileString);
       }
     }
 
-    private static string GenerateDotFileContents(Map map, string mapName)
+    private static string GenerateDotFileContents(Map map, string mapName, bool verbose)
     {
       var mainBuffer = "digraph " + mapName + " {" + "\n";
 
@@ -46,6 +46,19 @@ namespace MaM
         }
       }
 
+      if (verbose == false)
+      {
+        AddNodeLabelsSection(ref mainBuffer, ref map);
+      }
+
+
+      mainBuffer += "}";
+
+      return mainBuffer;
+    }
+
+    private static void AddNodeLabelsSection(ref string mainBuffer, ref Map map)
+    {
       mainBuffer += "\n//Labels : \n";
       for (var y = 0; y < map.Height; ++y)
       {
@@ -63,10 +76,6 @@ namespace MaM
           mainBuffer += nodeLabel + "\n";
         }
       }
-
-      mainBuffer += "}";
-
-      return mainBuffer;
     }
 
     private static string GetNodeName(Node node)
