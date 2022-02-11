@@ -78,10 +78,7 @@ namespace MaM
 
       var cards = CardReader.GetCardsFromExcel(CardsExcelFile);
 
-      //AL.
-      //TODO - implement.
-      //var player = PlayerReader.GetPlayerFromExcel(PlayerExcelFile, ref cards);
-      var player = new Player();
+      var player = PlayerReader.GetPlayerFromExcel(PlayerExcelFile, ref cards);
 
       var bosses = BossReader.GetBossesFromExcel(BossesExcelFile, ref cards);
 
