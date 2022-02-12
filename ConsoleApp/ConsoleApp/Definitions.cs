@@ -202,6 +202,8 @@ namespace MaM
 
   public class Node
   {
+    public Node (){}
+
     public Node(Node node)
     {
       NodeType      = node.NodeType;

@@ -28,8 +28,6 @@ namespace MaM.Utilities
 
       var json = JsonUtility.ExportRangeToJson(range, exportOptions);
 
-      //System.IO.File.WriteAllText("output.json", jsonData);
-
       return json;
     }
 
@@ -40,24 +38,20 @@ namespace MaM.Utilities
 
     public static void WriteCurrentStateToDrive(ref GameState gameState)
     {
-      var content = "{";
-      content += "\n\"Time\":";
-      content += ObjectToJson(gameState.time);
-      content += "\n,";
-      content += "\n\"Player\":";
-      content += ObjectToJson(gameState.player);
-      content += "\n,";
-      content += "\n\"Journey\":";
-      content += ObjectToJson(gameState.journey);
-      content += "\n}";
+      var content = ObjectToJson(gameState);
       var filename = "MaM_Save_" + gameState.time.ToString("yyyy-dd-M_HH-mm-ss") + ".json";
       WriteFileToDrive(filename, content);
     }
 
-    public static GameState GetGameStateFromFile(string fileName)
+    public static GameState GetGameStateFromFile(string filename)
     {
-      //TODO - implement
-      return new GameState();
+      var contents = File.ReadAllText(filename);
+      return GetGameStateFromFileContents(contents);
+    }
+
+    public static GameState GetGameStateFromFileContents(string contents)
+    {
+      return JsonConvert.DeserializeObject<GameState>(contents);
     }
 
   }
