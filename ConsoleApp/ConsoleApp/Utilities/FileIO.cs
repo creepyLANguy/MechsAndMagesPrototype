@@ -40,6 +40,8 @@ namespace MaM.Utilities
 
     public static void WriteCurrentStateToDrive(ref DateTime time, ref Player player, ref Journey journey)
     {
+      //TODO - wrap the params up in a single struct that is the whole gamestate. Will help with deserialising as well. 
+
       var content = "{";
       content += "\n\"Time\":";
       content += ObjectToJson(time);
