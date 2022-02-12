@@ -97,28 +97,10 @@ namespace MaM
 
       //AL.
 #if DEBUG
-      player = bosses[0]; //TODO - use player instead of random boss for this.
-      player.Deck = null;
-
       var time = DateTime.Now;
-
-      foreach (var map in journey.Maps)
-      {
-        foreach (var node in map.Nodes)
-        {
-          if (node == null)
-          {
-            continue;
-          }
-
-          if (node.NodeType == NodeType.Fight)
-          {
-            ((Fight)node).Enemy.Deck = null;
-          }
-        }
-      }
-
-      FileIO.WriteCurrentStateToDrive(ref time, ref player, ref journey);
+      player = bosses[0]; //TODO - use player instead of random boss for this.
+      var gameState = new GameState(ref time, ref player, ref journey);
+      FileIO.WriteCurrentStateToDrive(ref gameState);
 #endif
     }
 

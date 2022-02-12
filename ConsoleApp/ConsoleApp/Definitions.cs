@@ -376,4 +376,36 @@ namespace MaM
     }
   }
 
+  struct GameState
+  {
+    public DateTime time; 
+    public Player   player;
+    public Journey  journey;
+
+    public GameState(ref DateTime time, ref Player player, ref Journey journey)
+    {
+      player.Deck = null;
+
+      foreach (var map in journey.Maps)
+      {
+        foreach (var node in map.Nodes)
+        {
+          if (node == null)
+          {
+            continue;
+          }
+
+          if (node.NodeType == NodeType.Fight)
+          {
+            ((Fight)node).Enemy.Deck = null;
+          }
+        }
+      }
+
+      this.time     = time;
+      this.player   = player;
+      this.journey  = journey;
+    }
+  }
+
 }

@@ -9,8 +9,8 @@ namespace MaM.Utilities
       for (var i = 0; i < journey.Maps.Count; ++i)
       {
         var dotFileString = GenerateDotFileContents(journey.Maps[i], "Map_" + (i + 1), verbose);
-        var dotFileName = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
-        FileIO.WriteFileToDrive(dotFileName, dotFileString);
+        var dotFilename = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
+        FileIO.WriteFileToDrive(dotFilename, dotFileString);
       }
     }
 

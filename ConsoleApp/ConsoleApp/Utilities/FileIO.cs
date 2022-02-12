@@ -38,22 +38,26 @@ namespace MaM.Utilities
       return JsonConvert.SerializeObject(obj);
     }
 
-    public static void WriteCurrentStateToDrive(ref DateTime time, ref Player player, ref Journey journey)
+    public static void WriteCurrentStateToDrive(ref GameState gameState)
     {
-      //TODO - wrap the params up in a single struct that is the whole gamestate. Will help with deserialising as well. 
-
       var content = "{";
       content += "\n\"Time\":";
-      content += ObjectToJson(time);
+      content += ObjectToJson(gameState.time);
       content += "\n,";
       content += "\n\"Player\":";
-      content += ObjectToJson(player);
+      content += ObjectToJson(gameState.player);
       content += "\n,";
       content += "\n\"Journey\":";
-      content += ObjectToJson(journey);
+      content += ObjectToJson(gameState.journey);
       content += "\n}";
-      var fileName = "MaM_Save_" + time.ToString("yyyy-dd-M_HH-mm-ss") + ".json";
-      WriteFileToDrive(fileName, content);
+      var filename = "MaM_Save_" + gameState.time.ToString("yyyy-dd-M_HH-mm-ss") + ".json";
+      WriteFileToDrive(filename, content);
+    }
+
+    public static GameState GetGameStateFromFile(string fileName)
+    {
+      //TODO - implement
+      return new GameState();
     }
 
   }
