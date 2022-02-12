@@ -36,23 +36,17 @@ namespace MaM.Utilities
       return JsonConvert.SerializeObject(obj);
     }
 
-    public static void WriteCurrentStateToDrive(ref GameState gameState)
+    public static void WriteCurrentStateToDrive(ref GameState gameState, string filename)
     {
       var content = ObjectToJson(gameState);
-      var filename = "MaM_Save_" + gameState.time.ToString("yyyy-dd-M_HH-mm-ss") + ".json";
       WriteFileToDrive(filename, content);
     }
 
     public static GameState GetGameStateFromFile(string filename)
     {
       var contents = File.ReadAllText(filename);
-      return GetGameStateFromFileContents(contents);
+      var gameState = JsonConvert.DeserializeObject<GameState>(contents);
+      return gameState;
     }
-
-    public static GameState GetGameStateFromFileContents(string contents)
-    {
-      return JsonConvert.DeserializeObject<GameState>(contents);
-    }
-
   }
 }

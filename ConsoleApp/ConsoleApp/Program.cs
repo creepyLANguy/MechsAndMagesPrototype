@@ -87,20 +87,29 @@ namespace MaM
 
       var bosses = BossReader.GetBossesFromExcel(BossesExcelFile, ref cards);
 
-      var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapConfig, NormalEnemyConfig, EliteEnemyConfig, ref bosses, cards, ref random, RandomSeed);
+      var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapConfig, NormalEnemyConfig, EliteEnemyConfig,
+        ref bosses, cards, ref random, RandomSeed);
 
 #if DEBUG
-      GraphVis.SaveMapsAsDotFiles(ref journey, false);
+      {
+        GraphVis.SaveMapsAsDotFiles(ref journey, false);
+      }
 #endif
 
       GameLogic.ContinueJourney(ref player, ref journey, ref cards, ref random);
 
       //AL.
 #if DEBUG
-      var time = DateTime.Now;
-      player = bosses[0]; //TODO - use player instead of random boss for this.
-      var gameState = new GameState(ref time, ref player, ref journey);
-      FileIO.WriteCurrentStateToDrive(ref gameState);
+      {
+        var time = DateTime.Now;
+        player = bosses[0]; //TODO - use player instead of random boss for this.
+        var gameState = new GameState(ref time, ref player, ref journey);
+        var filename = "MaM_Save_" + time.ToString("yyyy-dd-M_HH-mm-ss") + ".json";
+
+        FileIO.WriteCurrentStateToDrive(ref gameState, filename);
+
+        var gameStateFromFile = FileIO.GetGameStateFromFile(filename);
+      }
 #endif
     }
 
