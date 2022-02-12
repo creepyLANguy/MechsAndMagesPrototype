@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using MaM.Utilities;
 using Newtonsoft.Json;
 
-namespace MaM
+namespace MaM.Readers
 {
   internal class JsonIntermediatePlayer
   {
@@ -33,9 +33,10 @@ namespace MaM
       return player;
     }
 
-    public static Player GetPlayerFromExcel(string excelFile, ref List<Card> cards)
+    public static Player GetPlayerFromJsonFile(string jsonFile, ref List<Card> cards)
     {
-      var json = FileIO.ExcelToJson(excelFile);
+      //TODO = implement
+      var json = "";//FileIO.ExcelToJson(excelFile);
 
       var intermediatePlayer = JsonConvert.DeserializeObject<JsonIntermediatePlayer>(json);
 

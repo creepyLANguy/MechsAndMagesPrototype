@@ -14,10 +14,11 @@ namespace MaM
       EnemyConfig eliteEnemyConfig,
       ref List<Player> bosses,
       List<Card> cards, 
-      ref Random random
+      ref Random random,
+      int randomSeed
       )
     {
-      var journey = new Journey();
+      var journey = new Journey(randomSeed);
 
       for (var index = 0; index < journeyLength; ++index)
       {
@@ -349,6 +350,11 @@ namespace MaM
     {
       cards.Shuffle(ref random);
 
+      var deck = cards
+        .Where(card => card.Cost >= enemyConfig.minCardCost && card.Cost <= enemyConfig.maxCardCost)
+        .Take(enemyConfig.baseDeckSize)
+        .ToList();
+
       var enemy = new Player(
         true,
         "", //TODO - implement
@@ -365,8 +371,9 @@ namespace MaM
         enemyConfig.baseManna + mapIndex, 
         enemyConfig.baseHandSize + mapIndex, 
         0, 
-        0, 
-        null, 
+        0,
+        deck.Select(card => card.Id).ToList(),
+        deck, 
         null, 
         null, 
         null, 
@@ -374,13 +381,6 @@ namespace MaM
         null
         );
 
-      var deck = cards
-          .Where(card => card.Cost >= enemyConfig.minCardCost && card.Cost <= enemyConfig.maxCardCost)
-          .Take(enemyConfig.baseDeckSize)
-          .ToList();
-      
-      enemy.Deck = deck;
-      
       ((Fight) node).Enemy = enemy;
     }
 

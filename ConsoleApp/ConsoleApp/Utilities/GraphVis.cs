@@ -10,7 +10,7 @@ namespace MaM.Utilities
       {
         var dotFileString = GenerateDotFileContents(journey.Maps[i], "Map_" + (i + 1), verbose);
         var dotFileName = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
-        FileIO.SaveFile(dotFileName, dotFileString);
+        FileIO.WriteFileToDrive(dotFileName, dotFileString);
       }
     }
 

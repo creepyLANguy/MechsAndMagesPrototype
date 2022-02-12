@@ -1,15 +1,17 @@
 ﻿using System;
+using System.IO;
+using MaM.Readers;
 using MaM.Utilities;
 
 namespace MaM
 {
   internal static class Program
   {
-    private static readonly int               RandomSeed              = (int)DateTime.Now.Ticks;
+    private static readonly int               RandomSeed              = Math.Abs((int)DateTime.Now.Ticks);
 
     private static readonly string            CardsExcelFile          = "Cards.xlsx";
     private static readonly string            BossesExcelFile         = "Bosses.xlsx";
-    private static readonly string            PlayerExcelFile         = "Player.xlsx";
+    private static readonly string            PlayerSaveState         = "Player.json";
                                                                       
     private static readonly int               JourneyLength           = 3;
                                                                       
@@ -85,13 +87,41 @@ namespace MaM
 
       var bosses = BossReader.GetBossesFromExcel(BossesExcelFile, ref cards);
 
-      var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapConfig, NormalEnemyConfig, EliteEnemyConfig, ref bosses, cards, ref random);
+      var journey = JourneyGenerator.GenerateJourney(JourneyLength, MapConfig, NormalEnemyConfig, EliteEnemyConfig, ref bosses, cards, ref random, RandomSeed);
 
 #if DEBUG
       GraphVis.SaveMapsAsDotFiles(ref journey, false);
 #endif
 
       GameLogic.ContinueJourney(ref player, ref journey, ref cards, ref random);
+
+      //AL.
+#if DEBUG
+      player = bosses[0]; //TODO - use player instead of random boss for this.
+      player.Deck = null;
+
+      var time = DateTime.Now;
+
+      foreach (var map in journey.Maps)
+      {
+        foreach (var node in map.Nodes)
+        {
+          if (node == null)
+          {
+            continue;
+          }
+
+          if (node.NodeType == NodeType.Fight)
+          {
+            ((Fight)node).Enemy.Deck = null;
+          }
+        }
+      }
+
+      FileIO.WriteCurrentStateToDrive(ref time, ref player, ref journey);
+#endif
     }
+
+    //TODO - add some kinda helper to take ids and return the full deck of cards. Can use in lots of places.
   }
 }

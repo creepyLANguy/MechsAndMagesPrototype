@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MaM.Utilities;
 using Newtonsoft.Json;
 
-namespace MaM
+namespace MaM.Readers
 {
   internal class JsonIntermediateBoss
   {
@@ -53,6 +54,7 @@ namespace MaM
           intermediateBoss.HandSize,
           intermediateBoss.HandSize,
           0,
+          cardIds.ToList(),
           bossCards,
           null,
           null,

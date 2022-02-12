@@ -134,6 +134,7 @@ namespace MaM
       int           basicHandSize,
       int           currentHandSize,
       int           toDiscard,
+      List<string>  deckCardIds,
       List<Card>    deck,
       List<Card>    drawPile,
       List<Card>    discardPile,
@@ -158,6 +159,7 @@ namespace MaM
       BasicHandSize   = basicHandSize;
       CurrentHandSize = currentHandSize;
       ToDiscard       = toDiscard;
+      DeckCardIds     = deckCardIds;
       Deck            = deck;
       DrawPile        = drawPile;
       DiscardPile     = discardPile;
@@ -182,6 +184,7 @@ namespace MaM
     public int          ToDiscard       { get; set; }
     public int          BasicHandSize   { get; set; }
     public int          CurrentHandSize { get; set; }
+    public List<string> DeckCardIds     { get; set; }
     public List<Card>   Deck            { get; set; }
     public List<Card>   DrawPile        { get; set; }
     public List<Card>   DiscardPile     { get; set; }
@@ -316,7 +319,18 @@ namespace MaM
 
   public class Journey
   {
-    public List<Map> Maps = new List<Map>();
+    public Journey(int randomSeed)
+    {
+      Maps = new List <Map>();
+      RandomSeed = randomSeed;
+      CurrentNode = -1;
+      CurrentMapIndex = -1;
+    }
+
+    public List<Map>  Maps            { get; set; }
+    public int        CurrentNode     { get; set; }
+    public int        CurrentMapIndex { get; set; }
+    public int        RandomSeed      { get; set; }
   }
 
   public struct MapConfig

@@ -3,7 +3,7 @@ using System.Linq;
 using MaM.Utilities;
 using Newtonsoft.Json;
 
-namespace MaM
+namespace MaM.Readers
 {
   internal class JsonIntermediateCard
   {
