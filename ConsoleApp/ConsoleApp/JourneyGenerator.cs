@@ -14,11 +14,10 @@ namespace MaM
       EnemyConfig eliteEnemyConfig,
       ref List<Player> bosses,
       List<Card> cards, 
-      ref Random random,
-      int randomSeed
-      )
+      ref Random random
+    )
     {
-      var journey = new Journey(randomSeed);
+      var journey = new Journey();
 
       for (var index = 0; index < journeyLength; ++index)
       {
@@ -358,6 +357,8 @@ namespace MaM
       var enemy = new Player(
         true,
         "", //TODO - implement
+        -1,
+        -1,
         null,
         enemyConfig.baseHealth * (1 + mapIndex),
         enemyConfig.baseHealth * (1 + mapIndex), 

@@ -10,7 +10,7 @@ namespace MaM.Utilities
       var n = list.Count;
       while (n > 1)
       {
-        n--;
+        --n;
         var k = random.Next(n + 1);
         var value = list[k];
         list[k] = list[n];

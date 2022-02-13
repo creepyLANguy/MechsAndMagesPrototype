@@ -27,19 +27,15 @@ namespace MaM.Readers
 
       foreach (var intermediateBoss in intermediateBosses)
       {
-        var cardIds = intermediateBoss.Cards.Replace(" ", "").Split(JoinedCardDelim);
+        var cardIds = intermediateBoss.Cards.Replace(" ", "").Split(JoinedCardDelim).ToList();
 
-        var bossCards = new List<Card>();
-
-        foreach (var cardId in cardIds)
-        {
-          var card = cards.Find(it => it.Id == cardId);
-          bossCards.Add(card);
-        }
+        var bossCards = CardReader.GetCardsFromIds(cardIds, ref cards);
 
         var boss = new Player(
           true, 
           intermediateBoss.Name,
+          -1,
+          -1,
           null,
           intermediateBoss.Health,
           intermediateBoss.Health,
@@ -54,7 +50,7 @@ namespace MaM.Readers
           intermediateBoss.HandSize,
           intermediateBoss.HandSize,
           0,
-          cardIds.ToList(),
+          cardIds,
           bossCards,
           null,
           null,

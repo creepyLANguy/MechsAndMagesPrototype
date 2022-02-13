@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Aspose.Cells;
 using Aspose.Cells.Utility;
+using MaM.Readers;
 using Newtonsoft.Json;
 
 namespace MaM.Utilities
@@ -31,21 +33,35 @@ namespace MaM.Utilities
       return json;
     }
 
-    private static string ObjectToJson(object obj)
+    private static string ObjectToJson(object obj, bool indented = false)
     {
-      return JsonConvert.SerializeObject(obj);
+      return JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
     }
 
-    public static void WriteCurrentStateToDrive(ref GameState gameState, string filename)
+    public static void WriteCurrentGameStateToFile(ref GameState gameState, string filename, bool indented = false)
     {
-      var content = ObjectToJson(gameState);
+      //Remove full card lists before exporting as these bloat the save file.
+      if (gameState.player != null)
+      {
+        gameState.player.Deck = null;
+      }
+ 
+      var content = ObjectToJson(gameState, indented);
+
       WriteFileToDrive(filename, content);
     }
 
-    public static GameState GetGameStateFromFile(string filename)
+    public static GameState GetGameStateFromFile(string filename, ref List<Card> cards)
     {
       var contents = File.ReadAllText(filename);
+      
       var gameState = JsonConvert.DeserializeObject<GameState>(contents);
+
+      if (gameState.player != null)
+      {
+        gameState.player.Deck = CardReader.GetCardsFromIds(gameState.player.DeckCardIds, ref cards);
+      }
+
       return gameState;
     }
   }

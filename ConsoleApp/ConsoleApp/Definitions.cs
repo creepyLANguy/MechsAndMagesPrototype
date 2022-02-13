@@ -114,12 +114,11 @@ namespace MaM
 
   public class Player
   {
-    //TODO - remove this empty constructor.
-    public Player(){}
-
     public Player(
       bool          isComputer,
       string        name,
+      int           lastCompletedNodeX,
+      int           lastCompletedNodeY,
       Guild         activeGuild,
       int           health,
       int           maxHealth,
@@ -143,54 +142,58 @@ namespace MaM
       List<Potion>  potions
     )
     {
-      IsComputer      = isComputer;
-      Name            = name;
-      ActiveGuild     = activeGuild;
-      Health          = health;
-      MaxHealth       = maxHealth;
-      Coin            = coin;
-      Vision          = vision;
-      Awareness       = awareness;
-      Insight         = insight;
-      TradeRowSize    = tradeRowSize;
-      Shield          = shield;
-      BasicManna      = basicManna;
-      Manna           = manna;
-      BasicHandSize   = basicHandSize;
-      CurrentHandSize = currentHandSize;
-      ToDiscard       = toDiscard;
-      DeckCardIds     = deckCardIds;
-      Deck            = deck;
-      DrawPile        = drawPile;
-      DiscardPile     = discardPile;
-      TradeRow        = tradeRow;
-      TradePool       = tradePool;
-      Potions         = potions;
+      IsComputer          = isComputer;
+      Name                = name;
+      LastCompletedNodeX  = lastCompletedNodeX;
+      LastCompletedNodeY  = lastCompletedNodeY;
+      ActiveGuild         = activeGuild;
+      Health              = health;
+      MaxHealth           = maxHealth;
+      Coin                = coin;
+      Vision              = vision;
+      Awareness           = awareness;
+      Insight             = insight;
+      TradeRowSize        = tradeRowSize;
+      Shield              = shield;
+      BasicManna          = basicManna;
+      Manna               = manna;
+      BasicHandSize       = basicHandSize;
+      CurrentHandSize     = currentHandSize;
+      ToDiscard           = toDiscard;
+      DeckCardIds         = deckCardIds;
+      Deck                = deck;
+      DrawPile            = drawPile;
+      DiscardPile         = discardPile;
+      TradeRow            = tradeRow;
+      TradePool           = tradePool;
+      Potions             = potions;
     }
 
-    public bool         IsComputer      { get; set; }
-    public string       Name            { get; set; }
-    public Guild        ActiveGuild     { get; set; }
-    public int          Health          { get; set; }
-    public int          MaxHealth       { get; set; }
-    public int          Coin            { get; set; }
-    public int          Vision          { get; set; } //How many nodes and paths ahead you can simply see
-    public int          Awareness       { get; set; } //How many of the visible nodes ahead have their types revealed
-    public int          Insight         { get; set; } //How many of the nodes ahead have their Guild distributions revealed
-    public int          TradeRowSize    { get; set; }
-    public int          Shield          { get; set; }
-    public int          BasicManna      { get; set; }
-    public int          Manna           { get; set; }
-    public int          ToDiscard       { get; set; }
-    public int          BasicHandSize   { get; set; }
-    public int          CurrentHandSize { get; set; }
-    public List<string> DeckCardIds     { get; set; }
-    public List<Card>   Deck            { get; set; }
-    public List<Card>   DrawPile        { get; set; }
-    public List<Card>   DiscardPile     { get; set; }
-    public List<Card>   TradeRow        { get; set; }
-    public List<Card>   TradePool       { get; set; }
-    public List<Potion> Potions         { get; set; }
+    public bool         IsComputer          { get; set; }
+    public string       Name                { get; set; }
+    public int          LastCompletedNodeX  { get; set; }
+    public int          LastCompletedNodeY  { get; set; }
+    public Guild        ActiveGuild         { get; set; }
+    public int          Health              { get; set; }
+    public int          MaxHealth           { get; set; }
+    public int          Coin                { get; set; }
+    public int          Vision              { get; set; } //How many nodes and paths ahead you can simply see
+    public int          Awareness           { get; set; } //How many of the visible nodes ahead have their types revealed
+    public int          Insight             { get; set; } //How many of the nodes ahead have their Guild distributions revealed
+    public int          TradeRowSize        { get; set; }
+    public int          Shield              { get; set; }
+    public int          BasicManna          { get; set; }
+    public int          Manna               { get; set; }
+    public int          ToDiscard           { get; set; }
+    public int          BasicHandSize       { get; set; }
+    public int          CurrentHandSize     { get; set; }
+    public List<string> DeckCardIds         { get; set; }
+    public List<Card>   Deck                { get; set; }
+    public List<Card>   DrawPile            { get; set; }
+    public List<Card>   DiscardPile         { get; set; }
+    public List<Card>   TradeRow            { get; set; }
+    public List<Card>   TradePool           { get; set; }
+    public List<Potion> Potions             { get; set; }
   }
 
   public enum NodeType
@@ -321,10 +324,9 @@ namespace MaM
 
   public class Journey
   {
-    public Journey(int randomSeed)
+    public Journey()
     {
       Maps = new List <Map>();
-      RandomSeed = randomSeed;
       CurrentNode = -1;
       CurrentMapIndex = -1;
     }
@@ -332,7 +334,6 @@ namespace MaM
     public List<Map>  Maps            { get; set; }
     public int        CurrentNode     { get; set; }
     public int        CurrentMapIndex { get; set; }
-    public int        RandomSeed      { get; set; }
   }
 
   public struct MapConfig
@@ -380,33 +381,15 @@ namespace MaM
 
   struct GameState
   {
-    public DateTime time; 
+    public DateTime time;
+    public int      randomSeed;
     public Player   player;
-    public Journey  journey;
 
-    public GameState(ref DateTime time, ref Player player, ref Journey journey)
+    public GameState(DateTime time, int randomSeed, Player player)
     {
-      player.Deck = null;
-
-      foreach (var map in journey.Maps)
-      {
-        foreach (var node in map.Nodes)
-        {
-          if (node == null)
-          {
-            continue;
-          }
-
-          if (node.NodeType == NodeType.Fight)
-          {
-            ((Fight)node).Enemy.Deck = null;
-          }
-        }
-      }
-
-      this.time     = time;
-      this.player   = player;
-      this.journey  = journey;
+      this.time       = time;
+      this.randomSeed = randomSeed;
+      this.player     = player;
     }
   }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace MaM.Utilities
 {
@@ -10,15 +11,17 @@ namespace MaM.Utilities
       {
         var dotFileString = GenerateDotFileContents(journey.Maps[i], "Map_" + (i + 1), verbose);
         var dotFilename = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
-        FileIO.WriteFileToDrive(dotFilename, dotFileString);
+        FileIO.WriteFileToDrive(dotFilename, dotFileString.ToString());
       }
     }
 
-    private static string GenerateDotFileContents(Map map, string mapName, bool verbose)
+    private static StringBuilder GenerateDotFileContents(Map map, string mapName, bool verbose)
     {
-      var mainBuffer = "digraph " + mapName + " {" + "\n";
+      var mainBuffer = new StringBuilder(); 
+      
+      mainBuffer.Append("digraph " + mapName + " {" + "\n");
 
-      mainBuffer += "\n//Relationships : \n";
+      mainBuffer.Append("\n//Relationships : \n");
       for (var y = 0; y < map.Height; ++y)
       {
         for (var x = 0; x < map.Width; ++x)
@@ -34,14 +37,14 @@ namespace MaM.Utilities
 
           if (node.Destinations == null || node.Destinations.Count == 0)
           {
-            mainBuffer += nodeName + ";" + "\n";
+            mainBuffer.Append(nodeName + ";" + "\n");
             continue;
           }
 
           foreach (var (destX, destY) in node.Destinations)
           {
             var destinationName = GetNodeName(map.Nodes[destX, destY]);
-            mainBuffer += nodeName + "->" + destinationName + ";" + "\n";
+            mainBuffer.Append(nodeName + "->" + destinationName + ";" + "\n");
           }
         }
       }
@@ -52,14 +55,14 @@ namespace MaM.Utilities
       }
 
 
-      mainBuffer += "}";
+      mainBuffer.Append('}');
 
       return mainBuffer;
     }
 
-    private static void AddNodeLabelsSection(ref string mainBuffer, ref Map map)
+    private static void AddNodeLabelsSection(ref StringBuilder mainBuffer, ref Map map)
     {
-      mainBuffer += "\n//Labels : \n";
+      mainBuffer.Append("\n//Labels : \n");
       for (var y = 0; y < map.Height; ++y)
       {
         for (var x = 0; x < map.Width; ++x)
@@ -73,7 +76,7 @@ namespace MaM.Utilities
 
           var nodeLabel = GetNodeLabel(node);
 
-          mainBuffer += nodeLabel + "\n";
+          mainBuffer.Append(nodeLabel + "\n");
         }
       }
     }

@@ -107,5 +107,22 @@ namespace MaM.Readers
       return cards;
     }
 
+    public static List<Card> GetCardsFromIds(List<string> cardIds, ref List<Card> cards)
+    {
+      if (cardIds == null || cards == null)
+      {
+        return null;
+      }
+
+      var deck = new List<Card>();
+
+      foreach (var cardId in cardIds)
+      {
+        var card = cards.Find(it => it.Id == cardId);
+        deck.Add(card);
+      }
+
+      return deck;
+    }
   }
 }
