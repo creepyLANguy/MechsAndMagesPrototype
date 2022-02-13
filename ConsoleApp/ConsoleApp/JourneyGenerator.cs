@@ -356,7 +356,7 @@ namespace MaM
 
       var enemy = new Player(
         true,
-        "", //TODO - implement
+        "",
         -1,
         -1,
         null,
