@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -63,6 +63,13 @@ namespace MaM.Utilities
       }
 
       return gameState;
+    }
+    
+    public static GameConfig GetGameConfigFromFile(string filename)
+    {
+      var contents = File.ReadAllText(filename);
+      
+      return JsonConvert.DeserializeObject<GameConfig>(contents);
     }
   }
 }

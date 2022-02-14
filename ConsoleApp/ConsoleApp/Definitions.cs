@@ -205,8 +205,6 @@ namespace MaM
 
   public class Node
   {
-    public Node (){}
-
     public Node(Node node)
     {
       NodeType      = node.NodeType;
@@ -345,16 +343,6 @@ namespace MaM
     public double campsiteFrequency;
     public double mysteryFrequency;
     public double eliteFrequency;
-
-    public MapConfig(int width, int height, int pathDensity, double campsiteFrequency, double mysteryFrequency, double eliteFrequency)
-    {
-      this.width              = width;
-      this.height             = height;
-      this.pathDensity        = pathDensity;
-      this.campsiteFrequency  = campsiteFrequency;
-      this.mysteryFrequency   = mysteryFrequency;
-      this.eliteFrequency     = eliteFrequency;
-    }
   }
   
   public struct EnemyConfig
@@ -366,20 +354,9 @@ namespace MaM
     public int    baseHandSize;
     public int    minCardCost;
     public int    maxCardCost;
-
-    public EnemyConfig(int baseHealth, int baseManna, int baseDeckSize, int baseTradeRowSize, int baseHandSize, int minCardCost, int maxCardCost)
-    {
-      this.baseHealth       = baseHealth;
-      this.baseManna        = baseManna;
-      this.baseDeckSize     = baseDeckSize;
-      this.baseTradeRowSize = baseTradeRowSize;
-      this.baseHandSize     = baseHandSize;
-      this.minCardCost      = minCardCost;
-      this.maxCardCost      = maxCardCost;
-    }
   }
 
-  struct GameState
+  public struct GameState
   {
     public DateTime time;
     public int      randomSeed;
@@ -393,4 +370,30 @@ namespace MaM
     }
   }
 
+  public struct GameConfig
+  {
+    public string           cardsExcelFile;
+    public string           bossesExcelFile;
+    public List<MapConfig>  mapConfigs;
+    public EnemyConfig      normalEnemyConfig;
+    public EnemyConfig      eliteEnemyConfig;
+    public int              journeyLength;
+
+    public GameConfig(
+      string cardsExcelFile, 
+      string bossesExcelFile, 
+      List<MapConfig> mapConfigs, 
+      EnemyConfig normalEnemyConfig, 
+      EnemyConfig eliteEnemyConfig, 
+      int journeyLength
+      )
+    {
+      this.cardsExcelFile     = cardsExcelFile;
+      this.bossesExcelFile    = bossesExcelFile;
+      this.mapConfigs         = mapConfigs;
+      this.normalEnemyConfig  = normalEnemyConfig;
+      this.eliteEnemyConfig   = eliteEnemyConfig;
+      this.journeyLength      = journeyLength;
+    }
+  }
 }

@@ -9,26 +9,29 @@ namespace MaM
   public static class GameLogic
   {
     public static void RunGame(
-      string saveFile, 
-      string cardsExcelFile,
-      string bossesExcelFile,
-      MapConfig mapConfig,
-      EnemyConfig normalEnemyConfig,
-      EnemyConfig eliteEnemyConfig,
-      int journeyLength
+      string saveFilename,
+      GameConfig gameConfig
     )
     {
-      var cards = CardReader.GetCardsFromExcel(cardsExcelFile);
+      var cards = CardReader.GetCardsFromExcel(gameConfig.cardsExcelFile);
 
       var gameState = new GameState(DateTime.Now, Math.Abs((int)DateTime.Now.Ticks), null);
-      if (string.IsNullOrEmpty(saveFile) == false)
+      if (string.IsNullOrEmpty(saveFilename) == false)
       {
-        gameState = FileIO.GetGameStateFromFile(saveFile, ref cards);
+        gameState = FileIO.GetGameStateFromFile(saveFilename, ref cards);
       }
 
       var random = new Random(gameState.randomSeed);
 
-      var journey = GenerateJourney(journeyLength, bossesExcelFile, mapConfig, normalEnemyConfig, eliteEnemyConfig, ref cards, ref random);
+      var journey = GenerateJourney(
+        gameConfig.journeyLength, 
+        gameConfig.bossesExcelFile, 
+        gameConfig.mapConfigs, 
+        gameConfig.normalEnemyConfig, 
+        gameConfig.eliteEnemyConfig, 
+        ref cards, 
+        ref random
+        );
 
       var player = gameState.player ?? GenerateNewPlayer();
 
@@ -38,7 +41,7 @@ namespace MaM
     private static Journey GenerateJourney(
       int journeyLength, 
       string bossesExcelFile, 
-      MapConfig mapConfig, 
+      List<MapConfig> mapConfigs, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig, 
       ref List<Card> cards, 
@@ -47,7 +50,7 @@ namespace MaM
     {
       var bosses = BossReader.GetBossesFromExcel(bossesExcelFile, ref cards);
 
-      var journey = JourneyGenerator.GenerateJourney(journeyLength, mapConfig, normalEnemyConfig, eliteEnemyConfig, ref bosses, cards, ref random);
+      var journey = JourneyGenerator.GenerateJourney(journeyLength, mapConfigs, normalEnemyConfig, eliteEnemyConfig, ref bosses, cards, ref random);
 
 #if DEBUG
       GraphVis.SaveMapsAsDotFiles(ref journey, false);

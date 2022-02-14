@@ -1,0 +1,49 @@
+{
+  "cardsExcelFile": "Cards.xlsx",
+  "bossesExcelFile": "Bosses.xlsx",
+  "mapConfigs": [
+    {
+      "width": 7,
+      "height": 15,
+      "pathDensity": 16,
+      "campsiteFrequency": 0.175,
+      "mysteryFrequency": 0.2,
+      "eliteFrequency": 0.2
+    },
+    {
+      "width": 7,
+      "height": 15,
+      "pathDensity": 16,
+      "campsiteFrequency": 0.175,
+      "mysteryFrequency": 0.2,
+      "eliteFrequency": 0.2
+    },
+    {
+      "width": 7,
+      "height": 15,
+      "pathDensity": 16,
+      "campsiteFrequency": 0.175,
+      "mysteryFrequency": 0.2,
+      "eliteFrequency": 0.2
+    }
+  ],
+  "normalEnemyConfig": {
+    "baseHealth": 50,
+    "baseManna": 0,
+    "baseDeckSize": 20,
+    "baseTradeRowSize": 3,
+    "baseHandSize": 5,
+    "minCardCost": 0,
+    "maxCardCost": 7
+  },
+  "eliteEnemyConfig": {
+    "baseHealth": 75,
+    "baseManna": 0,
+    "baseDeckSize": 17,
+    "baseTradeRowSize": 4,
+    "baseHandSize": 5,
+    "minCardCost": 4,
+    "maxCardCost": 8
+  },
+  "journeyLength": 3
+}

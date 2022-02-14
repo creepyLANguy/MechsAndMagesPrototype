@@ -9,7 +9,7 @@ namespace MaM
   {
     public static Journey GenerateJourney(
       int journeyLength, 
-      MapConfig mapConfig, 
+      List<MapConfig> mapConfigs, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig,
       ref List<Player> bosses,
@@ -21,7 +21,7 @@ namespace MaM
 
       for (var index = 0; index < journeyLength; ++index)
       {
-        var map = GenerateMap(index, mapConfig, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
+        var map = GenerateMap(index, mapConfigs[index], normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
         journey.Maps.Add(map);
       }
 
