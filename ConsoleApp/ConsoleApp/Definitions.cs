@@ -16,7 +16,7 @@ namespace MaM
   }
 
   public class Guild: KeyValuePair<string, int> { public Guild(string key, int val) : base(key, val) { } }
-  public static class Guilds
+  public struct Guilds
   {
     public static readonly Guild Neutral = new Guild("Neutral", 0);
     public static readonly Guild Borg    = new Guild("Borg",    1);
@@ -41,7 +41,7 @@ namespace MaM
     public static List<Action> All = new List<Action>() { Attack, Trade, Draw, Scrap, Consume, OpponentDiscard, Heal };
   }
 
-  public class ActionsValuesSet
+  public struct ActionsValuesSet
   {
     public int Attack          { get; set; }
     public int Trade           { get; set; }  
@@ -53,7 +53,7 @@ namespace MaM
   }
 
   public class CardType : KeyValuePair<string, int> { public CardType(string key, int val) : base(key, val) { } }
-  public static class CardTypes
+  public struct CardTypes
   {
     public static readonly CardType Unknown = new CardType("Unknown", 0);
     public static readonly CardType Unit    = new CardType("Unit",    1);
@@ -62,7 +62,7 @@ namespace MaM
     public static readonly List<CardType> All = new List<CardType>() { Unit, Base, Unknown };
   }
 
-  public class Card
+  public struct Card
   {
     public Card(
       string            id,
@@ -104,7 +104,7 @@ namespace MaM
     public string            Id                { get; set; }
   }
 
-  public class Potion
+  public struct Potion
   {
     public int Id   { get; set; }
     public int Cost { get; set; }
@@ -304,7 +304,7 @@ namespace MaM
     public Player     Enemy   { get; set; }
   }
 
-  public class Map
+  public struct Map
   {
     public Map(int index, int width, int height)
     {
@@ -325,12 +325,14 @@ namespace MaM
     public Journey()
     {
       Maps = new List <Map>();
-      CurrentNode = -1;
+      CurrentNodeX = -1;
+      CurrentNodeY = -1;
       CurrentMapIndex = -1;
     }
 
     public List<Map>  Maps            { get; set; }
-    public int        CurrentNode     { get; set; }
+    public int        CurrentNodeX    { get; set; }
+    public int        CurrentNodeY    { get; set; }
     public int        CurrentMapIndex { get; set; }
   }
 
