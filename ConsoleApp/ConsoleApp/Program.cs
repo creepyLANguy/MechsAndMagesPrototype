@@ -1,4 +1,5 @@
-﻿using MaM.Utilities;
+﻿using MaM.Generators;
+using MaM.Helpers;
 
 namespace MaM
 {
@@ -9,9 +10,9 @@ namespace MaM
 
     private static void Main()
     {
-      var gameConfig = FileIO.GetGameConfigFromFile(gameConfigFile);
+      var gameConfig = FileHelper.GetGameConfigFromFile(gameConfigFile);
 
-      GameGeneration.Initiate(saveFilename, gameConfig);
+      GameGenerator.Initiate(saveFilename, gameConfig);
     }
   }
 }

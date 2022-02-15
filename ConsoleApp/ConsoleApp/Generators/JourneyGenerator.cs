@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MaM.Utilities;
+using MaM.Helpers;
 
-namespace MaM
+namespace MaM.Generators
 {
   public static class JourneyGenerator
   {
@@ -12,7 +12,7 @@ namespace MaM
       List<MapConfig> mapConfigs, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig,
-      ref List<Player> bosses,
+      ref List<Enemy> bosses,
       List<Card> cards, 
       ref Random random
     )
@@ -33,7 +33,7 @@ namespace MaM
       MapConfig mapConfig, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig,
-      ref List<Player> bosses,
+      ref List<Enemy> bosses,
       ref List<Card> cards, 
       ref Random random
       )
@@ -296,7 +296,7 @@ namespace MaM
       ref Map map, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig,
-      ref List<Player> bosses,
+      ref List<Enemy> bosses,
       ref List<Card> cards,
       ref Random random
       )
@@ -342,7 +342,7 @@ namespace MaM
     private static void SetupCampsite(ref Node node)
     {
       //TODO - implement
-      ((Campsite) node).Potions = null;
+      ((Campsite) node).Recruits = null;
     }
     
     private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, int mapIndex, List<Card> cards, ref Random random)
@@ -354,40 +354,19 @@ namespace MaM
         .Take(enemyConfig.baseDeckSize)
         .ToList();
 
-      var enemy = new Player(
-        true,
-        "",
-        -1,
-        -1,
-        null,
-        -1,
-        null,
+      var enemy = new Enemy(
+        "", //TODO - consider implementing nice dynamic and contextually constructed names based on guild types, etc. 
         enemyConfig.baseHealth * (1 + mapIndex),
-        enemyConfig.baseHealth * (1 + mapIndex), 
-        0, 
-        0, 
-        0, 
-        0,
-        enemyConfig.baseTradeRowSize + mapIndex, 
-        0, 
-        0, 
+        enemyConfig.baseTradeRowSize + mapIndex,
         enemyConfig.baseManna + mapIndex, 
-        enemyConfig.baseHandSize + mapIndex, 
-        0, 
-        0,
-        deck.Select(card => card.Id).ToList(),
-        deck, 
-        null, 
-        null, 
-        null, 
-        null, 
-        null
-        );
+        enemyConfig.baseHandSize + mapIndex,
+        deck
+      );
 
       ((Fight) node).Enemy = enemy;
     }
 
-    private static void SetupBoss(ref Node node, int mapIndex, ref List<Player> bosses, ref Random random)
+    private static void SetupBoss(ref Node node, int mapIndex, ref List<Enemy> bosses, ref Random random)
     {
       bosses.Shuffle(ref random);
 

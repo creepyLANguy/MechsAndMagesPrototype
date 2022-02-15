@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Aspose.Cells;
 using Aspose.Cells.Utility;
 using MaM.Readers;
 using Newtonsoft.Json;
 
-namespace MaM.Utilities
+namespace MaM.Helpers
 {
-  internal static class FileIO
+  internal static class FileHelper
   {
     public static void WriteFileToDrive(string filename, string content)
     {
@@ -18,11 +17,11 @@ namespace MaM.Utilities
       Console.WriteLine("Saved");
     }
 
-    public static string ExcelToJson(string excelFile)
+    public static string ExcelToJson(string excelFile, int worksheetIndex = 0)
     {
       var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));
 
-      var cells = workbook.Worksheets.First().Cells;
+      var cells = workbook.Worksheets[worksheetIndex].Cells;
 
       var range = cells.CreateRange(0, 0, cells.LastCell.Row + 1, cells.LastCell.Column + 1);
 
@@ -40,12 +39,10 @@ namespace MaM.Utilities
 
     public static void WriteCurrentGameStateToFile(ref GameState gameState, string filename, bool indented = false)
     {
-      //Remove full card lists before exporting as these bloat the save file.
-      if (gameState.player != null)
-      {
-        gameState.player.Deck = null;
-      }
- 
+      //We remove full card lists before exporting as these bloat the save file.
+      //The decks should be repopulated based on the stored ids when resuming a save state.
+      gameState.player.Deck = null;
+
       var content = ObjectToJson(gameState, indented);
 
       WriteFileToDrive(filename, content);

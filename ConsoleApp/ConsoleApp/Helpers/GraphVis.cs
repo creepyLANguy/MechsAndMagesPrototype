@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace MaM.Utilities
+namespace MaM.Helpers
 {
   internal static class GraphVis
   {
@@ -11,7 +11,7 @@ namespace MaM.Utilities
       {
         var dotFileString = GenerateDotFileContents(journey.Maps[i], "Map_" + (i + 1), verbose);
         var dotFilename = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
-        FileIO.WriteFileToDrive(dotFilename, dotFileString.ToString());
+        FileHelper.WriteFileToDrive(dotFilename, dotFileString.ToString());
       }
     }
 

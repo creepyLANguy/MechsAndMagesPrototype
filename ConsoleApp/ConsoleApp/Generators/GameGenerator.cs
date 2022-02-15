@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using MaM.Helpers;
 using MaM.Readers;
-using MaM.Utilities;
 
-namespace MaM
+namespace MaM.Generators
 {
-
-  public static class GameGeneration
+  public static class GameGenerator
   {
     public static void Initiate(
       string saveFilename,
@@ -18,12 +17,12 @@ namespace MaM
       var gameState = new GameState(DateTime.Now, Math.Abs((int)DateTime.Now.Ticks), null);
       if (string.IsNullOrEmpty(saveFilename) == false)
       {
-        gameState = FileIO.GetGameStateFromFile(saveFilename, ref cards);
+        gameState = FileHelper.GetGameStateFromFile(saveFilename, ref cards);
       }
 
       var random = new Random(gameState.randomSeed);
 
-      var journey = GenerateJourney(
+      var journey = Generate(
         gameConfig.journeyLength, 
         gameConfig.bossesExcelFile, 
         gameConfig.mapConfigs, 
@@ -38,7 +37,7 @@ namespace MaM
       ContinueJourney(ref player, ref journey, ref cards, ref random);
     }
 
-    private static Journey GenerateJourney(
+    private static Journey Generate(
       int journeyLength, 
       string bossesExcelFile, 
       List<MapConfig> mapConfigs, 

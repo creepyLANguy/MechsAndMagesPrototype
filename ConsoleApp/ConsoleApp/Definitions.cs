@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MaM
 {
@@ -104,14 +105,6 @@ namespace MaM
     public string            Id                ;
   }
 
-  public struct Potion
-  {
-    public int Id   ;
-    public int Cost ;
-
-    //TODO - figure out how to structure the rest of this. Effects gonna be tricky to implement.
-  }
-
   public class Player
   {
     public Player(
@@ -140,8 +133,7 @@ namespace MaM
       List<Card>            drawPile,
       List<Card>            discardPile,
       List<Card>            tradeRow,
-      List<Card>            tradePool,
-      List<Potion>          potions
+      List<Card>            tradePool
     )
     {
       IsComputer              = isComputer;
@@ -149,7 +141,7 @@ namespace MaM
       CurrentNodeX            = currentNodeX;
       CurrentNodeY            = currentNodeY;
       CompletedNodeLocations  = completedNodeLocations;
-      completedMapCount       = completedMapCount;
+      CompletedMapCount       = completedMapCount;
       ActiveGuild             = activeGuild;
       Health                  = health;
       MaxHealth               = maxHealth;
@@ -170,7 +162,6 @@ namespace MaM
       DiscardPile             = discardPile;
       TradeRow                = tradeRow;
       TradePool               = tradePool;
-      Potions                 = potions;
     }
 
     public bool                   IsComputer              ;
@@ -199,7 +190,47 @@ namespace MaM
     public List<Card>             DiscardPile             ;
     public List<Card>             TradeRow                ;
     public List<Card>             TradePool               ;
-    public List<Potion>           Potions                 ;
+  }
+
+  public class Enemy : Player
+  {
+    public Enemy(
+      string name,
+      int maxHealth, 
+      int tradeRowSize,
+      int basicManna, 
+      int basicHandSize,
+      List<Card> deck
+      ) 
+      : base(
+        true, 
+        name, 
+        -1,
+        -1, 
+        null,
+        -1,
+        null, 
+        maxHealth, 
+        maxHealth, 
+        -1, 
+        -1, 
+        -1, 
+        -1, 
+        tradeRowSize, -1,
+        -1, 
+        basicManna, 
+        basicHandSize, 
+        -1, 
+        -1,
+        deck.Select(card => card.Id).ToList(), 
+        deck, 
+        null, 
+        null, 
+        null, 
+        null
+        )
+    {
+    }
   }
 
   public enum NodeType
@@ -253,8 +284,8 @@ namespace MaM
   public class Campsite : Node
   {
     public Campsite(
-      Node         baseNode,
-      List<Potion> potions
+      Node        baseNode,
+      List<Card>  recruits
     ) : base(
       baseNode.NodeType,
       baseNode.IsMystery,
@@ -265,11 +296,11 @@ namespace MaM
       baseNode.Destinations
     )
     {
-      Potions   = potions;
+      Recruits   = recruits;
       NodeType = NodeType.CampSite;
     }
 
-    public List<Potion> Potions;
+    public List<Card> Recruits;
 
     //TODO - implement these types
     //public List<HealingKit> HealingKits;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MaM.Utilities;
+using MaM.Helpers;
 using Newtonsoft.Json;
 
 namespace MaM.Readers
@@ -23,7 +23,7 @@ namespace MaM.Readers
 
   public static class CardReader
   {
-    private static readonly string JoinedActionDelim = ",";
+    private const string JoinedActionDelim = ",";
 
     private static int? GetCardActionValue(string str, Action action)
     {
@@ -98,7 +98,7 @@ namespace MaM.Readers
 
     public static List<Card> GetCardsFromExcel(string excelFile)
     {
-      var json = FileIO.ExcelToJson(excelFile);
+      var json = FileHelper.ExcelToJson(excelFile);
 
       var intermediateCards = JsonConvert.DeserializeObject<List<JsonIntermediateCard>>(json);
 
@@ -118,11 +118,16 @@ namespace MaM.Readers
 
       foreach (var cardId in cardIds)
       {
-        var card = cards.Find(it => it.Id == cardId);
+        var card = GetCardFromId(cardId, ref cards);
         deck.Add(card);
       }
 
       return deck;
+    }
+
+    public static Card GetCardFromId(string cardId, ref List<Card> cards)
+    {
+      return cards.Find(it => it.Id == cardId);
     }
   }
 }

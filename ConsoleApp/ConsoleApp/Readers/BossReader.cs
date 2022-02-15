@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MaM.Utilities;
+using MaM.Helpers;
 using Newtonsoft.Json;
 
 namespace MaM.Readers
@@ -19,11 +19,11 @@ namespace MaM.Readers
 
   public static class BossReader
   {
-    private static readonly string JoinedCardDelim = ",";
+    private const string JoinedCardDelim = ",";
 
-    private static List<Player> PopulateBossesFromJsonIntermediates(List<JsonIntermediateBoss> intermediateBosses, ref List<Card> cards)
+    private static List<Enemy> PopulateBossesFromJsonIntermediates(List<JsonIntermediateBoss> intermediateBosses, ref List<Card> cards)
     {
-      var bosses = new List<Player>();
+      var bosses = new List<Enemy>();
 
       foreach (var intermediateBoss in intermediateBosses)
       {
@@ -31,34 +31,13 @@ namespace MaM.Readers
 
         var bossCards = CardReader.GetCardsFromIds(cardIds, ref cards);
 
-        var boss = new Player(
-          true, 
+        var boss = new Enemy(
           intermediateBoss.Name,
-          -1,
-          -1,
-          null,
-          -1,
-          null,
           intermediateBoss.Health,
-          intermediateBoss.Health,
-          0,
-          0,
-          0,
-          0,
-          intermediateBoss.TradeRowSize, 
-          0,
-          0,
+          intermediateBoss.TradeRowSize,
           intermediateBoss.Manna,
           intermediateBoss.HandSize,
-          intermediateBoss.HandSize,
-          0,
-          cardIds,
-          bossCards,
-          null,
-          null,
-          null,
-          null,
-          null
+          bossCards
         );
 
         bosses.Add(boss);
@@ -67,9 +46,9 @@ namespace MaM.Readers
       return bosses;
     }
 
-    public static List<Player> GetBossesFromExcel(string excelFile, ref List<Card> cards)
+    public static List<Enemy> GetBossesFromExcel(string excelFile, ref List<Card> cards)
     {
-      var json = FileIO.ExcelToJson(excelFile);
+      var json = FileHelper.ExcelToJson(excelFile);
 
       var intermediateBosses = JsonConvert.DeserializeObject<List<JsonIntermediateBoss>>(json);
 
