@@ -7,13 +7,13 @@ namespace MaM.Readers
 {
   internal class JsonIntermediateBoss
   {
-    public string   Id            { get; set; }
-    public string   Name          { get; set; }
-    public int      Health        { get; set; }
-    public int      TradeRowSize  { get; set; }
-    public int      Manna         { get; set; }
-    public int      HandSize      { get; set; }
-    public string   Cards         { get; set; }
+    public string   Id            ;
+    public string   Name          ;
+    public int      Health        ;
+    public int      TradeRowSize  ;
+    public int      Manna         ;
+    public int      HandSize      ;
+    public string   Cards         ;
   }
 
 

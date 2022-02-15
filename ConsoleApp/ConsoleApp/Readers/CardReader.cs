@@ -7,18 +7,18 @@ namespace MaM.Readers
 {
   internal class JsonIntermediateCard
   {
-    public int?     Quantity          { get; set; }
-    public string   Name              { get; set; }
-    public string   Type              { get; set; }
-    public string   Guild             { get; set; }
-    public int?     Cost              { get; set; }
-    public int?     Defense           { get; set; }
-    public int?     Shield            { get; set; }
-    public string   DefaultAbilities  { get; set; }
-    public string   GuildBonuses      { get; set; }
-    public string   AllyBonuses       { get; set; }
-    public string   ScrapBonuses      { get; set; }
-    public string   Id                { get; set; }
+    public int?     Quantity          ;
+    public string   Name              ;
+    public string   Type              ;
+    public string   Guild             ;
+    public int?     Cost              ;
+    public int?     Defense           ;
+    public int?     Shield            ;
+    public string   DefaultAbilities  ;
+    public string   GuildBonuses      ;
+    public string   AllyBonuses       ;
+    public string   ScrapBonuses      ;
+    public string   Id                ;
   }
 
   public static class CardReader

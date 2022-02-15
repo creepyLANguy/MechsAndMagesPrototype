@@ -5,8 +5,8 @@ namespace MaM
 {
   public class KeyValuePair<TK, TV>
   {
-    internal TK Key   { get; set; }
-    internal TV Value { get; set; }
+    public TK Key   ;
+    public TV Value ;
 
     protected KeyValuePair(TK key, TV value)
     {
@@ -43,13 +43,13 @@ namespace MaM
 
   public struct ActionsValuesSet
   {
-    public int Attack          { get; set; }
-    public int Trade           { get; set; }  
-    public int Draw            { get; set; }
-    public int Scrap           { get; set; }
-    public int Consume         { get; set; }
-    public int OpponentDiscard { get; set; }
-    public int Heal            { get; set; }
+    public int Attack          ;
+    public int Trade           ;  
+    public int Draw            ;
+    public int Scrap           ;
+    public int Consume         ;
+    public int OpponentDiscard ;
+    public int Heal            ;
   }
 
   public class CardType : KeyValuePair<string, int> { public CardType(string key, int val) : base(key, val) { } }
@@ -91,23 +91,23 @@ namespace MaM
       ScrapBonuses      = scrapActionsValues;
     }
 
-    public string            Name              { get; set; }
-    public CardType          Type              { get; set; }
-    public Guild             Guild             { get; set; }
-    public int               Cost              { get; set; }
-    public int               Defense           { get; set; }
-    public int               Shield            { get; set; }
-    public ActionsValuesSet  DefaultAbilities  { get; set; }
-    public ActionsValuesSet  GuildBonuses      { get; set; }
-    public ActionsValuesSet  AllyBonuses       { get; set; }
-    public ActionsValuesSet  ScrapBonuses      { get; set; }
-    public string            Id                { get; set; }
+    public string            Name              ;
+    public CardType          Type              ;
+    public Guild             Guild             ;
+    public int               Cost              ;
+    public int               Defense           ;
+    public int               Shield            ;
+    public ActionsValuesSet  DefaultAbilities  ;
+    public ActionsValuesSet  GuildBonuses      ;
+    public ActionsValuesSet  AllyBonuses       ;
+    public ActionsValuesSet  ScrapBonuses      ;
+    public string            Id                ;
   }
 
   public struct Potion
   {
-    public int Id   { get; set; }
-    public int Cost { get; set; }
+    public int Id   ;
+    public int Cost ;
 
     //TODO - figure out how to structure the rest of this. Effects gonna be tricky to implement.
   }
@@ -173,33 +173,33 @@ namespace MaM
       Potions                 = potions;
     }
 
-    public bool                   IsComputer              { get; set; }
-    public string                 Name                    { get; set; }
-    public int                    CurrentNodeX            { get; set; }
-    public int                    CurrentNodeY            { get; set; }
-    public List<Tuple<int, int>>  CompletedNodeLocations  { get; set; }
-    public int                    CompletedMapCount       { get; set; }
-    public Guild                  ActiveGuild             { get; set; }
-    public int                    Health                  { get; set; }
-    public int                    MaxHealth               { get; set; }
-    public int                    Coin                    { get; set; }
-    public int                    Vision                  { get; set; } //How many nodes and paths ahead you can simply see
-    public int                    Awareness               { get; set; } //How many of the visible nodes ahead have their types revealed
-    public int                    Insight                 { get; set; } //How many of the nodes ahead have their Guild distributions revealed
-    public int                    TradeRowSize            { get; set; }
-    public int                    Shield                  { get; set; }
-    public int                    BasicManna              { get; set; }
-    public int                    Manna                   { get; set; }
-    public int                    ToDiscard               { get; set; }
-    public int                    BasicHandSize           { get; set; }
-    public int                    CurrentHandSize         { get; set; }
-    public List<string>           DeckCardIds             { get; set; }
-    public List<Card>             Deck                    { get; set; }
-    public List<Card>             DrawPile                { get; set; }
-    public List<Card>             DiscardPile             { get; set; }
-    public List<Card>             TradeRow                { get; set; }
-    public List<Card>             TradePool               { get; set; }
-    public List<Potion>           Potions                 { get; set; }
+    public bool                   IsComputer              ;
+    public string                 Name                    ;
+    public int                    CurrentNodeX            ;
+    public int                    CurrentNodeY            ;
+    public List<Tuple<int, int>>  CompletedNodeLocations  ;
+    public int                    CompletedMapCount       ;
+    public Guild                  ActiveGuild             ;
+    public int                    Health                  ;
+    public int                    MaxHealth               ;
+    public int                    Coin                    ;
+    public int                    Vision                  ; //How many nodes and paths ahead you can simply see
+    public int                    Awareness               ; //How many of the visible nodes ahead have their types revealed
+    public int                    Insight                 ; //How many of the nodes ahead have their Guild distributions revealed
+    public int                    TradeRowSize            ;
+    public int                    Shield                  ;
+    public int                    BasicManna              ;
+    public int                    Manna                   ;
+    public int                    ToDiscard               ;
+    public int                    BasicHandSize           ;
+    public int                    CurrentHandSize         ;
+    public List<string>           DeckCardIds             ;
+    public List<Card>             Deck                    ;
+    public List<Card>             DrawPile                ;
+    public List<Card>             DiscardPile             ;
+    public List<Card>             TradeRow                ;
+    public List<Card>             TradePool               ;
+    public List<Potion>           Potions                 ;
   }
 
   public enum NodeType
@@ -241,13 +241,13 @@ namespace MaM
       Destinations  = destinations;
     }
 
-    public NodeType                 NodeType       { get; set; }
-    public bool                     IsMystery      { get; set; }
-    public int                      X              { get; set; }
-    public int                      Y              { get; set; }
-    public bool                     IsComplete     { get; set; }    
-    public bool                     IsDestination  { get; set; }
-    public HashSet<Tuple<int, int>> Destinations   { get; set; }
+    public NodeType                 NodeType       ;
+    public bool                     IsMystery      ;
+    public int                      X              ;
+    public int                      Y              ;
+    public bool                     IsComplete     ;    
+    public bool                     IsDestination  ;
+    public HashSet<Tuple<int, int>> Destinations   ;
   }
   
   public class Campsite : Node
@@ -269,13 +269,13 @@ namespace MaM
       NodeType = NodeType.CampSite;
     }
 
-    public List<Potion> Potions   { get; set; }
+    public List<Potion> Potions;
 
     //TODO - implement these types
-    //public List<HealingKit> HealingKits { get; set; }
-    //public List<VisionUpgrade> VisionUpgrades { get; set; }
-    //public List<MaxHealthUpgrade> HealthUpgrades { get; set; }
-    //public Scrapper Scrapper { get; set; }
+    //public List<HealingKit> HealingKits;
+    //public List<VisionUpgrade> VisionUpgrades;
+    //public List<MaxHealthUpgrade> HealthUpgrades;
+    //public Scrapper Scrapper;
   }
 
   public enum FightType
@@ -306,8 +306,8 @@ namespace MaM
       NodeType  = NodeType.Fight;
     }
 
-    public FightType  FightType { get; set; }
-    public Player     Enemy     { get; set; }
+    public FightType  FightType ;
+    public Player     Enemy     ;
   }
 
   public struct Map
@@ -320,10 +320,10 @@ namespace MaM
       Nodes   = new Node[width, height];
     }
 
-    public int      Index   { get; set; }
-    public Node[,]  Nodes   { get; set; }
-    public int      Width   { get; set; }
-    public int      Height  { get; set; }
+    public int      Index   ;
+    public Node[,]  Nodes   ;
+    public int      Width   ;
+    public int      Height  ;
   }
 
   public class Journey
@@ -336,10 +336,10 @@ namespace MaM
       CurrentMapIndex = -1;
     }
 
-    public List<Map>  Maps            { get; set; }
-    public int        CurrentNodeX    { get; set; }
-    public int        CurrentNodeY    { get; set; }
-    public int        CurrentMapIndex { get; set; }
+    public List<Map>  Maps            ;
+    public int        CurrentNodeX    ;
+    public int        CurrentNodeY    ;
+    public int        CurrentMapIndex ;
   }
 
   public struct MapConfig
