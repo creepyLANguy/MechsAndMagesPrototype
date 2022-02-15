@@ -5,13 +5,13 @@ namespace MaM
   internal static class Program
   {
     private const string gameConfigFile   = "gameconfig.json";
-    private const string saveFilename     = null;
+    private const string saveFilename     = null; //TODO - test with full savefile containing complete player definition.
 
     private static void Main()
     {
       var gameConfig = FileIO.GetGameConfigFromFile(gameConfigFile);
 
-      GameLogic.RunGame(saveFilename, gameConfig);
+      GameGeneration.Initiate(saveFilename, gameConfig);
     }
   }
 }

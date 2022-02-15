@@ -37,6 +37,8 @@ namespace MaM.Readers
           -1,
           -1,
           null,
+          -1,
+          null,
           intermediateBoss.Health,
           intermediateBoss.Health,
           0,

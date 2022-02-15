@@ -115,85 +115,91 @@ namespace MaM
   public class Player
   {
     public Player(
-      bool          isComputer,
-      string        name,
-      int           lastCompletedNodeX,
-      int           lastCompletedNodeY,
-      Guild         activeGuild,
-      int           health,
-      int           maxHealth,
-      int           coin,
-      int           vision,
-      int           awareness,
-      int           insight,
-      int           tradeRowSize,
-      int           shield,
-      int           manna,
-      int           basicManna,
-      int           basicHandSize,
-      int           currentHandSize,
-      int           toDiscard,
-      List<string>  deckCardIds,
-      List<Card>    deck,
-      List<Card>    drawPile,
-      List<Card>    discardPile,
-      List<Card>    tradeRow,
-      List<Card>    tradePool,
-      List<Potion>  potions
+      bool                  isComputer,
+      string                name,
+      int                   currentNodeX,
+      int                   currentNodeY,
+      List<Tuple<int, int>> completedNodeLocations,
+      int                   completedMapCount,
+      Guild                 activeGuild,
+      int                   health,
+      int                   maxHealth,
+      int                   coin,
+      int                   vision,
+      int                   awareness,
+      int                   insight,
+      int                   tradeRowSize,
+      int                   shield,
+      int                   manna,
+      int                   basicManna,
+      int                   basicHandSize,
+      int                   currentHandSize,
+      int                   toDiscard,
+      List<string>          deckCardIds,
+      List<Card>            deck,
+      List<Card>            drawPile,
+      List<Card>            discardPile,
+      List<Card>            tradeRow,
+      List<Card>            tradePool,
+      List<Potion>          potions
     )
     {
-      IsComputer          = isComputer;
-      Name                = name;
-      LastCompletedNodeX  = lastCompletedNodeX;
-      LastCompletedNodeY  = lastCompletedNodeY;
-      ActiveGuild         = activeGuild;
-      Health              = health;
-      MaxHealth           = maxHealth;
-      Coin                = coin;
-      Vision              = vision;
-      Awareness           = awareness;
-      Insight             = insight;
-      TradeRowSize        = tradeRowSize;
-      Shield              = shield;
-      BasicManna          = basicManna;
-      Manna               = manna;
-      BasicHandSize       = basicHandSize;
-      CurrentHandSize     = currentHandSize;
-      ToDiscard           = toDiscard;
-      DeckCardIds         = deckCardIds;
-      Deck                = deck;
-      DrawPile            = drawPile;
-      DiscardPile         = discardPile;
-      TradeRow            = tradeRow;
-      TradePool           = tradePool;
-      Potions             = potions;
+      IsComputer              = isComputer;
+      Name                    = name;
+      CurrentNodeX            = currentNodeX;
+      CurrentNodeY            = currentNodeY;
+      CompletedNodeLocations  = completedNodeLocations;
+      completedMapCount       = completedMapCount;
+      ActiveGuild             = activeGuild;
+      Health                  = health;
+      MaxHealth               = maxHealth;
+      Coin                    = coin;
+      Vision                  = vision;
+      Awareness               = awareness;
+      Insight                 = insight;
+      TradeRowSize            = tradeRowSize;
+      Shield                  = shield;
+      BasicManna              = basicManna;
+      Manna                   = manna;
+      BasicHandSize           = basicHandSize;
+      CurrentHandSize         = currentHandSize;
+      ToDiscard               = toDiscard;
+      DeckCardIds             = deckCardIds;
+      Deck                    = deck;
+      DrawPile                = drawPile;
+      DiscardPile             = discardPile;
+      TradeRow                = tradeRow;
+      TradePool               = tradePool;
+      Potions                 = potions;
     }
 
-    public bool         IsComputer          { get; set; }
-    public string       Name                { get; set; }
-    public int          LastCompletedNodeX  { get; set; }
-    public int          LastCompletedNodeY  { get; set; }
-    public Guild        ActiveGuild         { get; set; }
-    public int          Health              { get; set; }
-    public int          MaxHealth           { get; set; }
-    public int          Coin                { get; set; }
-    public int          Vision              { get; set; } //How many nodes and paths ahead you can simply see
-    public int          Awareness           { get; set; } //How many of the visible nodes ahead have their types revealed
-    public int          Insight             { get; set; } //How many of the nodes ahead have their Guild distributions revealed
-    public int          TradeRowSize        { get; set; }
-    public int          Shield              { get; set; }
-    public int          BasicManna          { get; set; }
-    public int          Manna               { get; set; }
-    public int          ToDiscard           { get; set; }
-    public int          BasicHandSize       { get; set; }
-    public int          CurrentHandSize     { get; set; }
-    public List<string> DeckCardIds         { get; set; }
-    public List<Card>   Deck                { get; set; }
-    public List<Card>   DrawPile            { get; set; }
-    public List<Card>   DiscardPile         { get; set; }
-    public List<Card>   TradeRow            { get; set; }
-    public List<Card>   TradePool           { get; set; }
-    public List<Potion> Potions             { get; set; }
+    public bool                   IsComputer              { get; set; }
+    public string                 Name                    { get; set; }
+    public int                    CurrentNodeX            { get; set; }
+    public int                    CurrentNodeY            { get; set; }
+    public List<Tuple<int, int>>  CompletedNodeLocations  { get; set; }
+    public int                    CompletedMapCount       { get; set; }
+    public Guild                  ActiveGuild             { get; set; }
+    public int                    Health                  { get; set; }
+    public int                    MaxHealth               { get; set; }
+    public int                    Coin                    { get; set; }
+    public int                    Vision                  { get; set; } //How many nodes and paths ahead you can simply see
+    public int                    Awareness               { get; set; } //How many of the visible nodes ahead have their types revealed
+    public int                    Insight                 { get; set; } //How many of the nodes ahead have their Guild distributions revealed
+    public int                    TradeRowSize            { get; set; }
+    public int                    Shield                  { get; set; }
+    public int                    BasicManna              { get; set; }
+    public int                    Manna                   { get; set; }
+    public int                    ToDiscard               { get; set; }
+    public int                    BasicHandSize           { get; set; }
+    public int                    CurrentHandSize         { get; set; }
+    public List<string>           DeckCardIds             { get; set; }
+    public List<Card>             Deck                    { get; set; }
+    public List<Card>             DrawPile                { get; set; }
+    public List<Card>             DiscardPile             { get; set; }
+    public List<Card>             TradeRow                { get; set; }
+    public List<Card>             TradePool               { get; set; }
+    public List<Potion>           Potions                 { get; set; }
   }
 
   public enum NodeType
@@ -301,7 +307,7 @@ namespace MaM
     }
 
     public FightType  FightType { get; set; }
-    public Player     Enemy   { get; set; }
+    public Player     Enemy     { get; set; }
   }
 
   public struct Map

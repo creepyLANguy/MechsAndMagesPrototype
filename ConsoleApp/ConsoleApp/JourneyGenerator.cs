@@ -360,6 +360,8 @@ namespace MaM
         -1,
         -1,
         null,
+        -1,
+        null,
         enemyConfig.baseHealth * (1 + mapIndex),
         enemyConfig.baseHealth * (1 + mapIndex), 
         0, 
