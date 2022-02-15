@@ -12,7 +12,9 @@ namespace MaM
     {
       var gameConfig = FileHelper.GetGameConfigFromFile(gameConfigFile);
 
-      GameGenerator.Initiate(saveFilename, gameConfig);
+      var gameContents = GameGenerator.GenerateGame(saveFilename, gameConfig);
+
+      GameLogic.Run(ref gameContents);
     }
   }
 }

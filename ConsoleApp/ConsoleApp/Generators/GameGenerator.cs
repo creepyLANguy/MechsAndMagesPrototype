@@ -7,7 +7,7 @@ namespace MaM.Generators
 {
   public static class GameGenerator
   {
-    public static void Initiate(
+    public static GameContents GenerateGame(
       string saveFilename,
       GameConfig gameConfig
     )
@@ -22,7 +22,7 @@ namespace MaM.Generators
 
       var random = new Random(gameState.randomSeed);
 
-      var journey = Generate(
+      var journey = GetJourney(
         gameConfig.journeyLength, 
         gameConfig.bossesExcelFile, 
         gameConfig.mapConfigs, 
@@ -34,10 +34,12 @@ namespace MaM.Generators
 
       var player = gameState.player ?? GenerateNewPlayer();
 
-      ContinueJourney(ref player, ref journey, ref cards, ref random);
+      var gameContents = new GameContents(player, journey, cards, random, gameState.randomSeed);
+
+      return gameContents;
     }
 
-    private static Journey Generate(
+    private static Journey GetJourney(
       int journeyLength, 
       string bossesExcelFile, 
       List<MapConfig> mapConfigs, 
@@ -62,11 +64,6 @@ namespace MaM.Generators
     {
       //TODO - implement
       return null;
-    }
-    
-    private static void ContinueJourney(ref Player player, ref Journey journey, ref List<Card> cards, ref Random random)
-    {
-      //TODO - implement
     }
   }
 }

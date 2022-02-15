@@ -1,9 +1,10 @@
-﻿
-namespace MaM
+﻿namespace MaM
 {
-
   public static class GameLogic
   {
-    //TODO - implement
+    public static void Run(ref GameContents gameContents)
+    {
+      //TODO - implement
+    }
   }
 }
