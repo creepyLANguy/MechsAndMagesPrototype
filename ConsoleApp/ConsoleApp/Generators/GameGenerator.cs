@@ -61,6 +61,8 @@ namespace MaM.Generators
 
     private static Player GenerateNewPlayer(PlayerConfig playerConfig, List<InitialCardSelection> initialSelections, ref List<Card> cards, Random random)
     {
+      var playerName = GetPlayerName();
+
       var deck = cards.Where(card => card.Guild == Guilds.Neutral).ToList();
       cards.RemoveAll(card => card.Guild == Guilds.Neutral);
 
@@ -71,7 +73,7 @@ namespace MaM.Generators
 
       var player = new Player(
         false,
-        GetPlayerName(),
+        playerName,
         -1,
         -1,
         new List<Tuple<int, int>>(),
