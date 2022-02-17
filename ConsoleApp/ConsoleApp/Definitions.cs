@@ -408,10 +408,11 @@ namespace MaM
     public int  handSize      ;
   }
 
-  public struct InitialSelection
+  public struct InitialCardSelection
   {
     public int minCost;
     public int maxCost;
+    public int cardCount;
   }
 
   public struct GameState
@@ -430,14 +431,14 @@ namespace MaM
 
   public struct GameConfig
   {
-    public string                 cardsExcelFile;
-    public string                 bossesExcelFile;
-    public List<MapConfig>        mapConfigs;
-    public EnemyConfig            normalEnemyConfig;
-    public EnemyConfig            eliteEnemyConfig;
-    public PlayerConfig           playerConfig;
-    public List<InitialSelection> initialSelections;
-    public int                    journeyLength;
+    public string                     cardsExcelFile;
+    public string                     bossesExcelFile;
+    public List<MapConfig>            mapConfigs;
+    public EnemyConfig                normalEnemyConfig;
+    public EnemyConfig                eliteEnemyConfig;
+    public PlayerConfig               playerConfig;
+    public List<InitialCardSelection> initialSelections;
+    public int                        journeyLength;
 
     //TODO - consider removing this?
     /*

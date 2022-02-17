@@ -60,25 +60,66 @@ namespace MaM.Generators
       return journey;
     }
 
-    private static Player GenerateNewPlayer(PlayerConfig playerConfig, List<InitialSelection> initialSelections, Random random)
+    private static Player GenerateNewPlayer(PlayerConfig playerConfig, List<InitialCardSelection> initialSelections, Random random)
     {
-      //var player = new Player(
-      //  false,
-      //  GetPlayerName(),
-      ////TODO - implement
-      //  );
+      var deckCardIds = PromptPlayerForInitialCardSelection(ref initialSelections, random);
+      
+      var deck = new List<Card>();
+      CardReader.GetCardsFromIds(deckCardIds, ref deck);
 
-      //Note, prolly important to pass a copy of random as we may be using it an indeterminate amount of times here.
+      var player = new Player(
+        false,
+        GetPlayerName(),
+        -1,
+        -1,
+        new List<Tuple<int, int>>(),
+        -1,
+        null,
+        playerConfig.health,
+        playerConfig.health,
+        0,
+        playerConfig.vision,
+        playerConfig.awareness,
+        playerConfig.insight,
+        playerConfig.tradeRowSize,
+        -1,
+        -1,
+        playerConfig.manna,
+        playerConfig.handSize,
+        -1,
+        -1,
+        deckCardIds,
+        deck,
+        null,
+        null,
+        null,
+        null
+      );
 
-      //TODO - implement
-
-      return null;
+      return player;
     }
 
     private static string GetPlayerName()
     {
       //TODO - implement
       return "TestPlayer";
+    }
+
+    //Note, prolly important to pass a copy of random as we may be using it an indeterminate amount of times here.
+    private static List<string> PromptPlayerForInitialCardSelections(ref List<InitialCardSelection> initialCardSelections, ref List<Card> cards, Random random)
+    {
+      var cardsSelected = new List<string>();
+
+      foreach (var initialCardSelection in initialCardSelections)
+      {
+        //TODO - implement 
+        //draw initialCardSelection.cardCount many cards randomly from the cards list 
+        //user selects a card
+        //add that card's id to the cardsSelected
+        //remove that card from the main cards list
+      }
+
+      return cardsSelected;
     }
   }
 }
