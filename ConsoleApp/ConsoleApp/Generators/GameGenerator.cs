@@ -32,7 +32,7 @@ namespace MaM.Generators
         ref random
         );
 
-      var player = gameState.player ?? GenerateNewPlayer();
+      var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialSelections, random);
 
       var gameContents = new GameContents(player, journey, cards, random, gameState.randomSeed);
 
@@ -60,10 +60,25 @@ namespace MaM.Generators
       return journey;
     }
 
-    private static Player GenerateNewPlayer()
+    private static Player GenerateNewPlayer(PlayerConfig playerConfig, List<InitialSelection> initialSelections, Random random)
+    {
+      //var player = new Player(
+      //  false,
+      //  GetPlayerName(),
+      ////TODO - implement
+      //  );
+
+      //Note, prolly important to pass a copy of random as we may be using it an indeterminate amount of times here.
+
+      //TODO - implement
+
+      return null;
+    }
+
+    private static string GetPlayerName()
     {
       //TODO - implement
-      return null;
+      return "TestPlayer";
     }
   }
 }

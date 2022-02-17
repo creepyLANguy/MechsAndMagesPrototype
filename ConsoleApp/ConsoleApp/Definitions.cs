@@ -11,8 +11,8 @@ namespace MaM
 
     protected KeyValuePair(TK key, TV value)
     {
-      Key   = key;
-      Value = value;
+      Key   = key   ;
+      Value = value ;
     }
   }
 
@@ -136,32 +136,32 @@ namespace MaM
       List<Card>            tradePool
     )
     {
-      IsComputer              = isComputer;
-      Name                    = name;
-      CurrentNodeX            = currentNodeX;
-      CurrentNodeY            = currentNodeY;
-      CompletedNodeLocations  = completedNodeLocations;
-      CompletedMapCount       = completedMapCount;
-      ActiveGuild             = activeGuild;
-      Health                  = health;
-      MaxHealth               = maxHealth;
-      Coin                    = coin;
-      Vision                  = vision;
-      Awareness               = awareness;
-      Insight                 = insight;
-      TradeRowSize            = tradeRowSize;
-      Shield                  = shield;
-      BasicManna              = basicManna;
-      Manna                   = manna;
-      BasicHandSize           = basicHandSize;
-      CurrentHandSize         = currentHandSize;
-      ToDiscard               = toDiscard;
-      DeckCardIds             = deckCardIds;
-      Deck                    = deck;
-      DrawPile                = drawPile;
-      DiscardPile             = discardPile;
-      TradeRow                = tradeRow;
-      TradePool               = tradePool;
+      IsComputer              = isComputer              ;
+      Name                    = name                    ;
+      CurrentNodeX            = currentNodeX            ;
+      CurrentNodeY            = currentNodeY            ;
+      CompletedNodeLocations  = completedNodeLocations  ;
+      CompletedMapCount       = completedMapCount       ;
+      ActiveGuild             = activeGuild             ;
+      Health                  = health                  ;
+      MaxHealth               = maxHealth               ;
+      Coin                    = coin                    ;
+      Vision                  = vision                  ;
+      Awareness               = awareness               ;
+      Insight                 = insight                 ;
+      TradeRowSize            = tradeRowSize            ;
+      Shield                  = shield                  ;
+      BasicManna              = basicManna              ;
+      Manna                   = manna                   ;
+      BasicHandSize           = basicHandSize           ;
+      CurrentHandSize         = currentHandSize         ;
+      ToDiscard               = toDiscard               ;
+      DeckCardIds             = deckCardIds             ;
+      Deck                    = deck                    ;
+      DrawPile                = drawPile                ;
+      DiscardPile             = discardPile             ;
+      TradeRow                = tradeRow                ;
+      TradePool               = tradePool               ;
     }
 
     public bool                   IsComputer              ;
@@ -296,8 +296,8 @@ namespace MaM
       baseNode.Destinations
     )
     {
-      Recruits   = recruits;
-      NodeType = NodeType.CampSite;
+      Recruits  = recruits;
+      NodeType  = NodeType.CampSite;
     }
 
     public List<Card> Recruits;
@@ -363,9 +363,9 @@ namespace MaM
   {
     public Journey()
     {
-      Maps = new List <Map>();
-      CurrentNodeX = -1;
-      CurrentNodeY = -1;
+      Maps            = new List <Map>();
+      CurrentNodeX    = -1;
+      CurrentNodeY    = -1;
       CurrentMapIndex = -1;
     }
 
@@ -388,13 +388,30 @@ namespace MaM
   
   public struct EnemyConfig
   {
-    public int    baseHealth;
-    public int    baseManna;
-    public int    baseDeckSize;
-    public int    baseTradeRowSize;
-    public int    baseHandSize;
-    public int    minCardCost;
-    public int    maxCardCost;
+    public int  baseHealth;
+    public int  baseManna;
+    public int  baseDeckSize;
+    public int  baseTradeRowSize;
+    public int  baseHandSize;
+    public int  minCardCost;
+    public int  maxCardCost;
+  }
+
+  public struct PlayerConfig
+  {
+    public int  health        ;
+    public int  vision        ;
+    public int  awareness     ;
+    public int  insight       ;
+    public int  tradeRowSize  ;
+    public int  manna         ;
+    public int  handSize      ;
+  }
+
+  public struct InitialSelection
+  {
+    public int minCost;
+    public int maxCost;
   }
 
   public struct GameState
@@ -413,20 +430,25 @@ namespace MaM
 
   public struct GameConfig
   {
-    public string           cardsExcelFile;
-    public string           bossesExcelFile;
-    public List<MapConfig>  mapConfigs;
-    public EnemyConfig      normalEnemyConfig;
-    public EnemyConfig      eliteEnemyConfig;
-    public int              journeyLength;
+    public string                 cardsExcelFile;
+    public string                 bossesExcelFile;
+    public List<MapConfig>        mapConfigs;
+    public EnemyConfig            normalEnemyConfig;
+    public EnemyConfig            eliteEnemyConfig;
+    public PlayerConfig           playerConfig;
+    public List<InitialSelection> initialSelections;
+    public int                    journeyLength;
 
+    //TODO - consider removing this?
+    /*
     public GameConfig(
       string cardsExcelFile, 
       string bossesExcelFile, 
       List<MapConfig> mapConfigs, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig, 
-      int journeyLength
+      PlayerConfig playerConfig,
+        int journeyLength
       )
     {
       this.cardsExcelFile     = cardsExcelFile;
@@ -434,17 +456,19 @@ namespace MaM
       this.mapConfigs         = mapConfigs;
       this.normalEnemyConfig  = normalEnemyConfig;
       this.eliteEnemyConfig   = eliteEnemyConfig;
+      this.playerConfig       = playerConfig;
       this.journeyLength      = journeyLength;
     }
+    */
   }
 
   public struct GameContents
   {
-    Player player;
-    Journey journey;
-    List<Card> cards;
-    Random random;
-    private int seed;
+    Player      player  ;
+    Journey     journey ;
+    List<Card>  cards   ;
+    Random      random  ;
+    private int seed    ;
 
     public GameContents(Player player, Journey journey, List<Card> cards, Random random, int seed)
     {
