@@ -15,13 +15,13 @@ namespace MaM.Generators
     {
       var cards = CardReader.GetCardsFromExcel(gameConfig.cardsExcelFile);
 
-      var gameState = new GameState(DateTime.Now, Math.Abs((int)DateTime.Now.Ticks), null);
-      if (string.IsNullOrEmpty(saveFilename) == false)
-      {
-        gameState = FileHelper.GetGameStateFromFile(saveFilename, ref cards);
-      }
-
+      var gameState = string.IsNullOrEmpty(saveFilename) ? 
+        new GameState(DateTime.Now, Math.Abs((int)DateTime.Now.Ticks), null) :
+        FileHelper.GetGameStateFromFile(saveFilename, ref cards);
+      
       var random = new Random(gameState.randomSeed);
+
+      var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards, random);
 
       var journey = GetJourney(
         gameConfig.journeyLength, 
@@ -32,8 +32,6 @@ namespace MaM.Generators
         ref cards, 
         ref random
         );
-
-      var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards, random);
 
       var gameContents = new GameContents(player, journey, cards, random, gameState.randomSeed);
 
