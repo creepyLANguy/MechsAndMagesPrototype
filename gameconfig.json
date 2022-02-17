@@ -45,5 +45,31 @@
     "minCardCost": 4,
     "maxCardCost": 8
   },
+  "playerConfig": {
+    "health": 25,
+    "vision": 10,
+    "awareness": 7,
+    "insight": 3,
+    "tradeRowSize": 3,
+    "manna": 0,
+    "handSize": 5
+  },
+  "initialCardSelections": [
+    {
+      "minCost": 1,
+      "maxCost": 4,
+      "cardCount": 2
+    },
+    {
+      "minCost": 1,
+      "maxCost": 4,
+      "cardCount": 3
+    },
+    {
+      "minCost": 1,
+      "maxCost": 4,
+      "cardCount": 4
+    }
+  ],
   "journeyLength": 3
 }

@@ -437,30 +437,8 @@ namespace MaM
     public EnemyConfig                normalEnemyConfig;
     public EnemyConfig                eliteEnemyConfig;
     public PlayerConfig               playerConfig;
-    public List<InitialCardSelection> initialSelections;
+    public List<InitialCardSelection> initialCardSelections;
     public int                        journeyLength;
-
-    //TODO - consider removing this?
-    /*
-    public GameConfig(
-      string cardsExcelFile, 
-      string bossesExcelFile, 
-      List<MapConfig> mapConfigs, 
-      EnemyConfig normalEnemyConfig, 
-      EnemyConfig eliteEnemyConfig, 
-      PlayerConfig playerConfig,
-        int journeyLength
-      )
-    {
-      this.cardsExcelFile     = cardsExcelFile;
-      this.bossesExcelFile    = bossesExcelFile;
-      this.mapConfigs         = mapConfigs;
-      this.normalEnemyConfig  = normalEnemyConfig;
-      this.eliteEnemyConfig   = eliteEnemyConfig;
-      this.playerConfig       = playerConfig;
-      this.journeyLength      = journeyLength;
-    }
-    */
   }
 
   public struct GameContents

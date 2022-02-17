@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MaM.Helpers;
 using MaM.Readers;
 
@@ -32,7 +33,7 @@ namespace MaM.Generators
         ref random
         );
 
-      var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialSelections, random);
+      var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards, random);
 
       var gameContents = new GameContents(player, journey, cards, random, gameState.randomSeed);
 
@@ -60,12 +61,15 @@ namespace MaM.Generators
       return journey;
     }
 
-    private static Player GenerateNewPlayer(PlayerConfig playerConfig, List<InitialCardSelection> initialSelections, Random random)
+    private static Player GenerateNewPlayer(PlayerConfig playerConfig, List<InitialCardSelection> initialSelections, ref List<Card> cards, Random random)
     {
-      var deckCardIds = PromptPlayerForInitialCardSelection(ref initialSelections, random);
-      
-      var deck = new List<Card>();
-      CardReader.GetCardsFromIds(deckCardIds, ref deck);
+      var deck = cards.Where(card => card.Guild == Guilds.Neutral).ToList();
+      cards.RemoveAll(card => card.Guild == Guilds.Neutral);
+
+      var selectedCards = PromptPlayerForInitialCardSelections(ref initialSelections, ref cards, random);
+      deck.AddRange(selectedCards);
+
+      var deckIds = deck.Select(card => card.Id).ToList();
 
       var player = new Player(
         false,
@@ -88,7 +92,7 @@ namespace MaM.Generators
         playerConfig.handSize,
         -1,
         -1,
-        deckCardIds,
+        deckIds,
         deck,
         null,
         null,
@@ -101,25 +105,44 @@ namespace MaM.Generators
 
     private static string GetPlayerName()
     {
-      //TODO - implement
-      return "TestPlayer";
+      Console.WriteLine("Enter your name:");
+      return Console.ReadLine();
     }
 
-    //Note, prolly important to pass a copy of random as we may be using it an indeterminate amount of times here.
-    private static List<string> PromptPlayerForInitialCardSelections(ref List<InitialCardSelection> initialCardSelections, ref List<Card> cards, Random random)
+    //Note, prolly important to pass a copy of random as in the future, with prior completion bonuses awarded, we may be using random an indeterminate amount of times here.
+    private static List<Card> PromptPlayerForInitialCardSelections(ref List<InitialCardSelection> initialCardSelections, ref List<Card> cards, Random random)
     {
-      var cardsSelected = new List<string>();
+      var allSelectedCards = new List<Card>();
 
       foreach (var initialCardSelection in initialCardSelections)
       {
-        //TODO - implement 
-        //draw initialCardSelection.cardCount many cards randomly from the cards list 
-        //user selects a card
-        //add that card's id to the cardsSelected
-        //remove that card from the main cards list
+        cards.Shuffle(ref random);
+
+        var costSpecificCards = cards.Where(card => card.Cost >= initialCardSelection.minCost && card.Cost <= initialCardSelection.maxCost);
+        var offeredCards = costSpecificCards.Take(initialCardSelection.cardCount).ToList();
+
+        var selectedCard = GetSelectedCard(ref offeredCards);
+
+        allSelectedCards.Add(selectedCard);
+
+        cards.Remove(selectedCard);
       }
 
-      return cardsSelected;
+      return allSelectedCards;
+    }
+
+    private static Card GetSelectedCard(ref List<Card> offeredCards)
+    {
+      Console.WriteLine("Select one of the following cards by specifying its number in the list : ");
+      for (var index = 0; index < offeredCards.Count; index++)
+      {
+        var card = offeredCards[index];
+        Console.WriteLine((index+1) + ")" + "\t" + card.Name + "\t\t|\t" + "Mana Cost :" + card.Cost + "\t|\t" + "Type:" + card.Type.Key + "\t|\t" + "Guild:" + card.Guild.Key);
+      }
+
+      var selectionIndex = int.Parse(Console.ReadLine()) - 1;
+
+      return offeredCards[selectionIndex];
     }
   }
 }
