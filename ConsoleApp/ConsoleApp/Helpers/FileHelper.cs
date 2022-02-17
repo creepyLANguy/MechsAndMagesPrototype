@@ -37,6 +37,7 @@ namespace MaM.Helpers
       return JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
     }
 
+    //TODO - use this function to save games
     public static void WriteCurrentGameStateToFile(ref GameState gameState, string filename, bool indented = false)
     {
       //We remove full card lists before exporting as these bloat the save file.
