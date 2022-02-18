@@ -9,6 +9,11 @@ namespace MaM.Helpers
   internal static class Crypto
   {
     // Call this function to remove the key from memory after use for security
+    //
+    //var gch = GCHandle.Alloc(key, GCHandleType.Pinned);
+    //...
+    //ZeroMemory(gch.AddrOfPinnedObject(), key.Length * 2);
+    //gch.Free();
     [DllImport("KERNEL32.DLL", EntryPoint = "RtlZeroMemory")]
     private static extern bool ZeroMemory(IntPtr destination, int length);
 
