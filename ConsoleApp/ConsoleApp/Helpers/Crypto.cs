@@ -19,10 +19,8 @@ namespace MaM.Helpers
       return Encoding.Unicode.GetString(DES.Create().Key);
     }
 
-    public static void EncryptFile(string inputFilename, string outputFilename,string key)
+    public static void EncryptFile(string inputFilename, string outputFilename, string key)
     {
-      
-
       var fsInput = new FileStream(inputFilename, FileMode.Open, FileAccess.Read);
 
       var fsEncrypted = new FileStream(outputFilename, FileMode.Create, FileAccess.Write);
