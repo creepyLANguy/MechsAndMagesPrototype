@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Aspose.Cells;
 using Aspose.Cells.Utility;
 using MaM.Readers;
@@ -13,7 +14,14 @@ namespace MaM.Helpers
     public static void WriteFileToDrive(string filename, string content)
     {
       Console.WriteLine("Saving " + filename);
-      File.WriteAllText(filename, content);
+
+      //File.WriteAllText(filename, content);
+
+      using (var sw = new StreamWriter(File.Open(filename, FileMode.Create), Encoding.Unicode))
+      {
+        sw.Write(content);
+      }
+
       Console.WriteLine("Saved");
     }
 
