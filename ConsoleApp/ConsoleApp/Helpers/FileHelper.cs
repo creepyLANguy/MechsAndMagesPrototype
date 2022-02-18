@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using Aspose.Cells;
 using Aspose.Cells.Utility;
+using MaM.Definitions;
 using MaM.Readers;
 using Newtonsoft.Json;
 

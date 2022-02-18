@@ -1,4 +1,6 @@
-﻿namespace MaM
+﻿using MaM.Definitions;
+
+namespace MaM.GameLogic
 {
   public static class GameLogic
   {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MaM
+namespace MaM.Definitions
 {
   public class KeyValuePair<TK, TV>
   {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using MaM.Definitions;
 
 namespace MaM.Helpers
 {

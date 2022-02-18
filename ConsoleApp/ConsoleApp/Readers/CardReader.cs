@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MaM.Definitions;
 using MaM.Helpers;
 using Newtonsoft.Json;
+using Action = MaM.Definitions.Action;
 
 namespace MaM.Readers
 {
