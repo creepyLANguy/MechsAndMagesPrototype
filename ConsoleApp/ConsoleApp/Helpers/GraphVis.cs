@@ -7,9 +7,9 @@ namespace MaM.Helpers
   {
     public static void SaveMapsAsDotFiles(ref Journey journey, bool verbose)
     {
-      for (var i = 0; i < journey.Maps.Count; ++i)
+      for (var i = 0; i < journey.maps.Count; ++i)
       {
-        var dotFileString = GenerateDotFileContents(journey.Maps[i], "Map_" + (i + 1), verbose);
+        var dotFileString = GenerateDotFileContents(journey.maps[i], "Map_" + (i + 1), verbose);
         var dotFilename = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
         FileHelper.WriteFileToDrive(dotFilename, dotFileString.ToString());
       }
@@ -22,11 +22,11 @@ namespace MaM.Helpers
       mainBuffer.Append("digraph " + mapName + " {" + "\n");
 
       mainBuffer.Append("\n//Relationships : \n");
-      for (var y = 0; y < map.Height; ++y)
+      for (var y = 0; y < map.height; ++y)
       {
-        for (var x = 0; x < map.Width; ++x)
+        for (var x = 0; x < map.width; ++x)
         {
-          var node = map.Nodes[x, y];
+          var node = map.nodes[x, y];
 
           if (node == null)
           {
@@ -35,15 +35,15 @@ namespace MaM.Helpers
 
           var nodeName = GetNodeName(node);
 
-          if (node.Destinations == null || node.Destinations.Count == 0)
+          if (node.destinations == null || node.destinations.Count == 0)
           {
             mainBuffer.Append(nodeName + ";" + "\n");
             continue;
           }
 
-          foreach (var (destX, destY) in node.Destinations)
+          foreach (var (destX, destY) in node.destinations)
           {
-            var destinationName = GetNodeName(map.Nodes[destX, destY]);
+            var destinationName = GetNodeName(map.nodes[destX, destY]);
             mainBuffer.Append(nodeName + "->" + destinationName + ";" + "\n");
           }
         }
@@ -63,11 +63,11 @@ namespace MaM.Helpers
     private static void AddNodeLabelsSection(ref StringBuilder mainBuffer, ref Map map)
     {
       mainBuffer.Append("\n//Labels : \n");
-      for (var y = 0; y < map.Height; ++y)
+      for (var y = 0; y < map.height; ++y)
       {
-        for (var x = 0; x < map.Width; ++x)
+        for (var x = 0; x < map.width; ++x)
         {
-          var node = map.Nodes[x, y];
+          var node = map.nodes[x, y];
 
           if (node == null)
           {
@@ -83,7 +83,7 @@ namespace MaM.Helpers
 
     private static string GetNodeName(Node node)
     {
-      var nodeName = "x" + node.X + "y" + node.Y + "_";
+      var nodeName = "x" + node.x + "y" + node.y + "_";
 
       nodeName += GetNodeTypeDescriptor(node);
 
@@ -103,19 +103,19 @@ namespace MaM.Helpers
     {
       var str = "???????";
 
-      if (node == null || node.NodeType == NodeType.Blank)
+      if (node == null || node.nodeType == NodeType.Blank)
       {
         return str;
       }
 
-      switch (node.NodeType)
+      switch (node.nodeType)
       {
         case NodeType.CampSite:
           str = "Campsite";
           break;
         case NodeType.Fight:
           {
-            switch (((Fight)node).FightType)
+            switch (((Fight)node).fightType)
             {
               case FightType.Normal:
                 str = "Normal";
@@ -132,7 +132,7 @@ namespace MaM.Helpers
           }
       }
 
-      if (node.IsMystery)
+      if (node.isMystery)
       {
         str += "_Mystery";
       }

@@ -22,7 +22,7 @@ namespace MaM.Generators
       for (var index = 0; index < journeyLength; ++index)
       {
         var map = GenerateMap(index, mapConfigs[index], normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
-        journey.Maps.Add(map);
+        journey.maps.Add(map);
       }
 
       return journey;
@@ -73,11 +73,11 @@ namespace MaM.Generators
 
     private static void PopulateMapWithBlankNodes(ref Map map)
     {
-      for (var x = 0; x < map.Width; ++x)
+      for (var x = 0; x < map.width; ++x)
       {
-        for (var y = 0; y < map.Height; ++y)
+        for (var y = 0; y < map.height; ++y)
         {
-          map.Nodes[x, y] = new Node(NodeType.Blank, false, x, y, false, false, null);
+          map.nodes[x, y] = new Node(NodeType.Blank, false, x, y, false, false, null);
         }
       }
     }
@@ -98,7 +98,7 @@ namespace MaM.Generators
       {
         for (var x = 0; x < mapConfig.width; ++x)
         {
-          if (map.Nodes[x, y].IsDestination == false)
+          if (map.nodes[x, y].isDestination == false)
           {
             continue;
           }
@@ -110,12 +110,12 @@ namespace MaM.Generators
 
     private static void SetDestinationForNode(ref Map map, int x, int y, ref Random random)
     {
-      if (map.Nodes[x, y].Destinations != null && map.Nodes[x, y].Destinations.Count == 3)
+      if (map.nodes[x, y].destinations != null && map.nodes[x, y].destinations.Count == 3)
       {
         return;
       }
 
-      map.Nodes[x, y].Destinations ??= new HashSet<Tuple<int, int>>();
+      map.nodes[x, y].destinations ??= new HashSet<Tuple<int, int>>();
 
       var min = -1;
       var max = 1;
@@ -124,25 +124,25 @@ namespace MaM.Generators
       {
         min = 0;
       }
-      else if (x == map.Width - 1)
+      else if (x == map.width - 1)
       {
         max = 0;
       }
 
       var chosenDestinationX = x + random.Next(min, max + 1);
-      map.Nodes[x, y].Destinations.Add(new Tuple<int, int>(chosenDestinationX, y + 1));
-      map.Nodes[chosenDestinationX, y + 1].IsDestination = true;
+      map.nodes[x, y].destinations.Add(new Tuple<int, int>(chosenDestinationX, y + 1));
+      map.nodes[chosenDestinationX, y + 1].isDestination = true;
     }
 
     private static void NullifyUnconnectedNodes(ref Map map)
     {
-      for (var x = 0; x < map.Width; ++x)
+      for (var x = 0; x < map.width; ++x)
       {
-        for (var y = 0; y < map.Height; ++y)
+        for (var y = 0; y < map.height; ++y)
         {
-          if (map.Nodes[x, y].Destinations == null || (map.Nodes[x, y].Destinations.Count == 0 && map.Nodes[x, y].IsDestination == false))
+          if (map.nodes[x, y].destinations == null || (map.nodes[x, y].destinations.Count == 0 && map.nodes[x, y].isDestination == false))
           {
-            map.Nodes[x, y] = null;
+            map.nodes[x, y] = null;
           }
         }
       }
@@ -150,15 +150,15 @@ namespace MaM.Generators
 
     private static void SetFirstFloorActiveNodesAsNormalFights(ref Map map)
     {
-      for (var x = 0; x < map.Width; ++x)
+      for (var x = 0; x < map.width; ++x)
       {
-        if (map.Nodes[x, 0] == null)
+        if (map.nodes[x, 0] == null)
         {
           continue;
         }
 
-        var baseNode = new Node(map.Nodes[x, 0]);
-        map.Nodes[x, 0] = new Fight(baseNode, FightType.Normal, null);
+        var baseNode = new Node(map.nodes[x, 0]);
+        map.nodes[x, 0] = new Fight(baseNode, FightType.Normal, null);
       }
     }
 
@@ -167,11 +167,11 @@ namespace MaM.Generators
       var bag = new List<NodeType>();
 
       var bagSize = 0;
-      for (var x = 0; x < map.Width; ++x)
+      for (var x = 0; x < map.width; ++x)
       {
-        for (var y = 0; y < map.Height; ++y)
+        for (var y = 0; y < map.height; ++y)
         {
-          if (map.Nodes[x, y] != null && map.Nodes[x, y].NodeType == NodeType.Blank)
+          if (map.nodes[x, y] != null && map.nodes[x, y].nodeType == NodeType.Blank)
           {
             ++bagSize;
           }
@@ -202,24 +202,24 @@ namespace MaM.Generators
 
     private static void AssignBagItems(ref Map map, ref List<NodeType> bag)
     {
-      for (var x = 0; x < map.Width; ++x)
+      for (var x = 0; x < map.width; ++x)
       {
-        for (var y = 1; y < map.Height; ++y)
+        for (var y = 1; y < map.height; ++y)
         {
-          if (map.Nodes[x, y] == null || map.Nodes[x, y].NodeType != NodeType.Blank)
+          if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.Blank)
           {
             continue;
           }
 
-          var baseNode = new Node(map.Nodes[x, y]);
+          var baseNode = new Node(map.nodes[x, y]);
 
           switch (bag.First())
           {
             case NodeType.CampSite:
-              map.Nodes[x, y] = new Campsite(baseNode, null);
+              map.nodes[x, y] = new Campsite(baseNode, null);
               break;
             case NodeType.Fight:
-              map.Nodes[x, y] = new Fight(baseNode, FightType.Elite, null);
+              map.nodes[x, y] = new Fight(baseNode, FightType.Elite, null);
               break;
           }
 
@@ -230,66 +230,66 @@ namespace MaM.Generators
 
     private static void AssignNormalFightsToRemainingBlankNodes(ref Map map)
     {
-      for (var x = 0; x < map.Width; ++x)
+      for (var x = 0; x < map.width; ++x)
       {
-        for (var y = 0; y < map.Height; ++y)
+        for (var y = 0; y < map.height; ++y)
         {
-          if (map.Nodes[x, y] == null || map.Nodes[x, y].NodeType != NodeType.Blank)
+          if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.Blank)
           {
             continue;
           }
 
-          var baseNode = new Node(map.Nodes[x, y]);
-          map.Nodes[x, y] = new Fight(baseNode, FightType.Normal, null);
+          var baseNode = new Node(map.nodes[x, y]);
+          map.nodes[x, y] = new Fight(baseNode, FightType.Normal, null);
         }
       }
     }
 
     private static void AssignMysteryNodes(ref Map map, MapConfig mapConfig, ref Random random)
     {
-      for (var x = 0; x < map.Width; ++x)
+      for (var x = 0; x < map.width; ++x)
       {
-        for (var y = 1; y < map.Height; ++y)
+        for (var y = 1; y < map.height; ++y)
         {
-          if (map.Nodes[x, y] == null)
+          if (map.nodes[x, y] == null)
           {
             continue;
           }
 
           var isMystery = random.NextDouble() <= mapConfig.mysteryFrequency;
-          map.Nodes[x, y].IsMystery = isMystery;
+          map.nodes[x, y].isMystery = isMystery;
         }
       }
     }
 
     private static void AttachFinalCampsiteNode(ref Map map)
     {
-      var baseNodeForFinalCampsite = new Node(NodeType.CampSite, false, 0, map.Height - 2, false, true, new HashSet<Tuple<int, int>>());
+      var baseNodeForFinalCampsite = new Node(NodeType.CampSite, false, 0, map.height - 2, false, true, new HashSet<Tuple<int, int>>());
       var finalCampsite = new Campsite(baseNodeForFinalCampsite, null);
 
-      for (var x = 0; x < map.Width; ++x)
+      for (var x = 0; x < map.width; ++x)
       {
-        if (map.Nodes[x, finalCampsite.Y - 1] == null)
+        if (map.nodes[x, finalCampsite.y - 1] == null)
         {
           continue;
         }
 
-        map.Nodes[x, finalCampsite.Y - 1].Destinations.Clear();
-        map.Nodes[x, finalCampsite.Y - 1].Destinations.Add(new Tuple<int, int>(finalCampsite.X, finalCampsite.Y));
+        map.nodes[x, finalCampsite.y - 1].destinations.Clear();
+        map.nodes[x, finalCampsite.y - 1].destinations.Add(new Tuple<int, int>(finalCampsite.x, finalCampsite.y));
       }
 
-      map.Nodes[finalCampsite.X, finalCampsite.Y] = finalCampsite;
+      map.nodes[finalCampsite.x, finalCampsite.y] = finalCampsite;
     }
 
     private static void AttachBossNode(ref Map map)
     {
-      var baseNodeForBoss = new Node(NodeType.Fight, false, 0, map.Height - 1, false, true, null);
+      var baseNodeForBoss = new Node(NodeType.Fight, false, 0, map.height - 1, false, true, null);
 
       var bossNode = new Fight(baseNodeForBoss, FightType.Boss, null);
 
-      map.Nodes[0, map.Height - 2].Destinations.Add(new Tuple<int, int>(bossNode.X, bossNode.Y));
+      map.nodes[0, map.height - 2].destinations.Add(new Tuple<int, int>(bossNode.x, bossNode.y));
 
-      map.Nodes[bossNode.X, bossNode.Y] = bossNode;
+      map.nodes[bossNode.x, bossNode.y] = bossNode;
     }
 
     private static void CompleteSetupOfAllNodes(
@@ -301,34 +301,34 @@ namespace MaM.Generators
       ref Random random
       )
     {
-      for (var x = 0; x < map.Width; ++x)
+      for (var x = 0; x < map.width; ++x)
       {
-        for (var y = 0; y < map.Height; ++y)
+        for (var y = 0; y < map.height; ++y)
         {
-          var node = map.Nodes[x, y];
+          var node = map.nodes[x, y];
 
-          if (node == null || node.NodeType == NodeType.Blank)
+          if (node == null || node.nodeType == NodeType.Blank)
           {
             continue;
           }
 
-          switch (node.NodeType)
+          switch (node.nodeType)
           {
             case NodeType.CampSite:
               SetupCampsite(ref node);
               break;
             case NodeType.Fight:
             {
-              switch (((Fight)node).FightType)
+              switch (((Fight)node).fightType)
               {
                 case FightType.Normal:
-                  SetupEnemy(ref node, normalEnemyConfig, map.Index, cards, ref random);
+                  SetupEnemy(ref node, normalEnemyConfig, map.index, cards, ref random);
                   break;
                 case FightType.Elite:
-                  SetupEnemy(ref node, eliteEnemyConfig, map.Index, cards, ref random);
+                  SetupEnemy(ref node, eliteEnemyConfig, map.index, cards, ref random);
                   break;
                 case FightType.Boss:
-                  SetupBoss(ref node, map.Index, ref bosses, ref random);
+                  SetupBoss(ref node, map.index, ref bosses, ref random);
                   break;
               }
 
@@ -342,7 +342,7 @@ namespace MaM.Generators
     private static void SetupCampsite(ref Node node)
     {
       //TODO - implement
-      ((Campsite) node).Recruits = null;
+      ((Campsite) node).recruits = null;
     }
     
     private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, int mapIndex, List<Card> cards, ref Random random)
@@ -350,12 +350,12 @@ namespace MaM.Generators
       cards.Shuffle(ref random);
 
       var deck = cards
-        .Where(card => card.Cost >= enemyConfig.minCardCost && card.Cost <= enemyConfig.maxCardCost)
+        .Where(card => card.cost >= enemyConfig.minCardCost && card.cost <= enemyConfig.maxCardCost)
         .Take(enemyConfig.baseDeckSize)
         .ToList();
 
       var enemy = new Enemy(
-        "", //TODO - consider implementing nice dynamic and contextually constructed names based on guild types, etc. 
+        string.Empty, //TODO - consider implementing nice dynamic and contextually constructed names based on guild types, etc. 
         enemyConfig.baseHealth * (1 + mapIndex),
         enemyConfig.baseTradeRowSize + mapIndex,
         enemyConfig.baseManna + mapIndex, 
@@ -363,7 +363,7 @@ namespace MaM.Generators
         deck
       );
 
-      ((Fight) node).Enemy = enemy;
+      ((Fight) node).enemy = enemy;
     }
 
     private static void SetupBoss(ref Node node, int mapIndex, ref List<Enemy> bosses, ref Random random)
@@ -372,12 +372,12 @@ namespace MaM.Generators
 
       var boss = bosses.First();
 
-      boss.BasicHandSize += mapIndex;
-      boss.BasicManna += mapIndex;
-      boss.Health *= (1 + mapIndex);
-      boss.TradeRowSize += mapIndex;
+      boss.basicHandSize += mapIndex;
+      boss.basicManna += mapIndex;
+      boss.health *= (1 + mapIndex);
+      boss.tradeRowSize += mapIndex;
 
-      ((Fight) node).Enemy = boss;
+      ((Fight) node).enemy = boss;
 
       bosses.Remove(boss);
     }

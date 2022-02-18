@@ -5,17 +5,16 @@ using Newtonsoft.Json;
 
 namespace MaM.Readers
 {
-  internal class JsonIntermediateBoss
+  internal struct JsonIntermediateBoss
   {
-    public string   Id            ;
-    public string   Name          ;
-    public int      Health        ;
-    public int      TradeRowSize  ;
-    public int      Manna         ;
-    public int      HandSize      ;
-    public string   Cards         ;
+    public string   id            ;
+    public string   name          ;
+    public int      health        ;
+    public int      tradeRowSize  ;
+    public int      manna         ;
+    public int      handSize      ;
+    public string   cards         ;
   }
-
 
   public static class BossReader
   {
@@ -27,16 +26,16 @@ namespace MaM.Readers
 
       foreach (var intermediateBoss in intermediateBosses)
       {
-        var cardIds = intermediateBoss.Cards.Replace(" ", "").Split(JoinedCardDelim).ToList();
+        var cardIds = intermediateBoss.cards.Replace(" ", string.Empty).Split(JoinedCardDelim).ToList();
 
         var bossCards = CardReader.GetCardsFromIds(cardIds, ref cards);
 
         var boss = new Enemy(
-          intermediateBoss.Name,
-          intermediateBoss.Health,
-          intermediateBoss.TradeRowSize,
-          intermediateBoss.Manna,
-          intermediateBoss.HandSize,
+          intermediateBoss.name,
+          intermediateBoss.health,
+          intermediateBoss.tradeRowSize,
+          intermediateBoss.manna,
+          intermediateBoss.handSize,
           bossCards
         );
 

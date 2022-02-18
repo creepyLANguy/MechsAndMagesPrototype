@@ -42,7 +42,7 @@ namespace MaM.Helpers
     {
       //We remove full card lists before exporting as these bloat the save file.
       //The decks should be repopulated based on the stored ids when resuming a save state.
-      gameState.player.Deck = null;
+      gameState.player.deck = null;
 
       var content = ObjectToJson(gameState, indented);
 
@@ -57,7 +57,7 @@ namespace MaM.Helpers
 
       if (gameState.player != null)
       {
-        gameState.player.Deck = CardReader.GetCardsFromIds(gameState.player.DeckCardIds, ref cards);
+        gameState.player.deck = CardReader.GetCardsFromIds(gameState.player.deckCardIds, ref cards);
       }
 
       return gameState;

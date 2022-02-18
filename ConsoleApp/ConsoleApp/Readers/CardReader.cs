@@ -1,24 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MaM.Helpers;
 using Newtonsoft.Json;
 
 namespace MaM.Readers
 {
-  internal class JsonIntermediateCard
+  internal struct JsonIntermediateCard
   {
-    public int?     Quantity          ;
-    public string   Name              ;
-    public string   Type              ;
-    public string   Guild             ;
-    public int?     Cost              ;
-    public int?     Defense           ;
-    public int?     Shield            ;
-    public string   DefaultAbilities  ;
-    public string   GuildBonuses      ;
-    public string   AllyBonuses       ;
-    public string   ScrapBonuses      ;
-    public string   Id                ;
+    public int?     quantity          ;
+    public string   name              ;
+    public string   type              ;
+    public string   guild             ;
+    public int?     cost              ;
+    public int?     defense           ;
+    public int?     shield            ;
+    public string   defaultAbilities  ;
+    public string   guildBonuses      ;
+    public string   allyBonuses       ;
+    public string   scrapBonuses      ;
+    public string   id                ;
   }
 
   public static class CardReader
@@ -41,23 +42,23 @@ namespace MaM.Readers
 
       var set = new ActionsValuesSet();
 
-      var actions = actionString.Replace(" ", "").Split(JoinedActionDelim);
+      var actions = actionString.Replace(" ", string.Empty).Split(JoinedActionDelim);
 
       foreach (var action in actions)
       {
-        set.Attack = GetCardActionValue(action, Actions.Attack) ?? set.Attack;
+        set.attack = GetCardActionValue(action, Actions.Attack) ?? set.attack;
 
-        set.Draw = GetCardActionValue(action, Actions.Draw) ?? set.Draw;
+        set.draw = GetCardActionValue(action, Actions.Draw) ?? set.draw;
 
-        set.Scrap = GetCardActionValue(action, Actions.Scrap) ?? set.Scrap;
+        set.scrap = GetCardActionValue(action, Actions.Scrap) ?? set.scrap;
 
-        set.OpponentDiscard = GetCardActionValue(action, Actions.OpponentDiscard) ?? set.OpponentDiscard;
+        set.opponentDiscard = GetCardActionValue(action, Actions.OpponentDiscard) ?? set.opponentDiscard;
 
-        set.Consume = GetCardActionValue(action, Actions.Consume) ?? set.Consume;
+        set.consume = GetCardActionValue(action, Actions.Consume) ?? set.consume;
 
-        set.Heal = GetCardActionValue(action, Actions.Heal) ?? set.Heal;
+        set.heal = GetCardActionValue(action, Actions.Heal) ?? set.heal;
 
-        set.Trade = GetCardActionValue(action, Actions.Trade) ?? set.Trade;
+        set.trade = GetCardActionValue(action, Actions.Trade) ?? set.trade;
       }
 
       return set;
@@ -69,25 +70,25 @@ namespace MaM.Readers
 
       foreach (var ic in intermediateCards)
       {
-        var cardType = CardTypes.All.SingleOrDefault(s => s.Key == ic.Type) ?? CardTypes.Unknown; 
+        var cardType = CardTypes.All.SingleOrDefault(s => s.Key == ic.type) ?? CardTypes.Unknown; 
         
-        var guild = Guilds.All.SingleOrDefault(s => s.Key == ic.Guild) ?? Guilds.Neutral;
+        var guild = Guilds.All.SingleOrDefault(s => s.Key == ic.guild) ?? Guilds.Neutral;
 
         var card = new Card(
-          ic.Id,
-          ic.Name,
+          ic.id,
+          ic.name,
           cardType,
           guild,
-          ic.Cost ?? 0,
-          ic.Defense ?? 0,
-          ic.Shield ?? 0,
-          ConstructActionSet(ic.DefaultAbilities),
-          ConstructActionSet(ic.GuildBonuses),
-          ConstructActionSet(ic.AllyBonuses),
-          ConstructActionSet(ic.ScrapBonuses)
+          ic.cost ?? 0,
+          ic.defense ?? 0,
+          ic.shield ?? 0,
+          ConstructActionSet(ic.defaultAbilities),
+          ConstructActionSet(ic.guildBonuses),
+          ConstructActionSet(ic.allyBonuses),
+          ConstructActionSet(ic.scrapBonuses)
         );
 
-        for (var i = 0; i < ic.Quantity; ++i)
+        for (var i = 0; i < ic.quantity; ++i)
         {
           cards.Add(card);
         }
@@ -127,7 +128,7 @@ namespace MaM.Readers
 
     public static Card GetCardFromId(string cardId, ref List<Card> cards)
     {
-      return cards.Find(it => it.Id == cardId);
+      return cards.Find(it => it.id == cardId);
     }
   }
 }

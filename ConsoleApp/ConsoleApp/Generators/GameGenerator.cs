@@ -63,13 +63,13 @@ namespace MaM.Generators
     {
       var playerName = GetPlayerName();
 
-      var deck = cards.Where(card => card.Guild == Guilds.Neutral).ToList();
-      cards.RemoveAll(card => card.Guild == Guilds.Neutral);
+      var deck = cards.Where(card => card.guild == Guilds.Neutral).ToList();
+      cards.RemoveAll(card => card.guild == Guilds.Neutral);
 
       var selectedCards = PromptPlayerForInitialCardSelections(ref initialSelections, ref cards, random);
       deck.AddRange(selectedCards);
 
-      var deckIds = deck.Select(card => card.Id).ToList();
+      var deckIds = deck.Select(card => card.id).ToList();
 
       var player = new Player(
         false,
@@ -118,7 +118,7 @@ namespace MaM.Generators
       {
         cards.Shuffle(ref random);
 
-        var costSpecificCards = cards.Where(card => card.Cost >= initialCardSelection.minCost && card.Cost <= initialCardSelection.maxCost);
+        var costSpecificCards = cards.Where(card => card.cost >= initialCardSelection.minCost && card.cost <= initialCardSelection.maxCost);
         var offeredCards = costSpecificCards.Take(initialCardSelection.cardCount).ToList();
 
         var selectedCard = GetSelectedCard(ref offeredCards);
@@ -137,10 +137,10 @@ namespace MaM.Generators
       for (var index = 0; index < offeredCards.Count; index++)
       {
         var card = offeredCards[index];
-        Console.WriteLine((index+1) + ")" + "\t" + card.Name + "\t\t|\t" + "Mana Cost :" + card.Cost + "\t|\t" + "Type:" + card.Type.Key + "\t|\t" + "Guild:" + card.Guild.Key);
+        Console.WriteLine((index+1) + ")" + "\t" + card.name + "\t\t|\t" + "Mana Cost :" + card.cost + "\t|\t" + "Type:" + card.type.Key + "\t|\t" + "Guild:" + card.guild.Key);
       }
 
-      var selectionIndex = int.Parse(Console.ReadLine()) - 1;
+      var selectionIndex = int.Parse(Console.ReadLine() ?? string.Empty) - 1;
 
       return offeredCards[selectionIndex];
     }
