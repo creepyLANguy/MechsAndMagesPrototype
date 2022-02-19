@@ -9,17 +9,21 @@ namespace MaM.Generators
 {
   public static class GameGenerator
   {
-    public static GameContents GenerateGame(
-      string saveFilename,
-      GameConfig gameConfig
-    )
+    public static GameContents Generate(string gameConfigFilename, string saveFilename)
     {
+      var gameConfig = FileHelper.GetGameConfigFromFile(gameConfigFilename);
+
       var cards = CardReader.GetCardsFromExcel(gameConfig.cardsExcelFile);
 
-      var gameState = string.IsNullOrEmpty(saveFilename) ? 
-        new GameState(DateTime.Now, Math.Abs((int)DateTime.Now.Ticks), null) :
-        FileHelper.GetGameStateFromFile(saveFilename, ref cards);
-      
+      var gameState = string.IsNullOrEmpty(saveFilename)
+        ? new GameState(DateTime.Now, Math.Abs((int) DateTime.Now.Ticks), null)
+        : FileHelper.GetGameStateFromFile(saveFilename, ref cards);
+
+      return GenerateViaStructs(ref gameConfig, ref gameState, ref cards);
+    }
+    
+    private static GameContents GenerateViaStructs(ref GameConfig gameConfig, ref GameState gameState, ref List<Card> cards)
+    {
       var random = new Random(gameState.randomSeed);
 
       var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards, random);
@@ -134,16 +138,47 @@ namespace MaM.Generators
 
     private static Card GetSelectedCard(ref List<Card> offeredCards)
     {
+
       Console.WriteLine("Select one of the following cards by specifying its number in the list : ");
       for (var index = 0; index < offeredCards.Count; index++)
       {
         var card = offeredCards[index];
-        Console.WriteLine((index+1) + ")" + "\t" + card.name + "\t\t|\t" + "Mana Cost :" + card.cost + "\t|\t" + "Type:" + card.type.Key + "\t|\t" + "Guild:" + card.guild.Key);
+
+        Console.WriteLine(
+          (index + 1) + ")" + 
+          "\t" +
+          GetPrintableCardName(card.name) + 
+          "\t\t|\t" +
+          "Mana Cost :" + card.cost +
+          "\t|\t" +
+          "Type:" + card.type.Key +
+          "\t|\t" +
+          "Guild:" + card.guild.Key
+          );
       }
 
       var selectionIndex = int.Parse(Console.ReadLine() ?? string.Empty) - 1;
 
       return offeredCards[selectionIndex];
+    }
+
+    private static string GetPrintableCardName(string cardName)
+    {
+      const int minPrintableLength = 10;
+      const int maxPrintableLength = 14;
+      const string spacer = " ";
+      const string ellipsis = "...";
+
+      var printableCardName = cardName.Length < maxPrintableLength
+        ? cardName
+        : cardName.Substring(0, 1 + (maxPrintableLength - ellipsis.Length)) + ellipsis;
+
+      while (printableCardName.Length < minPrintableLength)
+      {
+        printableCardName += spacer;
+      }
+
+      return printableCardName;
     }
   }
 }
