@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MaM.Definitions;
@@ -19,10 +19,10 @@ namespace MaM.Generators
         ? new GameState(DateTime.Now, Math.Abs((int) DateTime.Now.Ticks), null)
         : FileHelper.GetGameStateFromFile(saveFilename, ref cards);
 
-      return GenerateViaStructs(ref gameConfig, ref gameState, ref cards);
+      return GenerateGameContents(ref gameConfig, ref gameState, ref cards);
     }
     
-    private static GameContents GenerateViaStructs(ref GameConfig gameConfig, ref GameState gameState, ref List<Card> cards)
+    private static GameContents GenerateGameContents(ref GameConfig gameConfig, ref GameState gameState, ref List<Card> cards)
     {
       var random = new Random(gameState.randomSeed);
 
@@ -149,7 +149,7 @@ namespace MaM.Generators
           "\t" +
           GetPrintableCardName(card.name) + 
           "\t\t|\t" +
-          "Mana Cost :" + card.cost +
+          "Manna Cost :" + card.cost +
           "\t|\t" +
           "Type:" + card.type.Key +
           "\t|\t" +
@@ -164,21 +164,13 @@ namespace MaM.Generators
 
     private static string GetPrintableCardName(string cardName)
     {
-      const int minPrintableLength = 10;
-      const int maxPrintableLength = 14;
-      const string spacer = " ";
+      const int printableLength = 14;
+      const char spacer = ' ';
       const string ellipsis = "...";
 
-      var printableCardName = cardName.Length < maxPrintableLength
-        ? cardName
-        : cardName.Substring(0, 1 + (maxPrintableLength - ellipsis.Length)) + ellipsis;
-
-      while (printableCardName.Length < minPrintableLength)
-      {
-        printableCardName += spacer;
-      }
-
-      return printableCardName;
+      return cardName.Length <= printableLength 
+        ? cardName.PadRight(printableLength, spacer)
+        : cardName.Substring(0, 1 + (printableLength - ellipsis.Length)) + ellipsis;
     }
   }
 }

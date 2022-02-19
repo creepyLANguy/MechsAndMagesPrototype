@@ -1,4 +1,5 @@
-﻿using MaM.GameLogic;
+﻿using System;
+using MaM.GameLogic;
 
 namespace MaM
 {
@@ -11,7 +12,11 @@ namespace MaM
 
     private static void Main()
     {
+      var startTime = DateTime.Now;
+
       Game.Run(gameConfigFilename, saveFilename);
+
+      Console.WriteLine("Duration: " + DateTime.Now.Subtract(startTime));
     }
   }
 }
