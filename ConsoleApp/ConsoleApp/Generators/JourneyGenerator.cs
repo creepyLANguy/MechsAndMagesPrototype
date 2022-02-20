@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MaM.Definitions;
 using MaM.Helpers;
+using MaM.Readers;
 
 namespace MaM.Generators
 {
@@ -13,6 +14,7 @@ namespace MaM.Generators
       List<MapConfig> mapConfigs, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig,
+      ref EnemyNames enemyNames,
       ref List<Enemy> bosses,
       List<Card> cards, 
       ref Random random
@@ -22,7 +24,7 @@ namespace MaM.Generators
 
       for (var index = 0; index < journeyLength; ++index)
       {
-        var map = GenerateMap(index, mapConfigs[index], normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
+        var map = GenerateMap(index, mapConfigs[index], normalEnemyConfig, eliteEnemyConfig, ref enemyNames, ref bosses, ref cards, ref random);
         journey.maps.Add(map);
       }
 
@@ -34,6 +36,7 @@ namespace MaM.Generators
       MapConfig mapConfig, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig,
+      ref EnemyNames enemyNames,
       ref List<Enemy> bosses,
       ref List<Card> cards, 
       ref Random random
@@ -67,7 +70,7 @@ namespace MaM.Generators
 
       AttachBossNode(ref map);
 
-      CompleteSetupOfAllNodes(ref map, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
+      CompleteSetupOfAllNodes(ref map, normalEnemyConfig, eliteEnemyConfig, ref enemyNames, ref bosses, ref cards, ref random);
 
       return map;
     }
@@ -297,6 +300,7 @@ namespace MaM.Generators
       ref Map map, 
       EnemyConfig normalEnemyConfig, 
       EnemyConfig eliteEnemyConfig,
+      ref EnemyNames enemyNames,
       ref List<Enemy> bosses,
       ref List<Card> cards,
       ref Random random
@@ -323,10 +327,10 @@ namespace MaM.Generators
               switch (((Fight)node).fightType)
               {
                 case FightType.Normal:
-                  SetupEnemy(ref node, normalEnemyConfig, map.index, cards, ref random);
+                  SetupEnemy(ref node, normalEnemyConfig, ref enemyNames, map.index, cards, ref random);
                   break;
                 case FightType.Elite:
-                  SetupEnemy(ref node, eliteEnemyConfig, map.index, cards, ref random);
+                  SetupEnemy(ref node, eliteEnemyConfig, ref enemyNames, map.index, cards, ref random);
                   break;
                 case FightType.Boss:
                   SetupBoss(ref node, map.index, ref bosses, ref random);
@@ -346,7 +350,7 @@ namespace MaM.Generators
       ((Campsite) node).recruits = null;
     }
     
-    private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, int mapIndex, List<Card> cards, ref Random random)
+    private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, ref EnemyNames enemyNames, int mapIndex, List<Card> cards, ref Random random)
     {
       cards.Shuffle(ref random);
 
@@ -355,8 +359,12 @@ namespace MaM.Generators
         .Take(enemyConfig.baseDeckSize)
         .ToList();
 
+      var dominantGuild = CardReader.GetDominantGuildOfDeck(ref deck);
+
+      var name = GetEnemyName(dominantGuild, ref enemyNames, ref random);
+
       var enemy = new Enemy(
-        string.Empty, //TODO - consider implementing nice dynamic and contextually constructed names based on guild types, etc. 
+        name,
         enemyConfig.baseHealth * (1 + mapIndex),
         enemyConfig.baseTradeRowSize + mapIndex,
         enemyConfig.baseManna + mapIndex, 
@@ -365,6 +373,12 @@ namespace MaM.Generators
       );
 
       ((Fight) node).enemy = enemy;
+    }
+
+    private static string GetEnemyName(Guild guild, ref EnemyNames enemyNames, ref Random random)
+    {
+      //TODO - implement
+      return "";
     }
 
     private static void SetupBoss(ref Node node, int mapIndex, ref List<Enemy> bosses, ref Random random)

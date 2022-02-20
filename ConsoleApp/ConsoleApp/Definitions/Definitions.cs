@@ -397,6 +397,22 @@ namespace MaM.Definitions
     public int  maxCardCost;
   }
 
+  public struct EnemyNames
+  {
+    public List<string> pre;
+    
+    public List<string> necroDescriptors;
+    public List<string> mechDescriptors;
+    public List<string> mageDescriptors;
+    public List<string> droidDescriptors;
+    
+    public List<string> collective;
+
+    public List<string> post;
+
+    public List<string> place;
+  }
+
   public struct PlayerConfig
   {
     public int  health        ;
@@ -433,6 +449,7 @@ namespace MaM.Definitions
   {
     public string                     cardsExcelFile;
     public string                     bossesExcelFile;
+    public string                     enemyNamesExcelFile;
     public List<MapConfig>            mapConfigs;
     public EnemyConfig                normalEnemyConfig;
     public EnemyConfig                eliteEnemyConfig;

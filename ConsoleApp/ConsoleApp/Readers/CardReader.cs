@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MaM.Definitions;
 using MaM.Helpers;
@@ -131,6 +130,12 @@ namespace MaM.Readers
     public static Card GetCardFromId(string cardId, ref List<Card> cards)
     {
       return cards.Find(it => it.id == cardId);
+    }
+
+    public static Guild GetDominantGuildOfDeck(ref List<Card> deck)
+    {
+      //TODO - implement
+      return Guilds.Neutral;
     }
   }
 }
