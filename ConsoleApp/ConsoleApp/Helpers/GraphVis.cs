@@ -8,15 +8,19 @@ namespace MaM.Helpers
   {
     public static void SaveMapsAsDotFiles(ref Journey journey, bool verbose)
     {
+      const string folderName = @"DEBUG_MAPS\";
+
       for (var i = 0; i < journey.maps.Count; ++i)
       {
         var dotFileString = GenerateDotFileContents(journey.maps[i], "Map_" + (i + 1), verbose);
+
         var dotFilename = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
-        FileHelper.WriteFileToDrive(dotFilename, dotFileString.ToString());
+
+        FileHelper.WriteFileToDrive(dotFilename, dotFileString, folderName);
       }
     }
 
-    private static StringBuilder GenerateDotFileContents(Map map, string mapName, bool verbose)
+    private static string GenerateDotFileContents(Map map, string mapName, bool verbose)
     {
       var mainBuffer = new StringBuilder(); 
       
@@ -58,7 +62,7 @@ namespace MaM.Helpers
 
       mainBuffer.Append('}');
 
-      return mainBuffer;
+      return mainBuffer.ToString();
     }
 
     private static void AddNodeLabelsSection(ref StringBuilder mainBuffer, ref Map map)

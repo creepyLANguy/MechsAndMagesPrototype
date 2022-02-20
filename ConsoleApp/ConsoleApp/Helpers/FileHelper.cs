@@ -12,13 +12,20 @@ namespace MaM.Helpers
 {
   internal static class FileHelper
   {
-    public static void WriteFileToDrive(string filename, string content)
+    public static void WriteFileToDrive(string filename, string content, string folderName = "")
     {
+      if (folderName != string.Empty && Directory.Exists(folderName) == false)
+      {
+        Directory.CreateDirectory(folderName);
+      }
+
+      filename = folderName + filename;
+
       Console.WriteLine("Saving " + filename);
 
       //File.WriteAllText(filename, content);
 
-      using (var sw = new StreamWriter(File.Open(filename, FileMode.Create), Encoding.Unicode))
+      using (var sw = new StreamWriter(File.Open(filename, FileMode.Create, FileAccess.Write), Encoding.Unicode))
       {
         sw.Write(content);
       }

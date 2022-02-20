@@ -138,6 +138,8 @@ namespace MaM.Generators
 
     private static Card GetSelectedCard(ref List<Card> offeredCards)
     {
+      const string tab = "\t";
+      const string pipe = "|";
 
       Console.WriteLine("Select one of the following cards by specifying its number in the list : ");
       for (var index = 0; index < offeredCards.Count; index++)
@@ -145,14 +147,14 @@ namespace MaM.Generators
         var card = offeredCards[index];
 
         Console.WriteLine(
-          (index + 1) + ")" + 
-          "\t" +
-          GetPrintableCardName(card.name) + 
-          "\t\t|\t" +
+          index + 1 + ")" +
+           tab +
+          GetPrintableCardName(card.name) +
+          tab + tab + pipe + tab +
           "Manna Cost :" + card.cost +
-          "\t|\t" +
+          tab + pipe + tab +
           "Type:" + card.type.Key +
-          "\t|\t" +
+          tab + pipe + tab +
           "Guild:" + card.guild.Key
           );
       }
