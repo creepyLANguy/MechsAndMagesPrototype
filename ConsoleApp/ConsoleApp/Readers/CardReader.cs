@@ -134,8 +134,16 @@ namespace MaM.Readers
 
     public static Guild GetDominantGuildOfDeck(ref List<Card> deck)
     {
-      //TODO - implement
-      return Guilds.Neutral;
+      var tallyList = new List<int>(new int[Guilds.All.Count]);
+
+      foreach (var card in deck)
+      {
+        ++tallyList[card.guild.Value];
+      }
+
+      return tallyList.Count(value => value == tallyList.Max()) > 1 
+        ? Guilds.Neutral // if more than one guild shares the highest card occurence, we deem this deck to be Neutral. 
+        : Guilds.All[tallyList.IndexOf(tallyList.Max())]; // else whichever single-most accounted-for guild in the deck is the deck's prevailing guild. 
     }
   }
 }

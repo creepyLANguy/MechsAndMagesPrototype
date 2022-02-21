@@ -25,7 +25,8 @@ namespace MaM.Definitions
     public static readonly Guild Mage    = new Guild("Mage",    3);
     public static readonly Guild Necro   = new Guild("Necro",   4);
 
-    public static readonly List<Guild> All = new List<Guild>() { Borg, Mech, Mage, Necro, Neutral };
+    // Important - assign in the same order as the value for each guild.
+    public static readonly List<Guild> All = new List<Guild>() { Neutral, Borg, Mech, Mage, Necro }; 
   }
 
   public class Action : KeyValuePair<string, int> { public Action(string key, int val) : base(key, val) { } }
@@ -460,11 +461,11 @@ namespace MaM.Definitions
 
   public struct GameContents
   {
-    Player      player  ;
-    Journey     journey ;
-    List<Card>  cards   ;
-    Random      random  ;
-    private int seed    ;
+    public Player       player  ;
+    public Journey      journey ;
+    public List<Card>   cards   ;
+    public Random       random  ;
+    public int          seed    ;
 
     public GameContents(Player player, Journey journey, List<Card> cards, Random random, int seed)
     {
