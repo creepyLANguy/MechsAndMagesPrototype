@@ -30,10 +30,11 @@ namespace MaM.Generators
 
       var journey = GetJourney(
         gameConfig.journeyLength, 
-        gameConfig.bossesExcelFile, 
+        gameConfig.bossesExcelFile,
+        gameConfig.enemyNamesExcelFile,
         gameConfig.mapConfigs, 
         gameConfig.normalEnemyConfig, 
-        gameConfig.eliteEnemyConfig, 
+        gameConfig.eliteEnemyConfig,
         ref cards, 
         ref random
         );
@@ -46,16 +47,19 @@ namespace MaM.Generators
     private static Journey GetJourney(
       int journeyLength, 
       string bossesExcelFile, 
+      string enemyNamesExcelFile,
       List<MapConfig> mapConfigs, 
       EnemyConfig normalEnemyConfig, 
-      EnemyConfig eliteEnemyConfig, 
+      EnemyConfig eliteEnemyConfig,
       ref List<Card> cards, 
       ref Random random
       )
     {
       var bosses = BossReader.GetBossesFromExcel(bossesExcelFile, ref cards);
 
-      var journey = JourneyGenerator.GenerateJourney(journeyLength, mapConfigs, normalEnemyConfig, eliteEnemyConfig, ref bosses, cards, ref random);
+      var enemyNames = EnemyReader.GetEnemyNames(enemyNamesExcelFile);
+
+      var journey = JourneyGenerator.GenerateJourney(journeyLength, mapConfigs, normalEnemyConfig, eliteEnemyConfig, ref enemyNames, ref bosses, cards, ref random);
 
 #if DEBUG
       GraphVis.SaveMapsAsDotFiles(ref journey, false);

@@ -1,6 +1,7 @@
 {
   "cardsExcelFile": "Cards.xlsx",
   "bossesExcelFile": "Bosses.xlsx",
+  "enemyNamesExcelFile": "EnemyNames.xlsx",
   "mapConfigs": [
     {
       "width": 7,
