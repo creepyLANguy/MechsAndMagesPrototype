@@ -398,20 +398,21 @@ namespace MaM.Definitions
     public int  maxCardCost;
   }
 
-  public struct EnemyNames
+  public class EnemyNames
   {
-    public List<string> pre;
-    
-    public List<string> necroDescriptors;
-    public List<string> mechDescriptors;
-    public List<string> mageDescriptors;
-    public List<string> droidDescriptors;
-    
-    public List<string> collective;
+    public List<string> pre                 = new List<string>();
 
-    public List<string> post;
+    public List<string> neutralDescriptors  = new List<string>();
+    public List<string> borgDescriptors     = new List<string>();
+    public List<string> mechDescriptors     = new List<string>();
+    public List<string> mageDescriptors     = new List<string>();
+    public List<string> necroDescriptors    = new List<string>();
 
-    public List<string> place;
+    public List<string> collective          = new List<string>();
+
+    public List<string> post                = new List<string>();
+
+    public List<string> place               = new List<string>();
   }
 
   public struct PlayerConfig

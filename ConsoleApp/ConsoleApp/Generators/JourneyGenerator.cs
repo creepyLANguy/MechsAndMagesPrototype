@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using MaM.Definitions;
 using MaM.Helpers;
-using MaM.Readers;
 
 namespace MaM.Generators
 {
@@ -375,10 +375,81 @@ namespace MaM.Generators
       ((Fight) node).enemy = enemy;
     }
 
+    //TODO - refactor!
     private static string GetEnemyName(Guild guild, ref EnemyNames enemyNames, ref Random random)
-    {
-      //TODO - implement
-      return "";
+    { 
+      const string joinedDelim = ",";
+
+      var buff = new StringBuilder();
+
+      var descriptor = "";
+
+      if (guild == Guilds.Neutral)
+      {
+        descriptor += enemyNames.neutralDescriptors[random.Next(0, enemyNames.neutralDescriptors.Count)];
+      }
+      else if (guild == Guilds.Borg)
+      {
+        descriptor += enemyNames.borgDescriptors[random.Next(0, enemyNames.borgDescriptors.Count)];
+      }
+      else if (guild == Guilds.Mech)
+      {
+        descriptor += enemyNames.mechDescriptors[random.Next(0, enemyNames.mechDescriptors.Count)];
+      }
+      else if (guild == Guilds.Mage)
+      {
+        descriptor += enemyNames.mageDescriptors[random.Next(0, enemyNames.mageDescriptors.Count)];
+      }
+      else if (guild == Guilds.Necro)
+      {
+        descriptor += enemyNames.necroDescriptors[random.Next(0, enemyNames.necroDescriptors.Count)];
+      }
+
+      var pre = enemyNames.pre[random.Next(0, enemyNames.pre.Count)];
+      var l = pre.Split(joinedDelim);
+      if (l[0].ToLower() == "a")
+      {
+        if (
+          descriptor[0] == 'a' || descriptor[0] == 'e' || descriptor[0] == 'i' || descriptor[0] == 'o' || descriptor[0] == 'u' || 
+          descriptor[0] == 'A' || descriptor[0] == 'E' || descriptor[0] == 'I' || descriptor[0] == 'O' || descriptor[0] == 'U'
+          )
+        {
+          pre = l[1];
+        }
+        else
+        {
+          pre = l[0];
+        }
+
+      }
+      
+
+      var collective = enemyNames.collective[random.Next(0, enemyNames.collective.Count)];
+      
+      var post = enemyNames.post[random.Next(0, enemyNames.post.Count)];
+
+      var place = enemyNames.place[random.Next(0, enemyNames.place.Count)];
+
+      buff
+        .Append(pre.Trim())
+        .Append(' ')
+        .Append(descriptor.Trim())
+        .Append(' ')
+        .Append(collective.Trim())
+        .Append(' ')
+        .Append(post.Trim())
+        .Append(' ')
+        .Append(place.Trim())
+        .Append(' ')
+        ;
+
+        //AL.
+#if DEBUG
+      Console.WriteLine(buff);
+#endif
+      //
+
+      return buff.ToString();
     }
 
     private static void SetupBoss(ref Node node, int mapIndex, ref List<Enemy> bosses, ref Random random)

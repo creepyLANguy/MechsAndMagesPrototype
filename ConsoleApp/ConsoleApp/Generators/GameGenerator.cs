@@ -115,6 +115,13 @@ namespace MaM.Generators
     private static string GetPlayerName()
     {
       Console.WriteLine("Enter your name:");
+
+      //AL.
+#if DEBUG
+      return "1";
+#endif
+      //
+
       return Console.ReadLine();
     }
 
@@ -145,7 +152,7 @@ namespace MaM.Generators
       const string tab = "\t";
       const string pipe = "|";
 
-      Console.WriteLine("Select one of the following cards by specifying its number in the list : ");
+      Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
       for (var index = 0; index < offeredCards.Count; index++)
       {
         var card = offeredCards[index];
@@ -162,6 +169,12 @@ namespace MaM.Generators
           "Guild:" + card.guild.Key
           );
       }
+
+      //AL.
+#if DEBUG
+      return offeredCards[1];
+#endif
+      //
 
       var selectionIndex = int.Parse(Console.ReadLine() ?? string.Empty) - 1;
 
