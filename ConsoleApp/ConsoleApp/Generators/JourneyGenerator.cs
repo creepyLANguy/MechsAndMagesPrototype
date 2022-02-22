@@ -359,7 +359,7 @@ namespace MaM.Generators
         .Take(enemyConfig.baseDeckSize)
         .ToList();
 
-      var dominantGuild = CardReader.GetDominantGuildOfDeck(ref deck);
+      var dominantGuild = DeckInspector.GetDominantGuild(ref deck);
 
       var name = GetEnemyName(dominantGuild, ref enemyNames, ref random);
 
