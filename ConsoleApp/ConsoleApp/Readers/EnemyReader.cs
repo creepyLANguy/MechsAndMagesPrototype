@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using Aspose.Cells;
 using MaM.Definitions;
@@ -157,8 +157,7 @@ namespace MaM.Readers
 
     private static bool IsVowel(char c)
     {
-      return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' ||
-             c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U';
+      return "aeiouAEIOU".Contains(c);
     }
   }
 }
