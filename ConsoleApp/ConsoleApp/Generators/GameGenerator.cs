@@ -9,15 +9,15 @@ namespace MaM.Generators
 {
   public static class GameGenerator
   {
-    public static GameContents Generate(string gameConfigFilename, string saveFilename)
+    public static GameContents Generate(string gameConfigFilename, string saveFilename, string cryptoKey = null)
     {
-      var gameConfig = FileHelper.GetGameConfigFromFile(gameConfigFilename);
+      var gameConfig = GameConfigReader.GetGameConfigFromFile(gameConfigFilename);
 
       var cards = CardReader.GetCardsFromExcel(gameConfig.cardsExcelFile);
 
       var gameState = string.IsNullOrEmpty(saveFilename)
         ? new GameState(DateTime.Now, Math.Abs((int) DateTime.Now.Ticks), null)
-        : FileHelper.GetGameStateFromFile(saveFilename, ref cards);
+        : SaveFileHelper.GetGameStateFromFile(saveFilename, ref cards, cryptoKey);
 
       return GenerateGameContents(ref gameConfig, ref gameState, ref cards);
     }

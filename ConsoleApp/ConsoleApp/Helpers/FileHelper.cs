@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Aspose.Cells;
 using Aspose.Cells.Utility;
-using MaM.Definitions;
-using MaM.Readers;
-using Newtonsoft.Json;
 
 namespace MaM.Helpers
 {
@@ -23,9 +19,7 @@ namespace MaM.Helpers
 
       Console.WriteLine("Saving " + filename);
 
-      //File.WriteAllText(filename, content);
-
-      using (var sw = new StreamWriter(File.Open(filename, FileMode.Create, FileAccess.Write), Encoding.Unicode))
+      using (var sw = new StreamWriter(File.Open(filename, FileMode.Create, FileAccess.Write), Encoding.UTF8))
       {
         sw.Write(content);
       }
@@ -46,44 +40,6 @@ namespace MaM.Helpers
       var json = JsonUtility.ExportRangeToJson(range, exportOptions);
 
       return json;
-    }
-
-    private static string ObjectToJson(object obj, bool indented = false)
-    {
-      return JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
-    }
-
-    //TODO - use this function to save games
-    public static void WriteCurrentGameStateToFile(ref GameState gameState, string filename, bool indented = false)
-    {
-      //We remove full card lists before exporting as these bloat the save file.
-      //The decks should be repopulated based on the stored ids when resuming a save state.
-      gameState.player.deck = null;
-
-      var content = ObjectToJson(gameState, indented);
-
-      WriteFileToDrive(filename, content);
-    }
-
-    public static GameState GetGameStateFromFile(string filename, ref List<Card> cards)
-    {
-      var contents = File.ReadAllText(filename);
-      
-      var gameState = JsonConvert.DeserializeObject<GameState>(contents);
-
-      if (gameState.player != null)
-      {
-        gameState.player.deck = CardReader.GetCardsFromIds(gameState.player.deckCardIds, ref cards);
-      }
-
-      return gameState;
-    }
-    
-    public static GameConfig GetGameConfigFromFile(string filename)
-    {
-      var contents = File.ReadAllText(filename);
-      
-      return JsonConvert.DeserializeObject<GameConfig>(contents);
     }
   }
 }

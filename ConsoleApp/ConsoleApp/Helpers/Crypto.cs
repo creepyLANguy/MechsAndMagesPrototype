@@ -24,6 +24,54 @@ namespace MaM.Helpers
       return Encoding.Unicode.GetString(DES.Create().Key);
     }
 
+    public static string EncryptString(string content, string key)
+    {
+      var contentBytes = Encoding.ASCII.GetBytes(content);
+      var keyBytes = Encoding.ASCII.GetBytes(key);
+
+      var des = new DESCryptoServiceProvider
+      {
+        Key = keyBytes,
+        IV = keyBytes
+      };
+
+      var memStream = new MemoryStream();
+      var cryptoStream = new CryptoStream(memStream, des.CreateEncryptor(keyBytes, keyBytes), CryptoStreamMode.Write);
+      cryptoStream.Write(contentBytes, 0, contentBytes.Length);
+      cryptoStream.FlushFinalBlock();
+
+      var encryptedContentBytes = new byte[memStream.Length];
+      memStream.Position = 0;
+      _ = memStream.Read(encryptedContentBytes, 0, encryptedContentBytes.Length);
+
+      var encryptedContent = Convert.ToBase64String(encryptedContentBytes);
+
+      return encryptedContent;
+    }
+
+    public static string DecryptString(string content, string key)
+    {
+      var encryptedContentBytes = Convert.FromBase64String(content);
+      var keyBytes = Encoding.ASCII.GetBytes(key);
+
+      var provider = new DESCryptoServiceProvider();
+      var transform = provider.CreateDecryptor(keyBytes, keyBytes);
+
+      var memStream = new MemoryStream();
+      var cryptoStream = new CryptoStream(memStream, transform, CryptoStreamMode.Write);
+      cryptoStream.Write(encryptedContentBytes, 0, encryptedContentBytes.Length);
+      cryptoStream.FlushFinalBlock();
+
+      var decryptedContentBytes = new byte[memStream.Length];
+      memStream.Position = 0;
+      _ = memStream.Read(decryptedContentBytes, 0, decryptedContentBytes.Length);
+
+      var decryptedContent = Encoding.UTF8.GetString(decryptedContentBytes, 0, decryptedContentBytes.Length);
+
+      return decryptedContent;
+
+    }
+
     public static void EncryptFile(string inputFilename, string outputFilename, string key)
     {
       var fsInput = new FileStream(inputFilename, FileMode.Open, FileAccess.Read);
