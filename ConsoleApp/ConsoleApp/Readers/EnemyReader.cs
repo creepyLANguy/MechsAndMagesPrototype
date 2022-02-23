@@ -25,6 +25,7 @@ namespace MaM.Readers
           var s = cell.GetStringValue(CellValueFormatStrategy.None);
           list.Add(s);
         }
+
         listOfLists.Add(list);
       }
 
@@ -35,13 +36,14 @@ namespace MaM.Readers
     {
       var buff = new StringBuilder();
 
-      var descriptor = GetDescriptorForGuild(ref guild, ref enemyNames, ref random);
+      var i = 1 + guild.Value;
+      var descriptor = enemyNames.allLists[i][random.Next(0, enemyNames.allLists[i].Count)];
 
       var pre = enemyNames.pre[random.Next(0, enemyNames.pre.Count)];
       var l = pre.Split(JoinedDelim);
       if (l[0].ToLower() == "a")
       {
-        pre = IsVowel(descriptor[0]) ? l[1] : l[0];
+        pre = "aeiouAEIOU".Contains(descriptor[0]) ? l[1] : l[0];
       }
 
       var collective = enemyNames.collective[random.Next(0, enemyNames.collective.Count)];
@@ -70,16 +72,6 @@ namespace MaM.Readers
       //
 
       return buff.ToString();
-    }
-
-    private static string GetDescriptorForGuild(ref Guild guild, ref EnemyNames enemyNames, ref Random random)
-    {
-      return enemyNames.allLists[1 + guild.Value][random.Next(0, enemyNames.allLists[1 + guild.Value].Count)];
-    }
-
-    private static bool IsVowel(char c)
-    {
-      return "aeiouAEIOU".Contains(c);
     }
   }
 }

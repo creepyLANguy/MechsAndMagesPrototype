@@ -432,21 +432,21 @@ namespace MaM.Definitions
       };
     }
 
-    public List<string> pre;
+    public readonly List<string> pre;
 
-    public List<string> neutralDescriptors;
-    public List<string> borgDescriptors;
-    public List<string> mechDescriptors;
-    public List<string> mageDescriptors;
-    public List<string> necroDescriptors;
+    public readonly List<string> neutralDescriptors;
+    public readonly List<string> borgDescriptors;
+    public readonly List<string> mechDescriptors;
+    public readonly List<string> mageDescriptors;
+    public readonly List<string> necroDescriptors;
 
-    public List<string> collective;
+    public readonly List<string> collective;
 
-    public List<string> post;
+    public readonly List<string> post;
 
-    public List<string> place;
+    public readonly List<string> place;
 
-    public List<List<string>> allLists;
+    public readonly List<List<string>> allLists;
   }
 
   public struct PlayerConfig
