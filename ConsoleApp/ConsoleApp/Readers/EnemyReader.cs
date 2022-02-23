@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Aspose.Cells;
 using MaM.Definitions;
@@ -9,116 +10,32 @@ namespace MaM.Readers
   {
     private const string JoinedDelim = ",";
 
-    //TODO - refactor this! 
     public static EnemyNames GetEnemyNames(string excelFile)
     {
-      var names = new EnemyNames();
-
       var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));
       var cells = workbook.Worksheets[0].Cells;
 
-      var col = 0;
-      for (var row = 1; row <= cells.LastCell.Row && cells.GetCell(row, col) != null; ++row)
+      var listOfLists = new List<List<string>>();
+      for (var col = 0; col < cells.Columns.Count; ++col)
       {
-        var cell = cells.GetCell(row, col);
-        var s = cell.GetStringValue(CellValueFormatStrategy.None);
-        names.pre.Add(s);
+        var list = new List<string>();
+        for (var row = 1; row <= cells.LastCell.Row && cells.GetCell(row, col) != null; ++row)
+        {
+          var cell = cells.GetCell(row, col);
+          var s = cell.GetStringValue(CellValueFormatStrategy.None);
+          list.Add(s);
+        }
+        listOfLists.Add(list);
       }
 
-      ++col;
-      for (var row = 1; row <= cells.LastCell.Row && cells.GetCell(row, col) != null; ++row)
-      {
-        var cell = cells.GetCell(row, col);
-        var s = cell.GetStringValue(CellValueFormatStrategy.None);
-        names.neutralDescriptors.Add(s);
-      }
-
-      ++col;
-      for (var row = 1; row <= cells.LastCell.Row && cells.GetCell(row, col) != null; ++row)
-      {
-        var cell = cells.GetCell(row, col);
-        var s = cell.GetStringValue(CellValueFormatStrategy.None);
-        names.borgDescriptors.Add(s);
-      }
-
-      ++col;
-      for (var row = 1; row <= cells.LastCell.Row && cells.GetCell(row, col) != null; ++row)
-      {
-        var cell = cells.GetCell(row, col);
-        var s = cell.GetStringValue(CellValueFormatStrategy.None);
-        names.mechDescriptors.Add(s);
-      }
-      
-      ++col;
-      for (var row = 1; row <= cells.LastCell.Row && cells.GetCell(row, col) != null; ++row)
-      {
-        var cell = cells.GetCell(row, col);
-        var s = cell.GetStringValue(CellValueFormatStrategy.None);
-        names.mageDescriptors.Add(s);
-      }
-      
-      ++col;
-      for (var row = 1; row <= cells.LastCell.Row && cells.GetCell(row, col) != null; ++row)
-      {
-        var cell = cells.GetCell(row, col);
-        var s = cell.GetStringValue(CellValueFormatStrategy.None);
-        names.necroDescriptors.Add(s);
-      }
-      
-      ++col;
-      for (var row = 1; row <= cells.LastCell.Row && cells.GetCell(row, col) != null; ++row)
-      {
-        var cell = cells.GetCell(row, col);
-        var s = cell.GetStringValue(CellValueFormatStrategy.None);
-        names.collective.Add(s);
-      }
-      
-      ++col;
-      for (var row = 1; row <= cells.LastCell.Row && cells.GetCell(row, col) != null; ++row)
-      {
-        var cell = cells.GetCell(row, col);
-        var s = cell.GetStringValue(CellValueFormatStrategy.None);
-        names.post.Add(s);
-      }
-
-      ++col;
-      for (var row = 1; row <= cells.LastCell.Row && cells.GetCell(row, col) != null; ++row)
-      {
-        var cell = cells.GetCell(row, col);
-        var s = cell.GetStringValue(CellValueFormatStrategy.None);
-        names.place.Add(s);
-      }
-
-      return names;
+      return new EnemyNames(listOfLists);
     }
 
-    //TODO - refactor!
     public static string GetEnemyName(Guild guild, ref EnemyNames enemyNames, ref Random random)
     {
       var buff = new StringBuilder();
 
-      var descriptor = "";
-
-      if (guild == Guilds.Neutral)
-      {
-        descriptor += enemyNames.neutralDescriptors[random.Next(0, enemyNames.neutralDescriptors.Count)];
-      }
-      else if (guild == Guilds.Borg)
-      {
-        descriptor += enemyNames.borgDescriptors[random.Next(0, enemyNames.borgDescriptors.Count)];
-      }
-      else if (guild == Guilds.Mech)
-      {
-        descriptor += enemyNames.mechDescriptors[random.Next(0, enemyNames.mechDescriptors.Count)];
-      }
-      else if (guild == Guilds.Mage)
-      {
-        descriptor += enemyNames.mageDescriptors[random.Next(0, enemyNames.mageDescriptors.Count)];
-      }
-      else if (guild == Guilds.Necro)
-      {
-        descriptor += enemyNames.necroDescriptors[random.Next(0, enemyNames.necroDescriptors.Count)];
-      }
+      var descriptor = GetDescriptorForGuild(ref guild, ref enemyNames, ref random);
 
       var pre = enemyNames.pre[random.Next(0, enemyNames.pre.Count)];
       var l = pre.Split(JoinedDelim);
@@ -153,6 +70,11 @@ namespace MaM.Readers
       //
 
       return buff.ToString();
+    }
+
+    private static string GetDescriptorForGuild(ref Guild guild, ref EnemyNames enemyNames, ref Random random)
+    {
+      return enemyNames.allLists[1 + guild.Value][random.Next(0, enemyNames.allLists[1 + guild.Value].Count)];
     }
 
     private static bool IsVowel(char c)

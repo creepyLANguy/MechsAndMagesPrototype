@@ -39,8 +39,8 @@ namespace MaM.Helpers
       var isMaxGuildCountIsShared = tallyList.Count(value => value.Equals(maxVal)) > 1;
 
       return isMaxGuildCountIsShared
-        ? Guilds.Neutral // if more than one guild shares the highest card occurence, we deem this deck to be Neutral. 
-        : Guilds.All[tallyList.IndexOf(maxVal)]; // else whichever single-most accounted-for guild in the deck is the deck's prevailing guild. 
+        ? Guilds.Neutral
+        : Guilds.All[tallyList.IndexOf(maxVal)];
     }
 
     public static List<Tuple<Guild, double>> GetAllGuildDistributions(ref List<Card> deck)

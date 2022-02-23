@@ -40,7 +40,7 @@ namespace MaM.Definitions
     public static readonly Action OpponentDiscard = new Action("O", 6);
     public static readonly Action Heal            = new Action("H", 7);
 
-    public static List<Action> All = new List<Action>() { Attack, Trade, Draw, Scrap, Consume, OpponentDiscard, Heal };
+    public static readonly List<Action> All = new List<Action>() { Attack, Trade, Draw, Scrap, Consume, OpponentDiscard, Heal };
   }
 
   public struct ActionsValuesSet
@@ -400,19 +400,53 @@ namespace MaM.Definitions
 
   public class EnemyNames
   {
-    public List<string> pre                 = new List<string>();
+    public EnemyNames(List<List<string>> blob)
+    {
+      var i = -1;
 
-    public List<string> neutralDescriptors  = new List<string>();
-    public List<string> borgDescriptors     = new List<string>();
-    public List<string> mechDescriptors     = new List<string>();
-    public List<string> mageDescriptors     = new List<string>();
-    public List<string> necroDescriptors    = new List<string>();
+      pre = blob[++i];
 
-    public List<string> collective          = new List<string>();
+      neutralDescriptors = blob[++i];
+      borgDescriptors    = blob[++i];
+      mechDescriptors    = blob[++i];
+      mageDescriptors    = blob[++i];
+      necroDescriptors   = blob[++i];
 
-    public List<string> post                = new List<string>();
+      collective         = blob[++i];
 
-    public List<string> place               = new List<string>();
+      post               = blob[++i];
+
+      place              = blob[++i];
+
+      allLists = new List<List<string>>
+      {
+        pre, 
+        neutralDescriptors, 
+        borgDescriptors, 
+        mechDescriptors, 
+        mageDescriptors, 
+        necroDescriptors, 
+        collective, 
+        post,
+        place
+      };
+    }
+
+    public List<string> pre;
+
+    public List<string> neutralDescriptors;
+    public List<string> borgDescriptors;
+    public List<string> mechDescriptors;
+    public List<string> mageDescriptors;
+    public List<string> necroDescriptors;
+
+    public List<string> collective;
+
+    public List<string> post;
+
+    public List<string> place;
+
+    public List<List<string>> allLists;
   }
 
   public struct PlayerConfig
