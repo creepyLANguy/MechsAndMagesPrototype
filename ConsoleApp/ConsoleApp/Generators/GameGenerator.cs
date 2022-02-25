@@ -116,13 +116,11 @@ namespace MaM.Generators
     {
       Console.WriteLine("Enter your name:");
 
-      //AL.
 #if DEBUG
       return "1";
+#else
+      return UserInput.Get();
 #endif
-      //
-
-      return Console.ReadLine();
     }
 
     //Note, prolly important to pass a copy of random as in the future, with prior completion bonuses awarded, we may be using random an indeterminate amount of times here.
@@ -160,7 +158,7 @@ namespace MaM.Generators
         Console.WriteLine(
           index + 1 + ")" +
            tab +
-          GetPrintableCardName(card.name) +
+          UserInput.GetPrintableCardName(card.name) +
           tab + tab + pipe + tab +
           "Manna Cost :" + card.cost +
           tab + pipe + tab +
@@ -170,26 +168,11 @@ namespace MaM.Generators
           );
       }
 
-      //AL.
 #if DEBUG
       return offeredCards[1];
+#else
+      return offeredCards[int.Parse(UserInput.Get() ?? string.Empty) - 1];
 #endif
-      //
-
-      var selectionIndex = int.Parse(Console.ReadLine() ?? string.Empty) - 1;
-
-      return offeredCards[selectionIndex];
-    }
-
-    private static string GetPrintableCardName(string cardName)
-    {
-      const int printableLength = 14;
-      const char spacer = ' ';
-      const string ellipsis = "...";
-
-      return cardName.Length <= printableLength 
-        ? cardName.PadRight(printableLength, spacer)
-        : cardName.Substring(0, 1 + (printableLength - ellipsis.Length)) + ellipsis;
     }
   }
 }

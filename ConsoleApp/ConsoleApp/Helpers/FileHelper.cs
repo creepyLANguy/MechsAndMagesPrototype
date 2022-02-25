@@ -6,7 +6,7 @@ using Aspose.Cells.Utility;
 
 namespace MaM.Helpers
 {
-  internal static class FileHelper
+ public static class FileHelper
   {
     public static void WriteFileToDrive(string filename, string content, string folderName = "")
     {

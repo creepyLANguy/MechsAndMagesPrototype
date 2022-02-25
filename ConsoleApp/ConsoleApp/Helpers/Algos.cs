@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MaM.Helpers
 {
-  internal static class Algos
+ public static class Algos
   {
     public static void Shuffle<T>(this IList<T> list, ref Random random)
     {

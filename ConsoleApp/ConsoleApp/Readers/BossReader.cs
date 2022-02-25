@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace MaM.Readers
 {
-  internal struct JsonIntermediateBoss
+ public struct JsonIntermediateBoss
   {
     public string   id            ;
     public string   name          ;

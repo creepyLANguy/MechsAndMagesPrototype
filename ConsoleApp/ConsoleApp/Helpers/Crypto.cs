@@ -2,21 +2,11 @@
 using System.IO;
 using System.Text;
 using System.Security.Cryptography;
-using System.Runtime.InteropServices;
 
 namespace MaM.Helpers
 {
-  internal static class Crypto
+ public static class Crypto
   {
-    // Call this function to remove the key from memory after use for security
-    //
-    //var gch = GCHandle.Alloc(key, GCHandleType.Pinned);
-    //...
-    //ZeroMemory(gch.AddrOfPinnedObject(), key.Length * 2);
-    //gch.Free();
-    [DllImport("KERNEL32.DLL", EntryPoint = "RtlZeroMemory")]
-    private static extern bool ZeroMemory(IntPtr destination, int length);
-
     // Generate a Key that's 64 bits / 8 bytes.
     // Distribute this key to the user who will decrypt this file.
     public static string GenerateKey()

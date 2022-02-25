@@ -7,7 +7,7 @@ using Action = MaM.Definitions.Action;
 
 namespace MaM.Readers
 {
-  internal struct JsonIntermediateCard
+ public struct JsonIntermediateCard
   {
     public int?     quantity          ;
     public string   name              ;

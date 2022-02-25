@@ -7,11 +7,30 @@ using Newtonsoft.Json;
 
 namespace MaM.Helpers
 {
-  internal static class SaveFileHelper
+ public static class SaveFileHelper
   {
     private static string ObjectToJson(object obj, bool indented = false)
     {
       return JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
+    }
+
+    public static GameState GetGameStateFromFile(string filename, ref List<Card> cards, string cryptoKey = null)
+    {
+      var content = File.ReadAllText(filename);
+
+      if (cryptoKey != null)
+      {
+        content = Crypto.DecryptString(content, cryptoKey);
+      }
+
+      var gameState = JsonConvert.DeserializeObject<GameState>(content);
+
+      if (gameState.player != null)
+      {
+        gameState.player.deck = CardReader.GetCardsFromIds(gameState.player.deckCardIds, ref cards);
+      }
+
+      return gameState;
     }
 
     public static bool WriteGameStateToFile(ref GameState gameState, string filename, string cryptoKey = null, bool indented = true)
@@ -38,23 +57,17 @@ namespace MaM.Helpers
       return true;
     }
 
-    public static GameState GetGameStateFromFile(string filename, ref List<Card> cards, string cryptoKey = null)
+    public static bool PromptUserToSaveGame(ref GameState gameState, string cryptoKey = null)
     {
-      var content = File.ReadAllText(filename);
-
-      if (cryptoKey != null)
+      var shouldSave = UserInput.Request("\nWould you like to save your game?\n1) Yes\n2) No") == "1";
+      if (shouldSave == false)
       {
-        content = Crypto.DecryptString(content, cryptoKey);
+        return true;
       }
 
-      var gameState = JsonConvert.DeserializeObject<GameState>(content);
+      var filename = UserInput.Request("\nProvide a name for your save file:");
 
-      if (gameState.player != null)
-      {
-        gameState.player.deck = CardReader.GetCardsFromIds(gameState.player.deckCardIds, ref cards);
-      }
-
-      return gameState;
+      return WriteGameStateToFile(ref gameState, filename, cryptoKey);
     }
   }
 }

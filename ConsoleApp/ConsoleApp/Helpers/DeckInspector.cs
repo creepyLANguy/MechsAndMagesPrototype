@@ -6,7 +6,7 @@ using MaM.Definitions;
 
 namespace MaM.Helpers
 {
-  internal static class DeckInspector
+ public static class DeckInspector
   {
     /*
     public static List<Tuple<Guild, int>> GetGuildsTallyList(ref List<Card> deck)

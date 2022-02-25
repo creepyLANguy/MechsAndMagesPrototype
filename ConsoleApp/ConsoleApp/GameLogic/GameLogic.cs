@@ -1,4 +1,7 @@
-﻿using MaM.Generators;
+﻿using System;
+using MaM.Definitions;
+using MaM.Generators;
+using MaM.Helpers;
 
 namespace MaM.GameLogic
 {
@@ -8,7 +11,11 @@ namespace MaM.GameLogic
     {
       var gameContents = GameGenerator.Generate(gameConfigFilename, saveFilename, cryptoKey);
 
+      var gameState = new GameState(DateTime.Now, gameContents.seed, gameContents.player);
+      SaveFileHelper.PromptUserToSaveGame(ref gameState, cryptoKey);
+
       //TODO - implement
+
     }
   }
 }

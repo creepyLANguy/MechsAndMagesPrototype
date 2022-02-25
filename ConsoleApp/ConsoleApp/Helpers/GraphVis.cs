@@ -4,7 +4,7 @@ using MaM.Definitions;
 
 namespace MaM.Helpers
 {
-  internal static class GraphVis
+ public static class GraphVis
   {
     public static void SaveMapsAsDotFiles(ref Journey journey, bool verbose)
     {
