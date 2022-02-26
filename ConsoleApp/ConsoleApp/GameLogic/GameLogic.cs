@@ -120,8 +120,22 @@ namespace MaM.GameLogic
     }
 
     private static bool VisitNode(ref Player player, ref Node node)
-    {
-      //TODO - implement 
+    {        
+      //TODO - implement properly
+
+      switch (node.nodeType)
+      {
+        case NodeType.CampSite:
+          player.health = player.maxHealth;
+          break;
+        case NodeType.Fight:
+          break;
+        case NodeType.Blank:
+          break;
+        default:
+          return true;
+      }
+
       return true;
     }
 
