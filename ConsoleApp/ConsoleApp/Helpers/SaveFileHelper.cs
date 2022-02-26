@@ -59,10 +59,10 @@ namespace MaM.Helpers
 
     public static bool PromptUserToSaveGame(ref GameState gameState, string cryptoKey = null)
     {
-      var shouldSave = UserInput.Request("\nWould you like to save your game?\n1) Yes\n2) No") == "1";
-      if (shouldSave == false)
+      if (UserInput.Request("\nWould you like to save your game?\n1) Yes\n2) No") == "2")
       {
-        return true;
+        Console.WriteLine("WARNING - DID NOT SAVE GAME!");
+        return false;
       }
 
       var filename = UserInput.Request("\nProvide a name for your save file:");

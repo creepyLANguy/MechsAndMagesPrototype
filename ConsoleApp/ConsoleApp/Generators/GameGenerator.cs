@@ -86,7 +86,7 @@ namespace MaM.Generators
         -1,
         -1,
         new List<Tuple<int, int>>(),
-        -1,
+        0,
         null,
         playerConfig.health,
         playerConfig.health,

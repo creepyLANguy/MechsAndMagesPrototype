@@ -365,14 +365,10 @@ namespace MaM.Definitions
     public Journey()
     {
       maps            = new List <Map>();
-      currentNodeX    = -1;
-      currentNodeY    = -1;
-      currentMapIndex = -1;
+      currentMapIndex = 0;
     }
 
     public List<Map>  maps            ;
-    public int        currentNodeX    ;
-    public int        currentNodeY    ;
     public int        currentMapIndex ;
   }
 

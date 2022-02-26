@@ -17,7 +17,7 @@ namespace MaM
 
       Game.Run(GameConfigFilename, SaveFilename, CryptoKey);
 
-      Console.WriteLine("Duration: " + DateTime.Now.Subtract(startTime));
+      Console.WriteLine("\nDuration: " + DateTime.Now.Subtract(startTime));
     }
   }
 }

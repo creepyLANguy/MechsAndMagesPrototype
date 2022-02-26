@@ -17,7 +17,7 @@ namespace MaM.Helpers
 
       filename = folderName + filename;
 
-      Console.WriteLine("Saving " + filename);
+      Console.WriteLine("\nSaving " + filename);
 
       using (var sw = new StreamWriter(File.Open(filename, FileMode.Create, FileAccess.Write), Encoding.UTF8))
       {

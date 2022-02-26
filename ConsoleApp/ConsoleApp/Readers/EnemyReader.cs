@@ -65,11 +65,9 @@ namespace MaM.Readers
         .Append(' ')
         ;
 
-      //AL.
 #if DEBUG
-      Console.WriteLine(buff);
+      //Console.WriteLine(buff);
 #endif
-      //
 
       return buff.ToString();
     }
