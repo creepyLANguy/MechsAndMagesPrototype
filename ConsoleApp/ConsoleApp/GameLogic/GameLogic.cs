@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MaM.Definitions;
 using MaM.Generators;
+using MaM.Helpers;
 
 namespace MaM.GameLogic
 {
@@ -12,9 +13,10 @@ namespace MaM.GameLogic
     {
       var gameContents = GameGenerator.Generate(gameConfigFilename, saveFilename, cryptoKey);
 
-      //TODO - implement
-
       var player = gameContents.player; //TODO - make sure the default fields for player are set correctly. 
+
+      var gameState = new GameState(DateTime.Now, gameContents.seed, gameContents.player);
+      SaveFileHelper.SaveGameStateToFile(ref gameState, saveFilename, cryptoKey);
 
       for (var mapIndex = gameContents.journey.currentMapIndex; mapIndex < gameContents.journey.maps.Count; mapIndex++)
       {
@@ -23,7 +25,11 @@ namespace MaM.GameLogic
         while (player.completedNodeLocations.Count < map.height)
         {
           var node = GetNextNode(ref player, ref map);
-          while(VisitNode(ref player, ref node) == false) //ie while the player has failed to complete the node, repeat visiting the node.
+
+          var gameStateNodeSelected = new GameState(DateTime.Now, gameContents.seed, player);
+          SaveFileHelper.SaveGameStateToFile(ref gameStateNodeSelected, saveFilename, cryptoKey);
+
+          while (VisitNode(ref player, ref node) == false) //ie while the player has failed to complete the node, repeat visiting the node.
           {
             //TODO - check for  death, etc.
           }
@@ -34,11 +40,18 @@ namespace MaM.GameLogic
             "\nCompleted Node " + player.completedNodeLocations.Count + " of " + map.height +
             ", of Map " + (mapIndex+1) + " of " + gameContents.journey.maps.Count
             );
+
+          var gameStateNodeCompleted = new GameState(DateTime.Now, gameContents.seed, player);
+          SaveFileHelper.SaveGameStateToFile(ref gameStateNodeCompleted, saveFilename, cryptoKey);
         }
 
+        ++player.completedMapCount;
         player.completedNodeLocations.Clear();
         player.currentNodeX = player.currentNodeY = -1;
-        ++player.completedMapCount;
+
+        var gameStateMapCompleted = new GameState(DateTime.Now, gameContents.seed, player);
+        SaveFileHelper.SaveGameStateToFile(ref gameStateMapCompleted, saveFilename, cryptoKey);
+
         ++gameContents.journey.currentMapIndex;
 
         Console.WriteLine("\nCompleted Map " + (mapIndex + 1));
@@ -46,16 +59,11 @@ namespace MaM.GameLogic
 
       Console.WriteLine("\nAweh, game completed. What a laarnie.");
 
-      //TODO - offer save mechanism regardless of where we are in the game loop. 
-      //var gameState = new GameState(DateTime.Now, gameContents.seed, player);
-      //SaveFileHelper.PromptUserToSaveGame(ref gameState, cryptoKey);
-      //
+      SaveFileHelper.Erase(saveFilename);
     }
 
     private static Node GetNextNode(ref Player player, ref Map map)
     {
-      //TODO - test all cases.
-
       if (player.currentNodeY < 0 && player.currentNodeX < 0)
       {
         return PromptUserForStartingNode(ref player, ref map);
@@ -86,7 +94,11 @@ namespace MaM.GameLogic
         Console.WriteLine(++n + ")\t[" + node.x + ", " + node.y + "]\t" + node.nodeType + (node.isMystery ? "_Mystery" : ""));
       }
 
+#if DEBUG
+      const int input = 0;
+#else 
       var input = int.Parse(Console.ReadLine() ?? "1") - 1;
+#endif
 
       var selectedNode = firstRow[input];
 
@@ -110,7 +122,12 @@ namespace MaM.GameLogic
         Console.WriteLine(++n + ")\t[" + node.x + ", " + node.y + "]\t" + node.nodeType + (node.isMystery ? "_Mystery" : ""));
       }
 
+#if DEBUG
+      const int input = 0;
+#else 
       var input = int.Parse(Console.ReadLine() ?? "1") - 1;
+#endif
+
       var (item1, item2) = currentNode.destinations.First(dest => dest.Item1 == destList[input].x && dest.Item2 == destList[input].y);
 
       player.currentNodeX = item1;

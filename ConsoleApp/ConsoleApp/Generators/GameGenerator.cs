@@ -15,9 +15,9 @@ namespace MaM.Generators
 
       var cards = CardReader.GetCardsFromExcel(gameConfig.cardsExcelFile);
 
-      var gameState = string.IsNullOrEmpty(saveFilename)
-        ? new GameState(DateTime.Now, Math.Abs((int) DateTime.Now.Ticks), null)
-        : SaveFileHelper.GetGameStateFromFile(saveFilename, ref cards, cryptoKey);
+      var gameState = SaveFileHelper.IsLegit(saveFilename) 
+          ? SaveFileHelper.GetGameStateFromFile(saveFilename, ref cards, cryptoKey) 
+          : new GameState(DateTime.Now, Math.Abs((int) DateTime.Now.Ticks), null);
 
       return GenerateGameContents(ref gameConfig, ref gameState, ref cards);
     }
@@ -38,6 +38,8 @@ namespace MaM.Generators
         ref cards, 
         ref random
         );
+
+      journey.currentMapIndex = player.completedMapCount;
 
       var gameContents = new GameContents(player, journey, cards, random, gameState.randomSeed);
 

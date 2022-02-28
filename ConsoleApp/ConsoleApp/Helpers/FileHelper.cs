@@ -27,6 +27,27 @@ namespace MaM.Helpers
       Console.WriteLine("Saved");
     }
 
+    public static bool DeleteFileFromDrive(string filename, string folderName = "")
+    {
+      if (folderName != string.Empty && Directory.Exists(folderName) == false)
+      {
+        Console.WriteLine("\nError - could not find folder : " + folderName);
+        return false;
+      }
+
+      filename = folderName + filename;
+
+      Console.WriteLine("\nDeleting " + filename);
+
+      File.Delete(filename);
+      
+      Console.WriteLine("Deleted");
+
+      return true;
+    }
+
+
+
     public static string ExcelToJson(string excelFile, int worksheetIndex = 0)
     {
       var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));

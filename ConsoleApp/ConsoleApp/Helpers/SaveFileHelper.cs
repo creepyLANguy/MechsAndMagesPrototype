@@ -8,15 +8,22 @@ using Newtonsoft.Json;
 namespace MaM.Helpers
 {
  public static class SaveFileHelper
-  {
+ {
+   private const string SaveFileDirectory = @"savegames\";
+
     private static string ObjectToJson(object obj, bool indented = false)
     {
       return JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
     }
 
+    public static bool IsLegit(string filename)
+    {
+      return string.IsNullOrEmpty(filename) == false && File.Exists(SaveFileDirectory + filename) == true;
+    }
+
     public static GameState GetGameStateFromFile(string filename, ref List<Card> cards, string cryptoKey = null)
     {
-      var content = File.ReadAllText(filename);
+      var content = File.ReadAllText(SaveFileDirectory + filename);
 
       if (cryptoKey != null)
       {
@@ -33,7 +40,7 @@ namespace MaM.Helpers
       return gameState;
     }
 
-    public static bool WriteGameStateToFile(ref GameState gameState, string filename, string cryptoKey = null, bool indented = true)
+    public static bool SaveGameStateToFile(ref GameState gameState, string filename, string cryptoKey = null, bool indented = true)
     {
       if (filename == null)
       {
@@ -52,11 +59,24 @@ namespace MaM.Helpers
         content = Crypto.EncryptString(content, cryptoKey);
       }
 
-      FileHelper.WriteFileToDrive(filename, content);
+      FileHelper.WriteFileToDrive(filename, content, SaveFileDirectory);
 
       return true;
     }
 
+    public static bool Erase(string filename)
+    {
+      if (filename == null)
+      {
+        Console.WriteLine("filename was null");
+        return false;
+      }
+
+      FileHelper.DeleteFileFromDrive(filename, SaveFileDirectory);
+
+      return true;
+    }
+   
     public static bool PromptUserToSaveGame(ref GameState gameState, string cryptoKey = null)
     {
       if (UserInput.Request("\nWould you like to save your game?\n1) Yes\n2) No") == "2")
@@ -67,7 +87,7 @@ namespace MaM.Helpers
 
       var filename = UserInput.Request("\nProvide a name for your save file:");
 
-      return WriteGameStateToFile(ref gameState, filename, cryptoKey);
+      return SaveGameStateToFile(ref gameState, filename, cryptoKey);
     }
   }
 }
