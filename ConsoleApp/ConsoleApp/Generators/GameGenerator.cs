@@ -15,8 +15,8 @@ namespace MaM.Generators
 
       var cards = CardReader.GetCardsFromExcel(gameConfig.cardsExcelFile);
 
-      var gameState = SaveFileHelper.IsLegit(saveFilename) 
-          ? SaveFileHelper.GetGameStateFromFile(saveFilename, ref cards, cryptoKey) 
+      var gameState = SaveGameHelper.IsLegit(saveFilename) 
+          ? SaveGameHelper.Read(saveFilename, ref cards, cryptoKey) 
           : new GameState(DateTime.Now, Math.Abs((int) DateTime.Now.Ticks), null);
 
       return GenerateGameContents(ref gameConfig, ref gameState, ref cards);

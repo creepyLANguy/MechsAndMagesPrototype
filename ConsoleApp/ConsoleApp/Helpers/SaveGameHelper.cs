@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace MaM.Helpers
 {
- public static class SaveFileHelper
+ public static class SaveGameHelper
  {
    private const string SaveFileDirectory = @"savegames\";
 
@@ -21,7 +21,7 @@ namespace MaM.Helpers
       return string.IsNullOrEmpty(filename) == false && File.Exists(SaveFileDirectory + filename) == true;
     }
 
-    public static GameState GetGameStateFromFile(string filename, ref List<Card> cards, string cryptoKey = null)
+    public static GameState Read(string filename, ref List<Card> cards, string cryptoKey = null)
     {
       var content = File.ReadAllText(SaveFileDirectory + filename);
 
@@ -40,7 +40,13 @@ namespace MaM.Helpers
       return gameState;
     }
 
-    public static bool SaveGameStateToFile(ref GameState gameState, string filename, string cryptoKey = null, bool indented = true)
+    public static bool Save(int randomSeed, ref Player player, string filename, string cryptoKey = null)
+    {
+      var gameState = new GameState(DateTime.Now, randomSeed, player);
+      return SaveGameStateToFile(ref gameState, filename, cryptoKey);
+    }
+
+    private static bool SaveGameStateToFile(ref GameState gameState, string filename, string cryptoKey = null)
     {
       if (filename == null)
       {
@@ -52,7 +58,7 @@ namespace MaM.Helpers
       //The decks should be repopulated based on the stored ids when resuming a save state.
       gameState.player.deck = null;
 
-      var content = ObjectToJson(gameState, indented);
+      var content = ObjectToJson(gameState, true);
 
       if (cryptoKey != null)
       {
@@ -64,7 +70,7 @@ namespace MaM.Helpers
       return true;
     }
 
-    public static bool Erase(string filename)
+    public static bool Delete(string filename)
     {
       if (filename == null)
       {

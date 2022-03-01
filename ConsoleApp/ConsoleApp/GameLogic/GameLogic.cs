@@ -15,8 +15,7 @@ namespace MaM.GameLogic
 
       var player = gameContents.player; //TODO - make sure the default fields for player are set correctly. 
 
-      var gameState = new GameState(DateTime.Now, gameContents.seed, gameContents.player);
-      SaveFileHelper.SaveGameStateToFile(ref gameState, saveFilename, cryptoKey);
+      SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
 
       for (var mapIndex = gameContents.journey.currentMapIndex; mapIndex < gameContents.journey.maps.Count; mapIndex++)
       {
@@ -26,8 +25,7 @@ namespace MaM.GameLogic
         {
           var node = GetNextNode(ref player, ref map);
 
-          var gameStateNodeSelected = new GameState(DateTime.Now, gameContents.seed, player);
-          SaveFileHelper.SaveGameStateToFile(ref gameStateNodeSelected, saveFilename, cryptoKey);
+          SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
 
           while (VisitNode(ref player, ref node) == false) //ie while the player has failed to complete the node, repeat visiting the node.
           {
@@ -41,16 +39,14 @@ namespace MaM.GameLogic
             ", of Map " + (mapIndex+1) + " of " + gameContents.journey.maps.Count
             );
 
-          var gameStateNodeCompleted = new GameState(DateTime.Now, gameContents.seed, player);
-          SaveFileHelper.SaveGameStateToFile(ref gameStateNodeCompleted, saveFilename, cryptoKey);
+          SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
         }
 
         ++player.completedMapCount;
         player.completedNodeLocations.Clear();
         player.currentNodeX = player.currentNodeY = -1;
 
-        var gameStateMapCompleted = new GameState(DateTime.Now, gameContents.seed, player);
-        SaveFileHelper.SaveGameStateToFile(ref gameStateMapCompleted, saveFilename, cryptoKey);
+        SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
 
         ++gameContents.journey.currentMapIndex;
 
@@ -59,7 +55,7 @@ namespace MaM.GameLogic
 
       Console.WriteLine("\nAweh, game completed. What a laarnie.");
 
-      SaveFileHelper.Erase(saveFilename);
+      SaveGameHelper.Delete(saveFilename);
     }
 
     private static Node GetNextNode(ref Player player, ref Map map)
