@@ -9,10 +9,19 @@ namespace MaM.Helpers
       return Console.ReadLine();
     }
 
-    public static string Request(string message)
+    public static string RequestString(string message = null)
     {
-      Console.WriteLine(message);
+      if (string.IsNullOrEmpty(message) == false)
+      {
+        Console.WriteLine(message);
+      }
+      
       return Get();
+    }
+
+    public static int RequestInt(string message = null)
+    {
+      return int.Parse(RequestString(message));
     }
 
     public static string GetPrintableCardName(string cardName)

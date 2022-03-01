@@ -1,7 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using MaM.Definitions;
+using MaM.GameLogic;
 using MaM.Readers;
 using Newtonsoft.Json;
 
@@ -11,6 +14,11 @@ namespace MaM.Helpers
  {
    private const string SaveFileDirectory = @"savegames\";
 
+   private const string GameConfigFilename = "gameconfig.json";
+
+   private const string CryptoKey = "嵵߬ꇄ寘汅浫䔜ꌰ";
+   //private const string CryptoKey            = null;
+
     private static string ObjectToJson(object obj, bool indented = false)
     {
       return JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
@@ -18,10 +26,10 @@ namespace MaM.Helpers
 
     public static bool IsLegit(string filename)
     {
-      return string.IsNullOrEmpty(filename) == false && File.Exists(SaveFileDirectory + filename) == true;
+      return string.IsNullOrEmpty(filename) == false && File.Exists(SaveFileDirectory + filename);
     }
 
-    public static GameState Read(string filename, ref List<Card> cards, string cryptoKey = null)
+    public static GameState Read(string filename, List<Card> cards = null, string cryptoKey = null)
     {
       var content = File.ReadAllText(SaveFileDirectory + filename);
 
@@ -83,17 +91,40 @@ namespace MaM.Helpers
       return true;
     }
    
-    public static bool PromptUserToSaveGame(ref GameState gameState, string cryptoKey = null)
+    public static void  PromptUserToSelectSaveSlot()
     {
-      if (UserInput.Request("\nWould you like to save your game?\n1) Yes\n2) No") == "2")
+      var list = new List<Tuple<string, int>>();
+      list.Add(new Tuple<string, int>("Begin A New Save Slot", 0));
+
+      var allFiles =
+        Directory.EnumerateFiles(SaveFileDirectory)
+          .Select(file => file.Substring(file.IndexOf(@"\", StringComparison.Ordinal) + 1))
+          .ToList();
+
+      foreach (var file in allFiles)
       {
-        Console.WriteLine("WARNING - DID NOT SAVE GAME!");
-        return false;
+        var game = Read(file, cryptoKey: CryptoKey);
+
+        var displayString =
+          game.time.ToString(CultureInfo.CurrentCulture) +
+          "\tNode: " + (game.player.completedNodeLocations.Count + 1) +
+          "\tMap:" + (game.player.completedMapCount + 1) +
+          "\tSeed: " + game.randomSeed;
+
+        list.Add(new Tuple<string, int>(displayString, list.Count));
       }
 
-      var filename = UserInput.Request("\nProvide a name for your save file:");
+      Console.WriteLine("\nPlease select a save slot:");
+      foreach (var (item1, item2) in list)
+      {
+        Console.WriteLine(item2 + ") " + item1);
+      }
 
-      return SaveGameStateToFile(ref gameState, filename, cryptoKey);
+      var choice = UserInput.RequestInt();
+      var saveFile = choice == 0 ? DateTime.Now.Ticks.ToString() : allFiles[choice - 1];
+
+      Game.Run(GameConfigFilename, saveFile, CryptoKey);
+
     }
   }
 }

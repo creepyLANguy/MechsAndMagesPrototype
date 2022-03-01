@@ -16,7 +16,7 @@ namespace MaM.Generators
       var cards = CardReader.GetCardsFromExcel(gameConfig.cardsExcelFile);
 
       var gameState = SaveGameHelper.IsLegit(saveFilename) 
-          ? SaveGameHelper.Read(saveFilename, ref cards, cryptoKey) 
+          ? SaveGameHelper.Read(saveFilename, cards, cryptoKey) 
           : new GameState(DateTime.Now, Math.Abs((int) DateTime.Now.Ticks), null);
 
       return GenerateGameContents(ref gameConfig, ref gameState, ref cards);
@@ -116,7 +116,7 @@ namespace MaM.Generators
 
     private static string GetPlayerName()
     {
-      Console.WriteLine("Enter your name:");
+      Console.WriteLine("\nEnter your name:");
 
 #if DEBUG
       return "1";

@@ -56,6 +56,8 @@ namespace MaM.GameLogic
       Console.WriteLine("\nAweh, game completed. What a laarnie.");
 
       SaveGameHelper.Delete(saveFilename);
+
+      Menus.MainMenu.Load();
     }
 
     private static Node GetNextNode(ref Player player, ref Map map)
@@ -70,7 +72,6 @@ namespace MaM.GameLogic
       }
     }
 
-    //TODO - refactor
     private static Node PromptUserForStartingNode(ref Player player, ref Map map)
     {
       var firstRow = new List<Node>();
@@ -93,7 +94,7 @@ namespace MaM.GameLogic
 #if DEBUG
       const int input = 0;
 #else 
-      var input = int.Parse(Console.ReadLine() ?? "1") - 1;
+      var input = UserInput.RequestInt();
 #endif
 
       var selectedNode = firstRow[input];
@@ -104,7 +105,6 @@ namespace MaM.GameLogic
       return selectedNode;
     }
 
-    //TODO - refactor
     private static Node PromptUserForNextNode(ref Player player, ref Map map)
     {
       var currentNode = map.nodes[player.currentNodeX, player.currentNodeY];
@@ -121,7 +121,7 @@ namespace MaM.GameLogic
 #if DEBUG
       const int input = 0;
 #else 
-      var input = int.Parse(Console.ReadLine() ?? "1") - 1;
+      var input = UserInput.RequestInt();
 #endif
 
       var (item1, item2) = currentNode.destinations.First(dest => dest.Item1 == destList[input].x && dest.Item2 == destList[input].y);
