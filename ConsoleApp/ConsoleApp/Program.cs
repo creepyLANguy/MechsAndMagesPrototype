@@ -1,6 +1,4 @@
-﻿using MaM.GameLogic;
-
-namespace MaM
+﻿namespace MaM
 {
  public static class Program
   {

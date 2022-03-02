@@ -7,10 +7,8 @@ namespace MaM.Helpers
   {
     public static void Shuffle<T>(this IList<T> list, ref Random random)
     {
-      var i = list.Count;
-      while (i > 1)
+      for (var i = list.Count - 1; i > 0; --i)
       {
-        --i;
         var randomIndex = random.Next(i + 1);
         var value = list[randomIndex];
         list[randomIndex] = list[i];

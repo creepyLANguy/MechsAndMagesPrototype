@@ -12,12 +12,10 @@ namespace MaM.Helpers
 {
  public static class SaveGameHelper
  {
-   private const string SaveFileDirectory = @"savegames\";
-
-   private const string GameConfigFilename = "gameconfig.json";
-
-   private const string CryptoKey = "嵵߬ꇄ寘汅浫䔜ꌰ";
-   //private const string CryptoKey            = null;
+   private const string SaveFileDirectory   = @"savegames\";
+   private const string GameConfigFilename  = "gameconfig.json";
+   private const string CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ";
+   //private const string CryptoKey           = null;
 
     private static string ObjectToJson(object obj, bool indented = false)
     {

@@ -149,8 +149,8 @@ namespace MaM.Generators
 
     private static Card GetSelectedCard(ref List<Card> offeredCards)
     {
-      const string tab = "\t";
-      const string pipe = "|";
+      const char tab = '\t';
+      const char pipe = '|';
 
       Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
       for (var index = 0; index < offeredCards.Count; index++)

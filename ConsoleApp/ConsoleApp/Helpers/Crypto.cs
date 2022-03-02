@@ -7,7 +7,7 @@ namespace MaM.Helpers
 {
  public static class Crypto
   {
-    // Generate a Key that's 64 bits / 8 bytes.
+    // Generate a Key that's 64bits/8bytes.
     // Distribute this key to the user who will decrypt this file.
     public static string GenerateKey()
     {

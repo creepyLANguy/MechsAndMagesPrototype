@@ -8,7 +8,9 @@ namespace MaM.Readers
 {
   public static class EnemyReader
   {
-    private const string JoinedDelim = ",";
+    private const string  JoinedDelim = ",";
+    private const char    Space       = ' ';
+    private const string  Vowels      = "aeiouAEIOU";
 
     public static EnemyNames GetEnemyNames(string excelFile)
     {
@@ -43,7 +45,7 @@ namespace MaM.Readers
       var l = pre.Split(JoinedDelim);
       if (l[0].ToLower() == "a")
       {
-        pre = "aeiouAEIOU".Contains(descriptor[0]) ? l[1] : l[0];
+        pre = Vowels.Contains(descriptor[0]) ? l[1] : l[0];
       }
 
       var collective = enemyNames.collective[random.Next(0, enemyNames.collective.Count)];
@@ -54,15 +56,15 @@ namespace MaM.Readers
 
       buff
         .Append(pre.Trim())
-        .Append(' ')
+        .Append(Space)
         .Append(descriptor.Trim())
-        .Append(' ')
+        .Append(Space)
         .Append(collective.Trim())
-        .Append(' ')
+        .Append(Space)
         .Append(post.Trim())
-        .Append(' ')
+        .Append(Space)
         .Append(place.Trim())
-        .Append(' ')
+        .Append(Space)
         ;
 
 #if DEBUG

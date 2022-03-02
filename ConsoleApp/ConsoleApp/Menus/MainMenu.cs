@@ -13,11 +13,11 @@ namespace MaM.Menus
     public static void Load()
     {
       var requestString =
-        "\nMake a choice:" +
+        "\nMain Menu" +
         "\n" + MainMenuItems.Play.ToString("D") + ") " + MainMenuItems.Play +
         "\n" + MainMenuItems.Exit.ToString("D") + ") " + MainMenuItems.Exit;
 
-      var choice = UserInput.RequestInt("\nMain Menu\n1) Play\n2) Exit");
+      var choice = UserInput.RequestInt(requestString);
       switch ((MainMenuItems)choice)
       {
         case MainMenuItems.Play:

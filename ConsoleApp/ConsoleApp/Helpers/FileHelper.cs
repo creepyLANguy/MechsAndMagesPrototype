@@ -46,8 +46,6 @@ namespace MaM.Helpers
       return true;
     }
 
-
-
     public static string ExcelToJson(string excelFile, int worksheetIndex = 0)
     {
       var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));
