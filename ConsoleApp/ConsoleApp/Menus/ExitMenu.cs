@@ -1,10 +1,8 @@
-﻿using System;
-using MaM.GameLogic;
-using MaM.Helpers;
+﻿using MaM.Helpers;
 
 namespace MaM.Menus
 {
-  static class ExitMenu
+  public static class ExitMenu
   {
     private enum ExitMenuItems
     {

@@ -2,7 +2,7 @@
 
 namespace MaM.Menus
 {
-  static class MainMenu
+  public static class MainMenu
   {
     private enum MainMenuItems
     {
