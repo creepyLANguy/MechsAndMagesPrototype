@@ -7,7 +7,7 @@ using MaM.Helpers;
 
 namespace MaM.GameLogic
 {
-  public static class Game
+  public static class Navigation
   {
     public static void Run(string gameConfigFilename, string saveFilename, string cryptoKey = null)
     {
@@ -29,7 +29,7 @@ namespace MaM.GameLogic
 
           while (VisitNode(ref player, ref node) == false) //ie while the player has failed to complete the node, repeat visiting the node.
           {
-            //TODO - check for  death, etc.
+            //TODO
           }
           
           player.completedNodeLocations.Add(new Tuple<int, int>(player.currentNodeX, player.currentNodeY));
@@ -134,22 +134,21 @@ namespace MaM.GameLogic
 
     private static bool VisitNode(ref Player player, ref Node node)
     {        
-      //TODO - implement properly
+      //TODO - all node visit cases.
+
+      var nodeCompleted = false;
 
       switch (node.nodeType)
       {
         case NodeType.CampSite:
-          player.health = player.maxHealth;
+          nodeCompleted = Rest.Run(ref player, (Campsite)node);
           break;
         case NodeType.Fight:
+          nodeCompleted = Battle.Run(ref player, (Fight)node);
           break;
-        case NodeType.Blank:
-          break;
-        default:
-          return true;
       }
 
-      return true;
+      return nodeCompleted;
     }
 
   }

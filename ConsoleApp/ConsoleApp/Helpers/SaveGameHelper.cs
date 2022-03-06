@@ -121,8 +121,7 @@ namespace MaM.Helpers
       var choice = UserInput.RequestInt();
       var saveFile = choice == 0 ? DateTime.Now.Ticks.ToString() : allFiles[choice - 1];
 
-      Game.Run(GameConfigFilename, saveFile, CryptoKey);
-
+      Navigation.Run(GameConfigFilename, saveFile, CryptoKey);
     }
   }
 }
