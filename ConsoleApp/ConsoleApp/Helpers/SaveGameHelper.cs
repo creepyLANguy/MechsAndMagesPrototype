@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -93,6 +93,11 @@ namespace MaM.Helpers
     {
       var list = new List<Tuple<string, int>>();
       list.Add(new Tuple<string, int>("Begin A New Save Slot", 0));
+
+      if (Directory.Exists(SaveFileDirectory))
+      {
+        Directory.CreateDirectory(SaveFileDirectory);
+      }
 
       var allFiles =
         Directory.EnumerateFiles(SaveFileDirectory)
