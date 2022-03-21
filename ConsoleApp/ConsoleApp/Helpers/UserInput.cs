@@ -9,7 +9,7 @@ namespace MaM.Helpers
       return Console.ReadLine();
     }
 
-    public static string RequestString(string message = null)
+    public static string GetString(string message = null)
     {
       if (string.IsNullOrEmpty(message) == false)
       {
@@ -19,20 +19,20 @@ namespace MaM.Helpers
       return Get();
     }
 
-    public static int RequestInt(string message = null)
+    public static int GetInt(string message = null)
     {
-      return int.Parse(RequestString(message));
+      return int.Parse(GetString(message));
     }
 
     public static string GetPrintableCardName(string cardName)
     {
-      const int printableLength = 14;
+      const int printableCardNameLength = 14;
       const char spacer = ' ';
       const string ellipsis = "...";
 
-      return cardName.Length <= printableLength
-        ? cardName.PadRight(printableLength, spacer)
-        : cardName.Substring(0, 1 + (printableLength - ellipsis.Length)) + ellipsis;
+      return cardName.Length <= printableCardNameLength
+        ? cardName.PadRight(printableCardNameLength, spacer)
+        : cardName.Substring(0, 1 + (printableCardNameLength - ellipsis.Length)) + ellipsis;
     }
   }
 }

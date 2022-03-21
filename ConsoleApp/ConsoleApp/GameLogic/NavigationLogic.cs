@@ -94,7 +94,7 @@ namespace MaM.GameLogic
 #if DEBUG
       const int input = 0;
 #else 
-      var input = UserInput.RequestInt();
+      var input = UserInput.GetInt();
 #endif
 
       var selectedNode = firstRow[input];
@@ -121,7 +121,7 @@ namespace MaM.GameLogic
 #if DEBUG
       const int input = 0;
 #else 
-      var input = UserInput.RequestInt();
+      var input = UserInput.GetInt();
 #endif
 
       var (item1, item2) = currentNode.destinations.First(dest => dest.Item1 == destList[input].x && dest.Item2 == destList[input].y);

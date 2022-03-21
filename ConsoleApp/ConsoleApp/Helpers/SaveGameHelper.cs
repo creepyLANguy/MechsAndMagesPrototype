@@ -123,7 +123,7 @@ namespace MaM.Helpers
         Console.WriteLine(item2 + ") " + item1);
       }
 
-      var choice = UserInput.RequestInt();
+      var choice = UserInput.GetInt();
       var saveFile = choice == 0 ? DateTime.Now.Ticks.ToString() : allFiles[choice - 1];
 
       Navigation.Run(GameConfigFilename, saveFile, CryptoKey);
