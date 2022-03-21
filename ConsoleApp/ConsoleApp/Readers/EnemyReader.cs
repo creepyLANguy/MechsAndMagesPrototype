@@ -36,9 +36,7 @@ namespace MaM.Readers
 
     public static string GetEnemyName(Guild guild, ref EnemyNames enemyNames, ref Random random)
     {
-      var buff = new StringBuilder();
-
-      var i = 1 + guild.Value;
+      var i = guild.Value + 1;
       var descriptor = enemyNames.allLists[i][random.Next(0, enemyNames.allLists[i].Count)];
 
       var pre = enemyNames.pre[random.Next(0, enemyNames.pre.Count)];
@@ -54,7 +52,24 @@ namespace MaM.Readers
 
       var place = enemyNames.place[random.Next(0, enemyNames.place.Count)];
 
-      buff
+      var fullEnemyName = BuildFullEnemyNameString(pre, descriptor, collective, post, place);
+      
+#if DEBUG
+      //Console.WriteLine(buff);
+#endif
+
+      return fullEnemyName;
+    }
+
+    private static string BuildFullEnemyNameString(
+      string pre, 
+      string descriptor, 
+      string collective, 
+      string post,
+      string place
+      )
+    {
+      return new StringBuilder()
         .Append(pre.Trim())
         .Append(Space)
         .Append(descriptor.Trim())
@@ -65,13 +80,7 @@ namespace MaM.Readers
         .Append(Space)
         .Append(place.Trim())
         .Append(Space)
-        ;
-
-#if DEBUG
-      //Console.WriteLine(buff);
-#endif
-
-      return buff.ToString();
+        .ToString();
     }
   }
 }
