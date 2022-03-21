@@ -8,10 +8,6 @@ namespace MaM.Readers
 {
   public static class EnemyReader
   {
-    private const string  JoinedDelim = ",";
-    private const char    Space       = ' ';
-    private const string  Vowels      = "aeiouAEIOU";
-
     public static EnemyNames GetEnemyNames(string excelFile)
     {
       var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));
@@ -39,12 +35,7 @@ namespace MaM.Readers
       var i = guild.Value + 1;
       var descriptor = enemyNames.allLists[i][random.Next(0, enemyNames.allLists[i].Count)];
 
-      var pre = enemyNames.pre[random.Next(0, enemyNames.pre.Count)];
-      var l = pre.Split(JoinedDelim);
-      if (l[0].ToLower() == "a")
-      {
-        pre = Vowels.Contains(descriptor[0]) ? l[1] : l[0];
-      }
+      var pre = GetPre(enemyNames.pre[random.Next(0, enemyNames.pre.Count)], descriptor[0]);
 
       var collective = enemyNames.collective[random.Next(0, enemyNames.collective.Count)];
 
@@ -55,10 +46,22 @@ namespace MaM.Readers
       var fullEnemyName = BuildFullEnemyNameString(pre, descriptor, collective, post, place);
       
 #if DEBUG
-      //Console.WriteLine(buff);
+      Console.WriteLine(fullEnemyName);
 #endif
 
       return fullEnemyName;
+    }
+
+    private static string GetPre(string s, char c)
+    {
+      var l = s.Split(StringLiterals.Deliminator);
+
+      if (StringLiterals.A.Contains(l[0]))
+      {
+        s = StringLiterals.Vowels.Contains(c) ? l[1] : l[0];
+      }
+
+      return s;
     }
 
     private static string BuildFullEnemyNameString(
@@ -71,15 +74,15 @@ namespace MaM.Readers
     {
       return new StringBuilder()
         .Append(pre.Trim())
-        .Append(Space)
+        .Append(StringLiterals.Space)
         .Append(descriptor.Trim())
-        .Append(Space)
+        .Append(StringLiterals.Space)
         .Append(collective.Trim())
-        .Append(Space)
+        .Append(StringLiterals.Space)
         .Append(post.Trim())
-        .Append(Space)
+        .Append(StringLiterals.Space)
         .Append(place.Trim())
-        .Append(Space)
+        .Append(StringLiterals.Space)
         .ToString();
     }
   }

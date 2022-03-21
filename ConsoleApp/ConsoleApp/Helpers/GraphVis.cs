@@ -59,7 +59,6 @@ namespace MaM.Helpers
         AddNodeLabelsSection(ref mainBuffer, ref map);
       }
 
-
       mainBuffer.Append('}');
 
       return mainBuffer.ToString();

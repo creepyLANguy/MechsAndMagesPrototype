@@ -7,8 +7,8 @@ namespace MaM.Helpers
 {
  public static class Crypto
   {
-    // Generate a Key that's 64bits/8bytes.
-    // Distribute this key to the user who will decrypt this file.
+    // Generate a 64-bit/8-byte key.
+    // Symmetrically used, so safely distribute to authorized parties that may decrypt the file.
     public static string GenerateKey()
     {
       return Encoding.Unicode.GetString(DES.Create().Key);
@@ -67,12 +67,8 @@ namespace MaM.Helpers
       var fsInput = new FileStream(inputFilename, FileMode.Open, FileAccess.Read);
 
       var fsEncrypted = new FileStream(outputFilename, FileMode.Create, FileAccess.Write);
-      
-      var des = new DESCryptoServiceProvider
-      {
-        Key = Encoding.ASCII.GetBytes(key),
-        IV = Encoding.ASCII.GetBytes(key)
-      };
+
+      var des = GetDesProvider(key);
 
       var desEncrypt = des.CreateEncryptor();
       var cryptoStream = new CryptoStream(fsEncrypted, desEncrypt, CryptoStreamMode.Write);
@@ -89,12 +85,8 @@ namespace MaM.Helpers
 
     public static void DecryptFile(string inputFilename, string outputFilename, string key)
     {
-      // A 64 bit key and IV is required for this provider.
-      var des = new DESCryptoServiceProvider
-      {
-        Key = Encoding.ASCII.GetBytes(key), 
-        IV = Encoding.ASCII.GetBytes(key)
-      };
+
+      var des = GetDesProvider(key);
 
       var fsRead = new FileStream(inputFilename, FileMode.Open, FileAccess.Read);
 
@@ -107,6 +99,17 @@ namespace MaM.Helpers
 
       fsDecrypted.Flush();
       fsDecrypted.Close();
+    }
+
+    private static DESCryptoServiceProvider GetDesProvider(string key)
+    {
+      // A 64-bit key is required for this provider.
+      // Use the same key as the IV.
+      return new DESCryptoServiceProvider
+      {
+        Key = Encoding.ASCII.GetBytes(key),
+        IV = Encoding.ASCII.GetBytes(key)
+      };
     }
   }
 }

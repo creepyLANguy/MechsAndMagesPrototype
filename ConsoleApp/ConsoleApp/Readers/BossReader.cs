@@ -19,15 +19,16 @@ namespace MaM.Readers
 
   public static class BossReader
   {
-    private const string JoinedCardDelim = ",";
-
     private static List<Enemy> PopulateBossesFromJsonIntermediates(List<JsonIntermediateBoss> intermediateBosses, ref List<Card> cards)
     {
       var bosses = new List<Enemy>();
 
       foreach (var intermediateBoss in intermediateBosses)
       {
-        var cardIds = intermediateBoss.cards.Replace(" ", string.Empty).Split(JoinedCardDelim).ToList();
+        var cardIds = intermediateBoss.cards
+          .Replace(" ", string.Empty)
+          .Split(StringLiterals.Deliminator)
+          .ToList();
 
         var bossCards = CardReader.GetCardsFromIds(cardIds, ref cards);
 

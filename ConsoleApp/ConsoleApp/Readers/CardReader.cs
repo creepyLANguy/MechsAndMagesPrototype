@@ -25,8 +25,6 @@ namespace MaM.Readers
 
   public static class CardReader
   {
-    private const string JoinedActionDelim = ",";
-
     private static int? GetCardActionValue(string str, Action action)
     {
       if (str.Contains(action.Key) == false) return null;
@@ -43,7 +41,9 @@ namespace MaM.Readers
 
       var set = new ActionsValuesSet();
 
-      var actions = actionString.Replace(" ", string.Empty).Split(JoinedActionDelim);
+      var actions = actionString
+        .Replace(" ", string.Empty)
+        .Split(StringLiterals.Deliminator);
 
       foreach (var action in actions)
       {

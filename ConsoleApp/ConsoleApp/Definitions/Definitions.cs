@@ -4,6 +4,14 @@ using System.Linq;
 
 namespace MaM.Definitions
 {
+  public class StringLiterals
+  {
+    public static readonly string Deliminator = ",";
+    public static readonly char   Space       = ' ';
+    public static readonly string Vowels      = "aeiouAEIOU";
+    public static readonly string A           = "aA";
+  }
+
   public class KeyValuePair<TK, TV>
   {
     public TK Key   ;
