@@ -144,7 +144,10 @@ namespace MaM.GameLogic
           nodeCompleted = Rest.Run(ref player, (Campsite)node);
           break;
         case NodeType.Fight:
-          nodeCompleted = Battle.Run(ref player, (Fight)node);
+          while (nodeCompleted == false)
+          {
+            nodeCompleted = Battle.Run(player, (Fight)node);
+          }
           break;
       }
 
