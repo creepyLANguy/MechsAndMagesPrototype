@@ -17,14 +17,14 @@ namespace MaM.Generators
 
       var gameState = SaveGameHelper.IsLegit(saveFilename) 
           ? SaveGameHelper.Read(saveFilename, cards, cryptoKey) 
-          : new GameState(DateTime.Now, Math.Abs((int) DateTime.Now.Ticks), null);
+          : new GameState(DateTime.Now, Algos.GenerateRandomSeed(), null);
 
       return GenerateGameContents(ref gameConfig, ref gameState, ref cards);
     }
     
     private static GameContents GenerateGameContents(ref GameConfig gameConfig, ref GameState gameState, ref List<Card> cards)
     {
-      var random = new Random(gameState.randomSeed);
+      var random = Algos.GenerateNewRandom(gameState.randomSeed);
 
       var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards, random);
 
@@ -101,6 +101,7 @@ namespace MaM.Generators
         -1,
         playerConfig.manna,
         playerConfig.handSize,
+        playerConfig.initiative,
         -1,
         -1,
         deckIds,
@@ -119,7 +120,7 @@ namespace MaM.Generators
       Console.WriteLine("\nEnter your name:");
 
 #if DEBUG
-      return "1";
+      return "DebugPlayer";
 #else
       return UserInput.Get();
 #endif

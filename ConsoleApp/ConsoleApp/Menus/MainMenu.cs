@@ -17,7 +17,7 @@ namespace MaM.Menus
         "\n" + MainMenuItems.Play.ToString("D") + ") " + MainMenuItems.Play +
         "\n" + MainMenuItems.Exit.ToString("D") + ") " + MainMenuItems.Exit;
 
-      var choice = UserInput.RequestInt(requestString);
+      var choice = UserInput.GetInt(requestString);
       switch ((MainMenuItems)choice)
       {
         case MainMenuItems.Play:

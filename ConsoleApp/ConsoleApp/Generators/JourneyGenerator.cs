@@ -162,7 +162,7 @@ namespace MaM.Generators
         }
 
         var baseNode = new Node(map.nodes[x, 0]);
-        map.nodes[x, 0] = new Fight(baseNode, FightType.Normal, null);
+        map.nodes[x, 0] = new Fight(baseNode, FightType.Normal);
       }
     }
 
@@ -223,7 +223,7 @@ namespace MaM.Generators
               map.nodes[x, y] = new Campsite(baseNode, null);
               break;
             case NodeType.Fight:
-              map.nodes[x, y] = new Fight(baseNode, FightType.Elite, null);
+              map.nodes[x, y] = new Fight(baseNode, FightType.Elite);
               break;
           }
 
@@ -244,7 +244,7 @@ namespace MaM.Generators
           }
 
           var baseNode = new Node(map.nodes[x, y]);
-          map.nodes[x, y] = new Fight(baseNode, FightType.Normal, null);
+          map.nodes[x, y] = new Fight(baseNode, FightType.Normal);
         }
       }
     }
@@ -289,7 +289,7 @@ namespace MaM.Generators
     {
       var baseNodeForBoss = new Node(NodeType.Fight, false, 0, map.height - 1, false, true, null);
 
-      var bossNode = new Fight(baseNodeForBoss, FightType.Boss, null);
+      var bossNode = new Fight(baseNodeForBoss, FightType.Boss);
 
       map.nodes[0, map.height - 2].destinations.Add(new Tuple<int, int>(bossNode.x, bossNode.y));
 
@@ -350,6 +350,7 @@ namespace MaM.Generators
       ((Campsite) node).recruits = null;
     }
     
+    //TODO - consider changing this to setup multiple enemies for a node. 
     private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, ref EnemyNames enemyNames, int mapIndex, List<Card> cards, ref Random random)
     {
       cards.Shuffle(ref random);
@@ -369,10 +370,11 @@ namespace MaM.Generators
         enemyConfig.baseTradeRowSize + mapIndex,
         enemyConfig.baseManna + mapIndex, 
         enemyConfig.baseHandSize + mapIndex,
+        enemyConfig.initiative + mapIndex,
         deck
       );
 
-      ((Fight) node).enemy = enemy;
+      ((Fight) node).enemies.Add(enemy);
     }
 
     private static void SetupBoss(ref Node node, int mapIndex, ref List<Enemy> bosses, ref Random random)
@@ -386,7 +388,7 @@ namespace MaM.Generators
       boss.health *= (1 + mapIndex);
       boss.tradeRowSize += mapIndex;
 
-      ((Fight) node).enemy = boss;
+      ((Fight) node).enemies.Add(boss);
 
       bosses.Remove(boss);
     }

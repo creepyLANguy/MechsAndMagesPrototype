@@ -34,6 +34,7 @@
     "baseDeckSize": 20,
     "baseTradeRowSize": 3,
     "baseHandSize": 5,
+	"initiative": 1,
     "minCardCost": 0,
     "maxCardCost": 7
   },
@@ -43,6 +44,7 @@
     "baseDeckSize": 17,
     "baseTradeRowSize": 4,
     "baseHandSize": 5,
+	"initiative": 2,
     "minCardCost": 4,
     "maxCardCost": 8
   },
@@ -53,7 +55,8 @@
     "insight": 3,
     "tradeRowSize": 3,
     "manna": 0,
-    "handSize": 5
+    "handSize": 5,
+	"initiative": 1,
   },
   "initialCardSelections": [
     {

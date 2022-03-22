@@ -4,6 +4,14 @@ using System.Linq;
 
 namespace MaM.Definitions
 {
+  public class StringLiterals
+  {
+    public static readonly string Deliminator = ",";
+    public static readonly char   Space       = ' ';
+    public static readonly string Vowels      = "aeiouAEIOU";
+    public static readonly string A           = "aA";
+  }
+
   public class KeyValuePair<TK, TV>
   {
     public TK Key   ;
@@ -127,6 +135,7 @@ namespace MaM.Definitions
       int                   manna,
       int                   basicManna,
       int                   basicHandSize,
+      int                   initiative,
       int                   currentHandSize,
       int                   toDiscard,
       List<string>          deckCardIds,
@@ -137,32 +146,33 @@ namespace MaM.Definitions
       List<Card>            tradePool
     )
     {
-      this.isComputer              = isComputer              ;
-      this.name                    = name                    ;
-      this.currentNodeX            = currentNodeX            ;
-      this.currentNodeY            = currentNodeY            ;
-      this.completedNodeLocations  = completedNodeLocations  ;
-      this.completedMapCount       = completedMapCount       ;
-      this.activeGuild             = activeGuild             ;
-      this.health                  = health                  ;
-      this.maxHealth               = maxHealth               ;
-      this.coin                    = coin                    ;
-      this.vision                  = vision                  ;
-      this.awareness               = awareness               ;
-      this.insight                 = insight                 ;
-      this.tradeRowSize            = tradeRowSize            ;
-      this.shield                  = shield                  ;
-      this.basicManna              = basicManna              ;
-      this.manna                   = manna                   ;
-      this.basicHandSize           = basicHandSize           ;
-      this.currentHandSize         = currentHandSize         ;
-      this.toDiscard               = toDiscard               ;
-      this.deckCardIds             = deckCardIds             ;
-      this.deck                    = deck                    ;
-      this.drawPile                = drawPile                ;
-      this.discardPile             = discardPile             ;
-      this.tradeRow                = tradeRow                ;
-      this.tradePool               = tradePool               ;
+      this.isComputer             = isComputer              ;
+      this.name                   = name                    ;
+      this.currentNodeX           = currentNodeX            ;
+      this.currentNodeY           = currentNodeY            ;
+      this.completedNodeLocations = completedNodeLocations  ;
+      this.completedMapCount      = completedMapCount       ;
+      this.activeGuild            = activeGuild             ;
+      this.health                 = health                  ;
+      this.maxHealth              = maxHealth               ;
+      this.coin                   = coin                    ;
+      this.vision                 = vision                  ;
+      this.awareness              = awareness               ;
+      this.insight                = insight                 ;
+      this.tradeRowSize           = tradeRowSize            ;
+      this.shield                 = shield                  ;
+      this.basicManna             = basicManna              ;
+      this.manna                  = manna                   ;
+      this.basicHandSize          = basicHandSize           ;
+      this.initiative             = initiative              ;
+      this.currentHandSize        = currentHandSize         ;
+      this.toDiscard              = toDiscard               ;
+      this.deckCardIds            = deckCardIds             ;
+      this.deck                   = deck                    ;
+      this.drawPile               = drawPile                ;
+      this.discardPile            = discardPile             ;
+      this.tradeRow               = tradeRow                ;
+      this.tradePool              = tradePool               ;
     }
 
     public bool                   isComputer              ;
@@ -184,6 +194,7 @@ namespace MaM.Definitions
     public int                    manna                   ;
     public int                    toDiscard               ;
     public int                    basicHandSize           ;
+    public int                    initiative              ;
     public int                    currentHandSize         ;
     public List<string>           deckCardIds             ;
     public List<Card>             deck                    ;
@@ -201,6 +212,7 @@ namespace MaM.Definitions
       int tradeRowSize,
       int basicManna, 
       int basicHandSize,
+      int initiative,
       List<Card> deck
       ) 
       : base(
@@ -221,6 +233,7 @@ namespace MaM.Definitions
         -1, 
         basicManna, 
         basicHandSize, 
+        initiative,
         -1, 
         -1,
         deck.Select(card => card.id).ToList(), 
@@ -322,9 +335,9 @@ namespace MaM.Definitions
   public class Fight : Node
   {
     public Fight(
-      Node      baseNode,
-      FightType fightType,
-      Player    enemy
+      Node          baseNode,
+      FightType     fightType,
+      List<Player>  enemies = null
     ) : base(
       baseNode.nodeType,
       baseNode.isMystery,
@@ -336,12 +349,12 @@ namespace MaM.Definitions
     )
     {
       this.fightType  = fightType;
-      this.enemy      = enemy;
+      this.enemies    = enemies ?? new List<Player>();
       nodeType        = NodeType.Fight;
     }
 
-    public FightType  fightType ;
-    public Player     enemy     ;
+    public FightType fightType;
+    public List<Player> enemies;
   }
 
   public struct Map
@@ -390,6 +403,7 @@ namespace MaM.Definitions
     public int  baseDeckSize;
     public int  baseTradeRowSize;
     public int  baseHandSize;
+    public int  initiative;
     public int  minCardCost;
     public int  maxCardCost;
   }
@@ -454,6 +468,8 @@ namespace MaM.Definitions
     public int  tradeRowSize  ;
     public int  manna         ;
     public int  handSize      ;
+    public int  initiative    ;
+
   }
 
   public struct InitialCardSelection

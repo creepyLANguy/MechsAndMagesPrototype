@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -94,6 +94,11 @@ namespace MaM.Helpers
       var list = new List<Tuple<string, int>>();
       list.Add(new Tuple<string, int>("Begin A New Save Slot", 0));
 
+      if (Directory.Exists(SaveFileDirectory))
+      {
+        Directory.CreateDirectory(SaveFileDirectory);
+      }
+
       var allFiles =
         Directory.EnumerateFiles(SaveFileDirectory)
           .Select(file => file.Substring(file.IndexOf(@"\", StringComparison.Ordinal) + 1))
@@ -118,11 +123,10 @@ namespace MaM.Helpers
         Console.WriteLine(item2 + ") " + item1);
       }
 
-      var choice = UserInput.RequestInt();
+      var choice = UserInput.GetInt();
       var saveFile = choice == 0 ? DateTime.Now.Ticks.ToString() : allFiles[choice - 1];
 
-      Game.Run(GameConfigFilename, saveFile, CryptoKey);
-
+      Navigation.Run(GameConfigFilename, saveFile, CryptoKey);
     }
   }
 }

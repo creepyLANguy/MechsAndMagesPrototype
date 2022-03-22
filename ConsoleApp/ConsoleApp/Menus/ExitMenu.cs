@@ -17,7 +17,7 @@ namespace MaM.Menus
         "\n" + ExitMenuItems.Yes.ToString("D") + ") " + ExitMenuItems.Yes + 
         "\n" + ExitMenuItems.No.ToString("D") + ") " + ExitMenuItems.No;
 
-      var choice = UserInput.RequestInt(requestString);
+      var choice = UserInput.GetInt(requestString);
       switch ((ExitMenuItems)choice)
       {
         case (ExitMenuItems.Yes):
