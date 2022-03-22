@@ -15,5 +15,15 @@ namespace MaM.Helpers
         list[i] = value;
       }
     }
+
+    public static int GenerateRandomSeed()
+    {
+      return Math.Abs((int) DateTime.Now.Ticks);
+    }
+
+    public static Random GenerateNewRandom(int? randomSeed = null)
+    {
+      return new Random(randomSeed ?? GenerateRandomSeed());
+    }
   }
 }

@@ -14,6 +14,7 @@ namespace MaM.Readers
     public int      tradeRowSize  ;
     public int      manna         ;
     public int      handSize      ;
+    public int      initiative    ;
     public string   cards         ;
   }
 
@@ -38,6 +39,7 @@ namespace MaM.Readers
           intermediateBoss.tradeRowSize,
           intermediateBoss.manna,
           intermediateBoss.handSize,
+          intermediateBoss.initiative,
           bossCards
         );
 

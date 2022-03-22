@@ -134,7 +134,7 @@ namespace MaM.GameLogic
 
     private static bool VisitNode(ref Player player, ref Node node)
     {        
-      //TODO - all node visit cases.
+      //TODO - all node visit cases and handle the results.
 
       var nodeCompleted = false;
 
