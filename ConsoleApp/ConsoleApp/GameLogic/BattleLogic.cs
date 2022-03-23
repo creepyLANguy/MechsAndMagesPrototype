@@ -53,12 +53,12 @@ namespace MaM.GameLogic
 
     private static List<Player> GetPlayerOrder(ref Player player, ref List<Player> enemies, ref Random random)
     {
-      //TODO - take initiatives into account.
-
       var allPlayers = new List<Player>();
       allPlayers.Add(player);
       allPlayers.AddRange(enemies);
-      allPlayers.Shuffle(ref random);
+      
+      allPlayers.ShuffleWhileAccountingForInitiatives(ref random);
+
       return allPlayers;
     }
 

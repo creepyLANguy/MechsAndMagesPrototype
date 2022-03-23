@@ -60,11 +60,15 @@ namespace MaM.Helpers
         return false;
       }
 
+      var backupDeck = gameState.player.deck.ToList();
+
       //We remove full card lists before exporting as these bloat the save file.
-      //The decks should be repopulated based on the stored ids when resuming a save state.
+      //Make sure that you repopulate the player's deck based on the stored ids when resuming a save state.
       gameState.player.deck = null;
 
       var content = ObjectToJson(gameState, true);
+      
+      gameState.player.deck = backupDeck;
 
       if (cryptoKey != null)
       {
