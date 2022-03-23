@@ -7,26 +7,37 @@ namespace MaM.GameLogic
 {
   public static class Battle
   {
-    public static bool Run(ref Player player, Fight node)
+    public static bool Run(Player human, Fight node)
     {
       //TODO
 
+#if DEBUG
+      Console.WriteLine("[Start Battle]");
+#endif
+
       var random = Algos.GenerateNewRandom();
 
-      var allPlayers = GetPlayerOrder(ref player, ref node.enemies, ref random);
+      var allPlayers = GetPlayerOrder(ref human, ref node.enemies, ref random);
 
       var currentPlayerIndex = 0;
       while (true)
       {
         var currentPlayer = allPlayers[currentPlayerIndex % allPlayers.Count];
 
+#if DEBUG
+        Console.WriteLine("[Turn]\t\t" + currentPlayer.name);
+#endif
+
         ExecutePlayerTurn(ref currentPlayer);
 
         if (currentPlayer.health <= 0)
         {
+#if DEBUG
+          Console.WriteLine("[Death]\t\t" + currentPlayer.name);
+#endif
           if (currentPlayer.isComputer == false)
           {
-            return true; //Player has died.
+            return false; //Player has died.
           }
 
           allPlayers.RemoveAt(currentPlayerIndex);
@@ -66,11 +77,13 @@ namespace MaM.GameLogic
     private static void ExecuteComputerPlayerTurn(ref Player player)
     {
       //TODO
+      player.health = 0;
     }
     
     private static void ExecuteHumanPlayerTurn(ref Player player)
     {
       //TODO
+      player.health = 0;
     }
   }
 }
