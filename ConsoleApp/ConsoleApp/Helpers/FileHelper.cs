@@ -34,6 +34,7 @@ namespace MaM.Helpers
       }
 
       Console.WriteLine("Saved");
+
       return true;
     }
 
@@ -49,7 +50,16 @@ namespace MaM.Helpers
 
       Console.WriteLine("\nDeleting " + filename);
 
-      File.Delete(filename);
+      try
+      {
+        File.Delete(filename);
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine("\nFAILED TO DELETE FILE \'" + filename + "\' TO DRIVE!");
+        Console.WriteLine(e.Message);
+        return false;
+      }
       
       Console.WriteLine("Deleted");
 

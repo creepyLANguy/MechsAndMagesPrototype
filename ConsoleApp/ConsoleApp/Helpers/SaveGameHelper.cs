@@ -86,9 +86,7 @@ namespace MaM.Helpers
         return false;
       }
 
-      FileHelper.DeleteFileFromDrive(filename, SaveFileDirectory);
-
-      return true;
+      return FileHelper.DeleteFileFromDrive(filename, SaveFileDirectory);
     }
    
     public static void  PromptUserToSelectSaveSlot()

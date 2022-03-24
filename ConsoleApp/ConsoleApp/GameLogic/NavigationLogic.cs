@@ -59,7 +59,7 @@ namespace MaM.GameLogic
 
       Console.WriteLine("\nCongratulations!\nRun completed.\nReturning to main menu...");
 
-      SaveGameHelper.Delete(saveFilename);
+      _ = SaveGameHelper.Delete(saveFilename);
 
       Menus.MainMenu.Load();
 
