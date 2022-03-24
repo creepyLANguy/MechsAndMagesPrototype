@@ -56,7 +56,7 @@ namespace MaM.Helpers
       }
       catch (Exception e)
       {
-        Console.WriteLine("\nFAILED TO DELETE FILE \'" + filename + "\' TO DRIVE!");
+        Console.WriteLine("\nFAILED TO DELETE FILE \'" + filename + "\' ON DRIVE!");
         Console.WriteLine(e.Message);
         return false;
       }

@@ -27,15 +27,13 @@ namespace MaM.GameLogic
 
           AutoSave();
 
-          while (VisitNode(ref player, ref node) == false) //ie while the player has failed to complete the node, repeat visiting the node.
+          while (VisitNode(ref player, ref node) == false)
           {
             //TODO
 
-
-
             AutoSave();
           }
-          
+
           player.completedNodeLocations.Add(new Tuple<int, int>(player.currentNodeX, player.currentNodeY));
 
           Console.WriteLine(
@@ -59,7 +57,7 @@ namespace MaM.GameLogic
 
       Console.WriteLine("\nCongratulations!\nRun completed.\nReturning to main menu...");
 
-      _ = SaveGameHelper.Delete(saveFilename);
+      //_ = SaveGameHelper.Delete(saveFilename);
 
       Menus.MainMenu.Load();
 
