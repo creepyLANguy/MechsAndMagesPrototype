@@ -75,9 +75,7 @@ namespace MaM.Helpers
         content = Crypto.EncryptString(content, cryptoKey);
       }
 
-      FileHelper.WriteFileToDrive(filename, content, SaveFileDirectory);
-
-      return true;
+      return FileHelper.WriteFileToDrive(filename, content, SaveFileDirectory);
     }
 
     public static bool Delete(string filename)

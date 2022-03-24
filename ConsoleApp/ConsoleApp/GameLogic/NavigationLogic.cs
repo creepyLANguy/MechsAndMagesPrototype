@@ -15,7 +15,7 @@ namespace MaM.GameLogic
 
       var player = gameContents.player; //TODO - make sure the default fields for player are set correctly. 
 
-      SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
+      AutoSave();
 
       for (var mapIndex = gameContents.journey.currentMapIndex; mapIndex < gameContents.journey.maps.Count; mapIndex++)
       {
@@ -25,11 +25,15 @@ namespace MaM.GameLogic
         {
           var node = GetNextNode(ref player, ref map);
 
-          SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
+          AutoSave();
 
           while (VisitNode(ref player, ref node) == false) //ie while the player has failed to complete the node, repeat visiting the node.
           {
             //TODO
+
+
+
+            AutoSave();
           }
           
           player.completedNodeLocations.Add(new Tuple<int, int>(player.currentNodeX, player.currentNodeY));
@@ -39,25 +43,30 @@ namespace MaM.GameLogic
             ", of Map " + (mapIndex+1) + " of " + gameContents.journey.maps.Count
             );
 
-          SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
+          AutoSave();
         }
 
         ++player.completedMapCount;
         player.completedNodeLocations.Clear();
         player.currentNodeX = player.currentNodeY = -1;
 
-        SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
+        AutoSave();
 
         ++gameContents.journey.currentMapIndex;
 
         Console.WriteLine("\nCompleted Map " + (mapIndex + 1));
       }
 
-      Console.WriteLine("\nAweh, game completed. What a laarnie.");
+      Console.WriteLine("\nCongratulations!\nRun completed.\nReturning to main menu...");
 
       SaveGameHelper.Delete(saveFilename);
 
       Menus.MainMenu.Load();
+
+      void AutoSave()
+      {
+        _ = SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
+      }
     }
 
     private static Node GetNextNode(ref Player player, ref Map map)

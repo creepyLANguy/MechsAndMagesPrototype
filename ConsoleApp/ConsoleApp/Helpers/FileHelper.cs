@@ -8,7 +8,7 @@ namespace MaM.Helpers
 {
  public static class FileHelper
   {
-    public static void WriteFileToDrive(string filename, string content, string folderName = "")
+    public static bool WriteFileToDrive(string filename, string content, string folderName = "")
     {
       if (folderName != string.Empty && Directory.Exists(folderName) == false)
       {
@@ -21,10 +21,20 @@ namespace MaM.Helpers
 
       using (var sw = new StreamWriter(File.Open(filename, FileMode.Create, FileAccess.Write), Encoding.UTF8))
       {
-        sw.Write(content);
+        try
+        {
+          sw.Write(content);
+        }
+        catch (Exception e)
+        {
+          Console.WriteLine("\nFAILED TO WRITE FILE \'" + filename + "\' TO DRIVE!");
+          Console.WriteLine(e.Message);
+          return false;
+        }
       }
 
       Console.WriteLine("Saved");
+      return true;
     }
 
     public static bool DeleteFileFromDrive(string filename, string folderName = "")
