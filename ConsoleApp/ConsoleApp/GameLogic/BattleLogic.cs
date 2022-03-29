@@ -84,7 +84,7 @@ namespace MaM.GameLogic
         player.currentHandSize  = 0;
         player.discardPile      = new List<Card>();
         player.drawPile         = new List<Card>();
-        player.manna            = player.basicManna;
+        player.manna            = 0;
         player.shield           = 0;
         player.toDiscard        = 0;
         player.tradePool        = new List<Card>();
