@@ -153,7 +153,7 @@ namespace MaM.GameLogic
         case NodeType.Fight:
           while (nodeCompleted == false)
           {
-            nodeCompleted = Battle.Run(player, (Fight)node);
+            nodeCompleted = Battle.Run(ref player, (Fight)node);
           }
           break;
       }

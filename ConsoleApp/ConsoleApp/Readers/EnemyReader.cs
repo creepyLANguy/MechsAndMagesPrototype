@@ -46,7 +46,7 @@ namespace MaM.Readers
       var fullEnemyName = BuildFullEnemyNameString(pre, descriptor, collective, post, place);
       
 #if DEBUG
-      Console.WriteLine(fullEnemyName);
+      //Console.WriteLine(fullEnemyName);
 #endif
 
       return fullEnemyName;

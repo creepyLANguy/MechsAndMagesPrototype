@@ -63,5 +63,10 @@ namespace MaM.Helpers
 
       players.AddRange(newList);
     }
+
+    public static List<Player> DeepCopyPlayerList(ref List<Player> list)
+    {
+      return list.Select(player => new Player(player)).ToList();
+    }
   }
 }

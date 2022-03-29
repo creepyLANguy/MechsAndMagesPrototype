@@ -120,35 +120,35 @@ namespace MaM.Definitions
     {
     }
 
-    public Player(Player p)
+    public Player(Player player)
     {
-      isComputer              = p.isComputer                      ;
-      name                    = p.name                            ;
-      currentNodeX            = p.currentNodeX                    ;
-      currentNodeY            = p.currentNodeY                    ;
-      completedNodeLocations  = p.completedNodeLocations?.ToList();
-      completedMapCount       = p.completedMapCount               ;
-      activeGuild             = p.activeGuild                     ;
-      health                  = p.health                          ;
-      maxHealth               = p.maxHealth                       ;
-      coin                    = p.coin                            ;
-      vision                  = p.vision                          ;
-      awareness               = p.awareness                       ;
-      insight                 = p.insight                         ;
-      tradeRowSize            = p.tradeRowSize                    ;
-      shield                  = p.shield                          ;
-      manna                   = p.manna                           ;
-      basicManna              = p.basicManna                      ;
-      basicHandSize           = p.basicHandSize                   ;
-      initiative              = p.initiative                      ;
-      currentHandSize         = p.currentHandSize                 ;
-      toDiscard               = p.toDiscard                       ;
-      deckCardIds             = p.deckCardIds?.ToList()           ;
-      deck                    = p.deck?.ToList()                  ;
-      drawPile                = p.drawPile?.ToList()              ;
-      discardPile             = p.discardPile?.ToList()           ;
-      tradeRow                = p.tradeRow?.ToList()              ;
-      tradePool               = p.tradePool?.ToList()             ;
+      isComputer              = player.isComputer                      ;
+      name                    = player.name                            ;
+      currentNodeX            = player.currentNodeX                    ;
+      currentNodeY            = player.currentNodeY                    ;
+      completedNodeLocations  = player.completedNodeLocations?.ToList();
+      completedMapCount       = player.completedMapCount               ;
+      activeGuild             = player.activeGuild                     ;
+      health                  = player.health                          ;
+      maxHealth               = player.maxHealth                       ;
+      coin                    = player.coin                            ;
+      vision                  = player.vision                          ;
+      awareness               = player.awareness                       ;
+      insight                 = player.insight                         ;
+      tradeRowSize            = player.tradeRowSize                    ;
+      shield                  = player.shield                          ;
+      manna                   = player.manna                           ;
+      basicManna              = player.basicManna                      ;
+      basicHandSize           = player.basicHandSize                   ;
+      initiative              = player.initiative                      ;
+      currentHandSize         = player.currentHandSize                 ;
+      toDiscard               = player.toDiscard                       ;
+      deckCardIds             = player.deckCardIds?.ToList()           ;
+      deck                    = player.deck?.ToList()                  ;
+      drawPile                = player.drawPile?.ToList()              ;
+      discardPile             = player.discardPile?.ToList()           ;
+      tradeRow                = player.tradeRow?.ToList()              ;
+      tradePool               = player.tradePool?.ToList()             ;
     }
 
     public Player(
@@ -245,7 +245,7 @@ namespace MaM.Definitions
     {
     }
 
-    public Enemy(Player e) : base(e)
+    public Enemy(Player enemy) : base(enemy)
     {
     }
 

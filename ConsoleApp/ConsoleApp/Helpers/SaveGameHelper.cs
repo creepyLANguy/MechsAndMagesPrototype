@@ -14,8 +14,8 @@ namespace MaM.Helpers
  {
    private const string SaveFileDirectory   = @"savegames\";
    private const string GameConfigFilename  = "gameconfig.json";
-   private const string CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ";
-   //private const string CryptoKey           = null;
+   //private const string CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ"; //TODO - uncomment for release
+   private const string CryptoKey           = null;
 
     private static string ObjectToJson(object obj, bool indented = false)
     {

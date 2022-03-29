@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MaM.Definitions;
 using MaM.Helpers;
+using MaM.Readers;
 
 namespace MaM.GameLogic
 {
   public static class Battle
   {
-    public static bool Run(Player human, Fight node)
+    public static bool Run(ref Player human, Fight node)
     {
       //TODO
 
@@ -15,9 +17,15 @@ namespace MaM.GameLogic
       Console.WriteLine("[Start Battle]");
 #endif
 
+      var humanPlayer = new Player(human);
+      var enemies = Algos.DeepCopyPlayerList(ref node.enemies);
+
       var random = Algos.GenerateNewRandom();
 
-      var allPlayers = GetPlayerOrder(ref human, ref node.enemies, ref random);
+      var tempPlayerList = GetAllPlayers(ref humanPlayer, ref enemies);
+      var allPlayers = GetPlayerOrder(ref tempPlayerList, ref random);
+
+      PrepareAllPlayersForBattle(ref allPlayers);
 
       var currentPlayerIndex = 0;
       while (true)
@@ -51,15 +59,37 @@ namespace MaM.GameLogic
       }
     }
 
-    private static List<Player> GetPlayerOrder(ref Player player, ref List<Player> enemies, ref Random random)
+    private static List<Player> GetAllPlayers(ref Player player, ref List<Player> enemies)
     {
       var allPlayers = new List<Player>();
       allPlayers.Add(player);
       allPlayers.AddRange(enemies);
-      
+      return allPlayers;
+    }
+
+    private static List<Player> GetPlayerOrder(ref List<Player> players, ref Random random)
+    {
+      var allPlayers = new List<Player>();
+      allPlayers.AddRange(players);
+
       allPlayers.ShuffleWhileAccountingForInitiatives(ref random);
 
       return allPlayers;
+    }
+    private static void PrepareAllPlayersForBattle(ref List<Player> allPlayers)
+    {
+      foreach (var player in allPlayers)
+      {
+        player.activeGuild      = Guilds.Neutral;
+        player.currentHandSize  = 0;
+        player.discardPile      = new List<Card>();
+        player.drawPile         = new List<Card>();
+        player.manna            = player.basicManna;
+        player.shield           = 0;
+        player.toDiscard        = 0;
+        player.tradePool        = new List<Card>();
+        player.tradeRow         = new List<Card>();
+      }
     }
 
     private static void ExecutePlayerTurn(ref Player player)
