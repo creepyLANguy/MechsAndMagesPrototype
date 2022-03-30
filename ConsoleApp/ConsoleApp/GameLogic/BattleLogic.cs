@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MaM.Definitions;
@@ -76,6 +76,7 @@ namespace MaM.GameLogic
 
       return allPlayers;
     }
+
     private static void PrepareAllPlayersForBattle(ref List<Player> allPlayers)
     {
       foreach (var player in allPlayers)
@@ -83,11 +84,11 @@ namespace MaM.GameLogic
         player.activeGuild      = Guilds.Neutral;
         player.currentHandSize  = 0;
         player.discardPile      = new List<Card>();
-        player.drawPile         = new List<Card>();
+        player.drawPile         = player.deck.Where(it => it.guild == Guilds.Neutral).ToList();
         player.manna            = 0;
         player.shield           = 0;
         player.toDiscard        = 0;
-        player.tradePool        = new List<Card>();
+        player.tradePool        = player.deck.Where(it => it.guild != Guilds.Neutral).ToList();
         player.tradeRow         = new List<Card>();
       }
     }
