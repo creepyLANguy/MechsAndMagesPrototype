@@ -35,7 +35,7 @@ namespace MaM.GameLogic
         Console.WriteLine("[Turn]\t\t" + currentPlayer.name);
 #endif
 
-        ExecutePlayerTurn(ref currentPlayer);
+        ExecuteTurn(ref currentPlayer);
 
         if (currentPlayer.health <= 0)
         {
@@ -92,25 +92,25 @@ namespace MaM.GameLogic
       }
     }
 
-    private static void ExecutePlayerTurn(ref Player player)
+    private static void ExecuteTurn(ref Player player)
     {
       if (player.isComputer)
       {
-        ExecuteComputerPlayerTurn(ref player);
+        ExecuteTurnForComputer(ref player);
       }
       else
       {
-        ExecuteHumanPlayerTurn(ref player);
+        ExecuteTurnForHuman(ref player);
       }
     }
 
-    private static void ExecuteComputerPlayerTurn(ref Player player)
+    private static void ExecuteTurnForComputer(ref Player player)
     {
       //TODO
       player.health = 0;
     }
     
-    private static void ExecuteHumanPlayerTurn(ref Player player)
+    private static void ExecuteTurnForHuman(ref Player player)
     {
       //TODO
       player.health = 0;
