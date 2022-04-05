@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MaM.Definitions
 {
-  public class StringLiterals
+  public static class StringLiterals
   {
     public static readonly string Deliminator = ",";
     public static readonly char   Space       = ' ';
