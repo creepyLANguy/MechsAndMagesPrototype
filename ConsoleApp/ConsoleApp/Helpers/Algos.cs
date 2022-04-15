@@ -12,9 +12,7 @@ namespace MaM.Helpers
       for (var i = list.Count - 1; i > 0; --i)
       {
         var randomIndex = random.Next(i + 1);
-        var value = list[randomIndex];
-        list[randomIndex] = list[i];
-        list[i] = value;
+        (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
       }
     }
 

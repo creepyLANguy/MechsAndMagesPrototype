@@ -59,7 +59,7 @@ namespace MaM.GameLogic
 
       _ = SaveGameHelper.Delete(saveFilename);
 
-      Menus.MainMenu.Load();
+      Menus.MainMenu.Show();
 
       void AutoSave()
       {

@@ -10,7 +10,7 @@ namespace MaM.Menus
       Exit = 2,
     }
 
-    public static void Load()
+    public static void Show()
     {
       var requestString =
         "\nMain Menu" +
@@ -24,7 +24,7 @@ namespace MaM.Menus
           SaveGameHelper.PromptUserToSelectSaveSlot();
           break;
         default:
-          ExitMenu.Load();
+          ExitMenu.Show();
           break;
       }
     }

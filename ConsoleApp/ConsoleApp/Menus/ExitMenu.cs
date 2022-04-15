@@ -10,7 +10,7 @@ namespace MaM.Menus
       No  = 2,
     }
 
-    public static void Load()
+    public static void Show()
     {
       var requestString =
         "\nAre you sure you want to exit?" +
@@ -23,7 +23,7 @@ namespace MaM.Menus
         case (ExitMenuItems.Yes):
           return;
         default:
-          MainMenu.Load();
+          MainMenu.Show();
           break;
       }
     }
