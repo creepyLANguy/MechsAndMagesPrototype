@@ -21,7 +21,14 @@ namespace MaM.Helpers
 
     public static int GetInt(string message = null)
     {
-      return int.Parse(GetString(message));
+      var input = GetString(message);
+
+      while (string.IsNullOrEmpty(input))
+      {
+        input = Get();
+      }
+
+      return int.Parse(input);
     }
 
     public static string GetPrintableCardName(string cardName)

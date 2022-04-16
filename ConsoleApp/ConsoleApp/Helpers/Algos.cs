@@ -4,8 +4,8 @@ using System.Linq;
 using MaM.Definitions;
 
 namespace MaM.Helpers
-{
- public static class Algos
+{ 
+  public static class Algos
   {
     public static void Shuffle<T>(this IList<T> list, ref Random random)
     {

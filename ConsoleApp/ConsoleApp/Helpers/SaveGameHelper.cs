@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using MaM.Definitions;
 using MaM.GameLogic;
 using MaM.Readers;
@@ -14,8 +15,8 @@ namespace MaM.Helpers
  {
    private const string SaveFileDirectory   = @"savegames\";
    private const string GameConfigFilename  = "gameconfig.json";
-   //private const string CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ"; //TODO - uncomment for release
-   private const string CryptoKey           = null;
+   private const string CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ"; //TODO - uncomment for release
+   //private const string CryptoKey           = null;
 
     private static string ObjectToJson(object obj, bool indented = false)
     {
@@ -33,7 +34,10 @@ namespace MaM.Helpers
 
       if (cryptoKey != null)
       {
-        content = Crypto.DecryptString(content, cryptoKey);
+        var decryptedContent = Crypto.DecryptString(content, cryptoKey);
+        var decodedContent = Convert.FromBase64String(decryptedContent);
+        var utf8Content = Encoding.UTF8.GetString(decodedContent);
+        content = utf8Content;
       }
 
       var gameState = JsonConvert.DeserializeObject<GameState>(content);

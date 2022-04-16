@@ -14,91 +14,57 @@ namespace MaM.Helpers
       return Encoding.Unicode.GetString(DES.Create().Key);
     }
 
-    public static string EncryptString(string content, string key)
+    public static string EncryptString(string input, string key)
     {
-      var contentBytes = Encoding.ASCII.GetBytes(content);
-      var keyBytes = Encoding.ASCII.GetBytes(key);
-
-      var des = new DESCryptoServiceProvider
-      {
-        Key = keyBytes,
-        IV = keyBytes
-      };
-
-      var memStream = new MemoryStream();
-      var cryptoStream = new CryptoStream(memStream, des.CreateEncryptor(keyBytes, keyBytes), CryptoStreamMode.Write);
-      cryptoStream.Write(contentBytes, 0, contentBytes.Length);
-      cryptoStream.FlushFinalBlock();
-
-      var encryptedContentBytes = new byte[memStream.Length];
-      memStream.Position = 0;
-      _ = memStream.Read(encryptedContentBytes, 0, encryptedContentBytes.Length);
-
-      var encryptedContent = Convert.ToBase64String(encryptedContentBytes);
-
-      return encryptedContent;
+      var inputBytes = Encoding.ASCII.GetBytes(input);
+      var transform = GetDesEncryptor(key);
+      return PerformDesTransform(inputBytes, transform);
     }
 
-    public static string DecryptString(string content, string key)
+    public static string DecryptString(string input, string key)
     {
-      var encryptedContentBytes = Convert.FromBase64String(content);
-      var keyBytes = Encoding.ASCII.GetBytes(key);
-
-      var provider = new DESCryptoServiceProvider();
-      var transform = provider.CreateDecryptor(keyBytes, keyBytes);
-
-      var memStream = new MemoryStream();
-      var cryptoStream = new CryptoStream(memStream, transform, CryptoStreamMode.Write);
-      cryptoStream.Write(encryptedContentBytes, 0, encryptedContentBytes.Length);
-      cryptoStream.FlushFinalBlock();
-
-      var decryptedContentBytes = new byte[memStream.Length];
-      memStream.Position = 0;
-      _ = memStream.Read(decryptedContentBytes, 0, decryptedContentBytes.Length);
-
-      var decryptedContent = Encoding.UTF8.GetString(decryptedContentBytes, 0, decryptedContentBytes.Length);
-
-      return decryptedContent;
-
+      var inputBytes = Convert.FromBase64String(input);
+      var transform = GetDesDecryptor(key);
+      return PerformDesTransform(inputBytes, transform);
     }
 
     public static void EncryptFile(string inputFilename, string outputFilename, string key)
     {
       var fsInput = new FileStream(inputFilename, FileMode.Open, FileAccess.Read);
 
-      var fsEncrypted = new FileStream(outputFilename, FileMode.Create, FileAccess.Write);
+      var fsOutput = new FileStream(outputFilename, FileMode.Create, FileAccess.Write);
 
       var des = GetDesProvider(key);
-
-      var desEncrypt = des.CreateEncryptor();
-      var cryptoStream = new CryptoStream(fsEncrypted, desEncrypt, CryptoStreamMode.Write);
+      var transform = des.CreateEncryptor();
+      var cryptoStream = new CryptoStream(fsOutput, transform, CryptoStreamMode.Write);
 
       var byteArrayInput = new byte[fsInput.Length];
       _ = fsInput.Read(byteArrayInput, 0, byteArrayInput.Length);
       
       cryptoStream.Write(byteArrayInput, 0, byteArrayInput.Length);
-      
+
+      cryptoStream.Flush();
       cryptoStream.Close();
+      fsOutput.Close();
       fsInput.Close();
-      fsEncrypted.Close();
     }
 
     public static void DecryptFile(string inputFilename, string outputFilename, string key)
     {
-
+      var fsInput = new FileStream(inputFilename, FileMode.Open, FileAccess.Read);
+     
+      var fsOutput = new StreamWriter(outputFilename);
+      
       var des = GetDesProvider(key);
+      var transform = des.CreateDecryptor();
+      var cryptoStream = new CryptoStream(fsInput, transform, CryptoStreamMode.Read);
 
-      var fsRead = new FileStream(inputFilename, FileMode.Open, FileAccess.Read);
+      fsOutput.Write(new StreamReader(cryptoStream).ReadToEnd());
 
-      var desDecrypt = des.CreateDecryptor();
-
-      var cryptoStream = new CryptoStream(fsRead, desDecrypt, CryptoStreamMode.Read);
-
-      var fsDecrypted = new StreamWriter(outputFilename);
-      fsDecrypted.Write(new StreamReader(cryptoStream).ReadToEnd());
-
-      fsDecrypted.Flush();
-      fsDecrypted.Close();
+      cryptoStream.Close();
+      fsOutput.Flush();
+      fsOutput.Close();
+      fsInput.Close();
     }
 
     private static DESCryptoServiceProvider GetDesProvider(string key)
@@ -110,6 +76,34 @@ namespace MaM.Helpers
         Key = Encoding.ASCII.GetBytes(key),
         IV = Encoding.ASCII.GetBytes(key)
       };
+    }
+
+    private static ICryptoTransform GetDesEncryptor(string key)
+    {
+      var des = GetDesProvider(key);
+      return des.CreateEncryptor(des.Key, des.IV);
+    }    
+
+    private static ICryptoTransform GetDesDecryptor(string key)
+    {
+      var des = GetDesProvider(key);
+      return des.CreateDecryptor(des.Key, des.IV);
+    }
+
+    private static string PerformDesTransform(byte[] inputBytes, ICryptoTransform transform)
+    {
+      var memStream = new MemoryStream();
+
+      var cryptoStream = new CryptoStream(memStream, transform, CryptoStreamMode.Write);
+      cryptoStream.Write(inputBytes, 0, inputBytes.Length);
+      cryptoStream.FlushFinalBlock();
+
+      var outputBytes = new byte[memStream.Length];
+      memStream.Position = 0;
+      _ = memStream.Read(outputBytes, 0, outputBytes.Length);
+
+      var output = Convert.ToBase64String(outputBytes);
+      return output;
     }
   }
 }
