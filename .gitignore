@@ -349,3 +349,7 @@ healthchecksdb
 MigrationBackup/
 
 *.dot
+
+.DS_Store
+
+ConsoleApp/.idea/.idea.MaM/.idea/

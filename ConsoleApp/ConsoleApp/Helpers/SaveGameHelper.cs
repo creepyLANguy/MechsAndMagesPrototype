@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -13,7 +13,7 @@ namespace MaM.Helpers
 {
  public static class SaveGameHelper
  {
-   private const string SaveFileDirectory   = @"savegames\";
+   private static string SaveFileDirectory  = "savegames" + FileSystemDefs.directorySeparator;
    private const string GameConfigFilename  = "gameconfig.json";
    private const string CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ"; //TODO - uncomment for release
    //private const string CryptoKey           = null;
@@ -98,14 +98,14 @@ namespace MaM.Helpers
       var list = new List<Tuple<string, int>>();
       list.Add(new Tuple<string, int>("Begin A New Save Slot", 0));
 
-      if (Directory.Exists(SaveFileDirectory))
+      if (Directory.Exists(SaveFileDirectory) == false)
       {
         Directory.CreateDirectory(SaveFileDirectory);
       }
 
       var allFiles =
         Directory.EnumerateFiles(SaveFileDirectory)
-          .Select(file => file.Substring(file.IndexOf(@"\", StringComparison.Ordinal) + 1))
+          .Select(file => file.Substring(file.IndexOf(FileSystemDefs.directorySeparator, StringComparison.Ordinal) + 1))
           .ToList();
 
       foreach (var file in allFiles)

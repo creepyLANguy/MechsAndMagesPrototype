@@ -1,9 +1,18 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MaM.Definitions
 {
+  public static class FileSystemDefs
+  {
+  #if WINDOWS
+    public static readonly string directorySeparator = @"\";
+  #else
+    public static readonly string directorySeparator = @"/";
+  #endif
+  }
+
   public static class StringLiterals
   {
     public static readonly string Deliminator = ",";

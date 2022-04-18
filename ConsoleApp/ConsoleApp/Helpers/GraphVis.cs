@@ -8,7 +8,7 @@ namespace MaM.Helpers
   {
     public static void SaveMapsAsDotFiles(ref Journey journey, bool verbose)
     {
-      const string folderName = @"DEBUG_MAPS\";
+      var folderName = "DEBUG_MAPS" + FileSystemDefs.directorySeparator;
 
       for (var i = 0; i < journey.maps.Count; ++i)
       {
