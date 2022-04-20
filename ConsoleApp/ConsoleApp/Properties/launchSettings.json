@@ -1,8 +1,12 @@
 {
   "profiles": {
-    "ConsoleApp": {
+    "ConsoleApp[Windows]": {
       "commandName": "Project",
       "workingDirectory": "..\\..\\..\\MechsAndMagesPrototype"
+    },
+    "ConsoleApp[MacOS]": {
+      "commandName": "Project",
+      "workingDirectory": "/Users/altamish.mahomed/Desktop/GIT/MechsAndMagesPrototype"
     }
   }
 }
