@@ -2,11 +2,11 @@
   "profiles": {
     "ConsoleApp[Windows]": {
       "commandName": "Project",
-      "workingDirectory": "..\\..\\..\\MechsAndMagesPrototype"
+      "workingDirectory": "$(MSBuildProjectDirectory)\\..\\..\\"
     },
     "ConsoleApp[MacOS]": {
       "commandName": "Project",
-      "workingDirectory": "/Users/altamish.mahomed/Desktop/GIT/MechsAndMagesPrototype"
+      "workingDirectory": "$(MSBuildProjectDirectory)/../../"
     }
   }
 }
