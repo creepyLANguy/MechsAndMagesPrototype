@@ -13,7 +13,7 @@ namespace MaM.GameLogic
     {
       var gameContents = GameGenerator.Generate(gameConfigFilename, saveFilename, cryptoKey);
 
-      var player = gameContents.player; //TODO - make sure the default fields for player are set correctly. 
+      var player = gameContents.player;
 
       AutoSave();
 
