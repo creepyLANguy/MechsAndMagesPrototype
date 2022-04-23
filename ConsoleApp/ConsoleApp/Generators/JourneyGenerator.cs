@@ -349,8 +349,7 @@ namespace MaM.Generators
       //TODO - implement
       ((Campsite) node).recruits = null;
     }
-    
-    //TODO - consider changing this to setup multiple enemies for a node. 
+
     private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, ref EnemyNames enemyNames, int mapIndex, List<Card> cards, ref Random random)
     {
       cards.Shuffle(ref random);
@@ -374,7 +373,7 @@ namespace MaM.Generators
         deck
       );
 
-      ((Fight) node).enemies.Add(enemy);
+      ((Fight) node).enemy = enemy;
     }
 
     private static void SetupBoss(ref Node node, int mapIndex, ref List<Enemy> bosses, ref Random random)
@@ -388,7 +387,7 @@ namespace MaM.Generators
       boss.health *= (1 + mapIndex);
       boss.tradeRowSize += mapIndex;
 
-      ((Fight) node).enemies.Add(boss);
+      ((Fight) node).enemy = boss;
 
       bosses.Remove(boss);
     }

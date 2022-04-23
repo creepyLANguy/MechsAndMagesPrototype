@@ -8,7 +8,7 @@ namespace MaM.GameLogic
 {
   public static class Battle
   {
-    public static bool Run(ref Player human, Fight node)
+    public static bool Run(ref Player humanPlayer, Fight node)
     {
       //TODO
 
@@ -16,20 +16,17 @@ namespace MaM.GameLogic
       Console.WriteLine("[Start Battle]");
 #endif
 
-      var humanPlayer = new Player(human);
-      var enemies = Algos.DeepCopyPlayerList(ref node.enemies);
-
       var random = Algos.GenerateNewRandom();
 
-      var tempPlayerList = GetAllPlayers(ref humanPlayer, ref enemies);
-      var allPlayers = GetPlayerOrder(ref tempPlayerList, ref random);
-
-      PrepareAllPlayersForBattle(ref allPlayers);
+      var copyOfHumanPlayer = new Player(humanPlayer);
+      var players = new List<Player> { copyOfHumanPlayer, node.enemy };
+      players.ShuffleWhileAccountingForInitiatives(ref random);
+      PrepareAllPlayersForBattle(ref players);
 
       var currentPlayerIndex = 0;
       while (true)
       {
-        var currentPlayer = allPlayers[currentPlayerIndex % allPlayers.Count];
+        var currentPlayer = players[currentPlayerIndex % players.Count];
 
 #if DEBUG
         Console.WriteLine("[Turn]\t\t" + currentPlayer.name);
@@ -44,36 +41,22 @@ namespace MaM.GameLogic
 #endif
           if (currentPlayer.isComputer == false)
           {
-            return false; //Player has died.
+            //Human player has died.
+            //Note, make sure you do NOT persist their death state in this scenario unless it's a hardcore permadeath type game mode.
+            return false; 
           }
 
-          allPlayers.RemoveAt(currentPlayerIndex);
-          if (allPlayers.Count == 1)
+          players.RemoveAt(currentPlayerIndex);
+          if (players.Count == 1)
           {
-            return true; //All enemies have been defeated, and player is still alive. 
+            //All enemies have been defeated, and human player is still alive.
+            humanPlayer = players.First(); //save the human player's victory state.
+            return true;  
           }
         }
 
         ++currentPlayerIndex;
       }
-    }
-
-    private static List<Player> GetAllPlayers(ref Player player, ref List<Player> enemies)
-    {
-      var allPlayers = new List<Player>();
-      allPlayers.Add(player);
-      allPlayers.AddRange(enemies);
-      return allPlayers;
-    }
-
-    private static List<Player> GetPlayerOrder(ref List<Player> players, ref Random random)
-    {
-      var allPlayers = new List<Player>();
-      allPlayers.AddRange(players);
-
-      allPlayers.ShuffleWhileAccountingForInitiatives(ref random);
-
-      return allPlayers;
     }
 
     private static void PrepareAllPlayersForBattle(ref List<Player> allPlayers)
