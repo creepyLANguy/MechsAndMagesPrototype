@@ -128,8 +128,6 @@ namespace MaM.Readers
     }
 
     public static Card GetCardFromId(string cardId, ref List<Card> cards)
-    {
-      return cards.Find(it => it.id == cardId);
-    }
+      => cards.Find(it => it.id == cardId);
   }
 }

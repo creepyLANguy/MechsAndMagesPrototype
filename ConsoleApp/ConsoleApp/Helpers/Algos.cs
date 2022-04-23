@@ -16,15 +16,12 @@ namespace MaM.Helpers
       }
     }
 
-    public static int GenerateRandomSeed()
-    {
-      return Math.Abs((int) DateTime.Now.Ticks);
-    }
+    public static int GenerateRandomSeed() => 
+      Math.Abs((int)DateTime.Now.Ticks);
 
     public static Random GenerateNewRandom(int? randomSeed = null)
-    {
-      return new Random(randomSeed ?? GenerateRandomSeed());
-    }
+      => new Random(randomSeed ?? GenerateRandomSeed());
+
 
     private static Player SelectRandomPlayerWhileAccountingForInitiatives(this List<Player> players, ref Random random)
     {
@@ -62,9 +59,7 @@ namespace MaM.Helpers
       players.AddRange(newList);
     }
 
-    public static List<Player> DeepCopyPlayerList(ref List<Player> list)
-    {
-      return list.Select(player => new Player(player)).ToList();
-    }
+    public static List<Player> DeepCopyPlayerList(ref List<Player> list) 
+      => list.Select(player => new Player(player)).ToList();
   }
 }

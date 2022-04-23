@@ -9,11 +9,9 @@ namespace MaM.Helpers
   {
     // Generate a 64-bit/8-byte key.
     // Symmetrically used, so safely distribute to authorized parties that may decrypt the file.
-    public static string GenerateKey()
-    {
-      return Encoding.Unicode.GetString(DES.Create().Key);
-    }
-
+    public static string GenerateKey() => 
+      Encoding.Unicode.GetString(DES.Create().Key);
+  
     public static string EncryptString(string input, string key)
     {
       var inputBytes = Encoding.ASCII.GetBytes(input);
@@ -34,8 +32,7 @@ namespace MaM.Helpers
 
       var fsOutput = new FileStream(outputFilename, FileMode.Create, FileAccess.Write);
 
-      var des = GetDesProvider(key);
-      var transform = des.CreateEncryptor();
+      var transform = GetDesEncryptor(key);
       var cryptoStream = new CryptoStream(fsOutput, transform, CryptoStreamMode.Write);
 
       var byteArrayInput = new byte[fsInput.Length];
@@ -55,8 +52,7 @@ namespace MaM.Helpers
      
       var fsOutput = new StreamWriter(outputFilename);
       
-      var des = GetDesProvider(key);
-      var transform = des.CreateDecryptor();
+      var transform = GetDesEncryptor(key);
       var cryptoStream = new CryptoStream(fsInput, transform, CryptoStreamMode.Read);
 
       fsOutput.Write(new StreamReader(cryptoStream).ReadToEnd());
@@ -67,27 +63,20 @@ namespace MaM.Helpers
       fsInput.Close();
     }
 
-    private static DESCryptoServiceProvider GetDesProvider(string key)
-    {
-      // A 64-bit key is required for this provider.
-      // Use the same key as the IV.
-      return new DESCryptoServiceProvider
-      {
-        Key = Encoding.ASCII.GetBytes(key),
-        IV = Encoding.ASCII.GetBytes(key)
-      };
-    }
+    private static (DES, byte[]) GetDesInstanceAndKeyBytesPair(string key) =>
+      (DES.Create(), Encoding.ASCII.GetBytes(key));
 
     private static ICryptoTransform GetDesEncryptor(string key)
     {
-      var des = GetDesProvider(key);
-      return des.CreateEncryptor(des.Key, des.IV);
+
+      var (des, keyBytes) = GetDesInstanceAndKeyBytesPair(key);
+      return des.CreateEncryptor(keyBytes, keyBytes);
     }    
 
     private static ICryptoTransform GetDesDecryptor(string key)
     {
-      var des = GetDesProvider(key);
-      return des.CreateDecryptor(des.Key, des.IV);
+      var (des, keyBytes) = GetDesInstanceAndKeyBytesPair(key);
+      return des.CreateDecryptor(keyBytes, keyBytes);
     }
 
     private static string PerformDesTransform(byte[] inputBytes, ICryptoTransform transform)

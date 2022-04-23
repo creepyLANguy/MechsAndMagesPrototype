@@ -67,17 +67,10 @@ namespace MaM.GameLogic
       }
     }
 
-    private static Node GetNextNode(ref Player player, ref Map map)
-    {
-      if (player.currentNodeY < 0 && player.currentNodeX < 0)
-      {
-        return PromptUserForStartingNode(ref player, ref map);
-      }
-      else
-      {
-        return PromptUserForNextNode(ref player, ref map);
-      }
-    }
+    private static Node GetNextNode(ref Player player, ref Map map) 
+      => (player.currentNodeY < 0 && player.currentNodeX < 0)
+        ? PromptUserForStartingNode(ref player, ref map)
+        : PromptUserForNextNode(ref player, ref map);
 
     private static Node PromptUserForStartingNode(ref Player player, ref Map map)
     {

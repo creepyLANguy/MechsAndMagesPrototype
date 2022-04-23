@@ -18,15 +18,11 @@ namespace MaM.Helpers
    private const string CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ"; //TODO - uncomment for release
    //private const string CryptoKey           = null;
 
-    private static string ObjectToJson(object obj, bool indented = false)
-    {
-      return JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
-    }
+   private static string ObjectToJson(object obj, bool indented = false) 
+     => JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
 
-    public static bool IsLegit(string filename)
-    {
-      return string.IsNullOrEmpty(filename) == false && File.Exists(SaveFileDirectory + filename);
-    }
+    public static bool IsLegit(string filename) 
+      => string.IsNullOrEmpty(filename) == false && File.Exists(SaveFileDirectory + filename);
 
     public static GameState Read(string filename, List<Card> cards = null, string cryptoKey = null)
     {

@@ -65,14 +65,13 @@ namespace MaM.Readers
     }
 
     private static string BuildFullEnemyNameString(
-      string pre, 
-      string descriptor, 
-      string collective, 
+      string pre,
+      string descriptor,
+      string collective,
       string post,
       string place
-      )
-    {
-      return new StringBuilder()
+    ) => 
+      new StringBuilder()
         .Append(pre.Trim())
         .Append(StringLiterals.Space)
         .Append(descriptor.Trim())
@@ -84,6 +83,5 @@ namespace MaM.Readers
         .Append(place.Trim())
         .Append(StringLiterals.Space)
         .ToString();
-    }
   }
 }

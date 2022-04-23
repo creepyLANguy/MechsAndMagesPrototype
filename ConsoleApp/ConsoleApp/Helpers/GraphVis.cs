@@ -105,7 +105,7 @@ namespace MaM.Helpers
 
     private static string GetNodeTypeDescriptor(Node node)
     {
-      var str = "???????";
+      var str = "Error: UNKNOWN OR BLANK NODE TYPE";
 
       if (node == null || node.nodeType == NodeType.Blank)
       {

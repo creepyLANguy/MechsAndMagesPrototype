@@ -5,11 +5,9 @@ namespace MaM.Helpers
  public static class UserInput
   {
     public static string Get()
-    {
-      return Console.ReadLine();
-    }
+      => Console.ReadLine();
 
-    public static string GetString(string message = null)
+      public static string GetString(string message = null)
     {
       if (string.IsNullOrEmpty(message) == false)
       {
