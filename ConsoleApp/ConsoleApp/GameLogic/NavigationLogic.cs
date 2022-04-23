@@ -27,12 +27,14 @@ namespace MaM.GameLogic
 
           AutoSave();
 
-          while (VisitNode(ref player, ref node) == false)
+          if (VisitNode(ref player, ref node) == false)
           {
-            //TODO
-
-            AutoSave();
+            _ = SaveGameHelper.Delete(saveFilename);
+            Console.WriteLine("\nYOU DIED");
+            return;
           }
+
+          AutoSave();
 
           player.completedNodeLocations.Add(new Tuple<int, int>(player.currentNodeX, player.currentNodeY));
 
@@ -61,10 +63,9 @@ namespace MaM.GameLogic
 
       Menus.MainMenu.Show();
 
-      void AutoSave()
-      {
-        _ = SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
-      }
+      //Nested convenience function definition.
+      void AutoSave() 
+        => SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
     }
 
     private static Node GetNextNode(ref Player player, ref Map map) 
@@ -134,25 +135,20 @@ namespace MaM.GameLogic
     }
 
     private static bool VisitNode(ref Player player, ref Node node)
-    {        
-      //TODO - all node visit cases and handle the results.
-
-      var nodeCompleted = false;
+    {
+      var hasSurvivedVisit = false;
 
       switch (node.nodeType)
       {
         case NodeType.CampSite:
-          nodeCompleted = Rest.Run(ref player, (Campsite)node);
+          hasSurvivedVisit =  Rest.Run(ref player, (Campsite)node);
           break;
         case NodeType.Fight:
-          while (nodeCompleted == false)
-          {
-            nodeCompleted = Battle.Run(ref player, (Fight)node);
-          }
+          hasSurvivedVisit = Battle.Run(ref player, (Fight)node);
           break;
       }
 
-      return nodeCompleted;
+      return hasSurvivedVisit;
     }
 
   }

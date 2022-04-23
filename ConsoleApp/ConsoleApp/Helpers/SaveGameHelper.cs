@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using MaM.Definitions;
-using MaM.GameLogic;
 using MaM.Readers;
 using Newtonsoft.Json;
 
@@ -13,20 +12,15 @@ namespace MaM.Helpers
 {
  public static class SaveGameHelper
  {
-   private static string SaveFileDirectory  = "savegames" + FileSystemDefs.directorySeparator;
-   private const string GameConfigFilename  = "gameconfig.json";
-   private const string CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ";
-   //private const string CryptoKey           = null;
-
    private static string ObjectToJson(object obj, bool indented = false) 
      => JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
 
     public static bool IsLegit(string filename) 
-      => string.IsNullOrEmpty(filename) == false && File.Exists(SaveFileDirectory + filename);
+      => string.IsNullOrEmpty(filename) == false && File.Exists(SaveGameDefs.SaveFileDirectory + filename);
 
     public static GameState Read(string filename, List<Card> cards = null, string cryptoKey = null)
     {
-      var content = File.ReadAllText(SaveFileDirectory + filename);
+      var content = File.ReadAllText(SaveGameDefs.SaveFileDirectory + filename);
 
       if (cryptoKey != null)
       {
@@ -75,7 +69,7 @@ namespace MaM.Helpers
         content = Crypto.EncryptString(content, cryptoKey);
       }
 
-      return FileHelper.WriteFileToDrive(filename, content, SaveFileDirectory);
+      return FileHelper.WriteFileToDrive(filename, content, SaveGameDefs.SaveFileDirectory);
     }
 
     public static bool Delete(string filename)
@@ -86,27 +80,27 @@ namespace MaM.Helpers
         return false;
       }
 
-      return FileHelper.DeleteFileFromDrive(filename, SaveFileDirectory);
+      return FileHelper.DeleteFileFromDrive(filename, SaveGameDefs.SaveFileDirectory);
     }
    
-    public static void  PromptUserToSelectSaveSlot()
+    public static string PromptUserToSelectSaveSlot()
     {
       var list = new List<Tuple<string, int>>();
       list.Add(new Tuple<string, int>("Begin A New Save Slot", 0));
 
-      if (Directory.Exists(SaveFileDirectory) == false)
+      if (Directory.Exists(SaveGameDefs.SaveFileDirectory) == false)
       {
-        Directory.CreateDirectory(SaveFileDirectory);
+        Directory.CreateDirectory(SaveGameDefs.SaveFileDirectory);
       }
 
       var allFiles =
-        Directory.EnumerateFiles(SaveFileDirectory)
+        Directory.EnumerateFiles(SaveGameDefs.SaveFileDirectory)
           .Select(file => file.Substring(file.IndexOf(FileSystemDefs.directorySeparator, StringComparison.Ordinal) + 1))
           .ToList();
 
       foreach (var file in allFiles)
       {
-        var game = Read(file, cryptoKey: CryptoKey);
+        var game = Read(file, cryptoKey: SaveGameDefs.CryptoKey);
 
         var displayString =
           game.time.ToString(CultureInfo.CurrentCulture) +
@@ -125,8 +119,7 @@ namespace MaM.Helpers
 
       var choice = UserInput.GetInt();
       var saveFile = choice == 0 ? DateTime.Now.Ticks.ToString() : allFiles[choice - 1];
-
-      Navigation.Run(GameConfigFilename, saveFile, CryptoKey);
+      return saveFile;
     }
   }
 }

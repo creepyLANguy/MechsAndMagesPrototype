@@ -10,16 +10,13 @@ namespace MaM.GameLogic
   {
     public static bool Run(ref Player humanPlayer, Fight node)
     {
-      //TODO
-
 #if DEBUG
       Console.WriteLine("[Start Battle]");
 #endif
 
       var random = Algos.GenerateNewRandom();
 
-      var copyOfHumanPlayer = new Player(humanPlayer);
-      var players = new List<Player> { copyOfHumanPlayer, node.enemy };
+      var players = new List<Player> { humanPlayer, node.enemy };
       players.ShuffleWhileAccountingForInitiatives(ref random);
       PrepareAllPlayersForBattle(ref players);
 
@@ -39,20 +36,8 @@ namespace MaM.GameLogic
 #if DEBUG
           Console.WriteLine("[Death]\t\t" + currentPlayer.name);
 #endif
-          if (currentPlayer.isComputer == false)
-          {
-            //Human player has died.
-            //Note, make sure you do NOT persist their death state in this scenario unless it's a hardcore permadeath type game mode.
-            return false; 
-          }
 
-          players.RemoveAt(currentPlayerIndex);
-          if (players.Count == 1)
-          {
-            //All enemies have been defeated, and human player is still alive.
-            humanPlayer = players.First(); //save the human player's victory state.
-            return true;  
-          }
+          return currentPlayer.isComputer;
         }
 
         ++currentPlayerIndex;

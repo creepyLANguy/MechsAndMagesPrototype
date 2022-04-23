@@ -1,4 +1,6 @@
-﻿using MaM.Helpers;
+﻿using MaM.GameLogic;
+using MaM.Helpers;
+using MaM.Definitions;
 
 namespace MaM.Menus
 {
@@ -10,8 +12,10 @@ namespace MaM.Menus
       Exit = 2,
     }
 
-    public static void Show()
+    public static bool Show()
     {
+      var keepRunning = true;
+
       var requestString =
         "\nMain Menu" +
         "\n" + MainMenuItems.Play.ToString("D") + ") " + MainMenuItems.Play +
@@ -21,12 +25,15 @@ namespace MaM.Menus
       switch ((MainMenuItems)choice)
       {
         case MainMenuItems.Play:
-          SaveGameHelper.PromptUserToSelectSaveSlot();
+          var saveFile = SaveGameHelper.PromptUserToSelectSaveSlot();
+          Navigation.Run(SaveGameDefs.GameConfigFilename, saveFile, SaveGameDefs.CryptoKey);
           break;
         default:
-          ExitMenu.Show();
+          keepRunning = ExitMenu.Show();
           break;
       }
+
+      return keepRunning;
     }
   }
 }

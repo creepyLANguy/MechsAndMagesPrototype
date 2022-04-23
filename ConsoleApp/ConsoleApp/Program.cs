@@ -4,7 +4,7 @@
   {
     private static void Main()
     {
-      Menus.MainMenu.Show();
+      while (Menus.MainMenu.Show());
     }
   }
 }

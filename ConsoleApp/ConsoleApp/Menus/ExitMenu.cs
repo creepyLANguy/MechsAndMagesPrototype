@@ -10,8 +10,10 @@ namespace MaM.Menus
       No  = 2,
     }
 
-    public static void Show()
+    public static bool Show()
     {
+      var keepRunning = true;
+
       var requestString =
         "\nAre you sure you want to exit?" +
         "\n" + ExitMenuItems.Yes.ToString("D") + ") " + ExitMenuItems.Yes + 
@@ -21,11 +23,11 @@ namespace MaM.Menus
       switch ((ExitMenuItems)choice)
       {
         case (ExitMenuItems.Yes):
-          return;
-        default:
-          MainMenu.Show();
+          keepRunning = false;
           break;
       }
+
+      return keepRunning;
     }
   }
 }

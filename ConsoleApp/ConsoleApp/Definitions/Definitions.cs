@@ -9,6 +9,14 @@ namespace MaM.Definitions
     public static readonly string directorySeparator = "/";
   }
 
+  public static class SaveGameDefs
+  {
+    public static string  SaveFileDirectory   = "savegames" + FileSystemDefs.directorySeparator;
+    public const string   GameConfigFilename  = "gameconfig.json";
+    public const string   CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ";
+    //private const string  CryptoKey          = null;
+  }
+
   public static class StringLiterals
   {
     public static readonly string Deliminator = ",";
@@ -32,28 +40,28 @@ namespace MaM.Definitions
   public class Guild: KeyValuePair<string, int> { public Guild(string key, int val) : base(key, val) { } }
   public struct Guilds
   {
-    public static readonly Guild Neutral = new Guild("Neutral", 0);
-    public static readonly Guild Borg    = new Guild("Borg",    1);
-    public static readonly Guild Mech    = new Guild("Mech",    2);
-    public static readonly Guild Mage    = new Guild("Mage",    3);
-    public static readonly Guild Necro   = new Guild("Necro",   4);
+    public static readonly Guild Neutral = new("Neutral", 0);
+    public static readonly Guild Borg    = new("Borg",    1);
+    public static readonly Guild Mech    = new("Mech",    2);
+    public static readonly Guild Mage    = new("Mage",    3);
+    public static readonly Guild Necro   = new("Necro",   4);
 
     // Important - assign in the same order as the value for each guild.
-    public static readonly List<Guild> All = new List<Guild>() { Neutral, Borg, Mech, Mage, Necro }; 
+    public static readonly List<Guild> All = new() { Neutral, Borg, Mech, Mage, Necro };
   }
 
   public class Action : KeyValuePair<string, int> { public Action(string key, int val) : base(key, val) { } }
   public static class Actions
   {
-    public static readonly Action Attack          = new Action("A", 1);
-    public static readonly Action Trade           = new Action("T", 2);
-    public static readonly Action Draw            = new Action("D", 3);
-    public static readonly Action Scrap           = new Action("S", 4);
-    public static readonly Action Consume         = new Action("C", 5);
-    public static readonly Action OpponentDiscard = new Action("O", 6);
-    public static readonly Action Heal            = new Action("H", 7);
+    public static readonly Action Attack          = new("A", 1);
+    public static readonly Action Trade           = new("T", 2);
+    public static readonly Action Draw            = new("D", 3);
+    public static readonly Action Scrap           = new("S", 4);
+    public static readonly Action Consume         = new("C", 5);
+    public static readonly Action OpponentDiscard = new("O", 6);
+    public static readonly Action Heal            = new("H", 7);
 
-    public static readonly List<Action> All = new List<Action>() { Attack, Trade, Draw, Scrap, Consume, OpponentDiscard, Heal };
+    public static readonly List<Action> All = new() { Attack, Trade, Draw, Scrap, Consume, OpponentDiscard, Heal };
   }
 
   public struct ActionsValuesSet
@@ -70,11 +78,11 @@ namespace MaM.Definitions
   public class CardType : KeyValuePair<string, int> { public CardType(string key, int val) : base(key, val) { } }
   public struct CardTypes
   {
-    public static readonly CardType Unknown = new CardType("Unknown", 0);
-    public static readonly CardType Unit    = new CardType("Unit",    1);
-    public static readonly CardType Base    = new CardType("Base",    2);
+    public static readonly CardType Unknown = new("Unknown", 0);
+    public static readonly CardType Unit    = new("Unit",    1);
+    public static readonly CardType Base    = new("Base",    2);
 
-    public static readonly List<CardType> All = new List<CardType>() { Unit, Base, Unknown };
+    public static readonly List<CardType> All = new() { Unit, Base, Unknown };
   }
 
   public struct Card
