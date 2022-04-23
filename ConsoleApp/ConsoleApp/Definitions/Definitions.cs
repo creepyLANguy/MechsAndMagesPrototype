@@ -6,11 +6,7 @@ namespace MaM.Definitions
 {
   public static class FileSystemDefs
   {
-  #if WINDOWS
-    public static readonly string directorySeparator = @"\";
-  #else
-    public static readonly string directorySeparator = @"/";
-  #endif
+    public static readonly string directorySeparator = "/";
   }
 
   public static class StringLiterals
@@ -23,13 +19,13 @@ namespace MaM.Definitions
 
   public class KeyValuePair<TK, TV>
   {
-    public TK Key   ;
-    public TV Value ;
+    public TK Key;
+    public TV Value;
 
     protected KeyValuePair(TK key, TV value)
     {
-      Key   = key   ;
-      Value = value ;
+      Key   = key;
+      Value = value;
     }
   }
 
@@ -62,13 +58,13 @@ namespace MaM.Definitions
 
   public struct ActionsValuesSet
   {
-    public int attack          ;
-    public int trade           ;  
-    public int draw            ;
-    public int scrap           ;
-    public int consume         ;
-    public int opponentDiscard ;
-    public int heal            ;
+    public int attack;
+    public int trade;  
+    public int draw;
+    public int scrap;
+    public int consume;
+    public int opponentDiscard;
+    public int heal;
   }
 
   public class CardType : KeyValuePair<string, int> { public CardType(string key, int val) : base(key, val) { } }
@@ -84,43 +80,43 @@ namespace MaM.Definitions
   public struct Card
   {
     public Card(
-      string            id                  ,
-      string            name                ,
-      CardType          type                ,
-      Guild             guild               ,
-      int               cost                ,
-      int               defense             ,
-      int               shield              ,
+      string            id,
+      string            name,
+      CardType          type,
+      Guild             guild,
+      int               cost,
+      int               defense,
+      int               shield,
       ActionsValuesSet  defaultActionsValues,
-      ActionsValuesSet  guildActionsValues  ,
-      ActionsValuesSet  allyActionsValues   ,
+      ActionsValuesSet  guildActionsValues,
+      ActionsValuesSet  allyActionsValues,
       ActionsValuesSet  scrapActionsValues
     )
     {
-      this.id           = id                  ;
-      this.name         = name                ;
-      this.type         = type                ;
-      this.guild        = guild               ;
-      this.cost         = cost                ;
-      this.defense      = defense             ;
-      this.shield       = shield              ;
+      this.id           = id;
+      this.name         = name;
+      this.type         = type;
+      this.guild        = guild;
+      this.cost         = cost;
+      this.defense      = defense;
+      this.shield       = shield;
       defaultAbilities  = defaultActionsValues;
-      guildBonuses      = guildActionsValues  ;
-      allyBonuses       = allyActionsValues   ;
-      scrapBonuses      = scrapActionsValues  ;
+      guildBonuses      = guildActionsValues;
+      allyBonuses       = allyActionsValues;
+      scrapBonuses      = scrapActionsValues;
     }
 
-    public string            name              ;
-    public CardType          type              ;
-    public Guild             guild             ;
-    public int               cost              ;
-    public int               defense           ;
-    public int               shield            ;
-    public ActionsValuesSet  defaultAbilities  ;
-    public ActionsValuesSet  guildBonuses      ;
-    public ActionsValuesSet  allyBonuses       ;
-    public ActionsValuesSet  scrapBonuses      ;
-    public string            id                ;
+    public string            name;
+    public CardType          type;
+    public Guild             guild;
+    public int               cost;
+    public int               defense;
+    public int               shield;
+    public ActionsValuesSet  defaultAbilities;
+    public ActionsValuesSet  guildBonuses;
+    public ActionsValuesSet  allyBonuses;
+    public ActionsValuesSet  scrapBonuses;
+    public string            id;
   }
 
   public class Player
@@ -131,121 +127,121 @@ namespace MaM.Definitions
 
     public Player(Player player)
     {
-      isComputer              = player.isComputer                      ;
-      name                    = player.name                            ;
-      currentNodeX            = player.currentNodeX                    ;
-      currentNodeY            = player.currentNodeY                    ;
+      isComputer              = player.isComputer;
+      name                    = player.name;
+      currentNodeX            = player.currentNodeX;
+      currentNodeY            = player.currentNodeY;
       completedNodeLocations  = player.completedNodeLocations?.ToList();
-      completedMapCount       = player.completedMapCount               ;
-      activeGuild             = player.activeGuild                     ;
-      health                  = player.health                          ;
-      maxHealth               = player.maxHealth                       ;
-      coin                    = player.coin                            ;
-      vision                  = player.vision                          ;
-      awareness               = player.awareness                       ;
-      insight                 = player.insight                         ;
-      tradeRowSize            = player.tradeRowSize                    ;
-      shield                  = player.shield                          ;
-      manna                   = player.manna                           ;
-      basicManna              = player.basicManna                      ;
-      basicHandSize           = player.basicHandSize                   ;
-      initiative              = player.initiative                      ;
-      currentHandSize         = player.currentHandSize                 ;
-      toDiscard               = player.toDiscard                       ;
-      deckCardIds             = player.deckCardIds?.ToList()           ;
-      deck                    = player.deck?.ToList()                  ;
-      drawPile                = player.drawPile?.ToList()              ;
-      discardPile             = player.discardPile?.ToList()           ;
-      tradeRow                = player.tradeRow?.ToList()              ;
-      tradePool               = player.tradePool?.ToList()             ;
+      completedMapCount       = player.completedMapCount;
+      activeGuild             = player.activeGuild;
+      health                  = player.health;
+      maxHealth               = player.maxHealth;
+      coin                    = player.coin;
+      vision                  = player.vision;
+      awareness               = player.awareness;
+      insight                 = player.insight;
+      tradeRowSize            = player.tradeRowSize;
+      shield                  = player.shield;
+      manna                   = player.manna;
+      basicManna              = player.basicManna;
+      basicHandSize           = player.basicHandSize;
+      initiative              = player.initiative;
+      currentHandSize         = player.currentHandSize;
+      toDiscard               = player.toDiscard;
+      deckCardIds             = player.deckCardIds?.ToList();
+      deck                    = player.deck?.ToList();
+      drawPile                = player.drawPile?.ToList();
+      discardPile             = player.discardPile?.ToList();
+      tradeRow                = player.tradeRow?.ToList();
+      tradePool               = player.tradePool?.ToList();
     }
 
     public Player(
-      bool                  isComputer            ,
-      string                name                  ,
-      int                   currentNodeX          ,
-      int                   currentNodeY          ,
+      bool                  isComputer,
+      string                name,
+      int                   currentNodeX,
+      int                   currentNodeY,
       List<Tuple<int, int>> completedNodeLocations,
-      int                   completedMapCount     ,
-      Guild                 activeGuild           ,
-      int                   health                ,
-      int                   maxHealth             ,
-      int                   coin                  ,
-      int                   vision                ,
-      int                   awareness             ,
-      int                   insight               ,
-      int                   tradeRowSize          ,
-      int                   shield                ,
-      int                   manna                 ,
-      int                   basicManna            ,
-      int                   basicHandSize         ,
-      int                   initiative            ,
-      int                   currentHandSize       ,
-      int                   toDiscard             ,
-      List<string>          deckCardIds           ,
-      List<Card>            deck                  ,
-      List<Card>            drawPile              ,
-      List<Card>            discardPile           ,
-      List<Card>            tradeRow              ,
+      int                   completedMapCount,
+      Guild                 activeGuild,
+      int                   health,
+      int                   maxHealth,
+      int                   coin,
+      int                   vision,
+      int                   awareness,
+      int                   insight,
+      int                   tradeRowSize,
+      int                   shield,
+      int                   manna,
+      int                   basicManna,
+      int                   basicHandSize,
+      int                   initiative,
+      int                   currentHandSize,
+      int                   toDiscard,
+      List<string>          deckCardIds,
+      List<Card>            deck,
+      List<Card>            drawPile,
+      List<Card>            discardPile,
+      List<Card>            tradeRow,
       List<Card>            tradePool
     )
     {
-      this.isComputer             = isComputer            ;
-      this.name                   = name                  ;
-      this.currentNodeX           = currentNodeX          ;
-      this.currentNodeY           = currentNodeY          ;
+      this.isComputer             = isComputer;
+      this.name                   = name;
+      this.currentNodeX           = currentNodeX;
+      this.currentNodeY           = currentNodeY;
       this.completedNodeLocations = completedNodeLocations;
-      this.completedMapCount      = completedMapCount     ;
-      this.activeGuild            = activeGuild           ;
-      this.health                 = health                ;
-      this.maxHealth              = maxHealth             ;
-      this.coin                   = coin                  ;
-      this.vision                 = vision                ;
-      this.awareness              = awareness             ;
-      this.insight                = insight               ;
-      this.tradeRowSize           = tradeRowSize          ;
-      this.shield                 = shield                ;
-      this.basicManna             = basicManna            ;
-      this.manna                  = manna                 ;
-      this.basicHandSize          = basicHandSize         ;
-      this.initiative             = initiative            ;
-      this.currentHandSize        = currentHandSize       ;
-      this.toDiscard              = toDiscard             ;
-      this.deckCardIds            = deckCardIds           ;
-      this.deck                   = deck                  ;
-      this.drawPile               = drawPile              ;
-      this.discardPile            = discardPile           ;
-      this.tradeRow               = tradeRow              ;
-      this.tradePool              = tradePool             ;
+      this.completedMapCount      = completedMapCount;
+      this.activeGuild            = activeGuild;
+      this.health                 = health;
+      this.maxHealth              = maxHealth;
+      this.coin                   = coin;
+      this.vision                 = vision;
+      this.awareness              = awareness;
+      this.insight                = insight;
+      this.tradeRowSize           = tradeRowSize;
+      this.shield                 = shield;
+      this.basicManna             = basicManna;
+      this.manna                  = manna;
+      this.basicHandSize          = basicHandSize;
+      this.initiative             = initiative;
+      this.currentHandSize        = currentHandSize;
+      this.toDiscard              = toDiscard;
+      this.deckCardIds            = deckCardIds;
+      this.deck                   = deck;
+      this.drawPile               = drawPile;
+      this.discardPile            = discardPile;
+      this.tradeRow               = tradeRow;
+      this.tradePool              = tradePool;
     }
 
-    public bool                   isComputer              ;
-    public string                 name                    ;
-    public int                    currentNodeX            ;
-    public int                    currentNodeY            ;
-    public List<Tuple<int, int>>  completedNodeLocations  ;
-    public int                    completedMapCount       ;
-    public Guild                  activeGuild             ;
-    public int                    health                  ;
-    public int                    maxHealth               ;
-    public int                    coin                    ;
-    public int                    vision                  ; //How many nodes and paths ahead you can simply see
-    public int                    awareness               ; //How many of the visible nodes ahead have their types revealed
-    public int                    insight                 ; //How many of the nodes ahead have their Guild distributions revealed
-    public int                    tradeRowSize            ;
-    public int                    shield                  ;
-    public int                    basicManna              ;
-    public int                    manna                   ;
-    public int                    toDiscard               ;
-    public int                    basicHandSize           ;
-    public int                    initiative              ;
-    public int                    currentHandSize         ;
-    public List<string>           deckCardIds             ;
-    public List<Card>             deck                    ;
-    public List<Card>             drawPile                ;
-    public List<Card>             discardPile             ;
-    public List<Card>             tradeRow                ;
-    public List<Card>             tradePool               ;
+    public bool                   isComputer;
+    public string                 name;
+    public int                    currentNodeX;
+    public int                    currentNodeY;
+    public List<Tuple<int, int>>  completedNodeLocations;
+    public int                    completedMapCount;
+    public Guild                  activeGuild;
+    public int                    health;
+    public int                    maxHealth;
+    public int                    coin;
+    public int                    vision;       //How many nodes and paths ahead you can simply see
+    public int                    awareness;    //How many of the visible nodes ahead have their types revealed
+    public int                    insight;      //How many of the nodes ahead have their Guild distributions revealed
+    public int                    tradeRowSize;
+    public int                    shield;
+    public int                    basicManna;
+    public int                    manna;
+    public int                    toDiscard;
+    public int                    basicHandSize;
+    public int                    initiative;
+    public int                    currentHandSize;
+    public List<string>           deckCardIds;
+    public List<Card>             deck;
+    public List<Card>             drawPile;
+    public List<Card>             discardPile;
+    public List<Card>             tradeRow;
+    public List<Card>             tradePool;
   }
 
   public class Enemy : Player
@@ -303,7 +299,7 @@ namespace MaM.Definitions
   {
     Blank,
     CampSite,
-    Fight,
+    Fight
   }
 
   public class Node
@@ -338,13 +334,13 @@ namespace MaM.Definitions
       this.destinations  = destinations;
     }
 
-    public NodeType                 nodeType       ;
-    public bool                     isMystery      ;
-    public int                      x              ;
-    public int                      y              ;
-    public bool                     isComplete     ;    
-    public bool                     isDestination  ;
-    public HashSet<Tuple<int, int>> destinations   ;
+    public NodeType                 nodeType;
+    public bool                     isMystery;
+    public int                      x;
+    public int                      y;
+    public bool                     isComplete;    
+    public bool                     isDestination;
+    public HashSet<Tuple<int, int>> destinations;
   }
   
   public class Campsite : Node
@@ -387,9 +383,9 @@ namespace MaM.Definitions
   public class Fight : Node
   {
     public Fight(
-      Node          baseNode,
-      FightType     fightType,
-      List<Player>  enemies = null
+      Node      baseNode,
+      FightType fightType,
+      Enemy     enemy = null
     ) : base(
       baseNode.nodeType,
       baseNode.isMystery,
@@ -401,28 +397,28 @@ namespace MaM.Definitions
     )
     {
       this.fightType  = fightType;
-      this.enemies    = enemies ?? new List<Player>();
+      this.enemy      = enemy ?? new Enemy();
       nodeType        = NodeType.Fight;
     }
 
-    public FightType fightType;
-    public List<Player> enemies;
+    public FightType  fightType;
+    public Enemy      enemy;
   }
 
   public struct Map
   {
     public Map(int index, int width, int height)
     {
-      this.index   = index;
-      this.width   = width;
-      this.height  = height;
-      nodes   = new Node[width, height];
+      this.index  = index;
+      this.width  = width;
+      this.height = height;
+      nodes       = new Node[width, height];
     }
 
-    public int      index   ;
-    public Node[,]  nodes   ;
-    public int      width   ;
-    public int      height  ;
+    public int      index;
+    public Node[,]  nodes;
+    public int      width;
+    public int      height;
   }
 
   public class Journey
@@ -433,8 +429,8 @@ namespace MaM.Definitions
       currentMapIndex = 0;
     }
 
-    public List<Map>  maps            ;
-    public int        currentMapIndex ;
+    public List<Map>  maps;
+    public int        currentMapIndex;
   }
 
   public struct MapConfig
@@ -513,14 +509,14 @@ namespace MaM.Definitions
 
   public struct PlayerConfig
   {
-    public int  health        ;
-    public int  vision        ;
-    public int  awareness     ;
-    public int  insight       ;
-    public int  tradeRowSize  ;
-    public int  manna         ;
-    public int  handSize      ;
-    public int  initiative    ;
+    public int  health;
+    public int  vision;
+    public int  awareness;
+    public int  insight;
+    public int  tradeRowSize;
+    public int  manna;
+    public int  handSize;
+    public int  initiative;
 
   }
 
@@ -560,11 +556,11 @@ namespace MaM.Definitions
 
   public struct GameContents
   {
-    public Player       player  ;
-    public Journey      journey ;
-    public List<Card>   cards   ;
-    public Random       random  ;
-    public int          seed    ;
+    public Player       player;
+    public Journey      journey;
+    public List<Card>   cards;
+    public Random       random;
+    public int          seed;
 
     public GameContents(Player player, Journey journey, List<Card> cards, Random random, int seed)
     {
