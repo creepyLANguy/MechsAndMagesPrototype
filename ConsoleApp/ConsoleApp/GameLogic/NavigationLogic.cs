@@ -124,7 +124,8 @@ namespace MaM.GameLogic
       var input = UserInput.GetInt();
 #endif
 
-      var (item1, item2) = currentNode.destinations.First(dest => dest.Item1 == destList[input].x && dest.Item2 == destList[input].y);
+      var (item1, item2) 
+        = currentNode.destinations.First(dest => dest.Item1 == destList[input].x && dest.Item2 == destList[input].y);
 
       player.currentNodeX = item1;
       player.currentNodeY = item2;

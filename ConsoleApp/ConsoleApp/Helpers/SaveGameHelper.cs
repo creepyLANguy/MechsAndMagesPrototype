@@ -15,7 +15,7 @@ namespace MaM.Helpers
  {
    private static string SaveFileDirectory  = "savegames" + FileSystemDefs.directorySeparator;
    private const string GameConfigFilename  = "gameconfig.json";
-   private const string CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ"; //TODO - uncomment for release
+   private const string CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ";
    //private const string CryptoKey           = null;
 
    private static string ObjectToJson(object obj, bool indented = false) 
@@ -123,8 +123,8 @@ namespace MaM.Helpers
         Console.WriteLine(item2 + ") " + item1);
       }
 
-      var choice = UserInput.GetInt() - 1;
-      var saveFile = choice == 0 ? DateTime.Now.Ticks.ToString() : allFiles[choice];
+      var choice = UserInput.GetInt();
+      var saveFile = choice == 0 ? DateTime.Now.Ticks.ToString() : allFiles[choice - 1];
 
       Navigation.Run(GameConfigFilename, saveFile, CryptoKey);
     }
