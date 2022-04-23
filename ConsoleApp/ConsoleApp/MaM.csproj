@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>MaM</AssemblyName>
     <RootNamespace>MaM</RootNamespace>
+    <Configurations>Debug;Release;FullTrace</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

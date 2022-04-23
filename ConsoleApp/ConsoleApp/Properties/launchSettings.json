@@ -1,10 +1,6 @@
 {
   "profiles": {
-    "ConsoleApp[Windows]": {
-      "commandName": "Project",
-      "workingDirectory": "$(MSBuildProjectDirectory)\\..\\..\\"
-    },
-    "ConsoleApp[MacOS]": {
+    "ConsoleApp": {
       "commandName": "Project",
       "workingDirectory": "$(MSBuildProjectDirectory)/../../"
     }
