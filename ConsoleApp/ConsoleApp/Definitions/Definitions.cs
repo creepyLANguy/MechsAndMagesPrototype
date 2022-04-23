@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace MaM.Definitions
 {
-  public static class FileSystemDefs
+  public static class FileSystem
   {
     public static readonly string directorySeparator = "/";
   }
 
-  public static class SaveGameDefs
+  public static class SaveGame
   {
-    public static string  SaveFileDirectory   = "savegames" + FileSystemDefs.directorySeparator;
+    public static string  SaveFileDirectory   = "savegames" + FileSystem.directorySeparator;
     public const string   GameConfigFilename  = "gameconfig.json";
     public const string   CryptoKey           = "嵵߬ꇄ寘汅浫䔜ꌰ";
     //private const string  CryptoKey          = null;

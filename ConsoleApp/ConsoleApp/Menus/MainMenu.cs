@@ -26,7 +26,7 @@ namespace MaM.Menus
       {
         case MainMenuItems.Play:
           var saveFile = SaveGameHelper.PromptUserToSelectSaveSlot();
-          Navigation.Run(SaveGameDefs.GameConfigFilename, saveFile, SaveGameDefs.CryptoKey);
+          Navigation.Run(SaveGame.GameConfigFilename, saveFile, SaveGame.CryptoKey);
           break;
         default:
           keepRunning = ExitMenu.Show();

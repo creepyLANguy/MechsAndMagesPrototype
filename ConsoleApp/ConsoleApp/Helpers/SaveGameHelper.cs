@@ -16,11 +16,11 @@ namespace MaM.Helpers
      => JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
 
     public static bool IsLegit(string filename) 
-      => string.IsNullOrEmpty(filename) == false && File.Exists(SaveGameDefs.SaveFileDirectory + filename);
+      => string.IsNullOrEmpty(filename) == false && File.Exists(SaveGame.SaveFileDirectory + filename);
 
     public static GameState Read(string filename, List<Card> cards = null, string cryptoKey = null)
     {
-      var content = File.ReadAllText(SaveGameDefs.SaveFileDirectory + filename);
+      var content = File.ReadAllText(SaveGame.SaveFileDirectory + filename);
 
       if (cryptoKey != null)
       {
@@ -69,7 +69,7 @@ namespace MaM.Helpers
         content = Crypto.EncryptString(content, cryptoKey);
       }
 
-      return FileHelper.WriteFileToDrive(filename, content, SaveGameDefs.SaveFileDirectory);
+      return FileHelper.WriteFileToDrive(filename, content, SaveGame.SaveFileDirectory);
     }
 
     public static bool Delete(string filename)
@@ -80,7 +80,7 @@ namespace MaM.Helpers
         return false;
       }
 
-      return FileHelper.DeleteFileFromDrive(filename, SaveGameDefs.SaveFileDirectory);
+      return FileHelper.DeleteFileFromDrive(filename, SaveGame.SaveFileDirectory);
     }
    
     public static string PromptUserToSelectSaveSlot()
@@ -88,19 +88,19 @@ namespace MaM.Helpers
       var list = new List<Tuple<string, int>>();
       list.Add(new Tuple<string, int>("Begin A New Save Slot", 0));
 
-      if (Directory.Exists(SaveGameDefs.SaveFileDirectory) == false)
+      if (Directory.Exists(SaveGame.SaveFileDirectory) == false)
       {
-        Directory.CreateDirectory(SaveGameDefs.SaveFileDirectory);
+        Directory.CreateDirectory(SaveGame.SaveFileDirectory);
       }
 
       var allFiles =
-        Directory.EnumerateFiles(SaveGameDefs.SaveFileDirectory)
-          .Select(file => file.Substring(file.IndexOf(FileSystemDefs.directorySeparator, StringComparison.Ordinal) + 1))
+        Directory.EnumerateFiles(SaveGame.SaveFileDirectory)
+          .Select(file => file.Substring(file.IndexOf(FileSystem.directorySeparator, StringComparison.Ordinal) + 1))
           .ToList();
 
       foreach (var file in allFiles)
       {
-        var game = Read(file, cryptoKey: SaveGameDefs.CryptoKey);
+        var game = Read(file, cryptoKey: SaveGame.CryptoKey);
 
         var displayString =
           game.time.ToString(CultureInfo.CurrentCulture) +
