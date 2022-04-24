@@ -324,19 +324,7 @@ namespace MaM.Generators
               break;
             case NodeType.Fight:
             {
-              switch (((Fight)node).fightType)
-              {
-                case FightType.Normal:
-                  SetupEnemy(ref node, normalEnemyConfig, ref enemyNames, map.index, cards, ref random);
-                  break;
-                case FightType.Elite:
-                  SetupEnemy(ref node, eliteEnemyConfig, ref enemyNames, map.index, cards, ref random);
-                  break;
-                case FightType.Boss:
-                  SetupBoss(ref node, map.index, ref bosses, ref random);
-                  break;
-              }
-
+              SetupFight(ref node, ref map, normalEnemyConfig, eliteEnemyConfig, ref enemyNames, ref bosses, ref cards, ref random);
               break;
             }
           }
@@ -348,6 +336,31 @@ namespace MaM.Generators
     {
       //TODO - implement
       ((Campsite) node).recruits = null;
+    }
+
+    private static void SetupFight(
+      ref Node node, 
+      ref Map map,
+      EnemyConfig normalEnemyConfig,
+      EnemyConfig eliteEnemyConfig,
+      ref EnemyNames enemyNames,
+      ref List<Enemy> bosses,
+      ref List<Card> cards,
+      ref Random random
+      )
+    {
+      switch (((Fight)node).fightType)
+      {
+        case FightType.Normal:
+          SetupEnemy(ref node, normalEnemyConfig, ref enemyNames, map.index, cards, ref random);
+          break;
+        case FightType.Elite:
+          SetupEnemy(ref node, eliteEnemyConfig, ref enemyNames, map.index, cards, ref random);
+          break;
+        case FightType.Boss:
+          SetupBoss(ref node, map.index, ref bosses, ref random);
+          break;
+      }
     }
 
     private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, ref EnemyNames enemyNames, int mapIndex, List<Card> cards, ref Random random)
