@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace MaM.Helpers
 {
@@ -7,7 +7,7 @@ namespace MaM.Helpers
     public static string Get()
       => Console.ReadLine();
 
-      public static string GetString(string message = null)
+    public static string GetString(string message = null)
     {
       if (string.IsNullOrEmpty(message) == false)
       {

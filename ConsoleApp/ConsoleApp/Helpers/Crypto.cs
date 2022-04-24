@@ -68,7 +68,6 @@ namespace MaM.Helpers
 
     private static ICryptoTransform GetDesEncryptor(string key)
     {
-
       var (des, keyBytes) = GetDesInstanceAndKeyBytesPair(key);
       return des.CreateEncryptor(keyBytes, keyBytes);
     }    
