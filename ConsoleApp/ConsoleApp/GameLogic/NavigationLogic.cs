@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MaM.Definitions;
@@ -29,8 +29,8 @@ namespace MaM.GameLogic
 
           if (VisitNode(ref player, ref node) == false)
           {
-            _ = SaveGameHelper.Delete(saveFilename);
             Console.WriteLine("\nYOU DIED");
+            SaveGameHelper.ArchiveRun(saveFilename);
             return;
           }
 
@@ -59,9 +59,8 @@ namespace MaM.GameLogic
 
       Console.WriteLine("\nCongratulations!\nRun completed.\nReturning to main menu...");
 
-      _ = SaveGameHelper.Delete(saveFilename);
-
-      Menus.MainMenu.Show();
+      SaveGameHelper.ArchiveRun(saveFilename);
+      return;
 
       //Nested convenience function definition.
       void AutoSave() 

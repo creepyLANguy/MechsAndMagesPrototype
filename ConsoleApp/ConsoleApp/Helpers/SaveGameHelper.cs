@@ -121,5 +121,13 @@ namespace MaM.Helpers
       var saveFile = choice == 0 ? DateTime.Now.Ticks.ToString() : allFiles[choice - 1];
       return saveFile;
     }
+
+    public static void ArchiveRun(string saveFilename)
+    {
+      Delete(saveFilename);
+
+      //TODO - maintain the run's stats somewhere. 
+    }
+
   }
 }
