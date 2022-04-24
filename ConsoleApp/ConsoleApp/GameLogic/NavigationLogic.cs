@@ -88,7 +88,7 @@ namespace MaM.GameLogic
       var n = 0;
       foreach (var node in firstRow)
       {
-        Console.WriteLine(++n + ")\t[" + node.x + ", " + node.y + "]\t" + node.nodeType + (node.isMystery ? "_Mystery" : ""));
+        Console.WriteLine(++n + ")\t[" + node.x + ", " + node.y + "]\t" + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty));
       }
 
 #if DEBUG
@@ -115,7 +115,7 @@ namespace MaM.GameLogic
       {
         var node = map.nodes[x, y];
         destList.Add(node);
-        Console.WriteLine(++n + ")\t[" + node.x + ", " + node.y + "]\t" + node.nodeType + (node.isMystery ? "_Mystery" : ""));
+        Console.WriteLine(++n + ")\t[" + node.x + ", " + node.y + "]\t" + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty));
       }
 
 #if DEBUG

@@ -12,7 +12,7 @@ namespace MaM.Helpers
     {
       if (folderName != string.Empty && Directory.Exists(folderName) == false)
       {
-        Directory.CreateDirectory(folderName);
+        Directory.CreateDirectory(folderName ?? string.Empty);
       }
 
       filename = folderName + filename;
