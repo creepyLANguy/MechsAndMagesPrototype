@@ -159,8 +159,8 @@ namespace MaM.Generators
         var card = offeredCards[index];
 
         Console.WriteLine(
-          index + 1 + ")" +
-           tab +
+          index + 1 + ")" + 
+          tab +
           UserInput.GetPrintableCardName(card.name) +
           tab + tab + pipe + tab +
           "Manna Cost :" + card.cost +
