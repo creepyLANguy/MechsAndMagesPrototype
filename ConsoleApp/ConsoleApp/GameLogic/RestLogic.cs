@@ -7,7 +7,7 @@ namespace MaM.GameLogic
     public static bool Run(ref Player player, Campsite node)
     {
       //TODO
-      player.health = player.maxHealth;
+      player.health += new System.Random((int)(System.DateTime.Now.Ticks)).Next(0, 2) == 0 ? 1 : 0;
       return true;
     }
   }

@@ -75,13 +75,13 @@ namespace MaM.GameLogic
     private static void ExecuteTurnForComputer(ref Player player)
     {
       //TODO
-      player.health = 0;
+      player.health = new Random((int)(DateTime.Now.Ticks)).Next(0, 5);
     }
     
     private static void ExecuteTurnForHuman(ref Player player)
     {
       //TODO
-      player.health = 0;
+      player.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 1 : 0;
     }
   }
 }
