@@ -1,10 +1,9 @@
-﻿namespace MaM
+﻿namespace MaM;
+
+public static class Program
 {
- public static class Program
+  private static void Main()
   {
-    private static void Main()
-    {
-      while (Menus.MainMenu.Show());
-    }
+    while (Menus.MainMenu.Show());
   }
 }

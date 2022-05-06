@@ -1,14 +1,13 @@
 ﻿using MaM.Definitions;
 
-namespace MaM.GameLogic
+namespace MaM.GameLogic;
+
+public static class Rest
 {
-  public static class Rest
+  public static bool Run(ref Player player, Campsite node)
   {
-    public static bool Run(ref Player player, Campsite node)
-    {
-      //TODO
-      player.health += new System.Random((int)(System.DateTime.Now.Ticks)).Next(0, 2) == 0 ? 1 : 0;
-      return true;
-    }
+    //TODO
+    player.health += new System.Random((int)(System.DateTime.Now.Ticks)).Next(0, 2) == 0 ? 1 : 0;
+    return true;
   }
 }
