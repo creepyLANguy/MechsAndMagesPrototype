@@ -11,7 +11,7 @@ public static class Battle
   public static bool Run(ref Player humanPlayer, Fight node)
   {
 #if DEBUG
-    Console.WriteLine("[Start Battle]");
+    Console.WriteLine("\n[Start Battle]");
 #endif
 
     var random = Algos.GenerateNewRandom();

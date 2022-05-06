@@ -104,9 +104,9 @@ public static class SaveGameHelper
 
       var displayString =
         game.time.ToString(CultureInfo.CurrentCulture) +
-        "\tNode: " + (game.player.completedNodeLocations.Count + 1) +
+        "\tNode:" + (game.player.completedNodeLocations.Count + 1) +
         "\tMap:" + (game.player.completedMapCount + 1) +
-        "\tSeed: " + game.randomSeed;
+        "\tSeed:" + game.randomSeed;
 
       list.Add(new Tuple<string, int>(displayString, list.Count));
     }

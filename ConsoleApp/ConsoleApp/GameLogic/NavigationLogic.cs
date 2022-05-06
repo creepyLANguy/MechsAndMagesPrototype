@@ -30,12 +30,15 @@ public static class Navigation
         if (VisitNode(ref player, ref node) == false)
         {
           Console.WriteLine("\nYOU DIED");
+          Console.WriteLine("\nCompletion Percent : " + GetCompletionPercentage(ref gameContents.journey) + "%");
+          
           SaveGameHelper.ArchiveRun(saveFilename);
           return;
         }
 
         AutoSave();
 
+        node.isComplete = true;
         player.completedNodeLocations.Add(new Tuple<int, int>(player.currentNodeX, player.currentNodeY));
 
         Console.WriteLine(
@@ -57,7 +60,7 @@ public static class Navigation
       Console.WriteLine("\nCompleted Map " + (mapIndex + 1));
     }
 
-    Console.WriteLine("\nCongratulations!\nRun completed.\nReturning to main menu...");
+    Console.WriteLine("\nCongratulations!\nRun completed.\n\nReturning to main menu...");
 
     SaveGameHelper.ArchiveRun(saveFilename);
     return;
@@ -150,4 +153,21 @@ public static class Navigation
     return hasSurvivedVisit;
   }
 
+  private static double GetCompletionPercentage(ref Journey journey, int decimalPlaces = 0)
+  {
+    var completedNodes = 0;
+    foreach (var map in journey.maps)
+    {
+      foreach (var node in map.nodes)
+      {
+        completedNodes += node is { isComplete: true } ? 1 : 0;
+      }
+    }
+
+    var totalNodes = (double)journey.maps.Sum(map => map.height);
+    
+    var completedPercentage = completedNodes / totalNodes * 100;
+    
+    return Math.Round(completedPercentage, decimalPlaces);
+  }
 }
