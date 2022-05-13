@@ -118,7 +118,7 @@ public static class SaveGameHelper
     }
 
     var choice = UserInput.GetInt();
-    var saveFile = choice == 0 ? DateTime.Now.Ticks.ToString() : allFiles[choice-1];
+    var saveFile = choice == 0 ? DateTime.Now.Ticks.ToString() : allFiles[choice - 1];
     return saveFile;
   }
 
