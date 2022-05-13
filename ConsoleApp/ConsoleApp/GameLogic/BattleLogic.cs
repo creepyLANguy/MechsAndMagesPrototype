@@ -18,7 +18,14 @@ public static class Battle
 
     var players = new List<Player> { humanPlayer, node.enemy };
     players.ShuffleWhileAccountingForInitiatives(ref random);
+
     PrepareAllPlayersForBattle(ref players);
+
+    //AL.
+    //SetStartingHands(ref players);
+
+    //AL.
+    //SetStartingTraderows(ref players);
 
     var currentPlayerIndex = 0;
     while (true)
@@ -53,10 +60,10 @@ public static class Battle
       player.discardPile      = new List<Card>();
       player.drawPile         = player.deck.Where(it => it.guild == Guilds.Neutral).ToList();
       player.manna            = 0;
-      player.shield           = 0;
       player.toDiscard        = 0;
       player.tradePool        = player.deck.Where(it => it.guild != Guilds.Neutral).ToList();
       player.tradeRow         = new List<Card>();
+      player.cardsInPlay      = new List<Card>();
     }
   }
 

@@ -149,7 +149,6 @@ public class Player
     awareness               = player.awareness;
     insight                 = player.insight;
     tradeRowSize            = player.tradeRowSize;
-    shield                  = player.shield;
     manna                   = player.manna;
     basicManna              = player.basicManna;
     basicHandSize           = player.basicHandSize;
@@ -162,6 +161,7 @@ public class Player
     discardPile             = player.discardPile?.ToList();
     tradeRow                = player.tradeRow?.ToList();
     tradePool               = player.tradePool?.ToList();
+    cardsInPlay             = player.cardsInPlay?.ToList();
   }
 
   public Player(
@@ -179,7 +179,6 @@ public class Player
     int                   awareness,
     int                   insight,
     int                   tradeRowSize,
-    int                   shield,
     int                   manna,
     int                   basicManna,
     int                   basicHandSize,
@@ -191,7 +190,8 @@ public class Player
     List<Card>            drawPile,
     List<Card>            discardPile,
     List<Card>            tradeRow,
-    List<Card>            tradePool
+    List<Card>            tradePool,
+    List<Card>            cardsInPlay
   )
   {
     this.isComputer             = isComputer;
@@ -208,7 +208,6 @@ public class Player
     this.awareness              = awareness;
     this.insight                = insight;
     this.tradeRowSize           = tradeRowSize;
-    this.shield                 = shield;
     this.basicManna             = basicManna;
     this.manna                  = manna;
     this.basicHandSize          = basicHandSize;
@@ -221,6 +220,7 @@ public class Player
     this.discardPile            = discardPile;
     this.tradeRow               = tradeRow;
     this.tradePool              = tradePool;
+    this.cardsInPlay            = cardsInPlay;
   }
 
   public bool                   isComputer;
@@ -237,7 +237,6 @@ public class Player
   public int                    awareness;    //How many of the visible nodes ahead have their types revealed
   public int                    insight;      //How many of the nodes ahead have their Guild distributions revealed
   public int                    tradeRowSize;
-  public int                    shield;
   public int                    basicManna;
   public int                    manna;
   public int                    toDiscard;
@@ -250,6 +249,7 @@ public class Player
   public List<Card>             discardPile;
   public List<Card>             tradeRow;
   public List<Card>             tradePool;
+  public List<Card>             cardsInPlay;
 }
 
 public class Enemy : Player
@@ -285,7 +285,7 @@ public class Enemy : Player
       -1, 
       -1, 
       -1, 
-      tradeRowSize, -1,
+      tradeRowSize,
       -1, 
       basicManna, 
       basicHandSize, 
@@ -297,6 +297,7 @@ public class Enemy : Player
       null, 
       null, 
       null, 
+      null,
       null
     )
   {
