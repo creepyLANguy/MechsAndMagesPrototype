@@ -97,7 +97,7 @@ public static class Navigation
 #if DEBUG
     const int input = 0;
 #else 
-      var input = UserInput.GetInt() - 1;
+    var input = UserInput.GetInt() - 1;
 #endif
 
     var selectedNode = firstRow[input];
@@ -124,7 +124,7 @@ public static class Navigation
 #if DEBUG
     const int input = 0;
 #else 
-      var input = UserInput.GetInt();
+    var input = UserInput.GetInt() - 1;
 #endif
 
     var (item1, item2) 

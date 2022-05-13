@@ -374,7 +374,7 @@ public static class JourneyGenerator
 
     var dominantGuild = DeckInspector.GetDominantGuild(ref deck);
 
-    var name = EnemyReader.GetEnemyName(dominantGuild, ref enemyNames, ref random);
+    var name = EnemyReader.GetRandomEnemyName(dominantGuild, ref enemyNames, ref random);
 
     var enemy = new Enemy(
       name,

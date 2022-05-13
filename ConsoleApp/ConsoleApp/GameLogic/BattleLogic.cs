@@ -10,9 +10,7 @@ public static class Battle
 {
   public static bool Run(ref Player humanPlayer, Fight node)
   {
-#if DEBUG
     Console.WriteLine("\n[Start Battle]");
-#endif
 
     var random = Algos.GenerateNewRandom();
 
@@ -32,17 +30,13 @@ public static class Battle
     {
       var currentPlayer = players[currentPlayerIndex % players.Count];
 
-#if DEBUG
       Console.WriteLine("[Turn]\t\t" + currentPlayer.name);
-#endif
 
       ExecuteTurn(ref currentPlayer);
 
       if (currentPlayer.health <= 0)
       {
-#if DEBUG
         Console.WriteLine("[Death]\t\t" + currentPlayer.name);
-#endif
 
         return currentPlayer.isComputer;
       }

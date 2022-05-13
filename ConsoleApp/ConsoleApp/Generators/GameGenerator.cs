@@ -122,7 +122,7 @@ public static class GameGenerator
 #if DEBUG
     return "DebugPlayer";
 #else
-      return UserInput.Get();
+    return UserInput.Get();
 #endif
   }
 
@@ -174,7 +174,7 @@ public static class GameGenerator
 #if DEBUG
     return offeredCards[1];
 #else
-      return offeredCards[int.Parse(UserInput.Get() ?? string.Empty) - 1];
+    return offeredCards[int.Parse(UserInput.Get() ?? string.Empty) - 1];
 #endif
   }
 }

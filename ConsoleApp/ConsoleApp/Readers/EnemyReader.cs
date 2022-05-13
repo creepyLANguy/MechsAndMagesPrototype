@@ -30,7 +30,7 @@ public static class EnemyReader
     return new EnemyNames(listOfLists);
   }
 
-  public static string GetEnemyName(Guild guild, ref EnemyNames enemyNames, ref Random random)
+  public static string GetRandomEnemyName(Guild guild, ref EnemyNames enemyNames, ref Random random)
   {
     var i = guild.Value + 1;
     var descriptor = enemyNames.allLists[i][random.Next(0, enemyNames.allLists[i].Count)];
@@ -44,10 +44,6 @@ public static class EnemyReader
     var place = enemyNames.place[random.Next(0, enemyNames.place.Count)];
 
     var fullEnemyName = BuildFullEnemyNameString(pre, descriptor, collective, post, place);
-      
-#if DEBUG
-    //Console.WriteLine(fullEnemyName);
-#endif
 
     return fullEnemyName;
   }
