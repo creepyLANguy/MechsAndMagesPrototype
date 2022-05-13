@@ -334,7 +334,7 @@ public static class JourneyGenerator
 
   private static void SetupCampsite(ref Node node)
   {
-    //TODO - implement
+    //TODO - implement setup of campsite
     ((Campsite) node).recruits = null;
   }
 
