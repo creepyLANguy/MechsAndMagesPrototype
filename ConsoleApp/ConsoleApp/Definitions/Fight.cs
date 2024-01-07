@@ -3,9 +3,9 @@
 public class Fight : Node
 {
   public Fight(
-    Node      baseNode,
+    Node baseNode,
     FightType fightType,
-    Enemy     enemy = null
+    Enemy enemy = null
   ) : base(
     baseNode.nodeType,
     baseNode.isMystery,
@@ -16,11 +16,11 @@ public class Fight : Node
     baseNode.destinations
   )
   {
-    this.fightType  = fightType;
-    this.enemy      = enemy ?? new Enemy();
-    nodeType        = NodeType.Fight;
+    this.fightType = fightType;
+    this.enemy = enemy ?? new Enemy();
+    nodeType = NodeType.FIGHT;
   }
 
-  public FightType  fightType;
-  public Enemy      enemy;
+  public FightType fightType;
+  public Enemy enemy;
 }

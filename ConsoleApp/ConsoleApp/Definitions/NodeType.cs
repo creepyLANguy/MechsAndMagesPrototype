@@ -2,7 +2,7 @@
 
 public enum NodeType
 {
-  Blank,
-  CampSite,
-  Fight
+  BLANK,
+  CAMPSITE,
+  FIGHT
 }

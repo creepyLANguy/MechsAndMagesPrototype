@@ -7,9 +7,9 @@ public class Enemy
   }
 
   public Enemy(
-    string      name,
-    int         health,
-    int         manna
+    string name,
+    int health,
+    int manna
   )
   {
     this.name = name;

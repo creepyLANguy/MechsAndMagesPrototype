@@ -140,9 +140,9 @@ public static class Navigation
   {
     switch (node.nodeType)
     {
-      case NodeType.Fight:
+      case NodeType.FIGHT:
         return Battle.Run(ref player, (Fight)node);
-      case NodeType.CampSite:
+      case NodeType.CAMPSITE:
         return Rest.Run(ref player, (Campsite)node);
       default:
         return FightResult.NONE;

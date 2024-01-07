@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using MaM.Definitions;
 using MaM.Helpers;
 using Newtonsoft.Json;
-using Action = MaM.Definitions.Action;
 
 namespace MaM.Readers;
 
@@ -17,7 +18,6 @@ public struct JsonIntermediateCard
   public int?     defense           ;
   public int?     shield            ;
   public string   defaultAbilities  ;
-  public string   guildBonuses      ;
   public string   allyBonuses       ;
   public string   scrapBonuses      ;
   public string   id                ;
@@ -25,44 +25,27 @@ public struct JsonIntermediateCard
 
 public static class CardReader
 {
-  private static int? GetCardActionValue(string str, Action action)
+  private static List<Tuple<CardAttribute, int>> GetListOfCardAttributes(string attributes)
   {
-    if (str.Contains(action.Key) == false) return null;
-
-    //str = str.Replace(action, "");
-    var stripped = str.Substring(action.Key.Length);
-
-    return int.Parse(stripped);
-  }
-
-  private static ActionsValuesSet ConstructActionSet(string actionString)
-  {
-    if (actionString == null) return new ActionsValuesSet();
-
-    var set = new ActionsValuesSet();
-
-    var actions = actionString
-      .Replace(" ", string.Empty)
-      .Split(StringLiterals.Deliminator);
-
-    foreach (var action in actions)
+    var list = new List<Tuple<CardAttribute, int>>();
+    
+    if (attributes == null)
     {
-      set.attack = GetCardActionValue(action, Actions.Attack) ?? set.attack;
-
-      set.draw = GetCardActionValue(action, Actions.Draw) ?? set.draw;
-
-      set.scrap = GetCardActionValue(action, Actions.Scrap) ?? set.scrap;
-
-      set.opponentDiscard = GetCardActionValue(action, Actions.OpponentDiscard) ?? set.opponentDiscard;
-
-      set.consume = GetCardActionValue(action, Actions.Consume) ?? set.consume;
-
-      set.heal = GetCardActionValue(action, Actions.Heal) ?? set.heal;
-
-      set.trade = GetCardActionValue(action, Actions.Trade) ?? set.trade;
+      return list;
+    }
+      
+    var splits = attributes.Split(StringLiterals.ListDelim).ToList();
+    foreach (var split in splits)
+    {
+      var marker = GetAlphabeticPart(split);
+      if (Enum.TryParse<CardAttribute>(marker, out var cardAttribute))
+      {
+        var numericValue = GetNumericPart(split);
+        list.Add(new Tuple<CardAttribute, int>(cardAttribute, numericValue));
+      }
     }
 
-    return set;
+    return list;
   }
 
   private static List<Card> PopulateCardsFromJsonIntermediates(List<JsonIntermediateCard> intermediateCards)
@@ -71,9 +54,9 @@ public static class CardReader
 
     foreach (var ic in intermediateCards)
     {
-      var cardType = CardTypes.All.SingleOrDefault(s => s.Key == ic.type) ?? CardTypes.Unknown; 
+      var cardType = CardTypes.All.SingleOrDefault(s => s.Item1 == ic.type) ?? CardTypes.Unknown; 
         
-      var guild = Guilds.All.SingleOrDefault(s => s.Key == ic.guild) ?? Guilds.Neutral;
+      var guild = Guilds.All.SingleOrDefault(s => s.Item1 == ic.guild) ?? Guilds.Neutral;
 
       var card = new Card(
         ic.id,
@@ -83,10 +66,9 @@ public static class CardReader
         ic.cost ?? 0,
         ic.defense ?? 0,
         ic.shield ?? 0,
-        ConstructActionSet(ic.defaultAbilities),
-        ConstructActionSet(ic.guildBonuses),
-        ConstructActionSet(ic.allyBonuses),
-        ConstructActionSet(ic.scrapBonuses)
+        GetListOfCardAttributes(ic.defaultAbilities),
+        GetListOfCardAttributes(ic.allyBonuses),
+        GetListOfCardAttributes(ic.scrapBonuses)
       );
 
       for (var i = 0; i < ic.quantity; ++i)
@@ -129,4 +111,21 @@ public static class CardReader
 
   public static Card GetCardFromId(string cardId, ref List<Card> cards)
     => cards.Find(it => it.id == cardId);
+
+  static string GetAlphabeticPart(string input)
+  {
+    input = input.Trim();
+    const string pattern = @"([a-zA-Z]+)";
+    var match = Regex.Match(input, pattern);
+    return match.Success ? match.Groups[1].Value : string.Empty;
+  }
+
+  static int GetNumericPart(string input)
+  {
+    input = input.Trim();
+    var pattern = @"(\d+)";
+    var match = Regex.Match(input, pattern);
+    return match.Success ? int.Parse(match.Groups[1].Value) : 0;
+  }
+
 }

@@ -14,7 +14,7 @@ public class Campsite : Node
     baseNode.destinations
   )
   {
-    nodeType = NodeType.CampSite;
+    nodeType = NodeType.CAMPSITE;
   }
 
   //TODO - implement these types

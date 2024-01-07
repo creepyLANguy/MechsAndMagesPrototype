@@ -107,28 +107,28 @@ public static class GraphVis
   {
     var str = "Error: UNKNOWN OR BLANK NODE TYPE";
 
-    if (node == null || node.nodeType == NodeType.Blank)
+    if (node == null || node.nodeType == NodeType.BLANK)
     {
       return str;
     }
 
     switch (node.nodeType)
     {
-      case NodeType.CampSite:
+      case NodeType.CAMPSITE:
         str = "Campsite";
         break;
-      case NodeType.Fight:
+      case NodeType.FIGHT:
       {
         switch (((Fight)node).fightType)
         {
-          case FightType.Normal:
-            str = "Normal";
+          case FightType.NORMAL:
+            str = "NORMAL";
             break;
-          case FightType.Elite:
-            str = "Elite";
+          case FightType.ELITE:
+            str = "ELITE";
             break;
-          case FightType.Boss:
-            str = "Boss";
+          case FightType.BOSS:
+            str = "BOSS";
             break;
         }
 

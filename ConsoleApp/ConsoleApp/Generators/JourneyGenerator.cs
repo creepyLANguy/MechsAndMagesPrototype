@@ -54,7 +54,7 @@ public static class JourneyGenerator
     SetFirstFloorActiveNodesAsNormalFights(ref map);
 
     //Note, fights in the bag are all Elites. 
-    //Normal fights are filled in later for all unassigned nodes.
+    //NORMAL fights are filled in later for all unassigned nodes.
     var bag = GenerateNodeTypeDistributionBag(ref map, mapConfig, ref random);
 
     //Row 1 -> top row
@@ -79,7 +79,7 @@ public static class JourneyGenerator
     {
       for (var y = 0; y < map.height; ++y)
       {
-        map.nodes[x, y] = new Node(NodeType.Blank, false, x, y, false, false, null);
+        map.nodes[x, y] = new Node(NodeType.BLANK, false, x, y, false, false, null);
       }
     }
   }
@@ -160,7 +160,7 @@ public static class JourneyGenerator
       }
 
       var baseNode = new Node(map.nodes[x, 0]);
-      map.nodes[x, 0] = new Fight(baseNode, FightType.Normal);
+      map.nodes[x, 0] = new Fight(baseNode, FightType.NORMAL);
     }
   }
 
@@ -173,7 +173,7 @@ public static class JourneyGenerator
     {
       for (var y = 0; y < map.height; ++y)
       {
-        if (map.nodes[x, y] != null && map.nodes[x, y].nodeType == NodeType.Blank)
+        if (map.nodes[x, y] != null && map.nodes[x, y].nodeType == NodeType.BLANK)
         {
           ++bagSize;
         }
@@ -183,18 +183,18 @@ public static class JourneyGenerator
     var campsiteCount = mapConfig.campsiteFrequency * bagSize;
     for (var i = 0; i < campsiteCount; ++i)
     {
-      bag.Add(NodeType.CampSite);
+      bag.Add(NodeType.CAMPSITE);
     }
       
     var eliteCount = mapConfig.eliteFrequency * bagSize;
     for (var i = 0; i < eliteCount; ++i)
     {
-      bag.Add(NodeType.Fight);
+      bag.Add(NodeType.FIGHT);
     }
 
     while (bag.Count < bagSize)
     {
-      bag.Add(NodeType.Blank);
+      bag.Add(NodeType.BLANK);
     }
 
     bag.Shuffle(ref random);
@@ -208,7 +208,7 @@ public static class JourneyGenerator
     {
       for (var y = 1; y < map.height; ++y)
       {
-        if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.Blank)
+        if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.BLANK)
         {
           continue;
         }
@@ -217,11 +217,11 @@ public static class JourneyGenerator
 
         switch (bag.First())
         {
-          case NodeType.CampSite:
+          case NodeType.CAMPSITE:
             map.nodes[x, y] = new Campsite(baseNode);
             break;
-          case NodeType.Fight:
-            map.nodes[x, y] = new Fight(baseNode, FightType.Elite);
+          case NodeType.FIGHT:
+            map.nodes[x, y] = new Fight(baseNode, FightType.ELITE);
             break;
         }
 
@@ -236,13 +236,13 @@ public static class JourneyGenerator
     {
       for (var y = 0; y < map.height; ++y)
       {
-        if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.Blank)
+        if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.BLANK)
         {
           continue;
         }
 
         var baseNode = new Node(map.nodes[x, y]);
-        map.nodes[x, y] = new Fight(baseNode, FightType.Normal);
+        map.nodes[x, y] = new Fight(baseNode, FightType.NORMAL);
       }
     }
   }
@@ -266,7 +266,7 @@ public static class JourneyGenerator
 
   private static void AttachFinalCampsiteNode(ref Map map)
   {
-    var baseNodeForFinalCampsite = new Node(NodeType.CampSite, false, 0, map.height - 2, false, true, new HashSet<Tuple<int, int>>());
+    var baseNodeForFinalCampsite = new Node(NodeType.CAMPSITE, false, 0, map.height - 2, false, true, new HashSet<Tuple<int, int>>());
     var finalCampsite = new Campsite(baseNodeForFinalCampsite);
 
     for (var x = 0; x < map.width; ++x)
@@ -285,9 +285,9 @@ public static class JourneyGenerator
 
   private static void AttachBossNode(ref Map map)
   {
-    var baseNodeForBoss = new Node(NodeType.Fight, false, 0, map.height - 1, false, true, null);
+    var baseNodeForBoss = new Node(NodeType.FIGHT, false, 0, map.height - 1, false, true, null);
 
-    var bossNode = new Fight(baseNodeForBoss, FightType.Boss);
+    var bossNode = new Fight(baseNodeForBoss, FightType.BOSS);
 
     map.nodes[0, map.height - 2].destinations.Add(new Tuple<int, int>(bossNode.x, bossNode.y));
 
@@ -309,17 +309,17 @@ public static class JourneyGenerator
       {
         var node = map.nodes[x, y];
 
-        if (node == null || node.nodeType == NodeType.Blank)
+        if (node == null || node.nodeType == NodeType.BLANK)
         {
           continue;
         }
 
         switch (node.nodeType)
         {
-          case NodeType.CampSite:
+          case NodeType.CAMPSITE:
             SetupCampsite(ref node);
             break;
-          case NodeType.Fight:
+          case NodeType.FIGHT:
           {
             SetupFight(ref node, ref map, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
             break;
@@ -346,13 +346,13 @@ public static class JourneyGenerator
   {
     switch (((Fight)node).fightType)
     {
-      case FightType.Normal:
+      case FightType.NORMAL:
         SetupEnemy(ref node, normalEnemyConfig, map.index, cards, ref random);
         break;
-      case FightType.Elite:
+      case FightType.ELITE:
         SetupEnemy(ref node, eliteEnemyConfig, map.index, cards, ref random);
         break;
-      case FightType.Boss:
+      case FightType.BOSS:
         SetupBoss(ref node, map.index, ref bosses, ref random);
         break;
     }

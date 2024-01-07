@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MaM.Definitions;
 
-public class Guild : KeyValuePair<string, int>
+public class Guild : Tuple<string, int>
 {
   public Guild(string key, int val) : base(key, val) { }
 }

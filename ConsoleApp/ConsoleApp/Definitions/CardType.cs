@@ -1,6 +1,8 @@
-﻿namespace MaM.Definitions;
+﻿using System;
 
-public class CardType : KeyValuePair<string, int>
+namespace MaM.Definitions;
+
+public class CardType : Tuple<string, int>
 {
   public CardType(string key, int val) : base(key, val) { }
 }

@@ -2,7 +2,7 @@
 
 public enum FightType
 {
-  Normal,
-  Elite,
-  Boss
+  NORMAL,
+  ELITE,
+  BOSS
 }

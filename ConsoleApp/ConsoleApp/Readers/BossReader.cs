@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using MaM.Definitions;
 using MaM.Helpers;
 using Newtonsoft.Json;
@@ -8,12 +7,9 @@ namespace MaM.Readers;
 
 public struct JsonIntermediateBoss
 {
-  public string   id            ;
   public string   name          ;
   public int      health        ;
-  public int      tradeRowSize  ;
   public int      manna         ;
-  public string   cards         ;
 }
 
 public static class BossReader
@@ -24,13 +20,6 @@ public static class BossReader
 
     foreach (var intermediateBoss in intermediateBosses)
     {
-      var cardIds = intermediateBoss.cards
-        .Replace(" ", string.Empty)
-        .Split(StringLiterals.Deliminator)
-        .ToList();
-
-      var bossCards = CardReader.GetCardsFromIds(cardIds, ref cards);
-
       var boss = new Enemy(
         intermediateBoss.name,
         intermediateBoss.health,

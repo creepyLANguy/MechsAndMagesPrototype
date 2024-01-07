@@ -142,9 +142,9 @@ public static class GameGenerator
         tab + tab + pipe + tab +
         "Manna Cost :" + card.cost +
         tab + pipe + tab +
-        "Type:" + card.type.Key +
+        "Type:" + card.type.Item1 +
         tab + pipe + tab +
-        "Guild:" + card.guild.Key
+        "Guild:" + card.guild.Item1
       );
     }
 

@@ -8,8 +8,8 @@ public static class MainMenu
 {
   private enum MainMenuItems
   {
-    Play = 1,
-    Exit = 2,
+    PLAY = 1,
+    EXIT = 2,
   }
 
   public static bool Show()
@@ -18,13 +18,13 @@ public static class MainMenu
 
     var requestString =
       "\nMain Menu" +
-      "\n" + MainMenuItems.Play.ToString("D") + ") " + MainMenuItems.Play +
-      "\n" + MainMenuItems.Exit.ToString("D") + ") " + MainMenuItems.Exit;
+      "\n" + MainMenuItems.PLAY.ToString("D") + ") " + MainMenuItems.PLAY +
+      "\n" + MainMenuItems.EXIT.ToString("D") + ") " + MainMenuItems.EXIT;
 
     var choice = UserInput.GetInt(requestString);
     switch ((MainMenuItems)choice)
     {
-      case MainMenuItems.Play:
+      case MainMenuItems.PLAY:
         var saveFile = SaveGameHelper.PromptUserToSelectSaveSlot();
         Navigation.Run(SaveGame.GameConfigFilename, saveFile, SaveGame.CryptoKey);
         break;
