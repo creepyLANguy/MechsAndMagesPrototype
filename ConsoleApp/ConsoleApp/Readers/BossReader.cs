@@ -13,8 +13,6 @@ public struct JsonIntermediateBoss
   public int      health        ;
   public int      tradeRowSize  ;
   public int      manna         ;
-  public int      handSize      ;
-  public int      initiative    ;
   public string   cards         ;
 }
 
@@ -36,11 +34,7 @@ public static class BossReader
       var boss = new Enemy(
         intermediateBoss.name,
         intermediateBoss.health,
-        intermediateBoss.tradeRowSize,
-        intermediateBoss.manna,
-        intermediateBoss.handSize,
-        intermediateBoss.initiative,
-        bossCards
+        intermediateBoss.manna
       );
 
       bosses.Add(boss);

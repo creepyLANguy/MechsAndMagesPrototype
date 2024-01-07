@@ -27,7 +27,7 @@ public static class Navigation
 
         AutoSave();
 
-        if (VisitNode(ref player, ref node) == false)
+        if (VisitNode(ref player, ref node) == FightResult.PLAYER_LOSE)
         {
           Console.WriteLine("\nYOU DIED");
           Console.WriteLine("\nCompletion Percent : " + GetCompletionPercentage(ref gameContents.journey) + "%");
@@ -136,21 +136,17 @@ public static class Navigation
     return map.nodes[item1, item2];
   }
 
-  private static bool VisitNode(ref Player player, ref Node node)
+  private static FightResult VisitNode(ref Player player, ref Node node)
   {
-    var hasSurvivedVisit = false;
-
     switch (node.nodeType)
     {
-      case NodeType.CampSite:
-        hasSurvivedVisit =  Rest.Run(ref player, (Campsite)node);
-        break;
       case NodeType.Fight:
-        hasSurvivedVisit = Battle.Run(ref player, (Fight)node);
-        break;
+        return Battle.Run(ref player, (Fight)node);
+      case NodeType.CampSite:
+        return Rest.Run(ref player, (Campsite)node);
+      default:
+        return FightResult.NONE;
     }
-
-    return hasSurvivedVisit;
   }
 
   private static double GetCompletionPercentage(ref Journey journey, int decimalPlaces = 0)

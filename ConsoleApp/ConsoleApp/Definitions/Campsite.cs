@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace MaM.Definitions;
+﻿namespace MaM.Definitions;
 
 public class Campsite : Node
 {
   public Campsite(
-    Node        baseNode,
-    List<Card>  recruits
+    Node        baseNode
   ) : base(
     baseNode.nodeType,
     baseNode.isMystery,
@@ -17,11 +14,8 @@ public class Campsite : Node
     baseNode.destinations
   )
   {
-    this.recruits   = recruits;
-    nodeType        = NodeType.CampSite;
+    nodeType = NodeType.CampSite;
   }
-
-  public List<Card> recruits;
 
   //TODO - implement these types
   //public List<Potion> Potions;

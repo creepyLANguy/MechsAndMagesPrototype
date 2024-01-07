@@ -6,7 +6,6 @@ public struct GameConfig
 {
   public string                     cardsExcelFile;
   public string                     bossesExcelFile;
-  public string                     enemyNamesExcelFile;
   public List<MapConfig>            mapConfigs;
   public EnemyConfig                normalEnemyConfig;
   public EnemyConfig                eliteEnemyConfig;

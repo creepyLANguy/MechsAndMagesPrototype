@@ -31,7 +31,6 @@ public static class GameGenerator
     var journey = GetJourney(
       gameConfig.journeyLength, 
       gameConfig.bossesExcelFile,
-      gameConfig.enemyNamesExcelFile,
       gameConfig.mapConfigs, 
       gameConfig.normalEnemyConfig, 
       gameConfig.eliteEnemyConfig,
@@ -48,8 +47,7 @@ public static class GameGenerator
 
   private static Journey GetJourney(
     int journeyLength, 
-    string bossesExcelFile, 
-    string enemyNamesExcelFile,
+    string bossesExcelFile,
     List<MapConfig> mapConfigs, 
     EnemyConfig normalEnemyConfig, 
     EnemyConfig eliteEnemyConfig,
@@ -59,9 +57,7 @@ public static class GameGenerator
   {
     var bosses = BossReader.GetBossesFromExcel(bossesExcelFile, ref cards);
 
-    var enemyNames = EnemyReader.GetEnemyNames(enemyNamesExcelFile);
-
-    var journey = JourneyGenerator.GenerateJourney(journeyLength, mapConfigs, normalEnemyConfig, eliteEnemyConfig, ref enemyNames, ref bosses, cards, ref random);
+    var journey = JourneyGenerator.GenerateJourney(journeyLength, mapConfigs, normalEnemyConfig, eliteEnemyConfig, ref bosses, cards, ref random);
 
 #if DEBUG
     GraphVis.SaveMapsAsDotFiles(ref journey, false);
@@ -83,33 +79,14 @@ public static class GameGenerator
     var deckIds = deck.Select(card => card.id).ToList();
 
     var player = new Player(
-      false,
       playerName,
       -1,
       -1,
       new List<Tuple<int, int>>(),
       0,
-      null,
       playerConfig.health,
-      playerConfig.health,
-      0,
-      playerConfig.vision,
-      playerConfig.awareness,
-      playerConfig.insight,
-      playerConfig.tradeRowSize,
-      -1,
-      playerConfig.manna,
-      playerConfig.handSize,
-      playerConfig.initiative,
-      -1,
-      -1,
       deckIds,
-      deck,
-      null,
-      null,
-      null,
-      null,
-      null
+      deck
     );
 
     return player;

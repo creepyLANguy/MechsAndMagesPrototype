@@ -1,11 +1,10 @@
 {
   "cardsExcelFile": "Cards.xlsx",
   "bossesExcelFile": "Bosses.xlsx",
-  "enemyNamesExcelFile": "EnemyNames.xlsx",
   "mapConfigs": [
     {
-      "width": 7,
-      "height": 15,
+      "width": 4,
+      "height": 5,
       "pathDensity": 16,
       "campsiteFrequency": 0.175,
       "mysteryFrequency": 0.2,
@@ -31,32 +30,13 @@
   "normalEnemyConfig": {
     "baseHealth": 50,
     "baseManna": 0,
-    "baseDeckSize": 20,
-    "baseTradeRowSize": 3,
-    "baseHandSize": 5,
-	"initiative": 1,
-    "minCardCost": 0,
-    "maxCardCost": 7
   },
   "eliteEnemyConfig": {
     "baseHealth": 75,
-    "baseManna": 0,
-    "baseDeckSize": 17,
-    "baseTradeRowSize": 4,
-    "baseHandSize": 5,
-	"initiative": 2,
-    "minCardCost": 4,
-    "maxCardCost": 8
+    "baseManna": 5,    
   },
   "playerConfig": {
-    "health": 25,
-    "vision": 10,
-    "awareness": 7,
-    "insight": 3,
-    "tradeRowSize": 3,
-    "manna": 0,
-    "handSize": 5,
-	"initiative": 1,
+    "health": 25,    
   },
   "initialCardSelections": [
     {
@@ -75,5 +55,5 @@
       "cardCount": 4
     }
   ],
-  "journeyLength": 3
+  "journeyLength": 1
 }

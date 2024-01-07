@@ -1,87 +1,60 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using MaM.Definitions;
-using MaM.Helpers;
 
 namespace MaM.GameLogic;
 
 public static class Battle
 {
-  public static bool Run(ref Player humanPlayer, Fight node)
+  public static FightResult Run(ref Player player, Fight node)
   {
     Console.WriteLine("\n[Start Battle]");
 
-    var random = Algos.GenerateNewRandom();
-
-    var players = new List<Player> { humanPlayer, node.enemy };
-    players.ShuffleWhileAccountingForInitiatives(ref random);
-
-    PrepareAllPlayersForBattle(ref players);
-
-    //AL.
-    //SetStartingHands(ref players);
-
-    //AL.
-    //SetStartingTraderows(ref players);
-
-    var currentPlayerIndex = 0;
     while (true)
     {
-      var currentPlayer = players[currentPlayerIndex % players.Count];
-
-      Console.WriteLine("[Turn]\t\t" + currentPlayer.name);
-
-      ExecuteTurn(ref currentPlayer);
-
-      if (currentPlayer.health <= 0)
+      Console.WriteLine("[Turn]\t\t" + player.name);
+      var resultPlayerAction = ExecuteTurnForPlayer(ref player, ref node.enemy);
+      if (resultPlayerAction != FightResult.NONE)
       {
-        Console.WriteLine("[Death]\t\t" + currentPlayer.name);
-
-        return currentPlayer.isComputer;
+        return resultPlayerAction;
       }
 
-      ++currentPlayerIndex;
+      Console.WriteLine("[Turn]\t\t" + node.enemy.name);
+      var resultEnemyAction = ExecuteTurnForComputer(ref player, ref node.enemy);
+      if (resultEnemyAction != FightResult.NONE)
+      {
+        return resultEnemyAction;
+      }
     }
   }
 
-  private static void PrepareAllPlayersForBattle(ref List<Player> allPlayers)
+  private static FightResult GetFightFightResult(ref Player player, ref Enemy enemy)
   {
-    foreach (var player in allPlayers)
+    if (player.health <= 0)
     {
-      player.activeGuild      = Guilds.Neutral;
-      player.currentHandSize  = 0;
-      player.discardPile      = new List<Card>();
-      player.drawPile         = player.deck.Where(it => it.guild == Guilds.Neutral).ToList();
-      player.manna            = 0;
-      player.toDiscard        = 0;
-      player.tradePool        = player.deck.Where(it => it.guild != Guilds.Neutral).ToList();
-      player.tradeRow         = new List<Card>();
-      player.cardsInPlay      = new List<Card>();
+      return FightResult.PLAYER_LOSE;
     }
-  }
-
-  private static void ExecuteTurn(ref Player player)
-  {
-    if (player.isComputer)
-    {
-      ExecuteTurnForComputer(ref player);
-    }
-    else
-    {
-      ExecuteTurnForHuman(ref player);
-    }
-  }
-
-  private static void ExecuteTurnForComputer(ref Player player)
-  {
-    //TODO
-    player.health = new Random((int)(DateTime.Now.Ticks)).Next(0, 5);
-  }
     
-  private static void ExecuteTurnForHuman(ref Player player)
+    if (enemy.health <= 0)
+    {
+      return FightResult.PLAYER_WIN;
+    }
+
+    return FightResult.NONE;
+  }
+
+  private static FightResult ExecuteTurnForPlayer(ref Player player, ref Enemy enemy)
   {
     //TODO
     player.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 1 : 0;
+
+    return GetFightFightResult(ref player, ref enemy);
+  }
+
+  private static FightResult ExecuteTurnForComputer(ref Player player, ref Enemy enemy)
+  {
+    //TODO
+    enemy.health = new Random((int)(DateTime.Now.Ticks)).Next(0, 5);
+
+    return GetFightFightResult(ref player, ref enemy);
   }
 }

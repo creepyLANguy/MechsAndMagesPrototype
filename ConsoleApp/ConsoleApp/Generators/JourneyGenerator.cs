@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MaM.Definitions;
 using MaM.Helpers;
-using MaM.Readers;
 
 namespace MaM.Generators;
 
@@ -14,7 +13,6 @@ public static class JourneyGenerator
     List<MapConfig> mapConfigs, 
     EnemyConfig normalEnemyConfig, 
     EnemyConfig eliteEnemyConfig,
-    ref EnemyNames enemyNames,
     ref List<Enemy> bosses,
     List<Card> cards, 
     ref Random random
@@ -24,7 +22,8 @@ public static class JourneyGenerator
 
     for (var index = 0; index < journeyLength; ++index)
     {
-      var map = GenerateMap(index, mapConfigs[index], normalEnemyConfig, eliteEnemyConfig, ref enemyNames, ref bosses, ref cards, ref random);
+      var mapConfig = index < mapConfigs.Count ? mapConfigs[index] : mapConfigs[^1];
+      var map = GenerateMap(index, mapConfig, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
       journey.maps.Add(map);
     }
 
@@ -36,7 +35,6 @@ public static class JourneyGenerator
     MapConfig mapConfig, 
     EnemyConfig normalEnemyConfig, 
     EnemyConfig eliteEnemyConfig,
-    ref EnemyNames enemyNames,
     ref List<Enemy> bosses,
     ref List<Card> cards, 
     ref Random random
@@ -70,7 +68,7 @@ public static class JourneyGenerator
 
     AttachBossNode(ref map);
 
-    CompleteSetupOfAllNodes(ref map, normalEnemyConfig, eliteEnemyConfig, ref enemyNames, ref bosses, ref cards, ref random);
+    CompleteSetupOfAllNodes(ref map, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
 
     return map;
   }
@@ -220,7 +218,7 @@ public static class JourneyGenerator
         switch (bag.First())
         {
           case NodeType.CampSite:
-            map.nodes[x, y] = new Campsite(baseNode, null);
+            map.nodes[x, y] = new Campsite(baseNode);
             break;
           case NodeType.Fight:
             map.nodes[x, y] = new Fight(baseNode, FightType.Elite);
@@ -269,7 +267,7 @@ public static class JourneyGenerator
   private static void AttachFinalCampsiteNode(ref Map map)
   {
     var baseNodeForFinalCampsite = new Node(NodeType.CampSite, false, 0, map.height - 2, false, true, new HashSet<Tuple<int, int>>());
-    var finalCampsite = new Campsite(baseNodeForFinalCampsite, null);
+    var finalCampsite = new Campsite(baseNodeForFinalCampsite);
 
     for (var x = 0; x < map.width; ++x)
     {
@@ -300,7 +298,6 @@ public static class JourneyGenerator
     ref Map map, 
     EnemyConfig normalEnemyConfig, 
     EnemyConfig eliteEnemyConfig,
-    ref EnemyNames enemyNames,
     ref List<Enemy> bosses,
     ref List<Card> cards,
     ref Random random
@@ -324,7 +321,7 @@ public static class JourneyGenerator
             break;
           case NodeType.Fight:
           {
-            SetupFight(ref node, ref map, normalEnemyConfig, eliteEnemyConfig, ref enemyNames, ref bosses, ref cards, ref random);
+            SetupFight(ref node, ref map, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
             break;
           }
         }
@@ -335,7 +332,6 @@ public static class JourneyGenerator
   private static void SetupCampsite(ref Node node)
   {
     //TODO - implement setup of campsite
-    ((Campsite) node).recruits = null;
   }
 
   private static void SetupFight(
@@ -343,7 +339,6 @@ public static class JourneyGenerator
     ref Map map,
     EnemyConfig normalEnemyConfig,
     EnemyConfig eliteEnemyConfig,
-    ref EnemyNames enemyNames,
     ref List<Enemy> bosses,
     ref List<Card> cards,
     ref Random random
@@ -352,10 +347,10 @@ public static class JourneyGenerator
     switch (((Fight)node).fightType)
     {
       case FightType.Normal:
-        SetupEnemy(ref node, normalEnemyConfig, ref enemyNames, map.index, cards, ref random);
+        SetupEnemy(ref node, normalEnemyConfig, map.index, cards, ref random);
         break;
       case FightType.Elite:
-        SetupEnemy(ref node, eliteEnemyConfig, ref enemyNames, map.index, cards, ref random);
+        SetupEnemy(ref node, eliteEnemyConfig, map.index, cards, ref random);
         break;
       case FightType.Boss:
         SetupBoss(ref node, map.index, ref bosses, ref random);
@@ -363,27 +358,16 @@ public static class JourneyGenerator
     }
   }
 
-  private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, ref EnemyNames enemyNames, int mapIndex, List<Card> cards, ref Random random)
+  private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, int mapIndex, List<Card> cards, ref Random random)
   {
     cards.Shuffle(ref random);
 
-    var deck = cards
-      .Where(card => card.cost >= enemyConfig.minCardCost && card.cost <= enemyConfig.maxCardCost)
-      .Take(enemyConfig.baseDeckSize)
-      .ToList();
-
-    var dominantGuild = DeckInspector.GetDominantGuild(ref deck);
-
-    var name = EnemyReader.GetRandomEnemyName(dominantGuild, ref enemyNames, ref random);
+    var name = "?????";//TODO;
 
     var enemy = new Enemy(
       name,
       enemyConfig.baseHealth * (1 + mapIndex),
-      enemyConfig.baseTradeRowSize + mapIndex,
-      enemyConfig.baseManna + mapIndex, 
-      enemyConfig.baseHandSize + mapIndex,
-      enemyConfig.initiative + mapIndex,
-      deck
+      enemyConfig.baseManna + mapIndex
     );
 
     ((Fight) node).enemy = enemy;
@@ -392,16 +376,9 @@ public static class JourneyGenerator
   private static void SetupBoss(ref Node node, int mapIndex, ref List<Enemy> bosses, ref Random random)
   {
     bosses.Shuffle(ref random);
-
     var boss = bosses.First();
-
-    boss.basicHandSize += mapIndex;
-    boss.basicManna += mapIndex;
     boss.health *= (1 + mapIndex);
-    boss.tradeRowSize += mapIndex;
-
     ((Fight) node).enemy = boss;
-
     bosses.Remove(boss);
   }
 

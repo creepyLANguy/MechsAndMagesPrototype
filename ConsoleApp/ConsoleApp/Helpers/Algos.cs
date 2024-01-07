@@ -21,41 +21,4 @@ public static class Algos
 
   public static Random GenerateNewRandom(int? randomSeed = null)
     => new Random(randomSeed ?? GenerateRandomSeed());
-
-
-  private static Player SelectRandomPlayerWhileAccountingForInitiatives(this List<Player> players, ref Random random)
-  {
-    var sumInitiatives = players.Sum(player => player.initiative);
-
-    var randomNumber = random.Next(0, sumInitiatives);
-
-    Player selectedPlayer = null;
-    foreach (var player in players)
-    {
-      if (randomNumber < player.initiative)
-      {
-        selectedPlayer = player;
-        break;
-      }
-
-      randomNumber -= player.initiative;
-    }
-
-    return selectedPlayer;
-  }
-
-  public static void ShuffleWhileAccountingForInitiatives(this List<Player> players, ref Random random)
-  {
-    var newList = new List<Player>();
-
-    var totalPlayerCount = players.Count;
-    while (newList.Count < totalPlayerCount)
-    {
-      var selectedPlayer = players.SelectRandomPlayerWhileAccountingForInitiatives(ref random);
-      newList.Add(selectedPlayer);
-      players.Remove(selectedPlayer);
-    }
-
-    players.AddRange(newList);
-  }
 }
