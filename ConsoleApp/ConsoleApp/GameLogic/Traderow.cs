@@ -22,15 +22,6 @@ public class Traderow
     mergedList.Reverse(0, mergedList.Count);
 
     pool = new(mergedList);
-
-    for (int i = 0; i < 10; i++)
-    {
-      Fill();
-      Fetch(0);
-      Fetch(0);
-      Fetch(0);
-      Fetch(0);
-    }
   }
 
   private static List<T> MergeListsAlternating<T>(List<T> list1, List<T> list2)
