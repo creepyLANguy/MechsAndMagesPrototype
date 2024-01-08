@@ -4,23 +4,23 @@
   "mapConfigs": [
     {
       "width": 4,
-      "height": 5,
+      "height": 10,
       "pathDensity": 16,
       "campsiteFrequency": 0.175,
       "mysteryFrequency": 0.2,
       "eliteFrequency": 0.2
     },
     {
-      "width": 7,
-      "height": 15,
+      "width": 4,
+      "height": 10,
       "pathDensity": 16,
       "campsiteFrequency": 0.175,
       "mysteryFrequency": 0.2,
       "eliteFrequency": 0.2
     },
     {
-      "width": 7,
-      "height": 15,
+      "width": 4,
+      "height": 10,
       "pathDensity": 16,
       "campsiteFrequency": 0.175,
       "mysteryFrequency": 0.2,
@@ -55,5 +55,5 @@
       "cardCount": 4
     }
   ],
-  "journeyLength": 1
+  "journeyLength": 3
 }

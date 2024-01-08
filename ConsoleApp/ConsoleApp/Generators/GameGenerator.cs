@@ -70,8 +70,8 @@ public static class GameGenerator
   {
     var playerName = GetPlayerName();
 
-    var deck = cards.Where(card => card.guild == Guilds.Neutral).ToList();
-    cards.RemoveAll(card => card.guild == Guilds.Neutral);
+    var deck = cards.Where(card => card.guild == Guild.NEUTRAL).ToList();
+    cards.RemoveAll(card => card.guild == Guild.NEUTRAL);
 
     var selectedCards = PromptPlayerForInitialCardSelections(ref initialSelections, ref cards, random);
     deck.AddRange(selectedCards);
@@ -142,9 +142,9 @@ public static class GameGenerator
         tab + tab + pipe + tab +
         "Manna Cost :" + card.cost +
         tab + pipe + tab +
-        "Type:" + card.type.Item1 +
+        "Type:" + card.type +
         tab + pipe + tab +
-        "Guild:" + card.guild.Item1
+        "Guild:" + card.guild
       );
     }
 

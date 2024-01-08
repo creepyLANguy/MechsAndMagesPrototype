@@ -10,17 +10,17 @@ namespace MaM.Readers;
 
 public struct JsonIntermediateCard
 {
-  public int?     quantity          ;
-  public string   name              ;
-  public string   type              ;
-  public string   guild             ;
-  public int?     cost              ;
-  public int?     defense           ;
-  public int?     shield            ;
-  public string   defaultAbilities  ;
-  public string   allyBonuses       ;
-  public string   scrapBonuses      ;
-  public string   id                ;
+  public int?   quantity;
+  public string name;
+  public string type;
+  public string guild;
+  public int?   cost;
+  public int?   defense;
+  public int?   shield;
+  public string defaultAbilities;
+  public string allyBonuses;
+  public string scrapBonuses;
+  public string id;
 }
 
 public static class CardReader
@@ -54,9 +54,15 @@ public static class CardReader
 
     foreach (var ic in intermediateCards)
     {
-      var cardType = CardTypes.All.SingleOrDefault(s => s.Item1 == ic.type) ?? CardTypes.Unknown; 
-        
-      var guild = Guilds.All.SingleOrDefault(s => s.Item1 == ic.guild) ?? Guilds.Neutral;
+      if (Enum.TryParse(ic.type, true, out CardType cardType) == false)
+      {
+        cardType = CardType.UNKNOWN;
+      }
+
+      if (Enum.TryParse(ic.guild, true, out Guild guild) == false)
+      {
+        guild = Guild.NEUTRAL;
+      }
 
       var card = new Card(
         ic.id,
@@ -123,7 +129,7 @@ public static class CardReader
   static int GetNumericPart(string input)
   {
     input = input.Trim();
-    var pattern = @"(\d+)";
+    const string pattern = @"(\d+)";
     var match = Regex.Match(input, pattern);
     return match.Success ? int.Parse(match.Groups[1].Value) : 0;
   }

@@ -6,7 +6,7 @@ namespace MaM.Menus;
 
 public static class MainMenu
 {
-  private enum MainMenuItems
+  private enum MainMenuItem
   {
     PLAY = 1,
     EXIT = 2,
@@ -18,13 +18,13 @@ public static class MainMenu
 
     var requestString =
       "\nMain Menu" +
-      "\n" + MainMenuItems.PLAY.ToString("D") + ") " + MainMenuItems.PLAY +
-      "\n" + MainMenuItems.EXIT.ToString("D") + ") " + MainMenuItems.EXIT;
+      "\n" + MainMenuItem.PLAY.ToString("D") + ") " + MainMenuItem.PLAY.ToString().ToSentenceCase() +
+      "\n" + MainMenuItem.EXIT.ToString("D") + ") " + MainMenuItem.EXIT.ToString().ToSentenceCase();
 
     var choice = UserInput.GetInt(requestString);
-    switch ((MainMenuItems)choice)
+    switch ((MainMenuItem)choice)
     {
-      case MainMenuItems.PLAY:
+      case MainMenuItem.PLAY:
         var saveFile = SaveGameHelper.PromptUserToSelectSaveSlot();
         Navigation.Run(SaveGame.GameConfigFilename, saveFile, SaveGame.CryptoKey);
         break;

@@ -16,12 +16,4 @@ public class Campsite : Node
   {
     nodeType = NodeType.CAMPSITE;
   }
-
-  //TODO - implement these types
-  //public List<Potion> Potions;
-  //public List<Relic> Relics;
-  //public List<HealingKit> HealingKits;
-  //public List<VisionUpgrade> VisionUpgrades;
-  //public List<MaxHealthUpgrade> HealthUpgrades;
-  //public Scrapper Scrapper;
 }

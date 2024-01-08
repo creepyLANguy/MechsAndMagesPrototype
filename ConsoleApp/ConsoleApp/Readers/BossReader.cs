@@ -7,9 +7,9 @@ namespace MaM.Readers;
 
 public struct JsonIntermediateBoss
 {
-  public string   name          ;
-  public int      health        ;
-  public int      manna         ;
+  public string name;
+  public int health;
+  public int manna;
 }
 
 public static class BossReader

@@ -6,10 +6,6 @@ namespace MaM.Definitions;
 
 public class Player
 {
-  public Player()
-  {
-  }
-
   public Player(Player player)
   {
     name                    = player.name;
