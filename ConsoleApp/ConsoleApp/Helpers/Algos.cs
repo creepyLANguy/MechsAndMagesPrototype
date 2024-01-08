@@ -14,9 +14,9 @@ public static class Algos
     }
   }
 
-  public static int GenerateRandomSeed() => 
-    Math.Abs((int)DateTime.Now.Ticks);
+  public static int GenerateRandomSeed() 
+    => Math.Abs((int)DateTime.Now.Ticks);
 
   public static Random GenerateNewRandom(int? randomSeed = null)
-    => new Random(randomSeed ?? GenerateRandomSeed());
+    => new(randomSeed ?? GenerateRandomSeed());
 }
