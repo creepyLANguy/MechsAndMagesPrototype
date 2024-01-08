@@ -51,22 +51,22 @@ public static class JourneyGenerator
 
     NullifyUnconnectedNodes(ref map);
 
-    SetFirstFloorActiveNodesAsNormalFights(ref map);
+    SetFirstFloorActiveNodesAsNormalFights(ref map, ref random);
 
     //Note, fights in the bag are all Elites. 
     //NORMAL fights are filled in later for all unassigned nodes.
     var bag = GenerateNodeTypeDistributionBag(ref map, mapConfig, ref random);
 
     //Row 1 -> top row
-    AssignBagItems(ref map, ref bag);
+    AssignBagItems(ref map, ref bag, ref random);
 
-    AssignNormalFightsToRemainingBlankNodes(ref map);
+    AssignNormalFightsToRemainingBlankNodes(ref map, ref random);
 
     AssignMysteryNodes(ref map, mapConfig, ref random);
 
     AttachFinalCampsiteNode(ref map);
 
-    AttachBossNode(ref map);
+    AttachBossNode(ref map, ref random);
 
     CompleteSetupOfAllNodes(ref map, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
 
@@ -150,7 +150,7 @@ public static class JourneyGenerator
     }
   }
 
-  private static void SetFirstFloorActiveNodesAsNormalFights(ref Map map)
+  private static void SetFirstFloorActiveNodesAsNormalFights(ref Map map, ref Random random)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -160,7 +160,7 @@ public static class JourneyGenerator
       }
 
       var baseNode = new Node(map.nodes[x, 0]);
-      map.nodes[x, 0] = new Fight(baseNode, FightType.NORMAL);
+      map.nodes[x, 0] = new Fight(ref random, baseNode, FightType.NORMAL);
     }
   }
 
@@ -202,7 +202,7 @@ public static class JourneyGenerator
     return bag;
   }
 
-  private static void AssignBagItems(ref Map map, ref List<NodeType> bag)
+  private static void AssignBagItems(ref Map map, ref List<NodeType> bag, ref Random random)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -221,7 +221,7 @@ public static class JourneyGenerator
             map.nodes[x, y] = new Campsite(baseNode);
             break;
           case NodeType.FIGHT:
-            map.nodes[x, y] = new Fight(baseNode, FightType.ELITE);
+            map.nodes[x, y] = new Fight(ref random, baseNode, FightType.ELITE);
             break;
         }
 
@@ -230,7 +230,7 @@ public static class JourneyGenerator
     }
   }
 
-  private static void AssignNormalFightsToRemainingBlankNodes(ref Map map)
+  private static void AssignNormalFightsToRemainingBlankNodes(ref Map map, ref Random random)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -242,7 +242,7 @@ public static class JourneyGenerator
         }
 
         var baseNode = new Node(map.nodes[x, y]);
-        map.nodes[x, y] = new Fight(baseNode, FightType.NORMAL);
+        map.nodes[x, y] = new Fight(ref random, baseNode, FightType.NORMAL);
       }
     }
   }
@@ -283,11 +283,11 @@ public static class JourneyGenerator
     map.nodes[finalCampsite.x, finalCampsite.y] = finalCampsite;
   }
 
-  private static void AttachBossNode(ref Map map)
+  private static void AttachBossNode(ref Map map, ref Random random)
   {
     var baseNodeForBoss = new Node(NodeType.FIGHT, false, 0, map.height - 1, false, true, null);
 
-    var bossNode = new Fight(baseNodeForBoss, FightType.BOSS);
+    var bossNode = new Fight(ref random, baseNodeForBoss, FightType.BOSS);
 
     map.nodes[0, map.height - 2].destinations.Add(new Tuple<int, int>(bossNode.x, bossNode.y));
 

@@ -4,7 +4,7 @@ namespace MaM.GameLogic;
 
 public static class Rest
 {
-  public static FightResult Run(ref Player player, Campsite node)
+  public static FightResult Run(Campsite node, ref GameContents gameContents)
   {
     //TODO - implement resting logic
 

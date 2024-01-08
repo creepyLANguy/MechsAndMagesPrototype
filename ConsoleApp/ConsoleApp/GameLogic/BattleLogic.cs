@@ -1,25 +1,33 @@
 using System;
+using System.Linq;
 using MaM.Definitions;
 
 namespace MaM.GameLogic;
 
 public static class Battle
 {
-  public static FightResult Run(ref Player player, Fight node)
+  public static FightResult Run(Fight node, ref GameContents gameContents)
   {
     Console.WriteLine("\n[Start Battle]");
 
+    var traderow = new Traderow(
+      node.enemy.tradeRowSize,
+      gameContents.player.deck.Where(card => card.guild != Guild.NEUTRAL).ToList(),
+      gameContents.cards.Where(card => card.guild == node.guild).ToList(),
+      ref gameContents.random
+    );
+
     while (true)
     {
-      Console.WriteLine("[Turn]\t\t" + player.name);
-      var resultPlayerAction = ExecuteTurnForPlayer(ref player, ref node.enemy);
+      Console.WriteLine("[Turn]\t\t" + gameContents.player.name);
+      var resultPlayerAction = ExecuteTurnForPlayer(ref gameContents.player, ref node.enemy);
       if (resultPlayerAction != FightResult.NONE)
       {
         return resultPlayerAction;
       }
 
       Console.WriteLine("[Turn]\t\t" + node.enemy.name);
-      var resultEnemyAction = ExecuteTurnForComputer(ref player, ref node.enemy);
+      var resultEnemyAction = ExecuteTurnForComputer(ref gameContents.player, ref node.enemy);
       if (resultEnemyAction != FightResult.NONE)
       {
         return resultEnemyAction;
