@@ -10,6 +10,7 @@ public struct JsonIntermediateBoss
   public string name;
   public int health;
   public int manna;
+  public int traderowSize;
 }
 
 public static class BossReader
@@ -23,7 +24,8 @@ public static class BossReader
       var boss = new Enemy(
         intermediateBoss.name,
         intermediateBoss.health,
-        intermediateBoss.manna
+        intermediateBoss.manna,
+        intermediateBoss.traderowSize
       );
 
       bosses.Add(boss);

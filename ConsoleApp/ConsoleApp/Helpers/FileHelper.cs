@@ -68,7 +68,9 @@ public static class FileHelper
 
   public static string ExcelToJson(string excelFile, int worksheetIndex = 0)
   {
-    var workbook = new Workbook(excelFile, new LoadOptions(LoadFormat.Auto));
+    var loadOptions = new LoadOptions(LoadFormat.Auto);
+
+    var workbook = new Workbook(excelFile, loadOptions);
 
     var cells = workbook.Worksheets[worksheetIndex].Cells;
 

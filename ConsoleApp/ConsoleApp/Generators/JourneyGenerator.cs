@@ -362,12 +362,13 @@ public static class JourneyGenerator
   {
     cards.Shuffle(ref random);
 
-    var name = "?????";//TODO;
+    var name = "?????";//TODO
 
     var enemy = new Enemy(
       name,
       enemyConfig.baseHealth * (1 + mapIndex),
-      enemyConfig.baseManna + mapIndex
+      enemyConfig.baseManna + mapIndex,
+      enemyConfig.traderowSize
     );
 
     ((Fight) node).enemy = enemy;

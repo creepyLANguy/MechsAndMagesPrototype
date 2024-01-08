@@ -1,6 +1,6 @@
 {
-  "cardsExcelFile": "Cards.xlsx",
-  "bossesExcelFile": "Bosses.xlsx",
+  "cardsExcelFile": "Cards.csv",
+  "bossesExcelFile": "Bosses.csv",
   "mapConfigs": [
     {
       "width": 4,
@@ -30,10 +30,12 @@
   "normalEnemyConfig": {
     "baseHealth": 50,
     "baseManna": 0,
+	"traderowsize": 4,
   },
   "eliteEnemyConfig": {
     "baseHealth": 75,
-    "baseManna": 5,    
+    "baseManna": 5,   
+    "traderowsize": 3,	
   },
   "playerConfig": {
     "health": 25,    
@@ -42,7 +44,7 @@
     {
       "minCost": 1,
       "maxCost": 4,
-      "cardCount": 2
+      "cardCount": 4
     },
     {
       "minCost": 1,
@@ -52,8 +54,8 @@
     {
       "minCost": 1,
       "maxCost": 4,
-      "cardCount": 4
+      "cardCount": 2
     }
   ],
-  "journeyLength": 3
+  "journeyLength": 3,
 }
