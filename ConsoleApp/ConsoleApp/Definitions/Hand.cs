@@ -48,4 +48,9 @@ public class Hand
   {
     cards.Remove(card);
   }
+
+  public List<Card> GetAllCardsInHand()
+  {
+    return cards;
+  }
 }

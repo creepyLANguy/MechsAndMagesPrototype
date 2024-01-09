@@ -1,5 +1,6 @@
 using System;
 using MaM.Definitions;
+using MaM.Helpers;
 
 namespace MaM.GameLogic;
 
@@ -7,10 +8,12 @@ public static class Battle
 {
   public static FightResult Run(Fight node, ref GameContents gameContents)
   {
-    Console.WriteLine("\n[Start Battle]");
+    Console.WriteLine("\n[Start Battle]\n");
 
     var battlePack = new BattlePack(node, ref gameContents);
 
+    RunMulliganPhase(ref gameContents.player, ref battlePack, ref gameContents.random);
+    
     while (true)
     {
       Console.WriteLine("[Turn]\t\t" + gameContents.player.name);
@@ -29,6 +32,63 @@ public static class Battle
     }
   }
 
+  private static void RunMulliganPhase(ref Player player, ref BattlePack battlePack, ref Random random)
+  {
+    var mulligans = 1;
+
+    while (true)
+    {
+      PrintHand(battlePack.hand);
+
+      if (player.health - mulligans <= 0)
+      {
+        return;
+      }
+
+      Console.WriteLine("Life : " + player.health);
+      var choice = UserInput.GetInt("Mulligan this hand by paying " + mulligans + " life?\n1) Yes\n2) No");
+      if (choice == 1)
+      {
+        player.health -= mulligans;
+
+        battlePack.Mulligan(ref random);
+
+        ++mulligans;
+      }
+      else
+      {
+        break;
+      }
+    }
+  }
+
+  private static void PrintHand(Hand hand)
+  {
+    var tab = '\t';
+    var pipe = '|';
+
+    Console.WriteLine("\nYour hand:");
+
+    var allCardsInHand = hand.GetAllCardsInHand();
+    for (var index = 0; index < allCardsInHand.Count; index++)
+    {
+      var card = allCardsInHand[index];
+      Console.WriteLine(
+        index + 1 + ")" + 
+        tab +
+        UserInput.GetPrintableCardName(card.name) +
+        tab + tab + pipe + tab +
+        "Manna Cost :" + card.cost +
+        tab + pipe + tab +
+        "Type:" + card.type +
+        tab + pipe + tab +
+        "Guild:" + card.guild
+      );
+    }
+
+    Console.WriteLine();
+  }
+
   private static FightResult GetFightFightResult(ref Player player, ref Enemy enemy)
   {
     if (player.health <= 0)
@@ -44,18 +104,18 @@ public static class Battle
     return FightResult.NONE;
   }
 
-  private static FightResult ExecuteTurnForPlayer(ref Player player, ref Enemy enemy, ref BattlePack battlePack)
-  {
-    //TODO
-    player.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 1 : 0;
-
-    return GetFightFightResult(ref player, ref enemy);
-  }
-
   private static FightResult ExecuteTurnForComputer(ref Player player, ref Enemy enemy)
   {
     //TODO
     enemy.health = new Random((int)(DateTime.Now.Ticks)).Next(0, 5);
+
+    return GetFightFightResult(ref player, ref enemy);
+  }
+
+  private static FightResult ExecuteTurnForPlayer(ref Player player, ref Enemy enemy, ref BattlePack battlePack)
+  {
+    //TODO
+    player.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 1 : 0;
 
     return GetFightFightResult(ref player, ref enemy);
   }
