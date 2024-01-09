@@ -4,6 +4,10 @@ namespace MaM.Definitions;
 
 public class Fight : Node
 {
+  public FightType fightType;
+  public Enemy enemy;
+  public Guild guild;
+  
   public Fight(
     ref Random random,
     Node baseNode,
@@ -23,11 +27,19 @@ public class Fight : Node
     this.enemy = enemy ?? new Enemy();
     nodeType = NodeType.FIGHT;
 
-    var values = Enum.GetValues(typeof(Guild));
-    guild = (Guild)values.GetValue(random.Next(values.Length));
+    guild = GetNonNeutralGuild(ref random);
   }
 
-  public FightType fightType;
-  public Enemy enemy;
-  public Guild guild;
+  private Guild GetNonNeutralGuild(ref Random random)
+  {
+    var chosen = Guild.NEUTRAL;
+    var values = Enum.GetValues(typeof(Guild));
+    while (chosen == Guild.NEUTRAL)
+    {
+      chosen = (Guild)values.GetValue(random.Next(values.Length));
+    }
+
+    return chosen;
+  }
+  
 }

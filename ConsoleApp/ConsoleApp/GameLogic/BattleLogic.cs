@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MaM.Definitions;
 using MaM.Helpers;
 
@@ -34,26 +35,30 @@ public static class Battle
 
   private static void RunMulliganPhase(ref Player player, ref BattlePack battlePack, ref Random random)
   {
-    var mulligans = 1;
+    var mulliganCost = 1;
 
     while (true)
     {
-      PrintHand(battlePack.hand);
+      Console.WriteLine("\nYour Hand:");
+      PrintCards(battlePack.hand.GetAllCardsInHand());
 
-      if (player.health - mulligans <= 0)
+      Console.WriteLine("\nThe Market:");
+      PrintCards(battlePack.market.GetDisplayedCards());
+
+      if (player.health - mulliganCost <= 0)
       {
         return;
       }
 
       Console.WriteLine("Life : " + player.health);
-      var choice = UserInput.GetInt("Mulligan this hand by paying " + mulligans + " life?\n1) Yes\n2) No");
+      var choice = UserInput.GetInt("Mulligan this hand and market by paying " + mulliganCost + " life?\n1) Yes\n2) No");
       if (choice == 1)
       {
-        player.health -= mulligans;
+        player.health -= mulliganCost;
 
         battlePack.Mulligan(ref random);
 
-        ++mulligans;
+        ++mulliganCost;
       }
       else
       {
@@ -62,20 +67,14 @@ public static class Battle
     }
   }
 
-  private static void PrintHand(Hand hand)
+  private static void PrintCards(List<Card> cards)
   {
-    var tab = '\t';
-    var pipe = '|';
+    const char tab = '\t';
+    const char pipe = '|';
 
-    Console.WriteLine("\nYour hand:");
-
-    var allCardsInHand = hand.GetAllCardsInHand();
-    for (var index = 0; index < allCardsInHand.Count; index++)
+    foreach (var card in cards)
     {
-      var card = allCardsInHand[index];
       Console.WriteLine(
-        index + 1 + ")" + 
-        tab +
         UserInput.GetPrintableCardName(card.name) +
         tab + tab + pipe + tab +
         "Manna Cost :" + card.cost +

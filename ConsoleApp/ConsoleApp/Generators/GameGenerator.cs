@@ -149,7 +149,7 @@ public static class GameGenerator
     }
 
 #if DEBUG
-    return offeredCards[1];
+    return offeredCards[0];
 #else
     return offeredCards[int.Parse(UserInput.Get() ?? string.Empty) - 1];
 #endif

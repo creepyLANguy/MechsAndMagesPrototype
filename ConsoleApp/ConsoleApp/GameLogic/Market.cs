@@ -73,4 +73,9 @@ public class Market
     display[index] = pool.Pop();
     return true;
   }
+
+  public List<Card> GetDisplayedCards()
+  {
+    return display;
+  }
 }

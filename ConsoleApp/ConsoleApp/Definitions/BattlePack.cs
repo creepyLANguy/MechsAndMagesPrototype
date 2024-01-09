@@ -8,38 +8,74 @@ namespace MaM.Definitions;
 
 public class BattlePack
 {
-    public Market market;
+  public Market market;
 
-    public Stack<Card> deck;
+  public Stack<Card> deck;
 
-    public Hand hand;
+  public Hand hand;
 
-    public List<Card> graveyard;
+  public List<Card> graveyard;
 
-    public List<Card> scrapheap;
+  public List<Card> scrapheap;
 
-    public BattlePack(Fight node, ref GameContents gameContents)
-    {
-        market = new Market(
-          node.enemy.marketSize,
-          gameContents.player.deck.Where(card => card.guild != Guild.NEUTRAL).ToList(),
-          gameContents.cards.Where(card => card.guild == node.guild).ToList(),
-          ref gameContents.random
-        );
+  private Fight node;
+  private GameContents gameContents;
 
-        var startingCards = gameContents.cards.Where(card => card.guild == Guild.NEUTRAL).ToList();
-        startingCards.Shuffle(ref gameContents.random);
-        deck = new Stack<Card>(startingCards);
+  public BattlePack(Fight node, ref GameContents gameContents)
+  { 
+    this.node = node;
+    this.gameContents = gameContents;
 
-        hand = new Hand(gameContents.handSize);
-        hand.Fill(ref deck);
+    SetupMarket();
 
-        graveyard = new List<Card>();
+    SetupDeck();
 
-        scrapheap = new List<Card>();
-    }
+    SetupHand();
 
-    public void Mulligan(ref Random random)
+    SetupGraveyard();
+
+    SetupScrapheap();
+  }
+
+  private void SetupMarket()
+  {
+    var m1 = gameContents.player.deck.Where(card => card.guild != Guild.NEUTRAL).ToList();
+    var m2 = gameContents.cards.Where(card => card.guild == node.guild).ToList();
+
+    market = new Market(
+      node.enemy.marketSize,
+      m1,
+      m2,
+      ref gameContents.random
+    );
+
+    market.Fill();
+  }
+
+  private void SetupDeck()
+  {
+    var startingCards = gameContents.cards.Where(card => card.guild == Guild.NEUTRAL).ToList();
+    startingCards.Shuffle(ref gameContents.random);
+    deck = new Stack<Card>(startingCards);
+  }
+
+  private void SetupHand()
+  {
+    hand = new Hand(gameContents.handSize);
+    hand.Fill(ref deck);
+  }
+
+  private void SetupGraveyard()
+  {
+    graveyard = new List<Card>();
+  }
+
+  private void SetupScrapheap()
+  {
+    scrapheap = new List<Card>();
+  }
+
+  public void Mulligan(ref Random random)
     {
       var cardsInHand = hand.GetAllCardsInHand();
       foreach (var card in cardsInHand)
@@ -52,5 +88,8 @@ public class BattlePack
 
       hand.Clear();
       hand.Fill(ref deck);
+
+      //AL.
+      //TODO - mulligan the market as well.
   }
 }
