@@ -8,7 +8,7 @@ public enum CardAttribute
   DP,//DISCARD_PLAYER,
   DE,//DISCARD_ENEMY,
   SS,//SCRAP_SELF,
-  ST,//SCRAP_TRADEROW,
+  SM,//SCRAP_MARKET,
   SH,//SCRAP_HAND,
   H,//HEAL
 }

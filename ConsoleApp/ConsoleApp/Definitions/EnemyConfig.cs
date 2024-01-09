@@ -4,5 +4,5 @@ public struct EnemyConfig
 {
   public int baseHealth;
   public int baseManna;
-  public int traderowSize;
+  public int marketSize;
 }

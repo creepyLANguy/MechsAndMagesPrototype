@@ -27,7 +27,7 @@ public static class Navigation
 
         AutoSave();
 
-        if (VisitNode(ref player, ref node, ref gameContents) == FightResult.PLAYER_LOSE)
+        if (VisitNode(ref node, ref gameContents) == FightResult.PLAYER_LOSE)
         {
           Console.WriteLine("\nYOU DIED");
           Console.WriteLine("\nCompletion Percent : " + GetCompletionPercentage(ref gameContents.journey) + "%");
@@ -136,7 +136,7 @@ public static class Navigation
     return map.nodes[item1, item2];
   }
 
-  private static FightResult VisitNode(ref Player player, ref Node node, ref GameContents gameContents)
+  private static FightResult VisitNode(ref Node node, ref GameContents gameContents)
   {
     switch (node.nodeType)
     {

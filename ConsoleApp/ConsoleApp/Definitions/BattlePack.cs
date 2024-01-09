@@ -8,7 +8,7 @@ namespace MaM.Definitions;
 
 public class BattlePack
 {
-    public Traderow traderow;
+    public Market market;
 
     public Stack<Card> deck;
 
@@ -20,8 +20,8 @@ public class BattlePack
 
     public BattlePack(Fight node, ref GameContents gameContents)
     {
-        traderow = new Traderow(
-          node.enemy.tradeRowSize,
+        market = new Market(
+          node.enemy.marketSize,
           gameContents.player.deck.Where(card => card.guild != Guild.NEUTRAL).ToList(),
           gameContents.cards.Where(card => card.guild == node.guild).ToList(),
           ref gameContents.random

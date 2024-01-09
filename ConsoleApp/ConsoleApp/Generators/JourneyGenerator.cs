@@ -368,7 +368,7 @@ public static class JourneyGenerator
       name,
       enemyConfig.baseHealth * (1 + mapIndex),
       enemyConfig.baseManna + mapIndex,
-      enemyConfig.traderowSize
+      enemyConfig.marketSize
     );
 
     ((Fight) node).enemy = enemy;

@@ -30,12 +30,12 @@
   "normalEnemyConfig": {
     "baseHealth": 50,
     "baseManna": 0,
-	"traderowsize": 4,
+	"marketSize": 4,
   },
   "eliteEnemyConfig": {
     "baseHealth": 75,
     "baseManna": 5,   
-    "traderowsize": 3,	
+    "marketSize": 3,	
   },
   "playerConfig": {
     "health": 25,    

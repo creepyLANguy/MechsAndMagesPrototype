@@ -5,15 +5,15 @@ using MaM.Helpers;
 
 namespace MaM.GameLogic;
 
-public class Traderow
+public class Market
 {
-  private int traderowSize;
+  private int marketSize;
   private Stack<Card> pool = new();
   private List<Card> display = new();
 
-  public Traderow(int traderowSize, List<Card> cards_player, List<Card> cards_enemy, ref Random random)
+  public Market(int marketSize, List<Card> cards_player, List<Card> cards_enemy, ref Random random)
   {
-    this.traderowSize = traderowSize;
+    this.marketSize = marketSize;
 
     cards_player.Shuffle(ref random);
     cards_enemy.Shuffle(ref random);
@@ -53,7 +53,7 @@ public class Traderow
       return false;
     }
 
-    while (display.Count < traderowSize)
+    while (display.Count < marketSize)
     {
       display.Add(pool.Pop());
     }
@@ -65,7 +65,7 @@ public class Traderow
   {
     if (pool.Count == 0)
     {
-      traderowSize -= 1;
+      marketSize -= 1;
       display.RemoveAt(index);
       return false;
     }
