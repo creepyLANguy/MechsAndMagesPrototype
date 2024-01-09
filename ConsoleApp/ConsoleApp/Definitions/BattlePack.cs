@@ -89,7 +89,6 @@ public class BattlePack
       hand.Clear();
       hand.Fill(ref deck);
 
-      //AL.
-      //TODO - mulligan the market as well.
-  }
+      market.Cycle();
+    }
 }

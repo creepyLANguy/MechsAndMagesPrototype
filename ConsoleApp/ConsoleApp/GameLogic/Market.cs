@@ -1,6 +1,7 @@
 ﻿using System;
 using MaM.Definitions;
 using System.Collections.Generic;
+using System.Linq;
 using MaM.Helpers;
 
 namespace MaM.GameLogic;
@@ -77,5 +78,16 @@ public class Market
   public List<Card> GetDisplayedCards()
   {
     return display;
+  }
+
+  public void Cycle()
+  {
+    var tempPool = pool.ToList();
+    tempPool.AddRange(display);
+    tempPool.Reverse(0, tempPool.Count);
+    pool = new Stack<Card>(tempPool);
+
+    display.Clear();
+    Fill();
   }
 }

@@ -51,7 +51,7 @@ public static class Battle
       }
 
       Console.WriteLine("Life : " + player.health);
-      var choice = UserInput.GetInt("Mulligan this hand and market by paying " + mulliganCost + " life?\n1) Yes\n2) No");
+      var choice = UserInput.GetInt("Mulligan this hand and cycle the market by paying " + mulliganCost + " life?\n1) Yes\n2) No");
       if (choice == 1)
       {
         player.health -= mulliganCost;
