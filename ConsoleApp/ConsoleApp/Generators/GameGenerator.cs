@@ -40,7 +40,7 @@ public static class GameGenerator
 
     journey.currentMapIndex = player.completedMapCount;
 
-    var gameContents = new GameContents(player, journey, cards, random, gameState.randomSeed);
+    var gameContents = new GameContents(player, journey, cards, gameConfig.handSize, random, gameState.randomSeed);
 
     return gameContents;
   }

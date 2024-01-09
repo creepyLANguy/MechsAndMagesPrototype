@@ -12,4 +12,5 @@ public struct GameConfig
   public PlayerConfig               playerConfig;
   public List<InitialCardSelection> initialCardSelections;
   public int                        journeyLength;
+  public int                        handSize;
 }

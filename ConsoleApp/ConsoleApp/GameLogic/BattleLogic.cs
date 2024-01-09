@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using MaM.Definitions;
 
 namespace MaM.GameLogic;
@@ -10,17 +9,12 @@ public static class Battle
   {
     Console.WriteLine("\n[Start Battle]");
 
-    var traderow = new Traderow(
-      node.enemy.tradeRowSize,
-      gameContents.player.deck.Where(card => card.guild != Guild.NEUTRAL).ToList(),
-      gameContents.cards.Where(card => card.guild == node.guild).ToList(),
-      ref gameContents.random
-    );
+    var battlePack = new BattlePack(node, ref gameContents);
 
     while (true)
     {
       Console.WriteLine("[Turn]\t\t" + gameContents.player.name);
-      var resultPlayerAction = ExecuteTurnForPlayer(ref gameContents.player, ref node.enemy);
+      var resultPlayerAction = ExecuteTurnForPlayer(ref gameContents.player, ref node.enemy, ref battlePack);
       if (resultPlayerAction != FightResult.NONE)
       {
         return resultPlayerAction;
@@ -50,7 +44,7 @@ public static class Battle
     return FightResult.NONE;
   }
 
-  private static FightResult ExecuteTurnForPlayer(ref Player player, ref Enemy enemy)
+  private static FightResult ExecuteTurnForPlayer(ref Player player, ref Enemy enemy, ref BattlePack battlePack)
   {
     //TODO
     player.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 1 : 0;
