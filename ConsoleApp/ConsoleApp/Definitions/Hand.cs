@@ -25,7 +25,7 @@ public class Hand
 
     while (deck.Count > 0)
     {
-      cards.Add(deck.Pop());
+      Draw_Single(ref deck);
 
       if (cards.Count == handSize)
       {
@@ -40,7 +40,7 @@ public class Hand
 
       while (deck.Count > 0)
       {
-        cards.Add(deck.Pop());
+        Draw_Single(ref deck);
 
         if (cards.Count == handSize)
         {
