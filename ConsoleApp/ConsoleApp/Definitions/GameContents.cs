@@ -8,7 +8,7 @@ public struct GameContents
   public Player       player;
   public Journey      journey;
   public List<Card>   cards;
-  public int handSize;
+  public int          handSize;
   public Random       random;
   public int          seed;
 

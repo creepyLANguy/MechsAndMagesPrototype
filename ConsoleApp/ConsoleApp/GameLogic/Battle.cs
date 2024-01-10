@@ -42,7 +42,15 @@ public static class Battle
       }
 
       Console.WriteLine("Life : " + player.health);
-      var choice = UserInput.GetInt("Mulligan this hand and cycle the market by paying " + mulliganCost + " life?\n1) Yes\n2) No");
+      var message = "Mulligan this hand and cycle the market by paying " + mulliganCost + " life?\n1) Yes\n2) No";
+
+#if DEBUG
+      Console.WriteLine(message);
+      const int choice = 0;
+#else
+      var choice = UserInput.GetInt(message);
+#endif
+
       if (choice == 1)
       {
         player.health -= mulliganCost;
@@ -64,7 +72,7 @@ public static class Battle
 
     PrintStats(ref gameContents.player, ref enemy, ref turnPools);
 
-    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref turnPools);
+    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref turnPools, ref gameContents.random);
 
     var resultPlayerAction = GetFightResult(ref gameContents.player, ref enemy);
     if (resultPlayerAction != FightResult.NONE)
@@ -81,6 +89,8 @@ public static class Battle
 
   private static void PrintStats(ref Player player, ref Enemy enemy, ref TurnPools turnPools)
   {
+    Console.WriteLine();
+
     Console.WriteLine("Your Life:\t" + player.health);
     
     Console.WriteLine("Your Might:\t" + turnPools.might);
@@ -147,7 +157,7 @@ public static class Battle
     //AL.
     enemy.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 1 : 0;
 
-    battlePack.hand.Fill(ref battlePack.deck, ref battlePack.graveyard, ref random);
+    battlePack.hand.Draw_Full(ref battlePack.deck, ref battlePack.graveyard, ref random);
 
     RunPlayCardsPhase(ref battlePack, ref turnPools, ref player);
 
@@ -169,6 +179,8 @@ public static class Battle
         RunPassAction(ref turnPools);
         break;
     }
+
+    battlePack.MoveHandToGraveyard();
   }
 
   private static TurnAction RunActionSelectionPhase()

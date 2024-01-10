@@ -14,10 +14,8 @@ public class Hand
     this.handSize = handSize;
   }
 
-  public bool Fill(ref Stack<Card> deck, ref List<Card> graveyard, ref Random random)
+  public bool Draw_Full(ref Stack<Card> deck, ref List<Card> graveyard, ref Random random)
   {
-    //TODO - test! 
-
     var cardsToDraw = handSize - cards.Count;
 
     if (cardsToDraw <= 0)
@@ -39,15 +37,15 @@ public class Hand
     {
       graveyard.Shuffle(ref random);
       deck = new Stack<Card>(new List<Card>(graveyard));
-    }
 
-    while (deck.Count > 0)
-    {
-      cards.Add(deck.Pop());
-
-      if (cards.Count == handSize)
+      while (deck.Count > 0)
       {
-        break;
+        cards.Add(deck.Pop());
+
+        if (cards.Count == handSize)
+        {
+          break;
+        }
       }
     }
 

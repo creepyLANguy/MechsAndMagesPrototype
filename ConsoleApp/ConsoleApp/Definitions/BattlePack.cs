@@ -61,7 +61,7 @@ public class BattlePack
   private void SetupHand()
   {
     hand = new Hand(gameContents.handSize);
-    hand.Fill(ref deck);
+    hand.Draw_Full(ref deck, ref graveyard, ref gameContents.random);
   }
 
   private void SetupGraveyard()
@@ -86,8 +86,14 @@ public class BattlePack
       shuffledDeck.Shuffle(ref random);
 
       hand.Clear();
-      hand.Fill(ref deck);
+      hand.Draw_Full(ref deck, ref graveyard, ref random);
 
       market.Cycle();
     }
+
+  public void MoveHandToGraveyard()
+  {
+    graveyard.AddRange(hand.GetAllCardsInHand());
+    hand.Clear();
+  }
 }

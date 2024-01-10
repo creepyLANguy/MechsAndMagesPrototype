@@ -117,7 +117,12 @@ public static class SaveGameHelper
       Console.WriteLine(item2 + ") " + item1);
     }
 
+#if DEBUG
+    const int choice = 0;
+#else
     var choice = UserInput.GetInt();
+#endif
+
     var saveFile = (choice == 0 ? DateTime.Now.Ticks + SaveGame.SaveFileExtension : allFiles[choice - 1]);
     return saveFile;
   }
