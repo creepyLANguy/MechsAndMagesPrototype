@@ -4,28 +4,23 @@ namespace MaM.GameLogic
 {
   class BattleActions
   {
-    public static void RunPassAction(ref TurnPools turnPools)
+    public static void RunPassAction(ref int power)
     {
-      turnPools.might = 0;
-      turnPools.moneny = 0;
+      power = 0;
     }
 
-    public static void RunAttackAction(ref TurnPools turnPools, ref Enemy enemy)
+    public static void RunAttackAction(ref int power, ref Enemy enemy)
     {
-      enemy.health -= turnPools.might;
-      turnPools.might = 0;
-      turnPools.moneny = 0;
+      enemy.health -= power;
+      power = 0;
     }
 
-    public static void RunDefendAction(ref TurnPools turnPools)
+    public static void RunDefendAction()
     {
-      turnPools.moneny = 0;
     }
 
-    public static void RunBuyAction(ref TurnPools turnPools, ref BattlePack battlePack)
+    public static void RunBuyAction(ref int power, ref BattlePack battlePack)
     {
-      turnPools.might = 0;
-
       //TODO - Buy from market, add those cards to graveyard.
     }
   }

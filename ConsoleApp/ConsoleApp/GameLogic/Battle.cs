@@ -25,11 +25,11 @@ public static class Battle
 
   private static FightResult RunTurns(ref GameContents gameContents, ref BattlePack battlePack, ref Enemy enemy)
   {
-    var turnPools = new TurnPools();
+    var power = 0;
 
-    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref turnPools);
+    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power);
 
-    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref turnPools, ref gameContents.random);
+    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref power, ref gameContents.random);
 
     var resultPlayerAction = GetFightResult(ref gameContents.player, ref enemy);
     if (resultPlayerAction != FightResult.NONE)
@@ -37,7 +37,7 @@ public static class Battle
       return resultPlayerAction;
     }
 
-    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref turnPools);
+    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power);
 
     ExecuteTurnForComputer(ref gameContents.player, ref enemy);
 
@@ -71,7 +71,7 @@ public static class Battle
   private static void ExecuteTurnForPlayer(ref Player player,
     ref Enemy enemy,
     ref BattlePack battlePack,
-    ref TurnPools turnPools,
+    ref int power,
     ref Random random)
   {
     Console.WriteLine("\n[Turn]\t\t" + player.name);
@@ -82,24 +82,24 @@ public static class Battle
 
     battlePack.hand.Draw_Full(ref battlePack.deck, ref battlePack.graveyard, ref random);
 
-    BattlePhases.RunPlayCardsPhase(ref battlePack, ref turnPools, ref player);
+    BattlePhases.RunPlayCardsPhase(ref battlePack, ref player, ref power);
 
     var turnAction = BattlePhases.RunActionSelectionPhase();
 
     switch (turnAction)
     {
       case TurnAction.ATTACK:
-        BattleActions.RunAttackAction(ref turnPools, ref enemy);
+        BattleActions.RunAttackAction(ref power, ref enemy);
         break;
       case TurnAction.DEFEND:
-        BattleActions.RunDefendAction(ref turnPools);
+        BattleActions.RunDefendAction();
         break;
       case TurnAction.BUY:
-        BattleActions.RunBuyAction(ref turnPools, ref battlePack);
+        BattleActions.RunBuyAction(ref power, ref battlePack);
         break;
       case TurnAction.NONE:
       default:
-        BattleActions.RunPassAction(ref turnPools);
+        BattleActions.RunPassAction(ref power);
         break;
     }
 
