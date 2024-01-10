@@ -58,7 +58,7 @@ namespace MaM.GameLogic
       return (TurnAction)UserInput.GetInt(message);
     }
 
-    public static void RunPlayCardsPhase(ref BattlePack battlePack, ref TurnPools turnPools, ref Player player)
+    public static void RunPlayCardsPhase(ref BattlePack battlePack, ref Player player, ref int power)
     {
       //TODO
     }

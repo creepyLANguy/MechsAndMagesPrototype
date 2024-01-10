@@ -6,13 +6,13 @@ namespace MaM.Helpers
 {
   class ConsoleMessages
   {
-    public static void PrintBattleState(ref Player player, ref Enemy enemy, ref TurnPools turnPools)
+    public static void PrintBattleState(ref Player player, ref Enemy enemy, ref int power)
     {
       Console.WriteLine();
 
       Console.WriteLine("Your Life:\t" + player.health);
 
-      Console.WriteLine("Your Might:\t" + turnPools.might);
+      Console.WriteLine("Your Power:\t" + power);
 
       Console.WriteLine("Enemy Life:\t" + enemy.health);
 
