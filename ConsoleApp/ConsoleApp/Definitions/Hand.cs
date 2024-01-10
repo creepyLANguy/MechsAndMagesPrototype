@@ -6,17 +6,17 @@ namespace MaM.Definitions;
 
 public class Hand
 {
-  private int handSize;
-  private List<Card> cards = new();
+  private int defaultSize;
+  private List<Card> current = new();
 
-  public Hand(int handSize)
+  public Hand(int defaultSize)
   {
-    this.handSize = handSize;
+    this.defaultSize = defaultSize;
   }
 
   public bool Draw_Full(ref Stack<Card> deck, ref List<Card> graveyard, ref Random random)
   {
-    var cardsToDraw = handSize - cards.Count;
+    var cardsToDraw = defaultSize - current.Count;
 
     if (cardsToDraw <= 0)
     {
@@ -27,13 +27,13 @@ public class Hand
     {
       Draw_Single(ref deck);
 
-      if (cards.Count == handSize)
+      if (current.Count == defaultSize)
       {
         break;
       }
     }
 
-    if (cards.Count != handSize)
+    if (current.Count != defaultSize)
     {
       graveyard.Shuffle(ref random);
       deck = new Stack<Card>(new List<Card>(graveyard));
@@ -42,33 +42,33 @@ public class Hand
       {
         Draw_Single(ref deck);
 
-        if (cards.Count == handSize)
+        if (current.Count == defaultSize)
         {
           break;
         }
       }
     }
 
-    return cards.Count != handSize;
+    return current.Count != defaultSize;
   }
 
   public void Draw_Single(ref Stack<Card> deck)
   {
-    cards.Add(deck.Pop());
+    current.Add(deck.Pop());
   }
 
   public void Clear()
   {
-    cards.Clear();
+    current.Clear();
   }
 
   public void Remove_Single(Card card)
   {
-    cards.Remove(card);
+    current.Remove(card);
   }
 
   public List<Card> GetAllCardsInHand()
   {
-    return cards;
+    return current;
   }
 }
