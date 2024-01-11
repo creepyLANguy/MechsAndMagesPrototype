@@ -9,18 +9,18 @@ public class Enemy
   public Enemy(
     string name,
     int health,
-    int manna,
+    int baseManna,
     int marketSize
   )
   {
     this.name = name;
     this.health = health;
-    this.manna = manna;
+    this.baseManna = baseManna;
     this.marketSize = marketSize;
   }
 
   public string name;
   public int health;
-  public int manna;
+  public int baseManna;
   public int marketSize;
 }

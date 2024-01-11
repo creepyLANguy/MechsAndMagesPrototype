@@ -362,7 +362,7 @@ public static class JourneyGenerator
   {
     cards.Shuffle(ref random);
 
-    var name = "?????";//TODO
+    var name = EnemyNames.Get();
 
     var enemy = new Enemy(
       name,

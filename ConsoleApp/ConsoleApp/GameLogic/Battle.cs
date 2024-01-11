@@ -26,8 +26,9 @@ public static class Battle
   private static FightResult RunTurns(ref GameContents gameContents, ref BattlePack battlePack, ref Enemy enemy)
   {
     var power = 0;
+    var manna = enemy.baseManna;
 
-    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power);
+    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power, ref manna);
 
     ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref power, ref gameContents.random);
 
@@ -37,7 +38,7 @@ public static class Battle
       return resultPlayerAction;
     }
 
-    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power);
+    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power, ref manna);
 
     ExecuteTurnForComputer(ref gameContents.player, ref enemy);
 
@@ -64,6 +65,7 @@ public static class Battle
     ConsoleMessages.Turn(enemy.name);
 
     //TODO
+    //AL.
     player.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 10 : 0;
 
   }

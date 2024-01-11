@@ -20,7 +20,7 @@ class ConsoleMessages
     Console.WriteLine("\n[Turn]\t\t" + name);
   }
 
-  public static void PrintBattleState(ref Player player, ref Enemy enemy, ref int power)
+  public static void PrintBattleState(ref Player player, ref Enemy enemy, ref int power, ref int manna)
   {
     Console.WriteLine();
 
@@ -30,7 +30,7 @@ class ConsoleMessages
 
     Console.WriteLine("Enemy Life:\t" + enemy.health);
 
-    Console.WriteLine("Enemy Manna:\t" + enemy.manna);
+    Console.WriteLine("Enemy Manna:\t" + manna);
   }
 
   public static void PrintHand(List<Card> cards)
