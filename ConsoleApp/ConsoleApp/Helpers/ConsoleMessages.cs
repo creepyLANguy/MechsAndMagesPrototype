@@ -86,9 +86,7 @@ class ConsoleMessages
       Console.WriteLine(
         UserInput.GetPrintableCardName(card.name) +
         Tab + Tab + Pipe + Tab +
-        "Manna Cost :" + card.cost +
-        Tab + Pipe + Tab +
-        "Type:" + card.type +
+        "Cost :" + card.cost +
         Tab + Pipe + Tab +
         "Guild:" + card.guild
       );
@@ -132,9 +130,7 @@ class ConsoleMessages
         Tab +
         UserInput.GetPrintableCardName(card.name) +
         Tab + Tab + Pipe + Tab +
-        "Manna Cost :" + card.cost +
-        Tab + Pipe + Tab +
-        "Type:" + card.type +
+        "Cost :" + card.cost +
         Tab + Pipe + Tab +
         "Guild:" + card.guild
       );
@@ -246,5 +242,29 @@ class ConsoleMessages
   public static void FileHelperWritten()
   {
     Console.WriteLine("Saved");
+  }
+
+  public static void PromptToPlayCard(ref BattlePack battlePack)
+  {
+    var allCardsInHand = battlePack.hand.GetAllCardsInHand();
+
+    Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
+    Console.WriteLine("-1) SKIP TO NEXT PHASE");
+    Console.WriteLine("0) PLAY ALL CARDS");
+
+    for (var index = 0; index < allCardsInHand.Count; index++)
+    {
+      var card = allCardsInHand[index];
+
+      Console.WriteLine(
+        index + 1 + ")" +
+        Tab +
+        UserInput.GetPrintableCardName(card.name) +
+        Tab + Tab + Pipe + Tab +
+        "Cost :" + card.cost +
+        Tab + Pipe + Tab +
+        "Guild:" + card.guild
+      );
+    }
   }
 }

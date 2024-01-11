@@ -1,5 +1,6 @@
 ﻿using MaM.Definitions;
 using System;
+using System.Linq;
 using MaM.Helpers;
 
 namespace MaM.GameLogic
@@ -49,9 +50,46 @@ namespace MaM.GameLogic
       return (TurnAction)UserInput.GetInt();
     }
 
-    public static void RunPlayCardsPhase(ref BattlePack battlePack, ref Player player, ref int power)
+    public static void RunPlayCardsPhase(ref BattlePack battlePack, ref Player player, ref int power, ref int manna)
     {
-      //TODO
+      while (battlePack.hand.GetAllCardsInHand().Count > 0)
+      {
+        ConsoleMessages.PromptToPlayCard(ref battlePack);
+
+        var selection = UserInput.GetInt();
+
+        var allCardsInHand = battlePack.hand.GetAllCardsInHand();
+
+        if (selection < 0)
+        {
+          return;
+        }
+        else if (selection == 0)
+        {
+          foreach (var card in allCardsInHand)
+          {
+            ProcessCardEffects(card, ref battlePack, ref player, ref power, ref manna);
+          }
+          battlePack.graveyard.AddRange(allCardsInHand);
+          battlePack.hand.Clear();
+        }
+        else if (selection <= allCardsInHand.Count)
+        {
+          --selection;
+          var selectedCard = allCardsInHand[selection];
+          ProcessCardEffects(selectedCard, ref battlePack, ref player, ref power, ref manna);
+          battlePack.graveyard.Add(selectedCard);
+          battlePack.hand.Remove_Single(selectedCard);
+        }
+      }
+    }
+
+    private static void ProcessCardEffects(Card card, ref BattlePack battlePack, ref Player player, ref int power, ref int manna)
+    {
+      var powers = card.defaultActions.Where(x => x.Item1 == CardAttribute.P);
+      power += powers.Sum(attack => attack.Item2);
+
+      //TODO - process all card effects/attributes
     }
   }
 }

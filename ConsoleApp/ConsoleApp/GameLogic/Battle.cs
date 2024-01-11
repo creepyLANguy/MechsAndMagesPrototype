@@ -30,7 +30,7 @@ public static class Battle
 
     ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power, ref manna);
 
-    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref power, ref gameContents.random);
+    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref power, ref manna, ref gameContents.random);
 
     var resultPlayerAction = GetFightResult(ref gameContents.player, ref enemy);
     if (resultPlayerAction != FightResult.NONE)
@@ -64,7 +64,7 @@ public static class Battle
   {
     ConsoleMessages.Turn(enemy.name);
 
-    //TODO
+    //TODO - enemy turn
     //AL.
     player.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 10 : 0;
 
@@ -74,17 +74,16 @@ public static class Battle
     ref Enemy enemy,
     ref BattlePack battlePack,
     ref int power,
+    ref int manna,
     ref Random random)
   {
     ConsoleMessages.Turn(player.name);
 
-    //TODO
-    //AL.
-    enemy.health -= 10;
-
     battlePack.hand.Draw_Full(ref battlePack.deck, ref battlePack.graveyard, ref random);
 
-    BattlePhases.RunPlayCardsPhase(ref battlePack, ref player, ref power);
+    BattlePhases.RunPlayCardsPhase(ref battlePack, ref player, ref power, ref manna);
+
+    ConsoleMessages.PrintBattleState(ref player, ref enemy, ref power, ref manna);
 
     var turnAction = BattlePhases.RunActionSelectionPhase();
 

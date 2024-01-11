@@ -12,14 +12,9 @@ public struct JsonIntermediateCard
 {
   public int?   quantity;
   public string name;
-  public string type;
   public string guild;
   public int?   cost;
-  public int?   defense;
-  public int?   shield;
   public string defaultAbilities;
-  public string allyBonuses;
-  public string scrapBonuses;
   public string id;
 }
 
@@ -54,11 +49,6 @@ public static class CardReader
 
     foreach (var ic in intermediateCards)
     {
-      if (Enum.TryParse(ic.type, true, out CardType cardType) == false)
-      {
-        cardType = CardType.UNKNOWN;
-      }
-
       if (Enum.TryParse(ic.guild, true, out Guild guild) == false)
       {
         guild = Guild.NEUTRAL;
@@ -67,14 +57,9 @@ public static class CardReader
       var card = new Card(
         ic.id,
         ic.name,
-        cardType,
         guild,
         ic.cost ?? 0,
-        ic.defense ?? 0,
-        ic.shield ?? 0,
-        GetListOfCardAttributes(ic.defaultAbilities),
-        GetListOfCardAttributes(ic.allyBonuses),
-        GetListOfCardAttributes(ic.scrapBonuses)
+        GetListOfCardAttributes(ic.defaultAbilities)
       );
 
       for (var i = 0; i < ic.quantity; ++i)

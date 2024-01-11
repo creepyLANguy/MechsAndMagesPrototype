@@ -6,7 +6,7 @@ public static class Rest
 {
   public static FightResult Run(Campsite node, ref GameContents gameContents)
   {
-    //TODO - implement resting logic
+    //TODO - resting logic
 
     return FightResult.NONE;
   }

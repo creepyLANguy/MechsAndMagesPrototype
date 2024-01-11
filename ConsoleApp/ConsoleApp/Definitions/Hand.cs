@@ -71,4 +71,9 @@ public class Hand
   {
     return current;
   }
+
+  public Card GetCardAtIndex(int index)
+  {
+    return current[index];
+  }
 }

@@ -27,10 +27,10 @@ public class Fight : Node
     this.enemy = enemy ?? new Enemy();
     nodeType = NodeType.FIGHT;
 
-    guild = GetNonNeutralGuild(ref random);
+    guild = GetRandomNonNeutralGuild(ref random);
   }
 
-  private Guild GetNonNeutralGuild(ref Random random)
+  private Guild GetRandomNonNeutralGuild(ref Random random)
   {
     var chosen = Guild.NEUTRAL;
     var values = Enum.GetValues(typeof(Guild));

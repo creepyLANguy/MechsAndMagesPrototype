@@ -10,7 +10,7 @@ namespace MaM.Helpers
   {
     public static string Get()
     {
-      //TODO
+      //TODO - generate enemy names. Can refer to early commits in this repo. 
       return "????"; 
     }
   }
