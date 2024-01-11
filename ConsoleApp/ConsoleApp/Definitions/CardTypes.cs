@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MaM.Definitions;
+﻿namespace MaM.Definitions;
 
 public enum CardType
 {
