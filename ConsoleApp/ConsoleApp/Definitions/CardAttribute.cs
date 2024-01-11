@@ -2,7 +2,7 @@
 
 public enum CardAttribute
 {
-  P,POWER,
+  P,//POWER,
   DR,//DRAW,
   DG,//DISCARD,
   SC,//SCRAP_THIS_CARD,
