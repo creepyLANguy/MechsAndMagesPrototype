@@ -64,7 +64,7 @@ public static class Battle
     ConsoleMessages.Turn(enemy.name);
 
     //TODO
-    player.health = new Random((int)(DateTime.Now.Ticks)).Next(0, 5);
+    player.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 10 : 0;
 
   }
 
@@ -78,7 +78,7 @@ public static class Battle
 
     //TODO
     //AL.
-    enemy.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 1 : 0;
+    enemy.health -= 10;
 
     battlePack.hand.Draw_Full(ref battlePack.deck, ref battlePack.graveyard, ref random);
 

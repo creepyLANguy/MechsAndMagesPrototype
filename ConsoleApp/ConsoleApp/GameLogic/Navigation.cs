@@ -29,9 +29,7 @@ public static class Navigation
 
         if (VisitNode(ref node, ref gameContents) == FightResult.PLAYER_LOSE)
         {
-          Console.WriteLine("\nYOU DIED");
-          Console.WriteLine("\nCompletion Percent : " + GetCompletionPercentage(ref gameContents.journey) + "%");
-          
+          ConsoleMessages.Death(ref gameContents.journey);
           SaveGameHelper.ArchiveRun(saveFilename);
           return;
         }
@@ -41,10 +39,7 @@ public static class Navigation
         node.isComplete = true;
         player.completedNodeLocations.Add(new Tuple<int, int>(player.currentNodeX, player.currentNodeY));
 
-        Console.WriteLine(
-          "\nCompleted Node " + player.completedNodeLocations.Count + " of " + map.height +
-          ", of Map " + (mapIndex+1) + " of " + gameContents.journey.maps.Count
-        );
+        ConsoleMessages.CompletedNode(player.completedNodeLocations.Count, map.height, mapIndex, gameContents.journey.maps.Count);
 
         AutoSave();
       }
@@ -57,10 +52,10 @@ public static class Navigation
 
       ++gameContents.journey.currentMapIndex;
 
-      Console.WriteLine("\nCompleted Map " + (mapIndex + 1));
+      ConsoleMessages.CompletedMap(mapIndex);
     }
 
-    Console.WriteLine("\nCongratulations!\nRun completed.\n\nReturning to main menu...");
+    ConsoleMessages.CompletedRun();
 
     SaveGameHelper.ArchiveRun(saveFilename);
     return;
@@ -87,12 +82,7 @@ public static class Navigation
       }
     }
 
-    Console.WriteLine("\nPlease select your starting location:");
-    var n = 0;
-    foreach (var node in firstRow)
-    {
-      Console.WriteLine(++n + ")\t[" + node.x + ", " + node.y + "]\t" + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty));
-    }
+    ConsoleMessages.PromptForStartingNode(ref firstRow);
 
 #if DEBUG
     const int input = 0;
@@ -111,21 +101,21 @@ public static class Navigation
   private static Node PromptUserForNextNode(ref Player player, ref Map map)
   {
     var currentNode = map.nodes[player.currentNodeX, player.currentNodeY];
-    Console.WriteLine("\nPlease select your next location:");
+
+    ConsoleMessages.PromptForNextNode(ref currentNode, ref map);
+
+#if DEBUG
+    const int input = 0;
+#else
+    var input = UserInput.GetInt() - 1;
+#endif
+
     var destList = new List<Node>();
-    var n = 0;
     foreach (var (x, y) in currentNode.destinations)
     {
       var node = map.nodes[x, y];
       destList.Add(node);
-      Console.WriteLine(++n + ")\t[" + node.x + ", " + node.y + "]\t" + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty));
     }
-
-#if DEBUG
-    const int input = 0;
-#else 
-    var input = UserInput.GetInt() - 1;
-#endif
 
     var (item1, item2) 
       = currentNode.destinations.First(dest => dest.Item1 == destList[input].x && dest.Item2 == destList[input].y);
@@ -147,23 +137,5 @@ public static class Navigation
       default:
         return FightResult.NONE;
     }
-  }
-
-  private static double GetCompletionPercentage(ref Journey journey, int decimalPlaces = 0)
-  {
-    var completedNodes = 0;
-    foreach (var map in journey.maps)
-    {
-      foreach (var node in map.nodes)
-      {
-        completedNodes += node is { isComplete: true } ? 1 : 0;
-      }
-    }
-
-    var totalNodes = (double)journey.maps.Sum(map => map.height);
-    
-    var completedPercentage = completedNodes / totalNodes * 100;
-    
-    return Math.Round(completedPercentage, decimalPlaces);
   }
 }

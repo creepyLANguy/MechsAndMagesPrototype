@@ -7,19 +7,14 @@ public static class UserInput
   public static string Get()
     => Console.ReadLine();
 
-  public static string GetString(string message = null)
-  {
-    if (string.IsNullOrEmpty(message) == false)
-    {
-      Console.WriteLine(message);
-    }
-      
+  public static string GetString()
+  {   
     return Get();
   }
 
-  public static int GetInt(string message = null)
+  public static int GetInt()
   {
-    var input = GetString(message);
+    var input = GetString();
 
     while (string.IsNullOrEmpty(input))
     {

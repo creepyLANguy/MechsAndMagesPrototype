@@ -17,7 +17,7 @@ public static class FileHelper
 
     filename = folderName + filename;
 
-    Console.WriteLine("\nSaving " + filename);
+    ConsoleMessages.FileHelperSave(filename);
 
     using (var sw = new StreamWriter(File.Open(filename, FileMode.Create, FileAccess.Write), Encoding.UTF8))
     {
@@ -27,13 +27,12 @@ public static class FileHelper
       }
       catch (Exception e)
       {
-        Console.WriteLine("\nFAILED TO WRITE FILE \'" + filename + "\' TO DRIVE!");
-        Console.WriteLine(e.Message);
+        ConsoleMessages.FileHelperWriteFailed(filename, e.Message);
         return false;
       }
     }
 
-    Console.WriteLine("Saved");
+    ConsoleMessages.FileHelperWritten();
 
     return true;
   }
@@ -42,13 +41,13 @@ public static class FileHelper
   {
     if (folderName != string.Empty && Directory.Exists(folderName) == false)
     {
-      Console.WriteLine("\nError - could not find folder : " + folderName);
+      ConsoleMessages.FileHelperFolderNotFound(folderName);
       return false;
     }
 
     filename = folderName + filename;
 
-    Console.WriteLine("\nDeleting " + filename);
+    ConsoleMessages.FileHelperDeleting(filename);
 
     try
     {
@@ -56,12 +55,11 @@ public static class FileHelper
     }
     catch (Exception e)
     {
-      Console.WriteLine("\nFAILED TO DELETE FILE \'" + filename + "\' ON DRIVE!");
-      Console.WriteLine(e.Message);
+      ConsoleMessages.FileHelperDeleteFailed(filename, e.Message);
       return false;
     }
       
-    Console.WriteLine("Deleted");
+    ConsoleMessages.FileHelperDeleted();
 
     return true;
   }

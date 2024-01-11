@@ -94,7 +94,7 @@ public static class GameGenerator
 
   private static string GetPlayerName()
   {
-    Console.WriteLine("\nEnter your name:");
+    ConsoleMessages.PromptForName();
 
 #if DEBUG
     return "DebugPlayer";
@@ -127,26 +127,7 @@ public static class GameGenerator
 
   private static Card GetSelectedCard(ref List<Card> offeredCards)
   {
-    const char tab = '\t';
-    const char pipe = '|';
-
-    Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
-    for (var index = 0; index < offeredCards.Count; index++)
-    {
-      var card = offeredCards[index];
-
-      Console.WriteLine(
-        index + 1 + ")" + 
-        tab +
-        UserInput.GetPrintableCardName(card.name) +
-        tab + tab + pipe + tab +
-        "Manna Cost :" + card.cost +
-        tab + pipe + tab +
-        "Type:" + card.type +
-        tab + pipe + tab +
-        "Guild:" + card.guild
-      );
-    }
+    ConsoleMessages.PromptForCardDraft(ref offeredCards);
 
 #if DEBUG
     return offeredCards[0];
