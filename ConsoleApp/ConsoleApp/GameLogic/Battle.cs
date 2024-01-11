@@ -94,8 +94,8 @@ public static class Battle
       case TurnAction.DEFEND:
         BattleActions.RunDefendAction();
         break;
-      case TurnAction.BUY:
-        BattleActions.RunBuyAction(ref power, ref battlePack);
+      case TurnAction.RECRUIT:
+        BattleActions.RunRecruitAction(ref power, ref battlePack);
         break;
       case TurnAction.NONE:
       default:

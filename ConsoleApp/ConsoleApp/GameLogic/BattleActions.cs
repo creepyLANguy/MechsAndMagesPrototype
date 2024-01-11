@@ -19,7 +19,7 @@ namespace MaM.GameLogic
     {
     }
 
-    public static void RunBuyAction(ref int power, ref BattlePack battlePack)
+    public static void RunRecruitAction(ref int power, ref BattlePack battlePack)
     {
       //TODO - Buy from market, add those cards to graveyard.
     }

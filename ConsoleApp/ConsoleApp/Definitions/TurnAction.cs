@@ -5,5 +5,5 @@ enum TurnAction
   NONE,
   ATTACK,
   DEFEND,
-  BUY,
+  RECRUIT,
 }
