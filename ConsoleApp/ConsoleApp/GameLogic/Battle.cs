@@ -8,7 +8,7 @@ public static class Battle
 {
   public static FightResult Run(Fight node, ref GameContents gameContents)
   {
-    Console.WriteLine("\n[Start Battle]\n");
+    ConsoleMessages.StartBattle();
 
     var battlePack = new BattlePack(node, ref gameContents);
 
@@ -61,7 +61,7 @@ public static class Battle
 
   private static void ExecuteTurnForComputer(ref Player player, ref Enemy enemy)
   {
-    Console.WriteLine("\n[Turn]\t\t" + enemy.name);
+    ConsoleMessages.Turn(enemy.name);
 
     //TODO
     player.health = new Random((int)(DateTime.Now.Ticks)).Next(0, 5);
@@ -74,7 +74,7 @@ public static class Battle
     ref int power,
     ref Random random)
   {
-    Console.WriteLine("\n[Turn]\t\t" + player.name);
+    ConsoleMessages.Turn(player.name);
 
     //TODO
     //AL.

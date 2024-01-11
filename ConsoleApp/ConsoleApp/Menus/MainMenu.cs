@@ -1,32 +1,21 @@
 ﻿using MaM.GameLogic;
 using MaM.Helpers;
 using MaM.Definitions;
-using System;
 
 namespace MaM.Menus;
 
 public static class MainMenu
 {
-  private enum MainMenuItem
-  {
-    PLAY = 1,
-    EXIT = 2,
-  }
-
   public static bool Show()
   {
     var keepRunning = true;
 
-    var requestString =
-      "\nMain Menu" +
-      "\n" + MainMenuItem.PLAY.ToString("D") + ") " + MainMenuItem.PLAY.ToString().ToSentenceCase() +
-      "\n" + MainMenuItem.EXIT.ToString("D") + ") " + MainMenuItem.EXIT.ToString().ToSentenceCase();
+    ConsoleMessages.ShowMainMenu();
 
 #if DEBUG
-    Console.WriteLine(requestString);
     var choice = MainMenuItem.PLAY;
 #else 
-    var choice = UserInput.GetInt(requestString);
+    var choice = UserInput.GetInt();
 #endif
 
     switch ((MainMenuItem)choice)

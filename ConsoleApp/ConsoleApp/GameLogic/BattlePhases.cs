@@ -12,25 +12,20 @@ namespace MaM.GameLogic
 
       while (true)
       {
-        Console.WriteLine("\nYour Hand:");
-        ConsoleMessages.PrintCards(battlePack.hand.GetAllCardsInHand());
+        ConsoleMessages.PrintHand(battlePack.hand.GetAllCardsInHand());
 
-        Console.WriteLine("\nThe Market:");
-        ConsoleMessages.PrintCards(battlePack.market.GetDisplayedCards());
+        ConsoleMessages.PrintMarket(battlePack.market.GetDisplayedCards());
 
         if (player.health - mulliganCost <= 0)
         {
           return;
         }
 
-        Console.WriteLine("Life : " + player.health);
-        var message = "Mulligan this hand and cycle the market by paying " + mulliganCost + " life?\n1) Yes\n2) No";
-
+        ConsoleMessages.OfferMulligan(player.health, mulliganCost);
 #if DEBUG
-        Console.WriteLine(message);
         const int choice = 0;
 #else
-      var choice = UserInput.GetInt(message);
+      var choice = UserInput.GetInt();
 #endif
 
         if (choice == 1)
@@ -50,12 +45,8 @@ namespace MaM.GameLogic
 
     public static TurnAction RunActionSelectionPhase()
     {
-      var message = "\nSelect an action:";
-      foreach (TurnAction turnAction in Enum.GetValues(typeof(TurnAction)))
-      {
-        message += "\n" + turnAction.ToString("D") + ") " + turnAction.ToString().ToSentenceCase();
-      }
-      return (TurnAction)UserInput.GetInt(message);
+      ConsoleMessages.PromptForAction();
+      return (TurnAction)UserInput.GetInt();
     }
 
     public static void RunPlayCardsPhase(ref BattlePack battlePack, ref Player player, ref int power)

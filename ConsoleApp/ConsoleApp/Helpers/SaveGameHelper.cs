@@ -50,7 +50,7 @@ public static class SaveGameHelper
   {
     if (filename == null)
     {
-      Console.WriteLine("filename was null");
+      ConsoleMessages.FilenameWasNull();
       return false;
     }
 
@@ -76,7 +76,7 @@ public static class SaveGameHelper
   {
     if (filename == null)
     {
-      Console.WriteLine("filename was null");
+      ConsoleMessages.FilenameWasNull();
       return false;
     }
 
@@ -111,11 +111,7 @@ public static class SaveGameHelper
       list.Add(new Tuple<string, int>(displayString, list.Count));
     }
 
-    Console.WriteLine("\nPlease select a save slot:");
-    foreach (var (item1, item2) in list)
-    {
-      Console.WriteLine(item2 + ") " + item1);
-    }
+    ConsoleMessages.PromptForSaveSlot(list);
 
 #if DEBUG
     const int choice = 0;
