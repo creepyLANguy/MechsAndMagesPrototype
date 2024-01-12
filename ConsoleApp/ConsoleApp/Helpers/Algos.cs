@@ -13,7 +13,4 @@ public static class Algos
       (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
     }
   }
-
-  public static int GenerateRandomSeed() 
-    => Math.Abs((int)DateTime.Now.Ticks);
 }

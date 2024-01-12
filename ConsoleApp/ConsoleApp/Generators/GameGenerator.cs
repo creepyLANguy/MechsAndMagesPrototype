@@ -17,7 +17,7 @@ public static class GameGenerator
 
     var gameState = SaveGameHelper.IsLegit(saveFilename) 
       ? SaveGameHelper.Read(saveFilename, cards, cryptoKey) 
-      : new GameState(DateTime.Now, UbiRandom.GetSeed(), null);
+      : new GameState(DateTime.Now, UbiRandom.GetCurrentSeed(), null);
 
     return GenerateGameContents(ref gameConfig, ref gameState, ref cards);
   }

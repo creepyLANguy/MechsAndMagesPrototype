@@ -9,40 +9,42 @@ namespace MaM.Helpers
 
     private static int? _seed;
 
-    private static void MakeSureIsAlive()
+    private static int GenerateRandomSeed() => Math.Abs((int)DateTime.Now.Ticks);
+
+    private static void EnsureInitialized()
     {
-      _seed ??= Algos.GenerateRandomSeed();
+      _seed ??= GenerateRandomSeed();
       _random ??= new Random((int)_seed);
     }
-    public static int GetSeed()
+
+    public static int GetCurrentSeed()
     {
-      MakeSureIsAlive();
+      _seed ??= GenerateRandomSeed();
       return (int)_seed;
     }
 
     public static int Next()
     {
-      MakeSureIsAlive();
+      EnsureInitialized();
       return _random.Next();
     }
 
     public static int Next(int upperExclusive)
     {
-      MakeSureIsAlive();
+      EnsureInitialized();
       return _random.Next(upperExclusive);
     }
 
     public static int Next(int inclusiveLower, int upperExclusive)
     {
-      MakeSureIsAlive();
+      EnsureInitialized();
       return _random.Next(inclusiveLower, upperExclusive);
     }
 
     public static double NextDouble()
     {
-      MakeSureIsAlive();
+      EnsureInitialized();
       return _random.NextDouble();
     }
   }
 }
-
