@@ -1,47 +1,48 @@
-﻿Quantity,Name,Guild,Cost,DefaultAbilities,AllyBonuses,ScrapBonuses,Id
-1,Blob Alpha,Green,6,P10,,,#1
-3,Blob Miner,Green,2,P3,,,#2
-2,Burrower,Green,3,P5,,,#3
-2,Crusher,Green,3,P2,,,#4
-1,Hive Queen,Green,7,P6,,,#5
-1,Infested Moon,Green,6,P4,,,#6
-2,Moonwurm Hatchling,Green,4,P3,,,#7
-1,Nesting Ground,Green,4,P2,,,#8
-1,Pulverizer,Green,5,P1,,,#9
-2,Spike Cluster,Green,2,P2,,,#10
-3,Stinger,Green,1,P3,,,#11
-1,Swarm Cluster,Green,8,P5,,,#12
-3,Builder Bot,Red,1,P1,,,#13
-1,Conversion Yard,Red,5,P1,,,#14
-2,Defense System,Red,4,P2,,,#15
-3,Destroyer Bot,Red,3,P2,,,#16
-1,Enforcer Mech,Red,5,P5,,,#17
-2,Integration Port,Red,3,P1,,,#18
-1,Nanobot Swarm,Red,8,P5,,,#19
-1,Neural Nexus,Red,7,P1,,,#20
-3,Plasma Bot,Red,2,P3,,,#21
-1,Reclamation Station,Red,6,P3,,,#22
-2,Repair Mech,Red,4,P3,,,#23
-2,Captured Outpost,Black,3,P1,,,#24
-3,Cargo Craft,Black,2,P2,,,#25
-2,Farm Unit,Black,4,P4,,,#26
-3,Frontier Hawk,Black,1,P3,,,#27
-1,Hammerhead,Black,5,P3,,,#28
-1,Imperial FlagUnit,Black,8,P7,,,#29
-1,Jamming Terminal,Black,5,P2,,,#30
-3,Light Cruiser,Black,3,P4,,,#31
-2,Orbital Gun Platform,Black,4,P3,,,#32
-1,Siege Fortress,Black,7,P5,,,#33
-1,Warpgate Cruiser,Black,6,P3,,,#34
-1,Federation BattleUnit,Blue,7,P10,,,#35
-1,Federation Cruiser,Blue,5,P9,,,#36
-3,Frontier Runner,Blue,1,P2,,,#37
-1,GateUnit,Blue,6,P6,,,#38
-1,Ion Station,Blue,5,P2,,,#39
-2,Long Hauler,Blue,4,P3,,,#40
-2,Mobile Market,Blue,4,P2,,,#41
-3,Orbital Shuttle,Blue,2,P3,,,#42
-3,Outland Station,Blue,3,P3,,,#43
-3,Patrol Boat,Blue,3,P7,,,#44
-1,Transit Nexus,Blue,8,P12,,,#45
-10,Pawn,Neutral,0,P1,,,#46
+﻿Id,Name,Guild,PowerCost,MannaCost,DefaultAbilities,AllyBonuses,ScrapBonuses,Quantity
+#1,Blob Alpha,Green,6,0,P10,,,1
+#2,Blob Miner,Green,2,0,P3,,,3
+#3,Burrower,Green,3,0,P5,,,2
+#4,Crusher,Green,3,0,P2,,,2
+#5,Hive Queen,Green,7,0,P6,,,1
+#6,Infested Moon,Green,6,0,P4,,,1
+#7,Moonwurm Hatchling,Green,4,0,P3,,,2
+#8,Nesting Ground,Green,4,0,P2,,,1
+#9,Pulverizer,Green,5,0,P1,,,1
+#10,Spike Cluster,Green,2,0,P2,,,2
+#11,Stinger,Green,1,0,P3,,,3
+#12,Swarm Cluster,Green,8,0,P5,,,1
+#13,Builder Bot,Red,1,0,P1,,,3
+#14,Conversion Yard,Red,5,0,P1,,,1
+#15,Defense System,Red,4,0,P2,,,2
+#16,Destroyer Bot,Red,3,0,P2,,,3
+#17,Enforcer Mech,Red,5,0,P5,,,1
+#18,Integration Port,Red,3,0,P1,,,2
+#19,Nanobot Swarm,Red,8,0,P5,,,1
+#20,Neural Nexus,Red,7,0,P1,,,1
+#21,Plasma Bot,Red,2,0,P3,,,3
+#22,Reclamation Station,Red,6,0,P3,,,1
+#23,Repair Mech,Red,4,0,P3,,,2
+#24,Captured Outpost,Black,3,0,P1,,,2
+#25,Cargo Craft,Black,2,0,P2,,,3
+#26,Farm Unit,Black,4,0,P4,,,2
+#27,Frontier Hawk,Black,1,0,P3,,,3
+#28,Hammerhead,Black,5,0,P3,,,1
+#29,Imperial FlagUnit,Black,8,0,P7,,,1
+#30,Jamming Terminal,Black,5,0,P2,,,1
+#31,Light Cruiser,Black,3,0,P4,,,3
+#32,Orbital Gun Platform,Black,4,0,P3,,,2
+#33,Siege Fortress,Black,7,0,P5,,,1
+#34,Warpgate Cruiser,Black,6,0,P3,,,1
+#35,Federation BattleUnit,Blue,7,0,P10,,,1
+#36,Federation Cruiser,Blue,5,0,P9,,,1
+#37,Frontier Runner,Blue,1,0,P2,,,3
+#38,GateUnit,Blue,6,0,P6,,,1
+#39,Ion Station,Blue,5,0,P2,,,1
+#40,Long Hauler,Blue,4,0,P3,,,2
+#41,Mobile Market,Blue,4,0,P2,,,2
+#42,Orbital Shuttle,Blue,2,0,P3,,,3
+#43,Outland Station,Blue,3,0,P3,,,3
+#44,Patrol Boat,Blue,3,0,P7,,,3
+#45,Transit Nexus,Blue,8,0,P12,,,1
+#46,Pawn,Neutral,0,0,P1,,,7
+#47,Mule,Neutral,0,1,P3,,,3

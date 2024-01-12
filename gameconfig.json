@@ -34,18 +34,12 @@
   },
   "initialCardSelections": [
     {
-      "minCost": 1,
-      "maxCost": 4,
       "cardCount": 4
     },
     {
-      "minCost": 1,
-      "maxCost": 4,
       "cardCount": 3
     },
     {
-      "minCost": 1,
-      "maxCost": 4,
       "cardCount": 2
     }
   ],

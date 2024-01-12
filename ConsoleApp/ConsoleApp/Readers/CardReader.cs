@@ -10,10 +10,11 @@ namespace MaM.Readers;
 
 public struct JsonIntermediateCard
 {
-  public int?   quantity;
+  public int    quantity;
   public string name;
   public string guild;
-  public int?   cost;
+  public int    powerCost;
+  public int    mannaCost;
   public string defaultAbilities;
   public string id;
 }
@@ -60,7 +61,8 @@ public static class CardReader
           intermediateCard.id,
           intermediateCard.name,
           guild,
-          intermediateCard.cost ?? 0,
+          intermediateCard.powerCost, 
+          intermediateCard.mannaCost, 
           GetListOfCardAttributes(intermediateCard.defaultAbilities)
         );
 

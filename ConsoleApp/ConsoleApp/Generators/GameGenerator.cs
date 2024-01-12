@@ -104,8 +104,7 @@ public static class GameGenerator
     {
       cards.Shuffle(ref random);
 
-      var costSpecificCards = cards.Where(card => card.cost >= initialCardSelection.minCost && card.cost <= initialCardSelection.maxCost);
-      var offeredCards = costSpecificCards.Take(initialCardSelection.cardCount).ToList();
+      var offeredCards = cards.Take(initialCardSelection.cardCount).ToList();
 
       var selectedCard = GetSelectedCard(ref offeredCards);
 

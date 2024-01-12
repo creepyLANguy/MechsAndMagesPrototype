@@ -1,7 +1,7 @@
-﻿Id,Name,BaseHealth,BaseManna,MarketSize,Quantity
-NE_A,Enemy_A,50,0,4,10
-NE_B,Enemy_B,50,0,4,10
-NE_C,Enemy_C,50,0,4,10
-NE_D,Enemy_D,50,0,4,10
-NE_E,Enemy_E,50,0,4,10
-NE_F,Enemy_F,50,0,4,10
+﻿Id,Name,Health,MarketSize,Quantity
+NE_A,Enemy_A,50,4,10
+NE_B,Enemy_B,50,4,10
+NE_C,Enemy_C,50,4,10
+NE_D,Enemy_D,50,4,10
+NE_E,Enemy_E,50,4,10
+NE_F,Enemy_F,50,4,10

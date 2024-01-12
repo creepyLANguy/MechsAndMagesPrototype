@@ -1,7 +1,7 @@
-﻿Id,Name,BaseHealth,BaseManna,MarketSize,Quantity
-B_A,Boss_A,120,3,2,1
-B_B,Boss_B,150,2,1,1
-B_C,Boss_C,165,1,2,1
-B_D,Boss_D,120,3,2,1
-B_A,Boss_E,95,4,1,1
-B_F,Boss_F,110,4,1,1
+﻿Id,Name,Health,MarketSize,Quantity
+B_A,Boss_A,120,2,1
+B_B,Boss_B,150,1,1
+B_C,Boss_C,165,2,1
+B_D,Boss_D,120,2,1
+B_A,Boss_E,95,1,1
+B_F,Boss_F,110,1,1

@@ -10,8 +10,7 @@ public struct JsonIntermediateEnemy
 {
   public string id;
   public string name;
-  public int baseHealth;
-  public int baseManna;
+  public int health;
   public int marketSize;
   public int quantity;
 }
@@ -29,8 +28,7 @@ public static class EnemyReader
         var enemy = new Enemy(
           intermediateEnemy.id,
           intermediateEnemy.name,
-          intermediateEnemy.baseHealth,
-          intermediateEnemy.baseManna,
+          intermediateEnemy.health,
           intermediateEnemy.marketSize
         );
 

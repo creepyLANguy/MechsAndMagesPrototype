@@ -86,7 +86,9 @@ class ConsoleMessages
       Console.WriteLine(
         UserInput.GetPrintableCardName(card.name) +
         Tab + Tab + Pipe + Tab +
-        "Cost :" + card.cost +
+        "Power Cost :" + card.powerCost+
+        Tab + Pipe + Tab +
+        "Manna Cost :" + card.mannaCost+
         Tab + Pipe + Tab +
         "Guild:" + card.guild
       );
@@ -130,7 +132,9 @@ class ConsoleMessages
         Tab +
         UserInput.GetPrintableCardName(card.name) +
         Tab + Tab + Pipe + Tab +
-        "Cost :" + card.cost +
+        "Power Cost :" + card.powerCost +
+        Tab + Pipe + Tab +
+        "Manna Cost :" + card.mannaCost +
         Tab + Pipe + Tab +
         "Guild:" + card.guild
       );
@@ -260,7 +264,11 @@ class ConsoleMessages
         Tab +
         UserInput.GetPrintableCardName(card.name) +
         Tab + Tab + Pipe + Tab +
-        "Cost :" + card.cost +
+        "Cost :" + card.powerCost +
+        Tab + Pipe + Tab +
+        "Power Cost :" + card.powerCost +
+        Tab + Pipe + Tab +
+        "Manna Cost :" + card.mannaCost +
         Tab + Pipe + Tab +
         "Guild:" + card.guild
       );

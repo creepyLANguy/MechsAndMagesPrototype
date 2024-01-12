@@ -9,20 +9,23 @@ public struct Card
     string id,
     string name,
     Guild guild,
-    int cost,
+    int powerCost,
+    int mannaCost,
     List<Tuple<CardAttribute, int>> defaultActions
   )
   {
     this.id = id;
     this.name = name;
     this.guild = guild;
-    this.cost = cost;
+    this.powerCost = powerCost;
+    this.mannaCost= mannaCost;
     this.defaultActions = defaultActions;
   }
 
   public string name;
   public Guild guild;
-  public int cost;
+  public int powerCost;
+  public int mannaCost;
   public List<Tuple<CardAttribute, int>> defaultActions;
   public string id;
 }
