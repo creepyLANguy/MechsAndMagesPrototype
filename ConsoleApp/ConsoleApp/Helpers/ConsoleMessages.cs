@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using MaM.Menus;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace MaM.Helpers;
 class ConsoleMessages
@@ -20,7 +21,7 @@ class ConsoleMessages
     Console.WriteLine("\n[Turn]\t\t" + name);
   }
 
-  public static void PrintBattleState(ref Player player, ref Enemy enemy, ref int power, ref int manna)
+  public static void PrintBattleState(Player player, Enemy enemy, int power, int manna, int threat)
   {
     Console.WriteLine();
 
@@ -28,9 +29,11 @@ class ConsoleMessages
 
     Console.WriteLine("Your Power:\t" + power);
 
+    Console.WriteLine("Your Manna:\t" + manna); 
+    
     Console.WriteLine("Enemy Life:\t" + enemy.health);
-
-    Console.WriteLine("Enemy Manna:\t" + manna);
+    
+    Console.WriteLine("Enemy Threat:\t" + threat);
   }
 
   public static void PrintHand(List<Card> cards)
@@ -58,7 +61,7 @@ class ConsoleMessages
   public static void PromptForAction()
   {
     var message = "\nSelect an action:";
-    foreach (TurnAction turnAction in Enum.GetValues(typeof(TurnAction)))
+    foreach (PlayerTurnAction turnAction in Enum.GetValues(typeof(PlayerTurnAction)))
     {
       message += "\n" + turnAction.ToString("D") + ") " + turnAction.ToString().ToSentenceCase();
     }
@@ -275,5 +278,30 @@ class ConsoleMessages
     }
 
     Console.WriteLine("-1) SKIP TO NEXT PHASE");
+  }
+
+  public static void EnemyTurnActionBuff(int value)
+  {
+    Console.WriteLine("\nEnemy BUFFS for " + value);
+  }
+
+  public static void EnemyTurnActionAttack(int threat)
+  {
+    Console.WriteLine("\nEnemy ATTACKS for " + threat);
+  }
+
+  public static void EnemyTurnActionDefend()
+  {
+    Console.WriteLine("\nEnemy DEFENDS");
+  }
+
+  public static void EnemyTurnActionLeech(int threat)
+  {
+    Console.WriteLine("\nEnemy LEECHES for " + threat);
+  }
+
+  public static void EnemyTurnActionPass()
+  {
+    Console.WriteLine("\nEnemy PASSES");
   }
 }

@@ -1,7 +1,7 @@
-﻿Id,Name,Health,MarketSize,Quantity
-EE_A,Enemy_A,75,3,10
-EE_B,Enemy_B,75,3,10
-EE_C,Enemy_C,75,3,10
-EE_D,Enemy_D,75,3,10
-EE_E,Enemy_E,75,3,10
-EE_F,Enemy_F,75,3,10
+﻿Id,Name,Health,MarketSize,Quantity,TurnActions
+EE_A,Enemy_A,75,3,10,"B5,A,B20,D,B3,L"
+EE_B,Enemy_B,75,3,10,"B5,A,B20,D,B3,L"
+EE_C,Enemy_C,75,3,10,"B5,A,B20,D,B3,L"
+EE_D,Enemy_D,75,3,10,"B5,A,B20,D,B3,L"
+EE_E,Enemy_E,75,3,10,"B5,A,B20,D,B3,L"
+EE_F,Enemy_F,75,3,10,"B5,A,B20,D,B3,L"

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using MaM.Definitions;
 using MaM.Helpers;
 
@@ -14,23 +15,25 @@ public static class Battle
 
     BattlePhases.RunMulliganPhase(ref gameContents.player, ref battlePack, ref gameContents.random);
 
+    var power = 0;
+    var manna = 0;
+
+    var threat = 0;
+
     var fightResult = FightResult.NONE;
     while (fightResult == FightResult.NONE)
     {
-      fightResult = RunTurns(ref gameContents, ref battlePack, ref node.enemy);
+      fightResult = RunTurns(ref gameContents, ref battlePack, ref node.enemy, ref power, ref manna, ref threat);
     }
 
     return fightResult;
   }
 
-  private static FightResult RunTurns(ref GameContents gameContents, ref BattlePack battlePack, ref Enemy enemy)
+  private static FightResult RunTurns(ref GameContents gameContents, ref BattlePack battlePack, ref Enemy enemy, ref int power, ref int manna, ref int threat)
   {
-    var power = 0;
-    var manna = 0;
+    ConsoleMessages.PrintBattleState(gameContents.player, enemy, power, manna, threat);
 
-    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power, ref manna);
-
-    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref power, ref manna, ref gameContents.random);
+    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref power, ref manna, ref threat, ref gameContents.random);
 
     var resultPlayerAction = GetFightResult(ref gameContents.player, ref enemy);
     if (resultPlayerAction != FightResult.NONE)
@@ -38,9 +41,9 @@ public static class Battle
       return resultPlayerAction;
     }
 
-    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power, ref manna);
+    ConsoleMessages.PrintBattleState(gameContents.player, enemy, power, manna, threat);
 
-    ExecuteTurnForComputer(ref gameContents.player, ref enemy);
+    ExecuteTurnForComputer(ref gameContents.player, ref enemy, ref power, ref manna, ref threat);
 
     return GetFightResult(ref gameContents.player, ref enemy);
   }
@@ -60,14 +63,36 @@ public static class Battle
     return FightResult.NONE;
   }
 
-  private static void ExecuteTurnForComputer(ref Player player, ref Enemy enemy)
+  private static void ExecuteTurnForComputer(ref Player player, ref Enemy enemy, ref int power, ref int manna, ref int threat)
   {
     ConsoleMessages.Turn(enemy.name);
 
-    //TODO - enemy turn
-    //AL.
-    player.health -= new Random((int)(DateTime.Now.Ticks)).Next(0, 5) == 0 ? 10 : 0;
+    var nextEnemyTurnAction = enemy.turnActions.First();
+    enemy.turnActions.Remove(nextEnemyTurnAction);
+    enemy.turnActions = enemy.turnActions.Append(nextEnemyTurnAction).ToList();
 
+    var key = nextEnemyTurnAction.Item1;
+    var value = nextEnemyTurnAction.Item2;
+
+    switch (key)
+    {
+      case EnemyTurnAction.BUFF:
+        EnemyTurnActionLogic.RunBuffAction(ref threat, value);
+        break;
+      case EnemyTurnAction.ATTACK:
+        EnemyTurnActionLogic.RunAttackAction(ref threat, ref power, ref manna, ref player);
+        break;
+      case EnemyTurnAction.DEFEND:
+        EnemyTurnActionLogic.RunDefendAction();
+        break;
+      case EnemyTurnAction.LEECH:
+        EnemyTurnActionLogic.RunLeechAction(ref enemy, ref value, ref manna);
+        break;
+      case EnemyTurnAction.NONE:
+      default:
+        EnemyTurnActionLogic.RunPassAction(ref threat);
+        break;
+    }
   }
 
   private static void ExecuteTurnForPlayer(
@@ -76,6 +101,7 @@ public static class Battle
     ref BattlePack battlePack,
     ref int power,
     ref int manna,
+    ref int threat,
     ref Random random)
   {
     ConsoleMessages.Turn(player.name);
@@ -84,24 +110,24 @@ public static class Battle
 
     BattlePhases.RunPlayCardsPhase(ref battlePack, ref player, ref power, ref manna);
 
-    ConsoleMessages.PrintBattleState(ref player, ref enemy, ref power, ref manna);
+    ConsoleMessages.PrintBattleState(player, enemy, power, manna, threat);
 
-    var turnAction = BattlePhases.RunActionSelectionPhase();
+    var playerTurnAction = BattlePhases.RunActionSelectionPhase();
 
-    switch (turnAction)
+    switch (playerTurnAction)
     {
-      case TurnAction.ATTACK:
-        BattleActions.RunAttackAction(ref power, ref enemy);
+      case PlayerTurnAction.ATTACK:
+        PlayerTurnActionLogic.RunAttackAction(ref power, ref threat, ref enemy);
         break;
-      case TurnAction.DEFEND:
-        BattleActions.RunDefendAction();
+      case PlayerTurnAction.DEFEND:
+        PlayerTurnActionLogic.RunDefendAction();
         break;
-      case TurnAction.RECRUIT:
-        BattleActions.RunRecruitAction(ref power, ref battlePack);
+      case PlayerTurnAction.RECRUIT:
+        PlayerTurnActionLogic.RunRecruitAction(ref power, ref battlePack);
         break;
-      case TurnAction.NONE:
+      case PlayerTurnAction.NONE:
       default:
-        BattleActions.RunPassAction(ref power);
+        PlayerTurnActionLogic.RunPassAction(ref power);
         break;
     }
 

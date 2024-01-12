@@ -1,6 +1,6 @@
 namespace MaM.Definitions;
 
-enum TurnAction
+enum PlayerTurnAction
 {
   NONE,
   ATTACK,

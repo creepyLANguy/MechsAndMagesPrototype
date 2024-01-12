@@ -44,10 +44,10 @@ namespace MaM.GameLogic
       }
     }
 
-    public static TurnAction RunActionSelectionPhase()
+    public static PlayerTurnAction RunActionSelectionPhase()
     {
       ConsoleMessages.PromptForAction();
-      return (TurnAction)UserInput.GetInt();
+      return (PlayerTurnAction)UserInput.GetInt();
     }
 
     public static void RunPlayCardsPhase(ref BattlePack battlePack, ref Player player, ref int power, ref int manna)
