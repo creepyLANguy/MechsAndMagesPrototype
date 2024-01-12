@@ -12,12 +12,15 @@ namespace MaM.GameLogic
 
     public static void RunAttackAction(ref BattleTracker b)
     {
-      var attackValue = 0;
-
+      int attackValue;
       if (b.enemyIsDefending)
       {
         attackValue = b.power < b.threat ? 0 : b.power - b.threat;
         b.threat = attackValue > 0 ? 0 : b.threat - b.power;
+      }
+      else
+      {
+        attackValue = b.power;
       }
       
       if (attackValue > 0)

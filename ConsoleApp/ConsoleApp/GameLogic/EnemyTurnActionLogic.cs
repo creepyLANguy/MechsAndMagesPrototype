@@ -1,5 +1,6 @@
 ﻿using MaM.Definitions;
 using MaM.Helpers;
+using System;
 
 namespace MaM.GameLogic
 {
@@ -23,12 +24,15 @@ namespace MaM.GameLogic
     {
       ConsoleMessages.EnemyTurnActionAttack(b.threat);
 
-      var attackValue = 0;
-
+      int attackValue;
       if (b.playerIsDefending)
       {
         attackValue = b.threat < b.power ? 0 : b.threat - b.power;
         b.power = attackValue > 0 ? 0 : b.power - b.threat;
+      }
+      else
+      {
+        attackValue = b.threat;
       }
 
       if (attackValue > 0)
@@ -47,7 +51,7 @@ namespace MaM.GameLogic
 
     public static void RunLeechAction(ref BattleTracker b)
     {
-      var leechable = (b.threat > b.manna) ? b.manna : b.threat;
+      var leechable = Math.Min(b.threat, b.manna);
 
       ConsoleMessages.EnemyTurnActionLeech(leechable);
 
@@ -56,24 +60,8 @@ namespace MaM.GameLogic
         return;
       }
 
-      if (b.threat <= leechable)
-      {
-        b.threat = 0;
-      }
-      else
-      {
-        b.threat -= leechable;
-      }
-
-      if (b.manna <= leechable)
-      {
-        b.manna = 0;
-      }
-      else
-      {
-        b.manna -= leechable;
-      }
-
+      b.threat = Math.Max(0, b.threat - leechable);
+      b.manna = Math.Max(0, b.manna - leechable);
       b.enemyHealth += leechable;
     }
   }
