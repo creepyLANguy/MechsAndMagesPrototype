@@ -13,8 +13,7 @@ public static class JourneyGenerator
     List<MapConfig> mapConfigs,
     ref List<Enemy> normalEnemies,
     ref List<Enemy> eliteEnemies,
-    ref List<Enemy> bosses,
-    ref Random random
+    ref List<Enemy> bosses
   )
   {
     var journey = new Journey();
@@ -22,7 +21,7 @@ public static class JourneyGenerator
     for (var index = 0; index < journeyLength; ++index)
     {
       var mapConfig = index < mapConfigs.Count ? mapConfigs[index] : mapConfigs[^1];
-      var map = GenerateMap(index, mapConfig, ref normalEnemies, ref eliteEnemies, ref bosses, ref random);
+      var map = GenerateMap(index, mapConfig, ref normalEnemies, ref eliteEnemies, ref bosses);
       journey.maps.Add(map);
     }
 
@@ -34,39 +33,38 @@ public static class JourneyGenerator
     MapConfig mapConfig,
     ref List<Enemy> normalEnemies,
     ref List<Enemy> eliteEnemies,
-    ref List<Enemy> bosses,
-    ref Random random
+    ref List<Enemy> bosses
   )
   {
     var map = new Map(index, mapConfig.width, mapConfig.height);
 
     PopulateMapWithBlankNodes(ref map);
 
-    SetDestinationsForFirstRowNodes(ref map, mapConfig, ref random);
+    SetDestinationsForFirstRowNodes(ref map, mapConfig);
 
     //Row 1 -> third row from the top
-    CompletePathsForEffectiveNodes(ref map, mapConfig, ref random);
+    CompletePathsForEffectiveNodes(ref map, mapConfig);
 
     NullifyUnconnectedNodes(ref map);
 
-    SetFirstFloorActiveNodesAsNormalFights(ref map, ref random);
+    SetFirstFloorActiveNodesAsNormalFights(ref map);
 
     //Note, fights in the bag are all Elites. 
     //NORMAL fights are filled in later for all unassigned nodes.
-    var bag = GenerateNodeTypeDistributionBag(ref map, mapConfig, ref random);
+    var bag = GenerateNodeTypeDistributionBag(ref map, mapConfig);
 
     //Row 1 -> top row
-    AssignBagItems(ref map, ref bag, ref random);
+    AssignBagItems(ref map, ref bag);
 
-    AssignNormalFightsToRemainingBlankNodes(ref map, ref random);
+    AssignNormalFightsToRemainingBlankNodes(ref map);
 
-    AssignMysteryNodes(ref map, mapConfig, ref random);
+    AssignMysteryNodes(ref map, mapConfig);
 
     AttachFinalCampsiteNode(ref map);
 
-    AttachBossNode(ref map, ref random);
+    AttachBossNode(ref map);
 
-    CompleteSetupOfAllNodes(ref map, ref normalEnemies, ref eliteEnemies, ref bosses, ref random);
+    CompleteSetupOfAllNodes(ref map, ref normalEnemies, ref eliteEnemies, ref bosses);
 
     return map;
   }
@@ -82,17 +80,17 @@ public static class JourneyGenerator
     }
   }
 
-  private static void SetDestinationsForFirstRowNodes(ref Map map, MapConfig mapConfig, ref Random random)
+  private static void SetDestinationsForFirstRowNodes(ref Map map, MapConfig mapConfig)
   {
     for (var i = 0; i < mapConfig.pathDensity; ++i)
     {
-      var x = random.Next(0, mapConfig.width);
+      var x = UbiRandom.Next(mapConfig.width);
 
-      SetDestinationForNode(ref map, x, 0, ref random);
+      SetDestinationForNode(ref map, x, 0);
     }
   }
 
-  private static void CompletePathsForEffectiveNodes(ref Map map, MapConfig mapConfig, ref Random random)
+  private static void CompletePathsForEffectiveNodes(ref Map map, MapConfig mapConfig)
   {
     for (var y = 1; y < mapConfig.height - 2; ++y)
     {
@@ -103,12 +101,12 @@ public static class JourneyGenerator
           continue;
         }
 
-        SetDestinationForNode(ref map, x, y, ref random);
+        SetDestinationForNode(ref map, x, y);
       }
     }
   }
 
-  private static void SetDestinationForNode(ref Map map, int x, int y, ref Random random)
+  private static void SetDestinationForNode(ref Map map, int x, int y)
   {
     if (map.nodes[x, y].destinations != null && map.nodes[x, y].destinations.Count == 3)
     {
@@ -129,7 +127,7 @@ public static class JourneyGenerator
       max = 0;
     }
 
-    var chosenDestinationX = x + random.Next(min, max + 1);
+    var chosenDestinationX = x + UbiRandom.Next(min, max + 1);
     map.nodes[x, y].destinations.Add(new Tuple<int, int>(chosenDestinationX, y + 1));
     map.nodes[chosenDestinationX, y + 1].isDestination = true;
   }
@@ -148,7 +146,7 @@ public static class JourneyGenerator
     }
   }
 
-  private static void SetFirstFloorActiveNodesAsNormalFights(ref Map map, ref Random random)
+  private static void SetFirstFloorActiveNodesAsNormalFights(ref Map map)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -158,11 +156,11 @@ public static class JourneyGenerator
       }
 
       var baseNode = new Node(map.nodes[x, 0]);
-      map.nodes[x, 0] = new Fight(ref random, baseNode, FightType.NORMAL);
+      map.nodes[x, 0] = new Fight(baseNode, FightType.NORMAL);
     }
   }
 
-  private static List<NodeType> GenerateNodeTypeDistributionBag(ref Map map, MapConfig mapConfig, ref Random random)
+  private static List<NodeType> GenerateNodeTypeDistributionBag(ref Map map, MapConfig mapConfig)
   {
     var bag = new List<NodeType>();
 
@@ -195,12 +193,12 @@ public static class JourneyGenerator
       bag.Add(NodeType.BLANK);
     }
 
-    bag.Shuffle(ref random);
+    bag.Shuffle();
 
     return bag;
   }
 
-  private static void AssignBagItems(ref Map map, ref List<NodeType> bag, ref Random random)
+  private static void AssignBagItems(ref Map map, ref List<NodeType> bag)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -219,7 +217,7 @@ public static class JourneyGenerator
             map.nodes[x, y] = new Campsite(baseNode);
             break;
           case NodeType.FIGHT:
-            map.nodes[x, y] = new Fight(ref random, baseNode, FightType.ELITE);
+            map.nodes[x, y] = new Fight(baseNode, FightType.ELITE);
             break;
         }
 
@@ -228,7 +226,7 @@ public static class JourneyGenerator
     }
   }
 
-  private static void AssignNormalFightsToRemainingBlankNodes(ref Map map, ref Random random)
+  private static void AssignNormalFightsToRemainingBlankNodes(ref Map map)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -240,12 +238,12 @@ public static class JourneyGenerator
         }
 
         var baseNode = new Node(map.nodes[x, y]);
-        map.nodes[x, y] = new Fight(ref random, baseNode, FightType.NORMAL);
+        map.nodes[x, y] = new Fight(baseNode, FightType.NORMAL);
       }
     }
   }
 
-  private static void AssignMysteryNodes(ref Map map, MapConfig mapConfig, ref Random random)
+  private static void AssignMysteryNodes(ref Map map, MapConfig mapConfig)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -256,7 +254,7 @@ public static class JourneyGenerator
           continue;
         }
 
-        var isMystery = random.NextDouble() <= mapConfig.mysteryFrequency;
+        var isMystery = UbiRandom.NextDouble() <= mapConfig.mysteryFrequency;
         map.nodes[x, y].isMystery = isMystery;
       }
     }
@@ -281,11 +279,11 @@ public static class JourneyGenerator
     map.nodes[finalCampsite.x, finalCampsite.y] = finalCampsite;
   }
 
-  private static void AttachBossNode(ref Map map, ref Random random)
+  private static void AttachBossNode(ref Map map)
   {
     var baseNodeForBoss = new Node(NodeType.FIGHT, false, 0, map.height - 1, false, true, null);
 
-    var bossNode = new Fight(ref random, baseNodeForBoss, FightType.BOSS);
+    var bossNode = new Fight(baseNodeForBoss, FightType.BOSS);
 
     map.nodes[0, map.height - 2].destinations.Add(new Tuple<int, int>(bossNode.x, bossNode.y));
 
@@ -296,8 +294,7 @@ public static class JourneyGenerator
     ref Map map,
     ref List<Enemy> normalEnemies,
     ref List<Enemy> eliteEnemies,
-    ref List<Enemy> bosses,
-    ref Random random
+    ref List<Enemy> bosses
   )
   {
     for (var x = 0; x < map.width; ++x)
@@ -318,7 +315,7 @@ public static class JourneyGenerator
             break;
           case NodeType.FIGHT:
           {
-            SetupFight(ref node, ref map, ref normalEnemies, ref eliteEnemies, ref bosses, ref random);
+            SetupFight(ref node, ref map, ref normalEnemies, ref eliteEnemies, ref bosses);
             break;
           }
         }
@@ -336,36 +333,35 @@ public static class JourneyGenerator
     ref Map map,
     ref List<Enemy> normalEnemies,
     ref List<Enemy> eliteEnemies,
-    ref List<Enemy> bosses,
-    ref Random random
+    ref List<Enemy> bosses
   )
   {
     switch (((Fight)node).fightType)
     {
       case FightType.NORMAL:
-        SetupEnemy(ref node, map.index, ref normalEnemies, ref random);
+        SetupEnemy(ref node, map.index, ref normalEnemies);
         break;
       case FightType.ELITE:
-        SetupEnemy(ref node, map.index, ref eliteEnemies, ref random);
+        SetupEnemy(ref node, map.index, ref eliteEnemies);
         break;
       case FightType.BOSS:
-        SetupBoss(ref node, map.index, ref bosses, ref random);
+        SetupBoss(ref node, map.index, ref bosses);
         break;
     }
   }
 
-  private static void SetupEnemy(ref Node node, int mapIndex, ref List<Enemy> enemies, ref Random random)
+  private static void SetupEnemy(ref Node node, int mapIndex, ref List<Enemy> enemies)
   {
-    enemies.Shuffle(ref random);
+    enemies.Shuffle();
     var enemy = enemies.First();
     enemy.health *= (1 + mapIndex);
     ((Fight)node).enemy = enemy;
     enemies.Remove(enemy);
   }
 
-  private static void SetupBoss(ref Node node, int mapIndex, ref List<Enemy> bosses, ref Random random)
+  private static void SetupBoss(ref Node node, int mapIndex, ref List<Enemy> bosses)
   {
-    bosses.Shuffle(ref random);
+    bosses.Shuffle();
     var boss = bosses.First();
     boss.health *= (1 + mapIndex);
     ((Fight) node).enemy = boss;

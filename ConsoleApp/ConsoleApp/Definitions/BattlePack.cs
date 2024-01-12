@@ -44,8 +44,7 @@ public class BattlePack
     market = new Market(
       node.enemy.marketSize,
       m1,
-      m2,
-      ref gameContents.random
+      m2
     );
 
     market.Fill();
@@ -54,14 +53,14 @@ public class BattlePack
   private void SetupDeck()
   {
     var startingCards = gameContents.cards.Where(card => card.guild == Guild.NEUTRAL).ToList();
-    startingCards.Shuffle(ref gameContents.random);
+    startingCards.Shuffle();
     deck = new Stack<Card>(startingCards);
   }
 
   private void SetupHand()
   {
     hand = new Hand(gameContents.handSize);
-    hand.Draw_Full(ref deck, ref graveyard, ref gameContents.random);
+    hand.Draw_Full(ref deck, ref graveyard);
   }
 
   private void SetupGraveyard()
@@ -74,7 +73,7 @@ public class BattlePack
     scrapheap = new List<Card>();
   }
 
-  public void Mulligan(ref Random random)
+  public void Mulligan()
     {
       var cardsInHand = hand.GetAllCardsInHand();
       foreach (var card in cardsInHand)
@@ -83,10 +82,10 @@ public class BattlePack
       }
 
       var shuffledDeck = deck.ToList();
-      shuffledDeck.Shuffle(ref random);
+      shuffledDeck.Shuffle();
 
       hand.Clear();
-      hand.Draw_Full(ref deck, ref graveyard, ref random);
+      hand.Draw_Full(ref deck, ref graveyard);
 
       market.Cycle();
     }

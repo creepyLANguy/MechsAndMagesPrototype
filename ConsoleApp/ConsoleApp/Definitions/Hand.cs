@@ -14,7 +14,7 @@ public class Hand
     this.defaultSize = defaultSize;
   }
 
-  public bool Draw_Full(ref Stack<Card> deck, ref List<Card> graveyard, ref Random random)
+  public bool Draw_Full(ref Stack<Card> deck, ref List<Card> graveyard)
   {
     var cardsToDraw = defaultSize - current.Count;
 
@@ -35,7 +35,7 @@ public class Hand
 
     if (current.Count != defaultSize)
     {
-      graveyard.Shuffle(ref random);
+      graveyard.Shuffle();
       deck = new Stack<Card>(new List<Card>(graveyard));
 
       while (deck.Count > 0)

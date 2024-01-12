@@ -7,7 +7,7 @@ namespace MaM.GameLogic
 {
     class BattlePhases
   {
-    public static void RunMulliganPhase(ref Player player, ref BattlePack battlePack, ref Random random)
+    public static void RunMulliganPhase(ref Player player, ref BattlePack battlePack)
     {
       var mulliganCost = 1;
 
@@ -33,7 +33,7 @@ namespace MaM.GameLogic
         {
           player.health -= mulliganCost;
 
-          battlePack.Mulligan(ref random);
+          battlePack.Mulligan();
 
           ++mulliganCost;
         }

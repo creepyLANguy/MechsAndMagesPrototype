@@ -1,4 +1,5 @@
 ﻿using System;
+using MaM.Helpers;
 
 namespace MaM.Definitions;
 
@@ -9,7 +10,6 @@ public class Fight : Node
   public Guild guild;
   
   public Fight(
-    ref Random random,
     Node baseNode,
     FightType fightType,
     Enemy enemy = null
@@ -27,16 +27,16 @@ public class Fight : Node
     this.enemy = enemy ?? new Enemy();
     nodeType = NodeType.FIGHT;
 
-    guild = GetRandomNonNeutralGuild(ref random);
+    guild = GetRandomNonNeutralGuild();
   }
 
-  private Guild GetRandomNonNeutralGuild(ref Random random)
+  private Guild GetRandomNonNeutralGuild()
   {
     var chosen = Guild.NEUTRAL;
     var values = Enum.GetValues(typeof(Guild));
     while (chosen == Guild.NEUTRAL)
     {
-      chosen = (Guild)values.GetValue(random.Next(values.Length));
+      chosen = (Guild) values.GetValue(UbiRandom.Next(values.Length));
     }
 
     return chosen;

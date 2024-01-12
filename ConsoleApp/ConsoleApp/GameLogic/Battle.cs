@@ -13,7 +13,7 @@ public static class Battle
 
     var battlePack = new BattlePack(node, ref gameContents);
 
-    BattlePhases.RunMulliganPhase(ref gameContents.player, ref battlePack, ref gameContents.random);
+    BattlePhases.RunMulliganPhase(ref gameContents.player, ref battlePack);
 
     var battleTracker = new BattleTracker(gameContents.player.health, node.enemy.health);
 
@@ -43,8 +43,7 @@ public static class Battle
     ExecuteTurnForPlayer(
       ref gameContents.player,
       ref battlePack,
-      ref battleTracker,
-      ref gameContents.random);
+      ref battleTracker);
 
     var resultPlayerAction = GetFightResult(ref battleTracker);
     if (resultPlayerAction != FightResult.NONE)
@@ -77,14 +76,13 @@ public static class Battle
   private static void ExecuteTurnForPlayer(
     ref Player player,
     ref BattlePack battlePack,
-    ref BattleTracker battleTracker,
-    ref Random random)
+    ref BattleTracker battleTracker)
   {
     ConsoleMessages.Turn(player.name);
 
     battleTracker.power = 0;
 
-    battlePack.hand.Draw_Full(ref battlePack.deck, ref battlePack.graveyard, ref random);
+    battlePack.hand.Draw_Full(ref battlePack.deck, ref battlePack.graveyard);
 
     BattlePhases.RunPlayCardsPhase(ref battlePack, ref battleTracker);
 

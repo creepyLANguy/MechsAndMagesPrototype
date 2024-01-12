@@ -11,12 +11,12 @@ public class Market
     private Stack<Card> pool = new();
     private List<Card> display = new();
 
-    public Market(int marketSize, List<Card> cards_player, List<Card> cards_enemy, ref Random random)
+    public Market(int marketSize, List<Card> cards_player, List<Card> cards_enemy)
     {
         this.marketSize = marketSize;
 
-        cards_player.Shuffle(ref random);
-        cards_enemy.Shuffle(ref random);
+        cards_player.Shuffle();
+        cards_enemy.Shuffle();
 
         var mergedList = MergeListsAlternating(cards_player, cards_enemy);
         mergedList.Reverse(0, mergedList.Count);

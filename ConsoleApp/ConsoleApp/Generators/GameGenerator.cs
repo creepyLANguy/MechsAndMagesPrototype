@@ -17,27 +17,25 @@ public static class GameGenerator
 
     var gameState = SaveGameHelper.IsLegit(saveFilename) 
       ? SaveGameHelper.Read(saveFilename, cards, cryptoKey) 
-      : new GameState(DateTime.Now, Algos.GenerateRandomSeed(), null);
+      : new GameState(DateTime.Now, UbiRandom.GetSeed(), null);
 
     return GenerateGameContents(ref gameConfig, ref gameState, ref cards);
   }
     
   private static GameContents GenerateGameContents(ref GameConfig gameConfig, ref GameState gameState, ref List<Card> cards)
   {
-    var random = Algos.GenerateNewRandom(gameState.randomSeed);
+    var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards);
 
-    var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards, random);
-
-    var journey = GetJourney(ref gameConfig, ref random);
+    var journey = GetJourney(ref gameConfig);
 
     journey.currentMapIndex = player.completedMapCount;
 
-    var gameContents = new GameContents(player, journey, cards, gameConfig.handSize, random, gameState.randomSeed);
+    var gameContents = new GameContents(player, journey, cards, gameConfig.handSize, gameState.randomSeed);
 
     return gameContents;
   }
 
-  private static Journey GetJourney(ref GameConfig gameConfig, ref Random random)
+  private static Journey GetJourney(ref GameConfig gameConfig)
   {
     var normalEnemies = EnemyReader.GetEnemiesFromExcel(gameConfig.normalEnemiesExcelFile);
     var eliteEnemies = EnemyReader.GetEnemiesFromExcel(gameConfig.eliteEnemiesExcelFile);
@@ -48,8 +46,7 @@ public static class GameGenerator
       gameConfig.mapConfigs,
       ref normalEnemies,
       ref eliteEnemies,
-      ref bosses,
-      ref random);
+      ref bosses);
 
 #if DEBUG
     GraphVis.SaveMapsAsDotFiles(ref journey, false);
@@ -58,14 +55,14 @@ public static class GameGenerator
     return journey;
   }
 
-  private static Player GenerateNewPlayer(PlayerConfig playerConfig, List<InitialCardSelection> initialSelections, ref List<Card> cards, Random random)
+  private static Player GenerateNewPlayer(PlayerConfig playerConfig, List<InitialCardSelection> initialSelections, ref List<Card> cards)
   {
     var playerName = GetPlayerName();
 
     var deck = cards.Where(card => card.guild == Guild.NEUTRAL).ToList();
     var selectionSet = cards.Where(card => card.guild != Guild.NEUTRAL).ToList();
 
-    var selectedCards = PromptPlayerForInitialCardSelections(ref initialSelections, ref selectionSet, random);
+    var selectedCards = PromptPlayerForInitialCardSelections(ref initialSelections, ref selectionSet);
     deck.AddRange(selectedCards);
 
     var deckIds = deck.Select(card => card.id).ToList();
@@ -96,13 +93,13 @@ public static class GameGenerator
   }
 
   //Note, prolly important to pass a copy of random as in the future, with prior completion bonuses awarded, we may be using random an indeterminate amount of times here.
-  private static List<Card> PromptPlayerForInitialCardSelections(ref List<InitialCardSelection> initialCardSelections, ref List<Card> cards, Random random)
+  private static List<Card> PromptPlayerForInitialCardSelections(ref List<InitialCardSelection> initialCardSelections, ref List<Card> cards)
   {
     var allSelectedCards = new List<Card>();
 
     foreach (var initialCardSelection in initialCardSelections)
     {
-      cards.Shuffle(ref random);
+      cards.Shuffle();
 
       var offeredCards = cards.Take(initialCardSelection.cardCount).ToList();
 
