@@ -22,7 +22,11 @@ class ConsoleMessages
 
   public static void PrintBattleState(BattleTracker battleTracker)
   {
+    const string dashes = "---";
+
     Console.WriteLine();
+    
+    Console.WriteLine(dashes);
 
     Console.WriteLine("Your Life:\t" + battleTracker.playerHealth);
 
@@ -30,13 +34,17 @@ class ConsoleMessages
 
     Console.WriteLine("Your Manna:\t" + battleTracker.manna); 
     
-    Console.WriteLine("Player Defense:\t" + (battleTracker.playerIsDefending ? "ACTIVE" : "NONE"));
+    Console.WriteLine("Your Defense:\t" + (battleTracker.playerIsDefending ? "ACTIVE" : "NONE"));
+
+    Console.WriteLine(dashes);
 
     Console.WriteLine("Enemy Life:\t" + battleTracker.enemyHealth);
     
     Console.WriteLine("Enemy Threat:\t" + battleTracker.threat);
 
     Console.WriteLine("Enemy Defense:\t" + (battleTracker.enemyIsDefending ? "ACTIVE" : "NONE"));
+
+    Console.WriteLine(dashes);
   }
 
   public static void PrintHand(List<Card> cards)

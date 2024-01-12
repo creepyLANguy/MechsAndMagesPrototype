@@ -70,7 +70,7 @@ public class Market
         return null;
       }
 
-      if (card.mannaCost < battleTracker.manna)
+      if (card.mannaCost > battleTracker.manna)
       {
         return null;
       }
