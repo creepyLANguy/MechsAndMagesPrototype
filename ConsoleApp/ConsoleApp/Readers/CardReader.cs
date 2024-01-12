@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using MaM.Definitions;
 using MaM.Helpers;
 using Newtonsoft.Json;
@@ -33,10 +32,10 @@ public static class CardReader
     var splits = attributes.Split(StringLiterals.ListDelim).ToList();
     foreach (var split in splits)
     {
-      var marker = GetAlphabeticPart(split);
+      var marker = StringSplitters.GetAlphabeticPart(split);
       if (Enum.TryParse<CardAttribute>(marker, out var cardAttribute))
       {
-        var numericValue = GetNumericPart(split);
+        var numericValue = StringSplitters.GetNumericPart(split);
         list.Add(new Tuple<CardAttribute, int>(cardAttribute, numericValue));
       }
     }
@@ -104,21 +103,4 @@ public static class CardReader
 
   public static Card GetCardFromId(string cardId, ref List<Card> cards)
     => cards.Find(it => it.id == cardId);
-
-  static string GetAlphabeticPart(string input)
-  {
-    input = input.Trim();
-    const string pattern = @"([a-zA-Z]+)";
-    var match = Regex.Match(input, pattern);
-    return match.Success ? match.Groups[1].Value : string.Empty;
-  }
-
-  static int GetNumericPart(string input)
-  {
-    input = input.Trim();
-    const string pattern = @"(\d+)";
-    var match = Regex.Match(input, pattern);
-    return match.Success ? int.Parse(match.Groups[1].Value) : 0;
-  }
-
 }

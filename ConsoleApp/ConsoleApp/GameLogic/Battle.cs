@@ -76,19 +76,19 @@ public static class Battle
 
     switch (key)
     {
-      case EnemyTurnAction.BUFF:
+      case EnemyTurnAction.B:
         EnemyTurnActionLogic.RunBuffAction(ref threat, value);
         break;
-      case EnemyTurnAction.ATTACK:
+      case EnemyTurnAction.A:
         EnemyTurnActionLogic.RunAttackAction(ref threat, ref power, ref manna, ref player);
         break;
-      case EnemyTurnAction.DEFEND:
+      case EnemyTurnAction.D:
         EnemyTurnActionLogic.RunDefendAction();
         break;
-      case EnemyTurnAction.LEECH:
+      case EnemyTurnAction.L:
         EnemyTurnActionLogic.RunLeechAction(ref enemy, ref value, ref manna);
         break;
-      case EnemyTurnAction.NONE:
+      case EnemyTurnAction.N:
       default:
         EnemyTurnActionLogic.RunPassAction(ref threat);
         break;

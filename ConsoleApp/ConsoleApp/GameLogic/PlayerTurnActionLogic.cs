@@ -11,14 +11,18 @@ namespace MaM.GameLogic
 
     public static void RunAttackAction(ref int power, ref int threat, ref Enemy enemy)
     {
+      var attackValue = power;
+
       if (threat > 0)
       {
-        power -= threat;
+        attackValue -= threat;
+        threat -= power;
       }
 
-      if (power > 0)
+      if (attackValue > 0)
       {
-        enemy.health -= power;
+        enemy.health -= attackValue;
+        threat = 0;
       }
 
       power = 0;

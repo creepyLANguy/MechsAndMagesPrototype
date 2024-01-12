@@ -2,9 +2,9 @@ namespace MaM.Definitions;
 
 public enum EnemyTurnAction
 {
-  NONE,
-  BUFF,
-  ATTACK,
-  DEFEND,
-  LEECH, //heal, using player's manna 
+  N,//NONE,
+  B,//BUFF,
+  A,//ATTACK,
+  D,//DEFEND,
+  L,//LEECH, //heal, using player's manna 
 }

@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MaM.Definitions;
 using MaM.Helpers;
 using Newtonsoft.Json;
@@ -13,10 +14,34 @@ public struct JsonIntermediateEnemy
   public int health;
   public int marketSize;
   public int quantity;
+  public string turnActions;
 }
 
 public static class EnemyReader
 {
+  private static List<Tuple<EnemyTurnAction, int>> GetListOfEnemyTurnActions(string turnActions)
+  {
+    var list = new List<Tuple<EnemyTurnAction, int>>();
+
+    if (turnActions == null)
+    {
+      return list;
+    }
+
+    var splits = turnActions.Split(StringLiterals.ListDelim).ToList();
+    foreach (var split in splits)
+    {
+      var marker = StringSplitters.GetAlphabeticPart(split);
+      if (Enum.TryParse<EnemyTurnAction>(marker, out var enemyTurnAction))
+      {
+        var numericValue = StringSplitters.GetNumericPart(split);
+        list.Add(new Tuple<EnemyTurnAction, int>(enemyTurnAction, numericValue));
+      }
+    }
+
+    return list;
+  }
+
   private static List<Enemy> PopulateEnemiesFromJsonIntermediates(List<JsonIntermediateEnemy> intermediateEnemies)
   {
     var enemies = new List<Enemy>();
@@ -29,7 +54,8 @@ public static class EnemyReader
           intermediateEnemy.id,
           intermediateEnemy.name,
           intermediateEnemy.health,
-          intermediateEnemy.marketSize
+          intermediateEnemy.marketSize,
+          GetListOfEnemyTurnActions(intermediateEnemy.turnActions)
         );
 
         enemies.Add(enemy);
