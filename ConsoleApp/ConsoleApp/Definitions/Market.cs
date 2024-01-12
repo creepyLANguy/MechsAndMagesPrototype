@@ -13,80 +13,97 @@ public class Market
 
     public Market(int marketSize, List<Card> cards_player, List<Card> cards_enemy)
     {
-        this.marketSize = marketSize;
+      this.marketSize = marketSize;
 
-        cards_player.Shuffle();
-        cards_enemy.Shuffle();
+      cards_player.Shuffle();
+      cards_enemy.Shuffle();
 
-        var mergedList = MergeListsAlternating(cards_player, cards_enemy);
-        mergedList.Reverse(0, mergedList.Count);
+      var mergedList = MergeListsAlternating(cards_player, cards_enemy);
+      mergedList.Reverse(0, mergedList.Count);
 
-        pool = new(mergedList);
+      pool = new(mergedList);
     }
 
     private static List<T> MergeListsAlternating<T>(List<T> list1, List<T> list2)
     {
-        var mergedList = new List<T>();
+      var mergedList = new List<T>();
 
-        var maxLength = Math.Max(list1.Count, list2.Count);
+      var maxLength = Math.Max(list1.Count, list2.Count);
 
-        for (var i = 0; i < maxLength; i++)
+      for (var i = 0; i < maxLength; i++)
+      {
+        if (i < list1.Count)
         {
-            if (i < list1.Count)
-            {
-                mergedList.Add(list1[i]);
-            }
-
-            if (i < list2.Count)
-            {
-                mergedList.Add(list2[i]);
-            }
+          mergedList.Add(list1[i]);
         }
 
-        return mergedList;
+        if (i < list2.Count)
+        {
+          mergedList.Add(list2[i]);
+        }
+      }
+
+      return mergedList;
     }
 
     public bool Fill()
     {
-        if (pool.Count == 0)
-        {
-            return false;
-        }
+      if (pool.Count == 0)
+      {
+        return false;
+      }
 
-        while (display.Count < marketSize)
-        {
-            display.Add(pool.Pop());
-        }
+      while (display.Count < marketSize)
+      {
+        display.Add(pool.Pop());
+      }
 
-        return true;
+      return true;
     }
 
-    public bool Fetch(int index)
+    public Card? TryFetch(int index, ref BattleTracker battleTracker)
     {
-        if (pool.Count == 0)
-        {
-            marketSize -= 1;
-            display.RemoveAt(index);
-            return false;
-        }
+      var card = display[index];
 
+      if (card.powerCost > battleTracker.power)
+      {
+        return null;
+      }
+
+      if (card.mannaCost < battleTracker.manna)
+      {
+        return null;
+      }
+
+      if (pool.Count > 0)
+      {
         display[index] = pool.Pop();
-        return true;
+      }
+      else
+      {
+        marketSize -= 1;
+        display.Remove(card);
+      }
+
+      battleTracker.power -= card.powerCost;
+      battleTracker.manna -= card.mannaCost;
+
+      return card;
     }
 
     public List<Card> GetDisplayedCards()
     {
-        return display;
+      return display;
     }
 
     public void Cycle()
     {
-        var tempPool = pool.ToList();
-        tempPool.AddRange(display);
-        tempPool.Reverse(0, tempPool.Count);
-        pool = new Stack<Card>(tempPool);
+      var tempPool = pool.ToList();
+      tempPool.AddRange(display);
+      tempPool.Reverse(0, tempPool.Count);
+      pool = new Stack<Card>(tempPool);
 
-        display.Clear();
-        Fill();
+      display.Clear();
+      Fill();
     }
 }

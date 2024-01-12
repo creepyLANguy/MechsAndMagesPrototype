@@ -20,21 +20,23 @@ class ConsoleMessages
     Console.WriteLine("\n[Turn]\t\t" + name);
   }
 
-  public static void PrintBattleState(BattleTracker b)
+  public static void PrintBattleState(BattleTracker battleTracker)
   {
     Console.WriteLine();
 
-    Console.WriteLine("Your Life:\t" + b.playerHealth);
+    Console.WriteLine("Your Life:\t" + battleTracker.playerHealth);
 
-    Console.WriteLine("Your Power:\t" + b.power);
+    Console.WriteLine("Your Power:\t" + battleTracker.power);
 
-    Console.WriteLine("Your Manna:\t" + b.manna); 
+    Console.WriteLine("Your Manna:\t" + battleTracker.manna); 
     
-    Console.WriteLine("Enemy Life:\t" + b.enemyHealth);
-    
-    Console.WriteLine("Enemy Threat:\t" + b.threat);
+    Console.WriteLine("Player Defense:\t" + (battleTracker.playerIsDefending ? "ACTIVE" : "NONE"));
 
-    Console.WriteLine("Enemy Defense:\t" + (b.enemyIsDefending ? "ACTIVE" : "NONE"));
+    Console.WriteLine("Enemy Life:\t" + battleTracker.enemyHealth);
+    
+    Console.WriteLine("Enemy Threat:\t" + battleTracker.threat);
+
+    Console.WriteLine("Enemy Defense:\t" + (battleTracker.enemyIsDefending ? "ACTIVE" : "NONE"));
   }
 
   public static void PrintHand(List<Card> cards)
@@ -144,6 +146,7 @@ class ConsoleMessages
       );
     }
   }
+
   public static void Death(ref Journey journey)
   {
     Console.WriteLine("\nYOU DIED\nCompletion Percent : " + GetCompletionPercentage(ref journey) + "%");
@@ -304,5 +307,34 @@ class ConsoleMessages
   public static void EnemyTurnActionPass()
   {
     Console.WriteLine("\nEnemy PASSES");
+  }
+
+  public static void PromptToRecruit(List<Card> offeredCards)
+  {
+    Console.WriteLine("\nSelect one of the following cards to recruit :");
+    Console.WriteLine("\n0) SKIP TO NEXT PHASE");
+
+    for (var index = 0; index < offeredCards.Count; index++)
+    {
+      var card = offeredCards[index];
+
+      Console.WriteLine(
+        index + 1 + ")" +
+        Tab +
+        UserInput.GetPrintableCardName(card.name) +
+        Tab + Tab + Pipe + Tab +
+        "Power Cost :" + card.powerCost +
+        Tab + Pipe + Tab +
+        "Manna Cost :" + card.mannaCost +
+        Tab + Pipe + Tab +
+        "Guild:" + card.guild
+      );
+    }
+  }
+
+  public static void RecruitFailed(Card card)
+  {
+    Console.WriteLine("\nYou could not recruit " + card.name);
+    Console.WriteLine("Please select another card and make sure you have the required amounts of power and manna.");
   }
 }

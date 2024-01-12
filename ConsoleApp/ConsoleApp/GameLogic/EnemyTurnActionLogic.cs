@@ -25,7 +25,7 @@ namespace MaM.GameLogic
 
       var attackValue = b.threat;
 
-      if (b.power > 0)
+      if (b.playerIsDefending && b.power > 0)
       {
         attackValue -= b.power;
         b.power -= attackValue;

@@ -1,4 +1,5 @@
 ﻿using MaM.Definitions;
+using MaM.Helpers;
 
 namespace MaM.GameLogic
 {
@@ -32,15 +33,35 @@ namespace MaM.GameLogic
       b.power = 0;
     }
 
-    public static void RunDefendAction(ref BattleTracker b)
+    public static void RunDefendAction(ref BattleTracker battleTracker)
     {
     }
 
     public static void RunRecruitAction(ref BattlePack battlePack, ref BattleTracker b)
     {
-      //TODO - Buy from market, add those cards to graveyard.
+      while (b.power > 0)
+      {
+        ConsoleMessages.PrintBattleState(b);
+        ConsoleMessages.PromptToRecruit(battlePack.market.GetDisplayedCards());
 
-      b.power = 0;
+        var choice = UserInput.GetInt();
+        if (choice == 0)
+        {
+          break;
+        }
+
+        --choice;
+
+        var chosenCard = battlePack.market.TryFetch(choice, ref b);
+        if (chosenCard == null)
+        {
+          var intendedCard = battlePack.market.GetDisplayedCards()[choice];
+          ConsoleMessages.RecruitFailed(intendedCard);
+          continue;
+        }
+
+        battlePack.graveyard.Add((Card)chosenCard);
+      }
     }
   }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using MaM.Definitions;
 using MaM.Helpers;
@@ -80,8 +79,6 @@ public static class Battle
   {
     ConsoleMessages.Turn(player.name);
 
-    battleTracker.power = 0;
-
     battlePack.hand.Draw_Full(ref battlePack.deck, ref battlePack.graveyard);
 
     BattlePhases.RunPlayCardsPhase(ref battlePack, ref battleTracker);
@@ -89,6 +86,8 @@ public static class Battle
     ConsoleMessages.PrintBattleState(battleTracker);
 
     var playerTurnAction = BattlePhases.RunActionSelectionPhase();
+
+    battleTracker.playerIsDefending = playerTurnAction == PlayerTurnAction.DEFEND;
 
     switch (playerTurnAction)
     {
@@ -123,17 +122,17 @@ public static class Battle
     var key = nextEnemyTurnAction.Item1;
     var value = nextEnemyTurnAction.Item2;
 
+    battleTracker.enemyIsDefending = key == EnemyTurnAction.D;
+
     switch (key)
     {
       case EnemyTurnAction.B:
         EnemyTurnActionLogic.RunBuffAction(ref battleTracker, value);
         break;
       case EnemyTurnAction.A:
-        battleTracker.enemyIsDefending = false;
         EnemyTurnActionLogic.RunAttackAction(ref battleTracker);
         break;
       case EnemyTurnAction.D:
-        battleTracker.enemyIsDefending = true;
         EnemyTurnActionLogic.RunDefendAction(ref battleTracker);
         break;
       case EnemyTurnAction.L:
