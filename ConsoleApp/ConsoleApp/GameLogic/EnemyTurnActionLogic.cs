@@ -23,22 +23,17 @@ namespace MaM.GameLogic
     {
       ConsoleMessages.EnemyTurnActionAttack(b.threat);
 
-      var attackValue = b.threat;
+      var attackValue = 0;
 
-      if (b.playerIsDefending && b.power > 0)
+      if (b.playerIsDefending)
       {
-        attackValue -= b.power;
-        b.power -= attackValue;
-
-        if (b.power < 0)
-        {
-          b.power = 0;
-        }
+        attackValue = b.threat < b.power ? 0 : b.threat - b.power;
+        b.power = attackValue > 0 ? 0 : b.power - b.threat;
       }
 
       if (attackValue > 0)
       {
-        b.playerHealth-= attackValue;
+        b.playerHealth -= attackValue;
         b.manna += attackValue;
       }
 
