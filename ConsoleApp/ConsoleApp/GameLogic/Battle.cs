@@ -15,47 +15,58 @@ public static class Battle
 
     BattlePhases.RunMulliganPhase(ref gameContents.player, ref battlePack, ref gameContents.random);
 
-    var power = 0;
-    var manna = 0;
-
-    var threat = 0;
+    var battleTracker = new BattleTracker(gameContents.player.health, node.enemy.health);
 
     var fightResult = FightResult.NONE;
     while (fightResult == FightResult.NONE)
     {
-      fightResult = RunTurns(ref gameContents, ref battlePack, ref node.enemy, ref power, ref manna, ref threat);
+      fightResult = RunTurns(
+        ref gameContents,
+        ref battlePack,
+        ref node.enemy,
+        ref battleTracker);
     }
+
+    gameContents.player.health = battleTracker.playerHealth;
 
     return fightResult;
   }
 
-  private static FightResult RunTurns(ref GameContents gameContents, ref BattlePack battlePack, ref Enemy enemy, ref int power, ref int manna, ref int threat)
+  private static FightResult RunTurns(
+    ref GameContents gameContents,
+    ref BattlePack battlePack,
+    ref Enemy enemy,
+    ref BattleTracker battleTracker)
   {
-    ConsoleMessages.PrintBattleState(gameContents.player, enemy, power, manna, threat);
+    ConsoleMessages.PrintBattleState(battleTracker);
 
-    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref power, ref manna, ref threat, ref gameContents.random);
+    ExecuteTurnForPlayer(
+      ref gameContents.player,
+      ref battlePack,
+      ref battleTracker,
+      ref gameContents.random);
 
-    var resultPlayerAction = GetFightResult(ref gameContents.player, ref enemy);
+    var resultPlayerAction = GetFightResult(ref battleTracker);
     if (resultPlayerAction != FightResult.NONE)
     {
       return resultPlayerAction;
     }
 
-    ConsoleMessages.PrintBattleState(gameContents.player, enemy, power, manna, threat);
+    ConsoleMessages.PrintBattleState(battleTracker);
+    
+    ExecuteTurnForComputer(ref enemy, ref battleTracker);
 
-    ExecuteTurnForComputer(ref gameContents.player, ref enemy, ref power, ref manna, ref threat);
-
-    return GetFightResult(ref gameContents.player, ref enemy);
+    return GetFightResult(ref battleTracker);
   }
 
-  private static FightResult GetFightResult(ref Player player, ref Enemy enemy)
+  private static FightResult GetFightResult(ref BattleTracker battleTracker)
   {
-    if (player.health <= 0)
+    if (battleTracker.playerHealth <= 0)
     {
       return FightResult.PLAYER_LOSE;
     }
     
-    if (enemy.health <= 0)
+    if (battleTracker.enemyHealth <= 0)
     {
       return FightResult.PLAYER_WIN;
     }
@@ -63,7 +74,47 @@ public static class Battle
     return FightResult.NONE;
   }
 
-  private static void ExecuteTurnForComputer(ref Player player, ref Enemy enemy, ref int power, ref int manna, ref int threat)
+  private static void ExecuteTurnForPlayer(
+    ref Player player,
+    ref BattlePack battlePack,
+    ref BattleTracker battleTracker,
+    ref Random random)
+  {
+    ConsoleMessages.Turn(player.name);
+
+    battleTracker.power = 0;
+
+    battlePack.hand.Draw_Full(ref battlePack.deck, ref battlePack.graveyard, ref random);
+
+    BattlePhases.RunPlayCardsPhase(ref battlePack, ref battleTracker);
+
+    ConsoleMessages.PrintBattleState(battleTracker);
+
+    var playerTurnAction = BattlePhases.RunActionSelectionPhase();
+
+    switch (playerTurnAction)
+    {
+      case PlayerTurnAction.ATTACK:
+        PlayerTurnActionLogic.RunAttackAction(ref battleTracker);
+        break;
+      case PlayerTurnAction.DEFEND:
+        PlayerTurnActionLogic.RunDefendAction(ref battleTracker);
+        break;
+      case PlayerTurnAction.RECRUIT:
+        PlayerTurnActionLogic.RunRecruitAction(ref battlePack, ref battleTracker);
+        break;
+      case PlayerTurnAction.NONE:
+      default:
+        PlayerTurnActionLogic.RunPassAction(ref battleTracker);
+        break;
+    }
+
+    battlePack.MoveHandToGraveyard();
+  }
+
+  private static void ExecuteTurnForComputer(
+    ref Enemy enemy,
+    ref BattleTracker battleTracker)
   {
     ConsoleMessages.Turn(enemy.name);
 
@@ -77,60 +128,24 @@ public static class Battle
     switch (key)
     {
       case EnemyTurnAction.B:
-        EnemyTurnActionLogic.RunBuffAction(ref threat, value);
+        EnemyTurnActionLogic.RunBuffAction(ref battleTracker, value);
         break;
       case EnemyTurnAction.A:
-        EnemyTurnActionLogic.RunAttackAction(ref threat, ref power, ref manna, ref player);
+        battleTracker.enemyIsDefending = false;
+        EnemyTurnActionLogic.RunAttackAction(ref battleTracker);
         break;
       case EnemyTurnAction.D:
-        EnemyTurnActionLogic.RunDefendAction();
+        battleTracker.enemyIsDefending = true;
+        EnemyTurnActionLogic.RunDefendAction(ref battleTracker);
         break;
       case EnemyTurnAction.L:
-        EnemyTurnActionLogic.RunLeechAction(ref enemy, ref value, ref manna);
+        EnemyTurnActionLogic.RunLeechAction(ref battleTracker);
         break;
       case EnemyTurnAction.N:
       default:
-        EnemyTurnActionLogic.RunPassAction(ref threat);
+        EnemyTurnActionLogic.RunPassAction(ref battleTracker);
         break;
     }
   }
 
-  private static void ExecuteTurnForPlayer(
-    ref Player player,
-    ref Enemy enemy,
-    ref BattlePack battlePack,
-    ref int power,
-    ref int manna,
-    ref int threat,
-    ref Random random)
-  {
-    ConsoleMessages.Turn(player.name);
-
-    battlePack.hand.Draw_Full(ref battlePack.deck, ref battlePack.graveyard, ref random);
-
-    BattlePhases.RunPlayCardsPhase(ref battlePack, ref player, ref power, ref manna);
-
-    ConsoleMessages.PrintBattleState(player, enemy, power, manna, threat);
-
-    var playerTurnAction = BattlePhases.RunActionSelectionPhase();
-
-    switch (playerTurnAction)
-    {
-      case PlayerTurnAction.ATTACK:
-        PlayerTurnActionLogic.RunAttackAction(ref power, ref threat, ref enemy);
-        break;
-      case PlayerTurnAction.DEFEND:
-        PlayerTurnActionLogic.RunDefendAction();
-        break;
-      case PlayerTurnAction.RECRUIT:
-        PlayerTurnActionLogic.RunRecruitAction(ref power, ref battlePack);
-        break;
-      case PlayerTurnAction.NONE:
-      default:
-        PlayerTurnActionLogic.RunPassAction(ref power);
-        break;
-    }
-
-    battlePack.MoveHandToGraveyard();
-  }
 }

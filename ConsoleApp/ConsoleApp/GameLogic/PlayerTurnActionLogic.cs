@@ -4,39 +4,43 @@ namespace MaM.GameLogic
 {
   class PlayerTurnActionLogic
   {
-    public static void RunPassAction(ref int power)
+    public static void RunPassAction(ref BattleTracker b)
     {
-      power = 0;
+      b.power = 0;
     }
 
-    public static void RunAttackAction(ref int power, ref int threat, ref Enemy enemy)
+    public static void RunAttackAction(ref BattleTracker b)
     {
-      var attackValue = power;
+      var attackValue = b.power;
 
-      if (threat > 0)
+      if (b.enemyIsDefending && b.threat > 0)
       {
-        attackValue -= threat;
-        threat -= power;
-      }
+        attackValue -= b.threat;
+        b.threat -= b.power;
 
+        if (b.threat < 0)
+        {
+          b.threat = 0;
+        }
+      }
+      
       if (attackValue > 0)
       {
-        enemy.health -= attackValue;
-        threat = 0;
+        b.enemyHealth -= attackValue;
       }
 
-      power = 0;
+      b.power = 0;
     }
 
-    public static void RunDefendAction()
+    public static void RunDefendAction(ref BattleTracker b)
     {
     }
 
-    public static void RunRecruitAction(ref int power, ref BattlePack battlePack)
+    public static void RunRecruitAction(ref BattlePack battlePack, ref BattleTracker b)
     {
       //TODO - Buy from market, add those cards to graveyard.
 
-      power = 0;
+      b.power = 0;
     }
   }
 }

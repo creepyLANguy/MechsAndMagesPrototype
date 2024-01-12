@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using MaM.Menus;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 
 namespace MaM.Helpers;
 class ConsoleMessages
@@ -21,19 +20,21 @@ class ConsoleMessages
     Console.WriteLine("\n[Turn]\t\t" + name);
   }
 
-  public static void PrintBattleState(Player player, Enemy enemy, int power, int manna, int threat)
+  public static void PrintBattleState(BattleTracker b)
   {
     Console.WriteLine();
 
-    Console.WriteLine("Your Life:\t" + player.health);
+    Console.WriteLine("Your Life:\t" + b.playerHealth);
 
-    Console.WriteLine("Your Power:\t" + power);
+    Console.WriteLine("Your Power:\t" + b.power);
 
-    Console.WriteLine("Your Manna:\t" + manna); 
+    Console.WriteLine("Your Manna:\t" + b.manna); 
     
-    Console.WriteLine("Enemy Life:\t" + enemy.health);
+    Console.WriteLine("Enemy Life:\t" + b.enemyHealth);
     
-    Console.WriteLine("Enemy Threat:\t" + threat);
+    Console.WriteLine("Enemy Threat:\t" + b.threat);
+
+    Console.WriteLine("Enemy Defense:\t" + (b.enemyIsDefending ? "ACTIVE" : "NONE"));
   }
 
   public static void PrintHand(List<Card> cards)
@@ -292,7 +293,7 @@ class ConsoleMessages
 
   public static void EnemyTurnActionDefend()
   {
-    Console.WriteLine("\nEnemy DEFENDS");
+    Console.WriteLine("\nEnemy is DEFENDING");
   }
 
   public static void EnemyTurnActionLeech(int threat)

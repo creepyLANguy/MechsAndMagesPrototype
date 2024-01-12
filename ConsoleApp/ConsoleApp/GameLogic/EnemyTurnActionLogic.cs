@@ -3,52 +3,83 @@ using MaM.Helpers;
 
 namespace MaM.GameLogic
 {
-  class EnemyTurnActionLogic
+    class EnemyTurnActionLogic
   {
-    public static void RunBuffAction(ref int threat, int value)
+    public static void RunPassAction(ref BattleTracker b)
+    {
+      ConsoleMessages.EnemyTurnActionPass();
+
+      b.threat = 0;
+    }
+
+    public static void RunBuffAction(ref BattleTracker b, int value)
     {
       ConsoleMessages.EnemyTurnActionBuff(value);
 
-      threat += value;
+      b.threat += value;
     }
 
-    public static void RunAttackAction(ref int threat, ref int power, ref int manna, ref Player player)
+    public static void RunAttackAction(ref BattleTracker b)
     {
-      ConsoleMessages.EnemyTurnActionAttack(threat);
+      ConsoleMessages.EnemyTurnActionAttack(b.threat);
 
-      if (power > 0)
+      var attackValue = b.threat;
+
+      if (b.power > 0)
       {
-        threat -= power;
-      }
-      if (threat > 0)
-      {
-        player.health -= threat;
-        manna += threat;
+        attackValue -= b.power;
+        b.power -= attackValue;
+
+        if (b.power < 0)
+        {
+          b.power = 0;
+        }
       }
 
-      threat = 0;
-      power = 0;
+      if (attackValue > 0)
+      {
+        b.playerHealth-= attackValue;
+        b.manna += attackValue;
+      }
+
+      b.threat = 0;
     }
 
-    public static void RunDefendAction()
+    public static void RunDefendAction(ref BattleTracker b)
     {
       ConsoleMessages.EnemyTurnActionDefend();
     }
 
-    public static void RunLeechAction(ref Enemy enemy, ref int threat, ref int manna)
+    public static void RunLeechAction(ref BattleTracker b)
     {
-      ConsoleMessages.EnemyTurnActionLeech(threat);
+      var leechable = (b.threat > b.manna) ? b.manna : b.threat;
 
-      enemy.health += threat;
-      manna -= threat;
-      threat = 0;
-    }
+      ConsoleMessages.EnemyTurnActionLeech(leechable);
 
-    public static void RunPassAction(ref int threat)
-    {
-      ConsoleMessages.EnemyTurnActionPass();
+      if (leechable <= 0)
+      {
+        return;
+      }
 
-      threat = 0;
+      if (b.threat <= leechable)
+      {
+        b.threat = 0;
+      }
+      else
+      {
+        b.threat -= leechable;
+      }
+
+      if (b.manna <= leechable)
+      {
+        b.manna = 0;
+      }
+      else
+      {
+        b.manna -= leechable;
+      }
+
+      b.enemyHealth += leechable;
     }
   }
 }

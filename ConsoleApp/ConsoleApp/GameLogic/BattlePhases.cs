@@ -5,7 +5,7 @@ using MaM.Helpers;
 
 namespace MaM.GameLogic
 {
-  class BattlePhases
+    class BattlePhases
   {
     public static void RunMulliganPhase(ref Player player, ref BattlePack battlePack, ref Random random)
     {
@@ -50,7 +50,7 @@ namespace MaM.GameLogic
       return (PlayerTurnAction)UserInput.GetInt();
     }
 
-    public static void RunPlayCardsPhase(ref BattlePack battlePack, ref Player player, ref int power, ref int manna)
+    public static void RunPlayCardsPhase(ref BattlePack battlePack, ref BattleTracker battleTracker)
     {
       while (battlePack.hand.GetAllCardsInHand().Count > 0)
       {
@@ -68,7 +68,7 @@ namespace MaM.GameLogic
         {
           foreach (var card in allCardsInHand)
           {
-            ProcessCardEffects(card, ref battlePack, ref player, ref power, ref manna);
+            ProcessCardEffects(card, ref battlePack, ref battleTracker);
           }
           battlePack.graveyard.AddRange(allCardsInHand);
           battlePack.hand.Clear();
@@ -77,17 +77,17 @@ namespace MaM.GameLogic
         {
           --selection;
           var selectedCard = allCardsInHand[selection];
-          ProcessCardEffects(selectedCard, ref battlePack, ref player, ref power, ref manna);
+          ProcessCardEffects(selectedCard, ref battlePack, ref battleTracker);
           battlePack.graveyard.Add(selectedCard);
           battlePack.hand.Remove_Single(selectedCard);
         }
       }
     }
 
-    private static void ProcessCardEffects(Card card, ref BattlePack battlePack, ref Player player, ref int power, ref int manna)
+    private static void ProcessCardEffects(Card card, ref BattlePack battlePack, ref BattleTracker battleTracker)
     {
       var powers = card.defaultActions.Where(x => x.Item1 == CardAttribute.P);
-      power += powers.Sum(attack => attack.Item2);
+      battleTracker.power += powers.Sum(attack => attack.Item2);
 
       //TODO - process all card effects/attributes
     }
