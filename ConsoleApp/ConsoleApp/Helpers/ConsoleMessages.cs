@@ -249,7 +249,6 @@ class ConsoleMessages
     var allCardsInHand = battlePack.hand.GetAllCardsInHand();
 
     Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
-    Console.WriteLine("-1) SKIP TO NEXT PHASE");
     Console.WriteLine("0) PLAY ALL CARDS");
 
     for (var index = 0; index < allCardsInHand.Count; index++)
@@ -266,5 +265,7 @@ class ConsoleMessages
         "Guild:" + card.guild
       );
     }
+
+    Console.WriteLine("-1) SKIP TO NEXT PHASE");
   }
 }

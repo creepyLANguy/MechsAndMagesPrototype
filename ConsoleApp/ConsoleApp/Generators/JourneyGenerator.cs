@@ -10,11 +10,10 @@ public static class JourneyGenerator
 {
   public static Journey GenerateJourney(
     int journeyLength, 
-    List<MapConfig> mapConfigs, 
-    EnemyConfig normalEnemyConfig, 
-    EnemyConfig eliteEnemyConfig,
+    List<MapConfig> mapConfigs,
+    ref List<Enemy> normalEnemies,
+    ref List<Enemy> eliteEnemies,
     ref List<Enemy> bosses,
-    List<Card> cards, 
     ref Random random
   )
   {
@@ -23,7 +22,7 @@ public static class JourneyGenerator
     for (var index = 0; index < journeyLength; ++index)
     {
       var mapConfig = index < mapConfigs.Count ? mapConfigs[index] : mapConfigs[^1];
-      var map = GenerateMap(index, mapConfig, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
+      var map = GenerateMap(index, mapConfig, ref normalEnemies, ref eliteEnemies, ref bosses, ref random);
       journey.maps.Add(map);
     }
 
@@ -32,11 +31,10 @@ public static class JourneyGenerator
 
   private static Map GenerateMap(
     int index, 
-    MapConfig mapConfig, 
-    EnemyConfig normalEnemyConfig, 
-    EnemyConfig eliteEnemyConfig,
+    MapConfig mapConfig,
+    ref List<Enemy> normalEnemies,
+    ref List<Enemy> eliteEnemies,
     ref List<Enemy> bosses,
-    ref List<Card> cards, 
     ref Random random
   )
   {
@@ -68,7 +66,7 @@ public static class JourneyGenerator
 
     AttachBossNode(ref map, ref random);
 
-    CompleteSetupOfAllNodes(ref map, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
+    CompleteSetupOfAllNodes(ref map, ref normalEnemies, ref eliteEnemies, ref bosses, ref random);
 
     return map;
   }
@@ -295,11 +293,10 @@ public static class JourneyGenerator
   }
 
   private static void CompleteSetupOfAllNodes(
-    ref Map map, 
-    EnemyConfig normalEnemyConfig, 
-    EnemyConfig eliteEnemyConfig,
+    ref Map map,
+    ref List<Enemy> normalEnemies,
+    ref List<Enemy> eliteEnemies,
     ref List<Enemy> bosses,
-    ref List<Card> cards,
     ref Random random
   )
   {
@@ -321,7 +318,7 @@ public static class JourneyGenerator
             break;
           case NodeType.FIGHT:
           {
-            SetupFight(ref node, ref map, normalEnemyConfig, eliteEnemyConfig, ref bosses, ref cards, ref random);
+            SetupFight(ref node, ref map, ref normalEnemies, ref eliteEnemies, ref bosses, ref random);
             break;
           }
         }
@@ -337,20 +334,19 @@ public static class JourneyGenerator
   private static void SetupFight(
     ref Node node, 
     ref Map map,
-    EnemyConfig normalEnemyConfig,
-    EnemyConfig eliteEnemyConfig,
+    ref List<Enemy> normalEnemies,
+    ref List<Enemy> eliteEnemies,
     ref List<Enemy> bosses,
-    ref List<Card> cards,
     ref Random random
   )
   {
     switch (((Fight)node).fightType)
     {
       case FightType.NORMAL:
-        SetupEnemy(ref node, normalEnemyConfig, map.index, cards, ref random);
+        SetupEnemy(ref node, map.index, ref normalEnemies, ref random);
         break;
       case FightType.ELITE:
-        SetupEnemy(ref node, eliteEnemyConfig, map.index, cards, ref random);
+        SetupEnemy(ref node, map.index, ref eliteEnemies, ref random);
         break;
       case FightType.BOSS:
         SetupBoss(ref node, map.index, ref bosses, ref random);
@@ -358,20 +354,13 @@ public static class JourneyGenerator
     }
   }
 
-  private static void SetupEnemy(ref Node node, EnemyConfig enemyConfig, int mapIndex, List<Card> cards, ref Random random)
+  private static void SetupEnemy(ref Node node, int mapIndex, ref List<Enemy> enemies, ref Random random)
   {
-    cards.Shuffle(ref random);
-
-    var name = EnemyNames.Get();
-
-    var enemy = new Enemy(
-      name,
-      enemyConfig.baseHealth * (1 + mapIndex),
-      enemyConfig.baseManna + mapIndex,
-      enemyConfig.marketSize
-    );
-
-    ((Fight) node).enemy = enemy;
+    enemies.Shuffle(ref random);
+    var enemy = enemies.First();
+    enemy.health *= (1 + mapIndex);
+    ((Fight)node).enemy = enemy;
+    enemies.Remove(enemy);
   }
 
   private static void SetupBoss(ref Node node, int mapIndex, ref List<Enemy> bosses, ref Random random)

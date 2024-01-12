@@ -26,11 +26,10 @@ public static class Battle
   private static FightResult RunTurns(ref GameContents gameContents, ref BattlePack battlePack, ref Enemy enemy)
   {
     var power = 0;
-    var manna = enemy.baseManna;
 
-    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power, ref manna);
+    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power, ref enemy.manna);
 
-    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref power, ref manna, ref gameContents.random);
+    ExecuteTurnForPlayer(ref gameContents.player, ref enemy, ref battlePack, ref power, ref enemy.manna, ref gameContents.random);
 
     var resultPlayerAction = GetFightResult(ref gameContents.player, ref enemy);
     if (resultPlayerAction != FightResult.NONE)
@@ -38,7 +37,7 @@ public static class Battle
       return resultPlayerAction;
     }
 
-    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power, ref manna);
+    ConsoleMessages.PrintBattleState(ref gameContents.player, ref enemy, ref power, ref enemy.manna);
 
     ExecuteTurnForComputer(ref gameContents.player, ref enemy);
 

@@ -47,23 +47,23 @@ public static class CardReader
   {
     var cards = new List<Card>();
 
-    foreach (var ic in intermediateCards)
+    foreach (var intermediateCard in intermediateCards)
     {
-      if (Enum.TryParse(ic.guild, true, out Guild guild) == false)
+      if (Enum.TryParse(intermediateCard.guild, true, out Guild guild) == false)
       {
         guild = Guild.NEUTRAL;
       }
 
-      var card = new Card(
-        ic.id,
-        ic.name,
-        guild,
-        ic.cost ?? 0,
-        GetListOfCardAttributes(ic.defaultAbilities)
-      );
-
-      for (var i = 0; i < ic.quantity; ++i)
+      for (var i = 0; i < intermediateCard.quantity; ++i)
       {
+        var card = new Card(
+          intermediateCard.id,
+          intermediateCard.name,
+          guild,
+          intermediateCard.cost ?? 0,
+          GetListOfCardAttributes(intermediateCard.defaultAbilities)
+        );
+
         cards.Add(card);
       }
     }

@@ -1,5 +1,7 @@
 {
   "cardsExcelFile": "Cards.csv",
+  "normalEnemiesExcelFile": "NormalEnemies.csv",
+  "eliteEnemiesExcelFile": "EliteEnemies.csv",
   "bossesExcelFile": "Bosses.csv",
   "mapConfigs": [
     {
@@ -27,18 +29,8 @@
       "eliteFrequency": 0.2
     }
   ],
-  "normalEnemyConfig": {
-    "baseHealth": 50,
-    "baseManna": 0,
-	"marketSize": 4,
-  },
-  "eliteEnemyConfig": {
-    "baseHealth": 75,
-    "baseManna": 5,   
-    "marketSize": 3,	
-  },
   "playerConfig": {
-    "health": 25,    
+    "health": 100,    
   },
   "initialCardSelections": [
     {

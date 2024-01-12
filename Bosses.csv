@@ -1,7 +1,7 @@
-﻿Id,Name,Health,Manna,TraderowSize
-B_A,BossA,120,3,2
-B_B,BossB,150,2,1
-B_C,BossC,165,1,2
-B_D,BossD,120,3,2
-B_A,BossE,95,4,1
-B_F,BossF,110,4,1
+﻿Id,Name,BaseHealth,BaseManna,MarketSize,Quantity
+B_A,Boss_A,120,3,2,1
+B_B,Boss_B,150,2,1,1
+B_C,Boss_C,165,1,2,1
+B_D,Boss_D,120,3,2,1
+B_A,Boss_E,95,4,1,1
+B_F,Boss_F,110,4,1,1

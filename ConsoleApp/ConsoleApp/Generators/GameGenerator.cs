@@ -28,15 +28,7 @@ public static class GameGenerator
 
     var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards, random);
 
-    var journey = GetJourney(
-      gameConfig.journeyLength, 
-      gameConfig.bossesExcelFile,
-      gameConfig.mapConfigs, 
-      gameConfig.normalEnemyConfig, 
-      gameConfig.eliteEnemyConfig,
-      ref cards, 
-      ref random
-    );
+    var journey = GetJourney(ref gameConfig, ref random);
 
     journey.currentMapIndex = player.completedMapCount;
 
@@ -45,19 +37,19 @@ public static class GameGenerator
     return gameContents;
   }
 
-  private static Journey GetJourney(
-    int journeyLength, 
-    string bossesExcelFile,
-    List<MapConfig> mapConfigs, 
-    EnemyConfig normalEnemyConfig, 
-    EnemyConfig eliteEnemyConfig,
-    ref List<Card> cards, 
-    ref Random random
-  )
+  private static Journey GetJourney(ref GameConfig gameConfig, ref Random random)
   {
-    var bosses = BossReader.GetBossesFromExcel(bossesExcelFile, ref cards);
+    var normalEnemies = EnemyReader.GetEnemiesFromExcel(gameConfig.normalEnemiesExcelFile);
+    var eliteEnemies = EnemyReader.GetEnemiesFromExcel(gameConfig.eliteEnemiesExcelFile);
+    var bosses = EnemyReader.GetEnemiesFromExcel(gameConfig.bossesExcelFile);
 
-    var journey = JourneyGenerator.GenerateJourney(journeyLength, mapConfigs, normalEnemyConfig, eliteEnemyConfig, ref bosses, cards, ref random);
+    var journey = JourneyGenerator.GenerateJourney(
+      gameConfig.journeyLength,
+      gameConfig.mapConfigs,
+      ref normalEnemies,
+      ref eliteEnemies,
+      ref bosses,
+      ref random);
 
 #if DEBUG
     GraphVis.SaveMapsAsDotFiles(ref journey, false);
