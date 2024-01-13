@@ -71,6 +71,12 @@ public class Player
     RefreshDeckCardIds();
   }
 
+  public void RemoveFromDeck(Card card)
+  {
+    _deck.Remove(card);
+    RefreshDeckCardIds();
+  }
+
   private void RefreshDeckCardIds()
   {
     _deckCardIds = _deck?.Select(card => card.id).ToList();

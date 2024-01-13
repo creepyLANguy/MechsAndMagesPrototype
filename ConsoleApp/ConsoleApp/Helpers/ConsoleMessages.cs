@@ -399,4 +399,64 @@ class ConsoleMessages
       );
     }
   }
+
+  public static void OfferCampsiteExchange()
+  {
+    Console.WriteLine("Get some rest and choose one of the following:");
+    Console.WriteLine("1) Sacrifice a card, gain double its total cost as life points.");
+    Console.WriteLine("2) Choose a card and pay twice its total cost in life points.");
+  }  
+  
+  public static void PromptExchangeLifeForCard(ref List<Card> cards)
+  {
+    Console.WriteLine("\nSelect one of the following cards :");
+
+    for (var index = 0; index < cards.Count; index++)
+    {
+      var card = cards[index];
+
+      Console.WriteLine(
+        index + 1 + ")" +
+        Tab +
+        UserInput.GetPrintableCardName(card.name) +
+        Tab + Tab + Pipe + Tab +
+        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
+        Tab + Pipe + Tab +
+        "Power Cost :" + card.powerCost +
+        Tab + Pipe + Tab +
+        "Manna Cost :" + card.mannaCost +
+        Tab + Pipe + Tab +
+        "Guild:" + card.guild
+      );
+    }
+  }  
+  
+  public static void PromptExchangeCardForLife(ref Player player, List<Card> cards)
+  {
+    Console.WriteLine("\nSelect one of the following cards :");
+
+    for (var index = 0; index < cards.Count; index++)
+    {
+      var card = cards[index];
+
+      Console.WriteLine(
+        index + 1 + ")" +
+        Tab +
+        UserInput.GetPrintableCardName(card.name) +
+        Tab + Tab + Pipe + Tab +
+        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
+        Tab + Pipe + Tab +
+        "Power Cost :" + card.powerCost +
+        Tab + Pipe + Tab +
+        "Manna Cost :" + card.mannaCost +
+        Tab + Pipe + Tab +
+        "Guild:" + card.guild
+      );
+    }
+  }
+
+  public static void PrintHealth(int health)
+  {
+    Console.WriteLine("\nYour health :" + health);
+  }
 }
