@@ -100,6 +100,8 @@ class ConsoleMessages
       Console.WriteLine(
         UserInput.GetPrintableCardName(card.name) +
         Tab + Tab + Pipe + Tab +
+        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
+        Tab + Pipe + Tab +
         "Power Cost :" + card.powerCost+
         Tab + Pipe + Tab +
         "Manna Cost :" + card.mannaCost+
@@ -146,6 +148,8 @@ class ConsoleMessages
         Tab +
         UserInput.GetPrintableCardName(card.name) +
         Tab + Tab + Pipe + Tab +
+        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
+        Tab + Pipe + Tab +
         "Power Cost :" + card.powerCost +
         Tab + Pipe + Tab +
         "Manna Cost :" + card.mannaCost +
@@ -191,7 +195,7 @@ class ConsoleMessages
   public static void CompletedRun()
   {
     Console.WriteLine(
-      "\nCongratulations!" + 
+      "\nCONGRATULATIONS!" + 
       "\nRun completed." +
       "\n\nReturning to main menu..."
     );
@@ -206,7 +210,8 @@ class ConsoleMessages
       Console.WriteLine(
         ++n + ")" +
         "\t[" + node.x + ", " + node.y + "]" +
-        "\t" + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty)
+        "\t" + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty) + 
+        (node.nodeType == NodeType.FIGHT ? "\t" + ((Fight)node).guild : "")
       );
     }
   }
@@ -279,13 +284,13 @@ class ConsoleMessages
         Tab +
         UserInput.GetPrintableCardName(card.name) +
         Tab + Tab + Pipe + Tab +
-        "Cost :" + card.powerCost +
+        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
         Tab + Pipe + Tab +
         "Power Cost :" + card.powerCost +
         Tab + Pipe + Tab +
         "Manna Cost :" + card.mannaCost +
         Tab + Pipe + Tab +
-        "Guild:" + card.guild
+        "Guild: " + card.guild
       );
     }
 
@@ -331,6 +336,8 @@ class ConsoleMessages
         Tab +
         UserInput.GetPrintableCardName(card.name) +
         Tab + Tab + Pipe + Tab +
+        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
+        Tab + Pipe + Tab +
         "Power Cost :" + card.powerCost +
         Tab + Pipe + Tab +
         "Manna Cost :" + card.mannaCost +
@@ -382,6 +389,8 @@ class ConsoleMessages
         Tab +
         UserInput.GetPrintableCardName(card.name) +
         Tab + Tab + Pipe + Tab +
+        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
+        Tab + Pipe + Tab +
         "Power Cost :" + card.powerCost +
         Tab + Pipe + Tab +
         "Manna Cost :" + card.mannaCost +

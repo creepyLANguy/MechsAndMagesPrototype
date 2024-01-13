@@ -1,7 +1,7 @@
 ﻿Id,Name,Health,MarketSize,Quantity,TurnActions
-NE_A,Enemy_A,50,4,10,"B2,A,B20,D,B3,L"
-NE_B,Enemy_B,50,4,10,"B2,A,B20,D,B3,L"
-NE_C,Enemy_C,50,4,10,"B2,A,B20,D,B3,L"
-NE_D,Enemy_D,50,4,10,"B2,A,B20,D,B3,L"
-NE_E,Enemy_E,50,4,10,"B2,A,B20,D,B3,L"
-NE_F,Enemy_F,50,4,10,"B2,A,B20,D,B3,L"
+NE_A,NormalEnemy_A,50,4,10,"B12,A,B20,D,B3,L"
+NE_B,NormalEnemy_B,50,4,10,"B12,A,B20,D,B3,L"
+NE_C,NormalEnemy_C,50,4,10,"B12,A,B20,D,B3,L"
+NE_D,NormalEnemy_D,50,4,10,"B12,A,B20,D,B3,L"
+NE_E,NormalEnemy_E,50,4,10,"B12,A,B20,D,B3,L"
+NE_F,NormalEnemy_F,50,4,10,"B12,A,B20,D,B3,L"

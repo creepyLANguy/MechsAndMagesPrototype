@@ -40,7 +40,7 @@ public class Player
     this.completedNodeLocations = completedNodeLocations;
     this.completedMapCount      = completedMapCount;
     this.health                 = health;
-    this._deck                   = deck;
+    _deck                       = deck;
     
     RefreshDeckCardIds();
   }
@@ -72,12 +72,13 @@ public class Player
   }
 
   private void RefreshDeckCardIds()
-    => _deckCardIds = _deck?.Select(card => card.id).ToList();
+  {
+    _deckCardIds = _deck?.Select(card => card.id).ToList();
+  }
 
   public List<string> GetDeckCardIds()
   {
     RefreshDeckCardIds();
     return _deckCardIds;
   }
-
 }

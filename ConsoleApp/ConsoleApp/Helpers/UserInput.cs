@@ -1,4 +1,5 @@
 using System;
+using MaM.Definitions;
 
 namespace MaM.Helpers;
 
@@ -33,5 +34,17 @@ public static class UserInput
     return cardName.Length <= printableCardNameLength
       ? cardName.PadRight(printableCardNameLength, spacer)
       : cardName.Substring(0, 1 + (printableCardNameLength - ellipsis.Length)) + ellipsis;
+  }
+
+  public static string GetPrintableCardAbilities(Card card)
+  {
+    var buffer = "";
+    foreach (var cardDefaultAction in card.defaultActions)
+    {
+      buffer += cardDefaultAction.Item1;
+      buffer += cardDefaultAction.Item2;
+      buffer += ",";
+    }
+    return buffer;
   }
 }
