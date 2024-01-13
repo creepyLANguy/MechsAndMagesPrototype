@@ -37,7 +37,7 @@ public class BattlePack
 
   private void SetupMarket(FightType fightType)
   {
-    var playerCardsContribution = gameContents.player.deck.Where(card => card.guild != Guild.NEUTRAL).ToList();
+    var playerCardsContribution = gameContents.player.GetDeck().Where(card => card.guild != Guild.NEUTRAL).ToList();
 
     var enemyCardsContribution =
       fightType == FightType.BOSS
@@ -55,7 +55,7 @@ public class BattlePack
 
   private void SetupDeck()
   {
-    var startingCards = gameContents.player.deck.Where(card => card.guild == Guild.NEUTRAL).ToList();
+    var startingCards = gameContents.player.GetDeck().Where(card => card.guild == Guild.NEUTRAL).ToList();
     startingCards.Shuffle();
     deck = new Stack<Card>(startingCards);
   }

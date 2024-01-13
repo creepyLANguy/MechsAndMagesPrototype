@@ -74,7 +74,6 @@ public static class GameGenerator
       new List<Tuple<int, int>>(),
       0,
       playerConfig.health,
-      deckIds,
       deck
     );
 

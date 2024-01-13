@@ -28,6 +28,11 @@ public static class Battle
 
     ConsoleMessages.PrintFightResult(fightResult);
 
+    if (node.fightType == FightType.ELITE)
+    {
+      OfferReward(ref gameContents, node.guild, node.enemy.marketSize);
+    }
+
     gameContents.player.health = battleTracker.playerHealth;
 
     return fightResult;
@@ -147,4 +152,28 @@ public static class Battle
     }
   }
 
+  private static void OfferReward(ref GameContents gameContents, Guild guild, int numberOfChoices)
+  {
+    var possibleRewards = gameContents.cards.Where(card => card.guild == guild).ToList();
+    possibleRewards.Shuffle();
+
+    var offeredRewards = possibleRewards.Take(numberOfChoices).ToList();
+
+    ConsoleMessages.PromptToChooseReward(offeredRewards);
+
+#if DEBUG
+    var choice = 0;
+#else
+    var choice = UserInput.GetInt() - 1;
+#endif
+
+    while (choice >= offeredRewards.Count)
+    {
+      ConsoleMessages.PromptInvalidChoiceTryAgain();
+      choice = UserInput.GetInt();
+    }
+
+    var cardChosen = offeredRewards[choice];
+    gameContents.player.AddToDeck(cardChosen);
+  }
 }

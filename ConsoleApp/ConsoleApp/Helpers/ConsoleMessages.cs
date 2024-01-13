@@ -368,4 +368,26 @@ class ConsoleMessages
     }
     Console.WriteLine(message);
   }
+
+  public static void PromptToChooseReward(List<Card> offeredRewards)
+  {
+    Console.WriteLine("\nChoose a reward: ");
+    
+    for (var index = 0; index < offeredRewards.Count; index++)
+    {
+      var card = offeredRewards[index];
+
+      Console.WriteLine(
+        index + 1 + ")" +
+        Tab +
+        UserInput.GetPrintableCardName(card.name) +
+        Tab + Tab + Pipe + Tab +
+        "Power Cost :" + card.powerCost +
+        Tab + Pipe + Tab +
+        "Manna Cost :" + card.mannaCost +
+        Tab + Pipe + Tab +
+        "Guild:" + card.guild
+      );
+    }
+  }
 }

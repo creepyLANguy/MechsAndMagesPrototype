@@ -32,10 +32,7 @@ public static class SaveGameHelper
 
     var gameState = JsonConvert.DeserializeObject<GameState>(content);
 
-    if (gameState.player != null)
-    {
-      gameState.player.deck = CardReader.GetCardsFromIds(gameState.player.deckCardIds, ref cards);
-    }
+    gameState.player?.SetDeck(CardReader.GetCardsFromIds(gameState.player.GetDeckCardIds(), ref cards));
 
     return gameState;
   }
@@ -54,15 +51,15 @@ public static class SaveGameHelper
       return false;
     }
 
-    var backupDeck = gameState.player.deck.ToList();
+    var backupDeck = gameState.player.GetDeck().ToList();
 
     //We remove full card lists before exporting as these bloat the save file.
     //Make sure that you repopulate the player's deck based on the stored ids when resuming a save state.
-    gameState.player.deck = null;
+    gameState.player.SetDeck(null);
 
     var content = ObjectToJson(gameState, true);
       
-    gameState.player.deck = backupDeck;
+    gameState.player.SetDeck(backupDeck);
 
     if (cryptoKey != null)
     {

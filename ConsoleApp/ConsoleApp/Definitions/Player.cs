@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,8 +19,9 @@ public class Player
     completedNodeLocations  = player.completedNodeLocations?.ToList();
     completedMapCount       = player.completedMapCount;
     health                  = player.health;
-    deckCardIds             = player.deckCardIds?.ToList();
-    deck                    = player.deck?.ToList();
+    _deck                    = player._deck?.ToList();
+    
+    RefreshDeckCardIds();
   }
 
   public Player(
@@ -29,7 +31,6 @@ public class Player
     List<Tuple<int, int>> completedNodeLocations,
     int                   completedMapCount,
     int                   health,
-    List<string>          deckCardIds,
     List<Card>            deck
   )
   {
@@ -39,8 +40,9 @@ public class Player
     this.completedNodeLocations = completedNodeLocations;
     this.completedMapCount      = completedMapCount;
     this.health                 = health;
-    this.deckCardIds            = deckCardIds;
-    this.deck                   = deck;
+    this._deck                   = deck;
+    
+    RefreshDeckCardIds();
   }
 
   public string                 name;
@@ -49,6 +51,33 @@ public class Player
   public List<Tuple<int, int>>  completedNodeLocations;
   public int                    completedMapCount;
   public int                    health;
-  public List<string>           deckCardIds;
-  public List<Card>             deck;
+  private List<Card>            _deck;
+  [JsonProperty]
+  private List<string> _deckCardIds;
+
+  public List<Card> GetDeck()
+  {
+    return _deck;
+  }
+
+  public void SetDeck(List<Card> deck)
+  {
+    _deck = deck;
+  }
+
+  public void AddToDeck(Card card)
+  {
+    _deck.Add(card);
+    RefreshDeckCardIds();
+  }
+
+  private void RefreshDeckCardIds()
+    => _deckCardIds = _deck?.Select(card => card.id).ToList();
+
+  public List<string> GetDeckCardIds()
+  {
+    RefreshDeckCardIds();
+    return _deckCardIds;
+  }
+
 }
