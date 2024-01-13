@@ -90,8 +90,7 @@ namespace MaM.GameLogic
 
     private static void ProcessCardEffects(Card card, ref BattlePack battlePack, ref BattleTracker battleTracker)
     {
-      var powers = card.defaultActions.Where(x => x.Item1 == CardAttribute.P);
-      battleTracker.power += powers.Sum(attack => attack.Item2);
+      battleTracker.power += card.power;
 
       //TODO - process all card effects/attributes
     }

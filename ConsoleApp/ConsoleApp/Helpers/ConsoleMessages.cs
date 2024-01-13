@@ -95,18 +95,32 @@ class ConsoleMessages
 
   private static void PrintCards(List<Card> cards)
   {
-    foreach (var card in cards)
+    for (var index = 0; index < cards.Count; index++)
     {
+      var card = cards[index];
+
+      var abilityString = card.ability.ToString().ToSentenceCase();
+      if (card.ability != CardAbility.NONE)
+      {
+        abilityString += ", " + card.abilityCount;
+      }
+      
       Console.WriteLine(
+        index + 1 + ")" +
+        Tab +
         UserInput.GetPrintableCardName(card.name) +
-        Tab + Tab + Pipe + Tab +
-        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
-        Tab + Pipe + Tab +
-        "Power Cost :" + card.powerCost+
-        Tab + Pipe + Tab +
-        "Manna Cost :" + card.mannaCost+
-        Tab + Pipe + Tab +
-        "Guild:" + card.guild
+        Tab + Pipe +
+        "Guild : " + card.guild +
+        Tab + Pipe +
+        "Power Cost : " + ("" + card.powerCost).PadRight(3) +
+        Tab + Pipe +
+        "Manna Cost : " + ("" + card.mannaCost).PadRight(3) +
+        Tab + Pipe +
+        "Total Cost : " + ("" + (card.powerCost + card.mannaCost)).PadRight(3) +
+        Tab + Pipe +
+        "Power : " + ("" + card.power).PadRight(3) +
+        Tab + Pipe +
+        "Ability : " + abilityString
       );
     }
 
@@ -139,24 +153,7 @@ class ConsoleMessages
   public static void PromptForCardDraft(ref List<Card> offeredCards)
   {
     Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
-    for (var index = 0; index < offeredCards.Count; index++)
-    {
-      var card = offeredCards[index];
-
-      Console.WriteLine(
-        index + 1 + ")" +
-        Tab +
-        UserInput.GetPrintableCardName(card.name) +
-        Tab + Tab + Pipe + Tab +
-        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
-        Tab + Pipe + Tab +
-        "Power Cost :" + card.powerCost +
-        Tab + Pipe + Tab +
-        "Manna Cost :" + card.mannaCost +
-        Tab + Pipe + Tab +
-        "Guild:" + card.guild
-      );
-    }
+    PrintCards(offeredCards);
   }
 
   public static void Death(ref Journey journey)
@@ -274,26 +271,7 @@ class ConsoleMessages
 
     Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
     Console.WriteLine("0) PLAY ALL CARDS");
-
-    for (var index = 0; index < allCardsInHand.Count; index++)
-    {
-      var card = allCardsInHand[index];
-
-      Console.WriteLine(
-        index + 1 + ")" +
-        Tab +
-        UserInput.GetPrintableCardName(card.name) +
-        Tab + Tab + Pipe + Tab +
-        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
-        Tab + Pipe + Tab +
-        "Power Cost :" + card.powerCost +
-        Tab + Pipe + Tab +
-        "Manna Cost :" + card.mannaCost +
-        Tab + Pipe + Tab +
-        "Guild: " + card.guild
-      );
-    }
-
+    PrintCards(allCardsInHand);
     Console.WriteLine("-1) SKIP TO NEXT PHASE");
   }
 
@@ -326,25 +304,7 @@ class ConsoleMessages
   {
     Console.WriteLine("\nSelect one of the following cards to recruit :");
     Console.WriteLine("\n0) SKIP TO NEXT PHASE");
-
-    for (var index = 0; index < offeredCards.Count; index++)
-    {
-      var card = offeredCards[index];
-
-      Console.WriteLine(
-        index + 1 + ")" +
-        Tab +
-        UserInput.GetPrintableCardName(card.name) +
-        Tab + Tab + Pipe + Tab +
-        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
-        Tab + Pipe + Tab +
-        "Power Cost :" + card.powerCost +
-        Tab + Pipe + Tab +
-        "Manna Cost :" + card.mannaCost +
-        Tab + Pipe + Tab +
-        "Guild:" + card.guild
-      );
-    }
+    PrintCards(offeredCards);
   }
 
   public static void RecruitFailed(Card card)
@@ -379,25 +339,7 @@ class ConsoleMessages
   public static void PromptToChooseReward(List<Card> offeredRewards)
   {
     Console.WriteLine("\nChoose a reward: ");
-    
-    for (var index = 0; index < offeredRewards.Count; index++)
-    {
-      var card = offeredRewards[index];
-
-      Console.WriteLine(
-        index + 1 + ")" +
-        Tab +
-        UserInput.GetPrintableCardName(card.name) +
-        Tab + Tab + Pipe + Tab +
-        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
-        Tab + Pipe + Tab +
-        "Power Cost :" + card.powerCost +
-        Tab + Pipe + Tab +
-        "Manna Cost :" + card.mannaCost +
-        Tab + Pipe + Tab +
-        "Guild:" + card.guild
-      );
-    }
+    PrintCards(offeredRewards);
   }
 
   public static void OfferCampsiteExchange()
@@ -410,49 +352,13 @@ class ConsoleMessages
   public static void PromptExchangeLifeForCard(ref List<Card> cards)
   {
     Console.WriteLine("\nSelect one of the following cards :");
-
-    for (var index = 0; index < cards.Count; index++)
-    {
-      var card = cards[index];
-
-      Console.WriteLine(
-        index + 1 + ")" +
-        Tab +
-        UserInput.GetPrintableCardName(card.name) +
-        Tab + Tab + Pipe + Tab +
-        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
-        Tab + Pipe + Tab +
-        "Power Cost :" + card.powerCost +
-        Tab + Pipe + Tab +
-        "Manna Cost :" + card.mannaCost +
-        Tab + Pipe + Tab +
-        "Guild:" + card.guild
-      );
-    }
+    PrintCards(cards);
   }  
   
   public static void PromptExchangeCardForLife(ref Player player, List<Card> cards)
   {
     Console.WriteLine("\nSelect one of the following cards :");
-
-    for (var index = 0; index < cards.Count; index++)
-    {
-      var card = cards[index];
-
-      Console.WriteLine(
-        index + 1 + ")" +
-        Tab +
-        UserInput.GetPrintableCardName(card.name) +
-        Tab + Tab + Pipe + Tab +
-        "Abilities :" + UserInput.GetPrintableCardAbilities(card) +
-        Tab + Pipe + Tab +
-        "Power Cost :" + card.powerCost +
-        Tab + Pipe + Tab +
-        "Manna Cost :" + card.mannaCost +
-        Tab + Pipe + Tab +
-        "Guild:" + card.guild
-      );
-    }
+    PrintCards(cards);
   }
 
   public static void PrintHealth(int health)

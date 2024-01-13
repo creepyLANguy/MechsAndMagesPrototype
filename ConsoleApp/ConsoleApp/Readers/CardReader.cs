@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using MaM.Definitions;
 using MaM.Helpers;
 using Newtonsoft.Json;
@@ -10,39 +9,18 @@ namespace MaM.Readers;
 public struct JsonIntermediateCard
 {
   public int    quantity;
+  public string id;
   public string name;
   public string guild;
   public int    powerCost;
   public int    mannaCost;
-  public string defaultAbilities;
-  public string id;
+  public int    power;
+  public string ability;
+  public int?    abilityCount;
 }
 
 public static class CardReader
 {
-  private static List<Tuple<CardAttribute, int>> GetListOfCardAttributes(string attributes)
-  {
-    var list = new List<Tuple<CardAttribute, int>>();
-    
-    if (attributes == null)
-    {
-      return list;
-    }
-      
-    var splits = attributes.Split(StringLiterals.ListDelim).ToList();
-    foreach (var split in splits)
-    {
-      var marker = StringSplitters.GetAlphabeticPart(split);
-      if (Enum.TryParse<CardAttribute>(marker, out var cardAttribute))
-      {
-        var numericValue = StringSplitters.GetNumericPart(split);
-        list.Add(new Tuple<CardAttribute, int>(cardAttribute, numericValue));
-      }
-    }
-
-    return list;
-  }
-
   private static List<Card> PopulateCardsFromJsonIntermediates(List<JsonIntermediateCard> intermediateCards)
   {
     var cards = new List<Card>();
@@ -53,6 +31,11 @@ public static class CardReader
       {
         guild = Guild.NEUTRAL;
       }
+      
+      if (Enum.TryParse(intermediateCard.ability, true, out CardAbility ability) == false)
+      {
+        ability = CardAbility.NONE;
+      }
 
       for (var i = 0; i < intermediateCard.quantity; ++i)
       {
@@ -61,8 +44,10 @@ public static class CardReader
           intermediateCard.name,
           guild,
           intermediateCard.powerCost, 
-          intermediateCard.mannaCost, 
-          GetListOfCardAttributes(intermediateCard.defaultAbilities)
+          intermediateCard.mannaCost,
+          intermediateCard.power,
+          ability,
+          intermediateCard.abilityCount ?? 0
         );
 
         cards.Add(card);

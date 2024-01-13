@@ -72,7 +72,7 @@ public static class FileHelper
 
     var cells = workbook.Worksheets[worksheetIndex].Cells;
 
-    var range = cells.CreateRange(0, 0, cells.LastCell.Row + 1, cells.LastCell.Column + 1);
+    var range = cells.CreateRange(0, 0, cells.MaxDataRow + 1, cells.MaxDataColumn + 1);
 
     var exportOptions = new ExportRangeToJsonOptions();
 

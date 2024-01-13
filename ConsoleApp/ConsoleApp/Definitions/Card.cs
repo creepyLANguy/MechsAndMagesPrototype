@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MaM.Definitions;
+﻿namespace MaM.Definitions;
 
 public struct Card
 {
@@ -11,7 +8,9 @@ public struct Card
     Guild guild,
     int powerCost,
     int mannaCost,
-    List<Tuple<CardAttribute, int>> defaultActions
+    int power,
+    CardAbility ability,
+    int abilityCount
   )
   {
     this.id = id;
@@ -19,13 +18,17 @@ public struct Card
     this.guild = guild;
     this.powerCost = powerCost;
     this.mannaCost= mannaCost;
-    this.defaultActions = defaultActions;
+    this.power = power;
+    this.ability = ability;
+    this.abilityCount = abilityCount;
   }
 
+  public string id;
   public string name;
   public Guild guild;
   public int powerCost;
   public int mannaCost;
-  public List<Tuple<CardAttribute, int>> defaultActions;
-  public string id;
+  public int power;
+  public CardAbility ability;
+  public int abilityCount;
 }
