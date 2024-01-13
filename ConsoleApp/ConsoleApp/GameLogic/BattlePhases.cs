@@ -15,7 +15,7 @@ namespace MaM.GameLogic
       {
         ConsoleMessages.PrintHand(battlePack.hand.GetAllCardsInHand());
 
-        ConsoleMessages.PrintMarket(battlePack.market.GetDisplayedCards());
+        ConsoleMessages.PrintMarket(battlePack.market.GetDisplayedCards_All());
 
         if (player.health - mulliganCost <= 0)
         {
@@ -56,8 +56,12 @@ namespace MaM.GameLogic
       {
         ConsoleMessages.PromptToPlayCard(ref battlePack);
 
+#if DEBUG
+        var selection = 0;
+#else
         var selection = UserInput.GetInt();
-
+#endif
+        
         var allCardsInHand = battlePack.hand.GetAllCardsInHand();
 
         if (selection < 0)

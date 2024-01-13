@@ -1,4 +1,6 @@
-﻿using MaM.Definitions;
+﻿using System;
+using System.Linq;
+using MaM.Definitions;
 using MaM.Helpers;
 
 namespace MaM.GameLogic
@@ -37,23 +39,28 @@ namespace MaM.GameLogic
 
     public static void RunRecruitAction(ref BattlePack battlePack, ref BattleTracker b)
     {
-      while (b.power > 0)
+      while (battlePack.market.GetDisplayedCards_Affordable(b.power, b.manna).Count > 0)
       {
         ConsoleMessages.PrintBattleState(b);
-        ConsoleMessages.PromptToRecruit(battlePack.market.GetDisplayedCards());
+        ConsoleMessages.PromptToRecruit(battlePack.market.GetDisplayedCards_All());
 
         var choice = UserInput.GetInt();
         if (choice == 0)
         {
           break;
         }
-
         --choice;
+
+        while (choice >= battlePack.market.GetDisplayedCards_All().Count)
+        {
+          ConsoleMessages.PromptInvalidChoiceTryAgain();
+          choice = UserInput.GetInt();
+        }
 
         var chosenCard = battlePack.market.TryFetch(choice, ref b);
         if (chosenCard == null)
         {
-          var intendedCard = battlePack.market.GetDisplayedCards()[choice];
+          var intendedCard = battlePack.market.GetDisplayedCards_All()[choice];
           ConsoleMessages.RecruitFailed(intendedCard);
           continue;
         }

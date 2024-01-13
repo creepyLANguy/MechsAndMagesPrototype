@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using MaM.Helpers;
@@ -25,7 +24,7 @@ public class BattlePack
     this.node = node;
     this.gameContents = gameContents;
 
-    SetupMarket();
+    SetupMarket(node.fightType);
 
     SetupDeck();
 
@@ -36,15 +35,19 @@ public class BattlePack
     SetupScrapheap();
   }
 
-  private void SetupMarket()
+  private void SetupMarket(FightType fightType)
   {
-    var m1 = gameContents.player.deck.Where(card => card.guild != Guild.NEUTRAL).ToList();
-    var m2 = gameContents.cards.Where(card => card.guild == node.guild).ToList();
+    var playerCardsContribution = gameContents.player.deck.Where(card => card.guild != Guild.NEUTRAL).ToList();
 
-    market = new Market(
+    var enemyCardsContribution =
+      fightType == FightType.BOSS
+        ? gameContents.cards
+        : gameContents.cards.Where(card => card.guild == node.guild).ToList();
+
+        market = new Market(
       node.enemy.marketSize,
-      m1,
-      m2
+      playerCardsContribution,
+      enemyCardsContribution
     );
 
     market.Fill();
@@ -52,7 +55,7 @@ public class BattlePack
 
   private void SetupDeck()
   {
-    var startingCards = gameContents.cards.Where(card => card.guild == Guild.NEUTRAL).ToList();
+    var startingCards = gameContents.player.deck.Where(card => card.guild == Guild.NEUTRAL).ToList();
     startingCards.Shuffle();
     deck = new Stack<Card>(startingCards);
   }

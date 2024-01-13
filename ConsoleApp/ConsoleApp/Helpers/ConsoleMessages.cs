@@ -345,4 +345,27 @@ class ConsoleMessages
     Console.WriteLine("\nYou could not recruit " + card.name);
     Console.WriteLine("Please select another card and make sure you have the required amounts of power and manna.");
   }
+
+  public static void PromptInvalidChoiceTryAgain()
+  {
+    Console.WriteLine("\nInvalid choice, please make sure your option exists in the list and try again...");
+  }
+
+  public static void PrintFightResult(FightResult fightResult)
+  {
+    var message = "";
+    switch (fightResult)
+    {
+      case FightResult.PLAYER_LOSE:
+        message += "\nYou LOST the fight....";
+        break;
+      case FightResult.PLAYER_WIN:
+        message += "You WON the fight!";
+        break;
+      case FightResult.NONE:
+      default:
+        break;
+    }
+    Console.WriteLine(message);
+  }
 }

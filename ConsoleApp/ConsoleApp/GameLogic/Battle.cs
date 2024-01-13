@@ -26,6 +26,8 @@ public static class Battle
         ref battleTracker);
     }
 
+    ConsoleMessages.PrintFightResult(fightResult);
+
     gameContents.player.health = battleTracker.playerHealth;
 
     return fightResult;
