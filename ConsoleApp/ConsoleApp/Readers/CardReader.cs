@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MaM.Definitions;
+using MaM.Enums;
 using MaM.Helpers;
 using Newtonsoft.Json;
 

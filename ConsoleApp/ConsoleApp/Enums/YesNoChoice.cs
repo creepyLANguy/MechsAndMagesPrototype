@@ -1,4 +1,4 @@
-﻿namespace MaM.Definitions;
+﻿namespace MaM.Enums;
 
 enum YesNoChoice
 {

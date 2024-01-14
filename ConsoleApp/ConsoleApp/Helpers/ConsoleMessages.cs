@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using MaM.Menus;
 using System.Linq;
+using MaM.Enums;
 
 namespace MaM.Helpers;
 class ConsoleMessages

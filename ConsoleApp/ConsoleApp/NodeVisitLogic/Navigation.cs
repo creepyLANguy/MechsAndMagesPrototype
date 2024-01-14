@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MaM.Definitions;
+using MaM.Enums;
 using MaM.Generators;
 using MaM.Helpers;
 

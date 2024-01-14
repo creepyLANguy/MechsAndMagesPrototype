@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MaM.Definitions;
+using MaM.Enums;
 using MaM.Helpers;
 using Newtonsoft.Json;
 

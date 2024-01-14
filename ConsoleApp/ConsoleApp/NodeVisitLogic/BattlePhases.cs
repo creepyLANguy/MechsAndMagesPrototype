@@ -1,6 +1,7 @@
 ﻿using MaM.Definitions;
+using MaM.Enums;
 using MaM.Helpers;
-using static MaM.Definitions.YesNoChoice;
+using static MaM.Enums.YesNoChoice;
 
 namespace MaM.GameLogic
 {

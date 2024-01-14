@@ -1,4 +1,5 @@
 ﻿using System;
+using MaM.Enums;
 using MaM.Helpers;
 
 namespace MaM.Definitions;
@@ -30,7 +31,7 @@ public class Fight : Node
     guild = GetRandomNonNeutralGuild();
   }
 
-  private Guild GetRandomNonNeutralGuild()
+  private static Guild GetRandomNonNeutralGuild()
   {
     var chosen = Guild.NEUTRAL;
     var values = Enum.GetValues(typeof(Guild));

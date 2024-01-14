@@ -1,4 +1,4 @@
-﻿using MaM.Definitions;
+﻿using MaM.Enums;
 using MaM.Helpers;
 
 namespace MaM.Menus;

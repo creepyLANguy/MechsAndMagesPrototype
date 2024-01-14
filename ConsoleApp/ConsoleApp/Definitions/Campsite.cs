@@ -1,4 +1,6 @@
-﻿namespace MaM.Definitions;
+﻿using MaM.Enums;
+
+namespace MaM.Definitions;
 
 public class Campsite : Node
 {
