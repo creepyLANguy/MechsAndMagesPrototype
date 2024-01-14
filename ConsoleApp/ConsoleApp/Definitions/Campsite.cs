@@ -4,10 +4,9 @@ namespace MaM.Definitions;
 
 public class Campsite : Node
 {
-  public int countCardsOnOffer;
+  public int countCardsOnOffer; //Make sure this is set during CompleteSetupOfAllNodes()
 
-  //TODO - make countCardsOnOffer configurable
-  public Campsite(Node baseNode, int countCardsOnOffer = 3)
+  public Campsite(Node baseNode)
     : base(
       baseNode.nodeType,
       baseNode.isMystery,
@@ -19,6 +18,5 @@ public class Campsite : Node
       ) 
   {
     nodeType = NodeType.CAMPSITE;
-    this.countCardsOnOffer = countCardsOnOffer;
   }
 }

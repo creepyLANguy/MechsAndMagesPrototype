@@ -13,4 +13,5 @@ public struct GameConfig
   public List<InitialCardSelection> initialCardSelections;
   public int                        journeyLength;
   public int                        handSize;
+  public int                        campsiteCardsOnOfferCount;
 }

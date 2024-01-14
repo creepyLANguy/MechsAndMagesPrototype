@@ -14,7 +14,8 @@ public static class JourneyGenerator
     List<MapConfig> mapConfigs,
     ref List<Enemy> normalEnemies,
     ref List<Enemy> eliteEnemies,
-    ref List<Enemy> bosses
+    ref List<Enemy> bosses,
+    int campsiteCardsOnOfferCount
   )
   {
     var journey = new Journey();
@@ -22,7 +23,15 @@ public static class JourneyGenerator
     for (var index = 0; index < journeyLength; ++index)
     {
       var mapConfig = index < mapConfigs.Count ? mapConfigs[index] : mapConfigs[^1];
-      var map = GenerateMap(index, mapConfig, ref normalEnemies, ref eliteEnemies, ref bosses);
+      
+      var map = GenerateMap(
+        index, 
+        mapConfig, 
+        ref normalEnemies, 
+        ref eliteEnemies, 
+        ref bosses, 
+        campsiteCardsOnOfferCount);
+      
       journey.maps.Add(map);
     }
 
@@ -34,7 +43,8 @@ public static class JourneyGenerator
     MapConfig mapConfig,
     ref List<Enemy> normalEnemies,
     ref List<Enemy> eliteEnemies,
-    ref List<Enemy> bosses
+    ref List<Enemy> bosses,
+    int campsiteCardsOnOfferCount
   )
   {
     var map = new Map(index, mapConfig.width, mapConfig.height);
@@ -65,7 +75,12 @@ public static class JourneyGenerator
 
     AttachBossNode(ref map);
 
-    CompleteSetupOfAllNodes(ref map, ref normalEnemies, ref eliteEnemies, ref bosses);
+    CompleteSetupOfAllNodes(
+      ref map, 
+      ref normalEnemies, 
+      ref eliteEnemies, 
+      ref bosses, 
+      campsiteCardsOnOfferCount);
 
     return map;
   }
@@ -295,7 +310,8 @@ public static class JourneyGenerator
     ref Map map,
     ref List<Enemy> normalEnemies,
     ref List<Enemy> eliteEnemies,
-    ref List<Enemy> bosses
+    ref List<Enemy> bosses,
+    int campsiteCardsOnOfferCount
   )
   {
     for (var x = 0; x < map.width; ++x)
@@ -312,21 +328,19 @@ public static class JourneyGenerator
         switch (node.nodeType)
         {
           case NodeType.CAMPSITE:
-            SetupCampsite(ref node);
+            SetupCampsite(ref node, campsiteCardsOnOfferCount);
             break;
           case NodeType.FIGHT:
-          {
             SetupFight(ref node, ref map, ref normalEnemies, ref eliteEnemies, ref bosses);
             break;
-          }
         }
       }
     }
   }
 
-  private static void SetupCampsite(ref Node node)
+  private static void SetupCampsite(ref Node node, int campsiteCardsOnOfferCount)
   {
-    //TODO - setup campsite
+    ((Campsite) node).countCardsOnOffer = campsiteCardsOnOfferCount;
   }
 
   private static void SetupFight(

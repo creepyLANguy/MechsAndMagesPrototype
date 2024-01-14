@@ -47,7 +47,8 @@ public static class GameGenerator
       gameConfig.mapConfigs,
       ref normalEnemies,
       ref eliteEnemies,
-      ref bosses);
+      ref bosses,
+      gameConfig.campsiteCardsOnOfferCount);
 
 #if DEBUG
     GraphVis.SaveMapsAsDotFiles(ref journey, false);
