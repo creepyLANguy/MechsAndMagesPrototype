@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using MaM.Definitions;
 using MaM.Enums;
 using MaM.Helpers;
@@ -139,7 +138,7 @@ namespace MaM.NodeVisitLogic
       var cardsInHandCount = battlePack.hand.GetAllCardsInHand().Count;
 
       var coinToss = UbiRandom.Next(0, 2);
-      var stompFromHand = coinToss == 0 && cardsInHandCount > 0; //TODO - truth table this
+      var stompFromHand = coinToss == 0 && cardsInHandCount > 0;
 
       if (stompFromHand)
       {
@@ -156,7 +155,6 @@ namespace MaM.NodeVisitLogic
           }
           else
           {
-            stompFromHand = false;
             StompSelf(ref battlePack);
           }
         }

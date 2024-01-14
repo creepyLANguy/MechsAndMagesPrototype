@@ -177,7 +177,7 @@ class Terminal
   {
     Console.WriteLine("\nYOU DIED\nCompletion Percent : " + GetCompletionPercentage(ref journey) + "%");
 
-    double GetCompletionPercentage(ref Journey journey, int decimalPlaces = 0)
+    static double GetCompletionPercentage(ref Journey journey, int decimalPlaces = 0)
     {
       var completedNodes = 0;
       foreach (var map in journey.maps)
@@ -377,7 +377,7 @@ class Terminal
     PrintCards(cards);
   }  
   
-  public static void PromptExchangeCardForLife(ref Player player, List<Card> cards)
+  public static void PromptExchangeCardForLife(List<Card> cards)
   {
     Console.WriteLine("\nSelect one of the following cards :");
     PrintCards(cards);

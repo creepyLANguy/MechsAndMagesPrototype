@@ -16,20 +16,20 @@ public static class Rest
 
     if (choice == 1)
     {
-      return ExecuteCardForLifeExchange(node, ref gameContents);
+      return ExecuteCardForLifeExchange(ref gameContents);
     }
     else
     {
-      return ExecuteLifeForCardExchange(node, ref gameContents);
+      return ExecuteLifeForCardExchange(ref gameContents, node.countCardsOnOffer);
     }
   }
 
-  private static FightResult ExecuteCardForLifeExchange(Campsite node, ref GameContents gameContents)
+  private static FightResult ExecuteCardForLifeExchange(ref GameContents gameContents)
   {
     var cardsToSacrifice = gameContents.player.GetDeck()
       .Where(card => (card.powerCost + card.mannaCost) > 0 && card.guild != Guild.NEUTRAL).ToList();
 
-    Terminal.PromptExchangeCardForLife(ref gameContents.player, cardsToSacrifice);
+    Terminal.PromptExchangeCardForLife(cardsToSacrifice);
 
     var cardChosenIndex = UserInput.GetInt() - 1;
     var cardChosen = cardsToSacrifice[cardChosenIndex];
@@ -42,13 +42,13 @@ public static class Rest
     return FightResult.NONE;
   }
 
-  private static FightResult ExecuteLifeForCardExchange(Campsite node, ref GameContents gameContents)
+  private static FightResult ExecuteLifeForCardExchange(ref GameContents gameContents, int countCardsOnOffer)
   {
     var nonNeutralCards = gameContents.cards
       .Where(card => (card.powerCost + card.mannaCost) > 0 && card.guild != Guild.NEUTRAL).ToList();
     nonNeutralCards.Shuffle();
 
-    var cardsOnOffer = nonNeutralCards.Take(node.countCardsOnOffer).ToList();
+    var cardsOnOffer = nonNeutralCards.Take(countCardsOnOffer).ToList();
 
     Terminal.PromptExchangeLifeForCard(ref cardsOnOffer);
 
