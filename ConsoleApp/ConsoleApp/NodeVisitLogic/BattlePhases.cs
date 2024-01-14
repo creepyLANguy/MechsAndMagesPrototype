@@ -138,7 +138,7 @@ namespace MaM.NodeVisitLogic
       var cardsInHandCount = battlePack.hand.GetAllCardsInHand().Count;
 
       var coinToss = UbiRandom.Next(0, 2);
-      var stompFromHand = coinToss == 0 && cardsInHandCount > 0;
+      var stompFromHand = coinToss == 1 && cardsInHandCount > 0;
 
       if (stompFromHand)
       {
