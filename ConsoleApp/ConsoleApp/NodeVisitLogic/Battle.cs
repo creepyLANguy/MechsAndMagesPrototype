@@ -3,7 +3,7 @@ using MaM.Definitions;
 using MaM.Enums;
 using MaM.Helpers;
 
-namespace MaM.GameLogic;
+namespace MaM.NodeVisitLogic;
 
 public static class Battle
 {
@@ -93,7 +93,8 @@ public static class Battle
 
     ConsoleMessages.PrintBattleState(battleTracker);
 
-    var playerTurnAction = BattlePhases.RunActionSelectionPhase();
+    var canRecruit = battlePack.market.GetDisplayedCards_Affordable(battleTracker.power, battleTracker.manna).Count > 0;
+    var playerTurnAction = BattlePhases.RunActionSelectionPhase(canRecruit);
 
     battleTracker.playerIsDefending = playerTurnAction == PlayerTurnAction.DEFEND;
 

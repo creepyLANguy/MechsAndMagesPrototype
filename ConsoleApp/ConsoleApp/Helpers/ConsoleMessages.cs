@@ -70,11 +70,16 @@ class ConsoleMessages
     Console.WriteLine(message);
   }
 
-  public static void PromptForAction()
+  public static void PromptForAction(bool canRecruit)
   {
     var message = "\nSelect an action:";
     foreach (PlayerTurnAction turnAction in Enum.GetValues(typeof(PlayerTurnAction)))
     {
+      if (turnAction == PlayerTurnAction.RECRUIT && canRecruit == false)
+      {
+        continue;
+      }
+
       message += "\n" + turnAction.ToString("D") + ") " + turnAction.ToString().ToSentenceCase();
     }
     Console.WriteLine(message);
@@ -119,7 +124,7 @@ class ConsoleMessages
         Tab + Pipe +
         "Total Cost : " + ("" + (card.powerCost + card.mannaCost)).PadRight(3) +
         Tab + Pipe +
-        "Power : " + ("" + card.power).PadRight(3) +
+        "Power : " + ("" + card.power).PadRight(2) +
         Tab + Pipe +
         "Ability : " + abilityString
       );

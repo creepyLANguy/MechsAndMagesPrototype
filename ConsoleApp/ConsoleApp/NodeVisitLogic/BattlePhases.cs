@@ -3,7 +3,7 @@ using MaM.Enums;
 using MaM.Helpers;
 using static MaM.Enums.YesNoChoice;
 
-namespace MaM.GameLogic
+namespace MaM.NodeVisitLogic
 {
     class BattlePhases
   {
@@ -24,22 +24,24 @@ namespace MaM.GameLogic
 
         ConsoleMessages.OfferMulligan(player.health, mulliganCost);
 #if DEBUG
-        var choice = YES;
+        var choice = NO;
 #else
       var choice = (YesNoChoice)UserInput.GetInt();
 #endif
-        if (choice == YES)
+        if (choice == NO)
         {
-          player.health -= mulliganCost;
-          battlePack.Mulligan();
-          ++mulliganCost;
+          break;
         }
+
+        player.health -= mulliganCost;
+        battlePack.Mulligan();
+        ++mulliganCost;
       }
     }
 
-    public static PlayerTurnAction RunActionSelectionPhase()
+    public static PlayerTurnAction RunActionSelectionPhase(bool canRecruit)
     {
-      ConsoleMessages.PromptForAction();
+      ConsoleMessages.PromptForAction(canRecruit);
       return (PlayerTurnAction)UserInput.GetInt();
     }
 
@@ -93,7 +95,6 @@ namespace MaM.GameLogic
         {
           case CardAbility.DRAW:
             battlePack.hand.Draw_Single(ref battlePack.deck, ref battlePack.graveyard);
-            //TODO - make sure that cards drawn from an effect can be played this turn, before action step. 
             break;
           case CardAbility.HEAL:
             battleTracker.playerHealth += 1;
@@ -105,7 +106,7 @@ namespace MaM.GameLogic
             battlePack.market.Cycle();
             break;
           case CardAbility.SHUN:
-            //TODO - process stomp ability
+            //TODO - process shun ability
             break;
           case CardAbility.NONE:
           default:

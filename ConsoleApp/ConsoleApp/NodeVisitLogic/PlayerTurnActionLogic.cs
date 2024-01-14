@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
-using MaM.Definitions;
+﻿using MaM.Definitions;
 using MaM.Helpers;
 
-namespace MaM.GameLogic
+namespace MaM.NodeVisitLogic
 {
   class PlayerTurnActionLogic
   {

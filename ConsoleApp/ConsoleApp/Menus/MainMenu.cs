@@ -1,6 +1,6 @@
-﻿using MaM.GameLogic;
-using MaM.Helpers;
+﻿using MaM.Helpers;
 using MaM.Definitions;
+using MaM.NodeVisitLogic;
 
 namespace MaM.Menus;
 

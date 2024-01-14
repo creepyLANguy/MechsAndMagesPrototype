@@ -61,12 +61,12 @@ public static class GameGenerator
     var playerName = GetPlayerName();
 
     var deck = cards.Where(card => card.guild == Guild.NEUTRAL).ToList();
+    
     var selectionSet = cards.Where(card => card.guild != Guild.NEUTRAL).ToList();
+    selectionSet.Shuffle();
 
     var selectedCards = PromptPlayerForInitialCardSelections(ref initialSelections, ref selectionSet);
     deck.AddRange(selectedCards);
-
-    var deckIds = deck.Select(card => card.id).ToList();
 
     var player = new Player(
       playerName,

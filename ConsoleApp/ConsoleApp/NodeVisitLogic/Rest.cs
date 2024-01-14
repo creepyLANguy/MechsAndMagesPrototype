@@ -3,11 +3,10 @@ using MaM.Definitions;
 using MaM.Enums;
 using MaM.Helpers;
 
-namespace MaM.GameLogic;
+namespace MaM.NodeVisitLogic;
 
 public static class Rest
 {
-  //TODO - TEST both options.
   public static FightResult Run(Campsite node, ref GameContents gameContents)
   {
     ConsoleMessages.PrintHealth(gameContents.player.health);
@@ -32,7 +31,7 @@ public static class Rest
 
     ConsoleMessages.PromptExchangeCardForLife(ref gameContents.player, cardsToSacrifice);
 
-    var cardChosenIndex = UserInput.GetInt();
+    var cardChosenIndex = UserInput.GetInt() - 1;
     var cardChosen = cardsToSacrifice[cardChosenIndex];
 
     gameContents.player.health += (cardChosen.mannaCost + cardChosen.powerCost) * 2;
@@ -45,13 +44,15 @@ public static class Rest
 
   private static FightResult ExecuteLifeForCardExchange(Campsite node, ref GameContents gameContents)
   {
-    var cardsOnOffer = gameContents.cards
-      .Where(card => (card.powerCost + card.mannaCost) > 0 && card.guild != Guild.NEUTRAL)
-      .Take(node.countCardsOnOffer).ToList();
+    var nonNeutralCards = gameContents.cards
+      .Where(card => (card.powerCost + card.mannaCost) > 0 && card.guild != Guild.NEUTRAL).ToList();
+    nonNeutralCards.Shuffle();
 
-    ConsoleMessages.PromptExchangeLifeForCard(ref gameContents.cards);
+    var cardsOnOffer = nonNeutralCards.Take(node.countCardsOnOffer).ToList();
 
-    var cardChosenIndex = UserInput.GetInt();
+    ConsoleMessages.PromptExchangeLifeForCard(ref cardsOnOffer);
+
+    var cardChosenIndex = UserInput.GetInt() - 1;
     var cardChosen = cardsOnOffer[cardChosenIndex];
 
     gameContents.player.health -= (cardChosen.mannaCost + cardChosen.powerCost) * 2;

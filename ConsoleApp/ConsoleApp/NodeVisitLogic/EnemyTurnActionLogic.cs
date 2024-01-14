@@ -1,8 +1,8 @@
-﻿using MaM.Definitions;
+﻿using System;
+using MaM.Definitions;
 using MaM.Helpers;
-using System;
 
-namespace MaM.GameLogic
+namespace MaM.NodeVisitLogic
 {
     class EnemyTurnActionLogic
   {

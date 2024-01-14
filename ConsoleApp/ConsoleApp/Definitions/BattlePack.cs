@@ -58,6 +58,7 @@ public class BattlePack
   {
     var startingCards = gameContents.player.GetDeck().Where(card => card.guild == Guild.NEUTRAL).ToList();
     startingCards.Shuffle();
+
     deck = new Stack<Card>(startingCards);
   }
 
