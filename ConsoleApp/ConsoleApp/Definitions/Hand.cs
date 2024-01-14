@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using MaM.Helpers;
 
@@ -14,6 +13,13 @@ public class Hand
     this.defaultSize = defaultSize;
   }
 
+  private static void MoveGraveyardToDeck(ref Stack<Card> deck, ref List<Card> graveyard)
+  {
+    graveyard.Shuffle();
+    deck = new Stack<Card>(new List<Card>(graveyard));
+    graveyard.Clear();
+  }
+
   public bool Draw_Full(ref Stack<Card> deck, ref List<Card> graveyard)
   {
     var cardsToDraw = defaultSize - current.Count;
@@ -25,7 +31,7 @@ public class Hand
 
     while (deck.Count > 0)
     {
-      Draw_Single(ref deck);
+      Draw_Single(ref deck, ref graveyard);
 
       if (current.Count == defaultSize)
       {
@@ -35,12 +41,11 @@ public class Hand
 
     if (current.Count != defaultSize)
     {
-      graveyard.Shuffle();
-      deck = new Stack<Card>(new List<Card>(graveyard));
+      MoveGraveyardToDeck(ref deck, ref graveyard);
 
       while (deck.Count > 0)
       {
-        Draw_Single(ref deck);
+        Draw_Single(ref deck, ref graveyard);
 
         if (current.Count == defaultSize)
         {
@@ -52,8 +57,13 @@ public class Hand
     return current.Count != defaultSize;
   }
 
-  public void Draw_Single(ref Stack<Card> deck)
+  public void Draw_Single(ref Stack<Card> deck, ref List<Card> graveyard)
   {
+    if (deck.Count == 0 && graveyard.Count > 0)
+    {
+      MoveGraveyardToDeck(ref deck, ref graveyard);
+    }
+
     current.Add(deck.Pop());
   }
 
