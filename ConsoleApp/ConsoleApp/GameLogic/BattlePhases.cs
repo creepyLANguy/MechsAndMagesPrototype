@@ -54,10 +54,12 @@ namespace MaM.GameLogic
     {
       while (battlePack.hand.GetAllCardsInHand().Count > 0)
       {
-        ConsoleMessages.PromptToPlayCard(ref battlePack);
+        var canPlayAll = battlePack.hand.HasCardsWithOrderSensitiveEffects() == false;
+
+        ConsoleMessages.PromptToPlayCard(ref battlePack, canPlayAll);
 
 #if DEBUG
-        var selection = 0;
+        var selection = canPlayAll ? 0 : 1;
 #else
         var selection = UserInput.GetInt();
 #endif

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using MaM.Helpers;
 
 namespace MaM.Definitions;
@@ -85,5 +86,18 @@ public class Hand
   public Card GetCardAtIndex(int index)
   {
     return current[index];
+  }
+
+  public bool HasCardsWithOrderSensitiveEffects()
+  {
+    var orderSensitiveEffects = new List<CardAbility>()
+    {
+      CardAbility.SHUN,
+      CardAbility.DRAW,
+      CardAbility.CYCLE,
+      CardAbility.STOMP
+    };
+
+    return current.Any(card => orderSensitiveEffects.Contains(card.ability));
   }
 }

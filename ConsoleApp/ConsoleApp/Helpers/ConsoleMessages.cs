@@ -265,12 +265,17 @@ class ConsoleMessages
     Console.WriteLine("Saved");
   }
 
-  public static void PromptToPlayCard(ref BattlePack battlePack)
+  public static void PromptToPlayCard(ref BattlePack battlePack, bool canPlayAll)
   {
     var allCardsInHand = battlePack.hand.GetAllCardsInHand();
 
     Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
-    Console.WriteLine("0) PLAY ALL CARDS");
+
+    if (canPlayAll)
+    {
+      Console.WriteLine("0) PLAY ALL CARDS");
+    }
+
     PrintCards(allCardsInHand);
     Console.WriteLine("-1) SKIP TO NEXT PHASE");
   }
