@@ -47,7 +47,7 @@ public static class SaveGameHelper
   {
     if (filename == null)
     {
-      ConsoleMessages.FilenameWasNull();
+      Terminal.ShowFilenameWasNull();
       return false;
     }
 
@@ -73,7 +73,7 @@ public static class SaveGameHelper
   {
     if (filename == null)
     {
-      ConsoleMessages.FilenameWasNull();
+      Terminal.ShowFilenameWasNull();
       return false;
     }
 
@@ -108,7 +108,7 @@ public static class SaveGameHelper
       list.Add(new Tuple<string, int>(displayString, list.Count));
     }
 
-    ConsoleMessages.PromptForSaveSlot(list);
+    Terminal.PromptForSaveSlot(list);
 
 #if DEBUG
     const int choice = 0;

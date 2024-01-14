@@ -8,21 +8,21 @@ namespace MaM.NodeVisitLogic
   {
     public static void RunPassAction(ref BattleTracker b)
     {
-      ConsoleMessages.EnemyTurnActionPass();
+      Terminal.EnemyTurnActionPass();
 
       b.threat = 0;
     }
 
     public static void RunBuffAction(ref BattleTracker b, int value)
     {
-      ConsoleMessages.EnemyTurnActionBuff(value);
+      Terminal.EnemyTurnActionBuff(value);
 
       b.threat += value;
     }
 
     public static void RunAttackAction(ref BattleTracker b)
     {
-      ConsoleMessages.EnemyTurnActionAttack(b.threat);
+      Terminal.EnemyTurnActionAttack(b.threat);
 
       int attackValue;
       if (b.playerIsDefending)
@@ -46,14 +46,14 @@ namespace MaM.NodeVisitLogic
 
     public static void RunDefendAction(ref BattleTracker b)
     {
-      ConsoleMessages.EnemyTurnActionDefend();
+      Terminal.EnemyTurnActionDefend();
     }
 
     public static void RunLeechAction(ref BattleTracker b)
     {
       var leechable = Math.Min(b.threat, b.manna);
 
-      ConsoleMessages.EnemyTurnActionLeech(leechable);
+      Terminal.EnemyTurnActionLeech(leechable);
 
       if (leechable <= 0)
       {

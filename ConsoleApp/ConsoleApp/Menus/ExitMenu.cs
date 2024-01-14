@@ -9,7 +9,7 @@ public static class ExitMenu
   {
     var keepRunning = true;
 
-    ConsoleMessages.ShowExitMenu();
+    Terminal.ShowExitMenu();
 
     var choice = UserInput.GetInt();
     switch ((YesNoChoice)choice)

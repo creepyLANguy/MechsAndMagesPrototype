@@ -9,7 +9,7 @@ public static class Battle
 {
   public static FightResult Run(Fight node, ref GameContents gameContents)
   {
-    ConsoleMessages.StartBattle();
+    Terminal.StartBattle();
 
     var battlePack = new BattlePack(node, ref gameContents);
 
@@ -27,7 +27,7 @@ public static class Battle
         ref battleTracker);
     }
 
-    ConsoleMessages.PrintFightResult(fightResult);
+    Terminal.PrintFightResult(fightResult);
 
     if (node.fightType == FightType.ELITE)
     {
@@ -45,7 +45,7 @@ public static class Battle
     ref Enemy enemy,
     ref BattleTracker battleTracker)
   {
-    ConsoleMessages.PrintBattleState(battleTracker);
+    Terminal.PrintBattleState(battleTracker);
 
     ExecuteTurnForPlayer(
       ref gameContents.player,
@@ -58,7 +58,7 @@ public static class Battle
       return resultPlayerAction;
     }
 
-    ConsoleMessages.PrintBattleState(battleTracker);
+    Terminal.PrintBattleState(battleTracker);
     
     ExecuteTurnForComputer(ref enemy, ref battleTracker);
 
@@ -85,13 +85,13 @@ public static class Battle
     ref BattlePack battlePack,
     ref BattleTracker battleTracker)
   {
-    ConsoleMessages.Turn(player.name);
+    Terminal.Turn(player.name);
 
     battlePack.hand.Draw_Full(ref battlePack.deck, ref battlePack.graveyard);
 
     BattlePhases.RunPlayCardsPhase(ref battlePack, ref battleTracker);
 
-    ConsoleMessages.PrintBattleState(battleTracker);
+    Terminal.PrintBattleState(battleTracker);
 
     var canRecruit = battlePack.market.GetDisplayedCards_Affordable(battleTracker.power, battleTracker.manna).Count > 0;
     var playerTurnAction = BattlePhases.RunActionSelectionPhase(canRecruit);
@@ -116,13 +116,14 @@ public static class Battle
     }
 
     battlePack.MoveHandToGraveyard();
+    battlePack.MoveFieldToGraveyard();
   }
 
   private static void ExecuteTurnForComputer(
     ref Enemy enemy,
     ref BattleTracker battleTracker)
   {
-    ConsoleMessages.Turn(enemy.name);
+    Terminal.Turn(enemy.name);
 
     var nextEnemyTurnAction = enemy.turnActions.First();
     enemy.turnActions.Remove(nextEnemyTurnAction);
@@ -161,7 +162,7 @@ public static class Battle
 
     var offeredRewards = possibleRewards.Take(numberOfChoices).ToList();
 
-    ConsoleMessages.PromptToChooseReward(offeredRewards);
+    Terminal.PromptToChooseReward(offeredRewards);
 
 #if DEBUG
     var choice = 0;
@@ -171,8 +172,8 @@ public static class Battle
 
     while (choice >= offeredRewards.Count)
     {
-      ConsoleMessages.PromptInvalidChoiceTryAgain();
-      choice = UserInput.GetInt();
+      Terminal.PromptInvalidChoiceTryAgain();
+      choice = UserInput.GetInt() - 1;
     }
 
     var cardChosen = offeredRewards[choice];

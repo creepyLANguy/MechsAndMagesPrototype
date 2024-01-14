@@ -9,8 +9,8 @@ public static class Rest
 {
   public static FightResult Run(Campsite node, ref GameContents gameContents)
   {
-    ConsoleMessages.PrintHealth(gameContents.player.health);
-    ConsoleMessages.OfferCampsiteExchange();
+    Terminal.PrintHealth(gameContents.player.health);
+    Terminal.OfferCampsiteExchange();
 
     var choice = UserInput.GetInt();
 
@@ -29,7 +29,7 @@ public static class Rest
     var cardsToSacrifice = gameContents.player.GetDeck()
       .Where(card => (card.powerCost + card.mannaCost) > 0 && card.guild != Guild.NEUTRAL).ToList();
 
-    ConsoleMessages.PromptExchangeCardForLife(ref gameContents.player, cardsToSacrifice);
+    Terminal.PromptExchangeCardForLife(ref gameContents.player, cardsToSacrifice);
 
     var cardChosenIndex = UserInput.GetInt() - 1;
     var cardChosen = cardsToSacrifice[cardChosenIndex];
@@ -37,7 +37,7 @@ public static class Rest
     gameContents.player.health += (cardChosen.mannaCost + cardChosen.powerCost) * 2;
     gameContents.player.RemoveFromDeck(cardChosen);
 
-    ConsoleMessages.PrintHealth(gameContents.player.health);
+    Terminal.PrintHealth(gameContents.player.health);
 
     return FightResult.NONE;
   }
@@ -50,7 +50,7 @@ public static class Rest
 
     var cardsOnOffer = nonNeutralCards.Take(node.countCardsOnOffer).ToList();
 
-    ConsoleMessages.PromptExchangeLifeForCard(ref cardsOnOffer);
+    Terminal.PromptExchangeLifeForCard(ref cardsOnOffer);
 
     var cardChosenIndex = UserInput.GetInt() - 1;
     var cardChosen = cardsOnOffer[cardChosenIndex];
@@ -63,7 +63,7 @@ public static class Rest
       return FightResult.PLAYER_LOSE;
     }
 
-    ConsoleMessages.PrintHealth(gameContents.player.health);
+    Terminal.PrintHealth(gameContents.player.health);
 
     return FightResult.NONE;
   }

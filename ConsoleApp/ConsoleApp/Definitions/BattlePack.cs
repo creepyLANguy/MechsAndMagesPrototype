@@ -13,6 +13,8 @@ public class BattlePack
 
   public Hand hand;
 
+  public List<Card> field;
+
   public List<Card> graveyard;
 
   public List<Card> scrapheap;
@@ -30,6 +32,8 @@ public class BattlePack
     SetupDeck();
 
     SetupHand();
+    
+    SetupField();
 
     SetupGraveyard();
 
@@ -67,6 +71,10 @@ public class BattlePack
     hand = new Hand(gameContents.handSize);
     hand.Draw_Full(ref deck, ref graveyard);
   }
+  private void SetupField()
+  {
+    field = new List<Card>();
+  }
 
   private void SetupGraveyard()
   {
@@ -99,5 +107,11 @@ public class BattlePack
   {
     graveyard.AddRange(hand.GetAllCardsInHand());
     hand.Clear();
+  }  
+  
+  public void MoveFieldToGraveyard()
+  {
+    graveyard.AddRange(field);
+    field.Clear();
   }
 }

@@ -6,10 +6,21 @@ using System.Linq;
 using MaM.Enums;
 
 namespace MaM.Helpers;
-class ConsoleMessages
+class Terminal
 {
   private const char Tab = '\t';
   private const char Pipe = '|';
+
+  private static string GetPrintableCardName(string cardName)
+  {
+    const int printableCardNameLength = 14;
+    const char spacer = ' ';
+    const string ellipsis = "...";
+
+    return cardName.Length <= printableCardNameLength
+      ? cardName.PadRight(printableCardNameLength, spacer)
+      : cardName.Substring(0, 1 + (printableCardNameLength - ellipsis.Length)) + ellipsis;
+  }
 
   public static void StartBattle()
   {
@@ -94,7 +105,7 @@ class ConsoleMessages
     }
   }
 
-  public static void FilenameWasNull()
+  public static void ShowFilenameWasNull()
   {
     Console.WriteLine("filename was null");
   }
@@ -114,7 +125,7 @@ class ConsoleMessages
       Console.WriteLine(
         index + 1 + ")" +
         Tab +
-        UserInput.GetPrintableCardName(card.name) +
+        GetPrintableCardName(card.name) +
         Tab + Pipe +
         "Guild : " + card.guild +
         Tab + Pipe +
@@ -162,7 +173,7 @@ class ConsoleMessages
     PrintCards(offeredCards);
   }
 
-  public static void Death(ref Journey journey)
+  public static void ShowDeath(ref Journey journey)
   {
     Console.WriteLine("\nYOU DIED\nCompletion Percent : " + GetCompletionPercentage(ref journey) + "%");
 
@@ -185,17 +196,17 @@ class ConsoleMessages
     }
   }
 
-  public static void CompletedNode(int count, int mapHeight, int mapIndex, int mapsCount)
+  public static void ShowCompletedNode(int count, int mapHeight, int mapIndex, int mapsCount)
   {
     Console.WriteLine("\nCompleted Node " + count + " of " + mapHeight + ", of Map " + (mapIndex + 1) + " of " + mapsCount);
   }
 
-  public static void CompletedMap(int mapIndex)
+  public static void ShowCompletedMap(int mapIndex)
   {
     Console.WriteLine("\nCompleted Map " + (mapIndex + 1));
   }
 
-  public static void CompletedRun()
+  public static void ShowCompletedRun()
   {
     Console.WriteLine(
       "\nCONGRATULATIONS!" + 
@@ -318,7 +329,7 @@ class ConsoleMessages
     PrintCards(offeredCards);
   }
 
-  public static void RecruitFailed(Card card)
+  public static void ShowRecruitFailed(Card card)
   {
     Console.WriteLine("\nYou could not recruit " + card.name);
     Console.WriteLine("Please select another card and make sure you have the required amounts of power and manna.");
@@ -375,5 +386,37 @@ class ConsoleMessages
   public static void PrintHealth(int health)
   {
     Console.WriteLine("\nYour health :" + health);
+  }
+
+  public static void PromptShun(List<Card> hand)
+  {
+    Console.WriteLine("\nShun a card from your hand: ");
+    PrintCards(hand);
+  }
+
+  public static void ShowDrew(List<Card> hand)
+  {
+    Console.WriteLine("\nDrew an additional card.");
+    PrintHand(hand);
+  }  
+  
+  public static void ShowHealed(int health)
+  {
+    Console.WriteLine("\nHealing applied.");
+    PrintHealth(health);
+  }
+
+  public static void ShowCycled(List<Card> marketCardsDisplayed)
+  {
+    Console.WriteLine("\nCycled the market.");
+    PrintMarket(marketCardsDisplayed);
+  }
+
+  public static void ShowStomped(ref BattlePack battlePack, Card stompedCard, bool stompFromHand)
+  {
+    var location = stompFromHand ? "Hand" : "Field";
+    var cardName = GetPrintableCardName(stompedCard.name);
+    Console.WriteLine("\nStomped from " + location + " : " + cardName);
+    PrintCards(stompFromHand ? battlePack.hand.GetAllCardsInHand() : battlePack.field);
   }
 }

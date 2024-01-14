@@ -24,15 +24,4 @@ public static class UserInput
 
     return int.Parse(input);
   }
-
-  public static string GetPrintableCardName(string cardName)
-  {
-    const int printableCardNameLength = 14;
-    const char spacer = ' ';
-    const string ellipsis = "...";
-
-    return cardName.Length <= printableCardNameLength
-      ? cardName.PadRight(printableCardNameLength, spacer)
-      : cardName.Substring(0, 1 + (printableCardNameLength - ellipsis.Length)) + ellipsis;
-  }
 }

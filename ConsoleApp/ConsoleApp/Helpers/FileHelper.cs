@@ -17,7 +17,7 @@ public static class FileHelper
 
     filename = folderName + filename;
 
-    ConsoleMessages.FileHelperSave(filename);
+    Terminal.FileHelperSave(filename);
 
     using (var sw = new StreamWriter(File.Open(filename, FileMode.Create, FileAccess.Write), Encoding.UTF8))
     {
@@ -27,12 +27,12 @@ public static class FileHelper
       }
       catch (Exception e)
       {
-        ConsoleMessages.FileHelperWriteFailed(filename, e.Message);
+        Terminal.FileHelperWriteFailed(filename, e.Message);
         return false;
       }
     }
 
-    ConsoleMessages.FileHelperWritten();
+    Terminal.FileHelperWritten();
 
     return true;
   }
@@ -41,13 +41,13 @@ public static class FileHelper
   {
     if (folderName != string.Empty && Directory.Exists(folderName) == false)
     {
-      ConsoleMessages.FileHelperFolderNotFound(folderName);
+      Terminal.FileHelperFolderNotFound(folderName);
       return false;
     }
 
     filename = folderName + filename;
 
-    ConsoleMessages.FileHelperDeleting(filename);
+    Terminal.FileHelperDeleting(filename);
 
     try
     {
@@ -55,11 +55,11 @@ public static class FileHelper
     }
     catch (Exception e)
     {
-      ConsoleMessages.FileHelperDeleteFailed(filename, e.Message);
+      Terminal.FileHelperDeleteFailed(filename, e.Message);
       return false;
     }
       
-    ConsoleMessages.FileHelperDeleted();
+    Terminal.FileHelperDeleted();
 
     return true;
   }

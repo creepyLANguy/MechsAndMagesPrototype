@@ -30,7 +30,7 @@ public static class Navigation
 
         if (VisitNode(ref node, ref gameContents) == FightResult.PLAYER_LOSE)
         {
-          ConsoleMessages.Death(ref gameContents.journey);
+          Terminal.ShowDeath(ref gameContents.journey);
           SaveGameHelper.ArchiveRun(saveFilename);
           return;
         }
@@ -40,7 +40,7 @@ public static class Navigation
         node.isComplete = true;
         player.completedNodeLocations.Add(new Tuple<int, int>(player.currentNodeX, player.currentNodeY));
 
-        ConsoleMessages.CompletedNode(player.completedNodeLocations.Count, map.height, mapIndex, gameContents.journey.maps.Count);
+        Terminal.ShowCompletedNode(player.completedNodeLocations.Count, map.height, mapIndex, gameContents.journey.maps.Count);
 
         AutoSave();
       }
@@ -53,10 +53,10 @@ public static class Navigation
 
       ++gameContents.journey.currentMapIndex;
 
-      ConsoleMessages.CompletedMap(mapIndex);
+      Terminal.ShowCompletedMap(mapIndex);
     }
 
-    ConsoleMessages.CompletedRun();
+    Terminal.ShowCompletedRun();
 
     SaveGameHelper.ArchiveRun(saveFilename);
     return;
@@ -83,7 +83,7 @@ public static class Navigation
       }
     }
 
-    ConsoleMessages.PromptForStartingNode(ref firstRow);
+    Terminal.PromptForStartingNode(ref firstRow);
 
 #if DEBUG
     const int input = 0;
@@ -103,7 +103,7 @@ public static class Navigation
   {
     var currentNode = map.nodes[player.currentNodeX, player.currentNodeY];
 
-    ConsoleMessages.PromptForNextNode(ref currentNode, ref map);
+    Terminal.PromptForNextNode(ref currentNode, ref map);
 
 #if DEBUG
     const int input = 0;

@@ -84,7 +84,7 @@ public static class GameGenerator
 
   private static string GetPlayerName()
   {
-    ConsoleMessages.PromptForName();
+    Terminal.PromptForName();
 
 #if DEBUG
     return "DebugPlayer";
@@ -116,7 +116,7 @@ public static class GameGenerator
 
   private static Card GetSelectedCard(ref List<Card> offeredCards)
   {
-    ConsoleMessages.PromptForCardDraft(ref offeredCards);
+    Terminal.PromptForCardDraft(ref offeredCards);
 
 #if DEBUG
     return offeredCards[0];

@@ -39,8 +39,8 @@ namespace MaM.NodeVisitLogic
     {
       while (battlePack.market.GetDisplayedCards_Affordable(b.power, b.manna).Count > 0)
       {
-        ConsoleMessages.PrintBattleState(b);
-        ConsoleMessages.PromptToRecruit(battlePack.market.GetDisplayedCards_All());
+        Terminal.PrintBattleState(b);
+        Terminal.PromptToRecruit(battlePack.market.GetDisplayedCards_All());
 
         var choice = UserInput.GetInt();
         if (choice == 0)
@@ -51,7 +51,7 @@ namespace MaM.NodeVisitLogic
 
         while (choice >= battlePack.market.GetDisplayedCards_All().Count)
         {
-          ConsoleMessages.PromptInvalidChoiceTryAgain();
+          Terminal.PromptInvalidChoiceTryAgain();
           choice = UserInput.GetInt();
         }
 
@@ -59,7 +59,7 @@ namespace MaM.NodeVisitLogic
         if (chosenCard == null)
         {
           var intendedCard = battlePack.market.GetDisplayedCards_All()[choice];
-          ConsoleMessages.RecruitFailed(intendedCard);
+          Terminal.ShowRecruitFailed(intendedCard);
           continue;
         }
 

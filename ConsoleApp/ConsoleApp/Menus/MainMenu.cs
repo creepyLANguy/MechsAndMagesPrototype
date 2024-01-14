@@ -10,7 +10,7 @@ public static class MainMenu
   {
     var keepRunning = true;
 
-    ConsoleMessages.ShowMainMenu();
+    Terminal.ShowMainMenu();
 
 #if DEBUG
     var choice = MainMenuItem.PLAY;
