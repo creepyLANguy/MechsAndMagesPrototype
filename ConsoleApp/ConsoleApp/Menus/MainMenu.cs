@@ -17,7 +17,6 @@ public static class MainMenu
 #else 
     var choice = (MainMenuItem)UserInput.GetInt();
 #endif
-    //TODO - Create mode where scenario is loaded for quick playtesting. 
     switch (choice)
     {
       case MainMenuItem.PLAY:

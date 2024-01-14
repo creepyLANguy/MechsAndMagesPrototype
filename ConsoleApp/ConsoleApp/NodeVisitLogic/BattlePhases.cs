@@ -197,7 +197,8 @@ namespace MaM.NodeVisitLogic
     }
 
     private static void PerformShun(ref BattlePack battlePack)
-    {//TODO - test
+    {
+      //TODO - test shun
       Terminal.PromptShun(battlePack.hand.GetAllCardsInHand());
 
 #if DEBUG

@@ -123,8 +123,6 @@ public static class SaveGameHelper
   public static void ArchiveRun(string saveFilename)
   {
     Delete(saveFilename);
-
-    //TODO - maintain the run's stats somewhere. 
   }
 
 }
