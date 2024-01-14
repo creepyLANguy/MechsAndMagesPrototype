@@ -1,5 +1,6 @@
 ﻿using MaM.Definitions;
 using MaM.Helpers;
+using static MaM.Definitions.YesNoChoice;
 
 namespace MaM.GameLogic
 {
@@ -22,22 +23,15 @@ namespace MaM.GameLogic
 
         ConsoleMessages.OfferMulligan(player.health, mulliganCost);
 #if DEBUG
-        const int choice = 0;
+        var choice = YES;
 #else
-      var choice = UserInput.GetInt();
+      var choice = (YesNoChoice)UserInput.GetInt();
 #endif
-
-        if (choice == 1)
+        if (choice == YES)
         {
           player.health -= mulliganCost;
-
           battlePack.Mulligan();
-
           ++mulliganCost;
-        }
-        else
-        {
-          break;
         }
       }
     }

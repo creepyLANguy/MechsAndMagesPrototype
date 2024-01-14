@@ -1,4 +1,5 @@
-﻿using MaM.Helpers;
+﻿using MaM.Definitions;
+using MaM.Helpers;
 
 namespace MaM.Menus;
 
@@ -11,9 +12,9 @@ public static class ExitMenu
     ConsoleMessages.ShowExitMenu();
 
     var choice = UserInput.GetInt();
-    switch ((ExitMenuItem)choice)
+    switch ((YesNoChoice)choice)
     {
-      case (ExitMenuItem.YES):
+      case (YesNoChoice.YES):
         keepRunning = false;
         break;
     }

@@ -64,8 +64,8 @@ class ConsoleMessages
     var message = 
       "Life : " + playerHealth + 
       "\nMulligan this hand and cycle the market by paying " + mulliganCost + " life?" +
-      "\n1) Yes" +
-      "\n2) No";
+      "\n" + YesNoChoice.YES.ToString("D") + ") " + YesNoChoice.YES.ToString().ToSentenceCase() +
+      "\n" + YesNoChoice.NO.ToString("D") + ") " + YesNoChoice.NO.ToString().ToSentenceCase();
     Console.WriteLine(message);
   }
 
@@ -140,8 +140,8 @@ class ConsoleMessages
   {
     var requestString =
       "\nAre you sure you want to exit?" +
-      "\n" + ExitMenuItem.YES.ToString("D") + ") " + ExitMenuItem.YES.ToString().ToSentenceCase() +
-      "\n" + ExitMenuItem.NO.ToString("D") + ") " + ExitMenuItem.NO.ToString().ToSentenceCase();
+      "\n" + YesNoChoice.YES.ToString("D") + ") " + YesNoChoice.YES.ToString().ToSentenceCase() +
+      "\n" + YesNoChoice.NO.ToString("D") + ") " + YesNoChoice.NO.ToString().ToSentenceCase();
     Console.WriteLine(requestString);
   }
 
