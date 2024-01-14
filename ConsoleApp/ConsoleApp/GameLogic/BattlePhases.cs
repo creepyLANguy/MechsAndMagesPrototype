@@ -1,6 +1,4 @@
 ﻿using MaM.Definitions;
-using System;
-using System.Linq;
 using MaM.Helpers;
 
 namespace MaM.GameLogic
@@ -94,7 +92,31 @@ namespace MaM.GameLogic
     {
       battleTracker.power += card.power;
 
-      //TODO - process all card effects/attributes
+      for (var i = 0; i < card.abilityCount; ++i)
+      {
+        switch (card.ability)
+        {
+          case CardAbility.DRAW:
+            battlePack.hand.Draw_Single(ref battlePack.deck, ref battlePack.graveyard);
+            //TODO - make sure that cards drawn from an effect can be played this turn, before action step. 
+            break;
+          case CardAbility.HEAL:
+            battleTracker.playerHealth += 1;
+            break;
+          case CardAbility.STOMP:
+            //TODO - process stomp ability
+            break;
+          case CardAbility.CYCLE:
+            battlePack.market.Cycle();
+            break;
+          case CardAbility.SHUN:
+            //TODO - process stomp ability
+            break;
+          case CardAbility.NONE:
+          default:
+            break;
+        }
+      }
     }
   }
 }

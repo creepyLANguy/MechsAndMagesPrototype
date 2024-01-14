@@ -15,10 +15,10 @@ public static class MainMenu
 #if DEBUG
     var choice = MainMenuItem.PLAY;
 #else 
-    var choice = UserInput.GetInt();
+    var choice = (MainMenuItem)UserInput.GetInt();
 #endif
-
-    switch ((MainMenuItem)choice)
+    //TODO - Create mode where scenario is loaded for quick playtesting. 
+    switch (choice)
     {
       case MainMenuItem.PLAY:
         var saveFile = SaveGameHelper.PromptUserToSelectSaveSlot();
