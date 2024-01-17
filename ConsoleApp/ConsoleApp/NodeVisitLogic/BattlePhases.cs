@@ -89,7 +89,7 @@ namespace MaM.NodeVisitLogic
     private static void ProcessCardEffects(Card card, ref BattlePack battlePack, ref BattleTracker battleTracker)
     {
       //Make sure this power gain happens first in case a card has to stomp itself.
-      battleTracker.power += card.power;
+      battleTracker.player.power += card.power;
 
       for (var i = 0; i < card.abilityCount; ++i)
       {
@@ -125,8 +125,8 @@ namespace MaM.NodeVisitLogic
 
     private static void PerformHeal(ref BattleTracker battleTracker)
     {
-      battleTracker.playerHealth += 1;
-      Terminal.ShowHealed(battleTracker.playerHealth);
+      battleTracker.player.health += 1;
+      Terminal.ShowHealed(battleTracker.player.health);
     }
 
     private static void PerformStomp(ref BattlePack battlePack, Card playedCard)

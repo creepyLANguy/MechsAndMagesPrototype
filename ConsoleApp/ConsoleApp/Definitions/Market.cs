@@ -65,12 +65,12 @@ public class Market
   {
     var card = display[index];
 
-    if (card.powerCost > battleTracker.power)
+    if (card.powerCost > battleTracker.player.power)
     {
       return null;
     }
 
-    if (card.mannaCost > battleTracker.manna)
+    if (card.mannaCost > battleTracker.player.manna)
     {
       return null;
     }
@@ -85,8 +85,8 @@ public class Market
       display.Remove(card);
     }
 
-    battleTracker.power -= card.powerCost;
-    battleTracker.manna -= card.mannaCost;
+    battleTracker.player.power -= card.powerCost;
+    battleTracker.player.manna -= card.mannaCost;
 
     return card;
   }

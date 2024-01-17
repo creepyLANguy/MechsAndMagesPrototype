@@ -1,20 +1,14 @@
 namespace MaM.Definitions;
 
+//TODO - delete this and move player and enemy into BattlePack
 public class BattleTracker
 {
-
-  public int power = 0;
-  public int manna = 0;
-  public int playerHealth = 0;
-  public bool playerIsDefending = false;
-  
-  public int threat = 0;
-  public int enemyHealth = 0;
-  public bool enemyIsDefending = false;
+  public BattleResources player = new();
+  public BattleResources enemy = new ();
 
   public BattleTracker(int playerHealth, int enemyHealth)
   {
-    this.playerHealth = playerHealth;
-    this.enemyHealth = enemyHealth;
+    player.health = playerHealth;
+    enemy.health = enemyHealth;
   }
 }

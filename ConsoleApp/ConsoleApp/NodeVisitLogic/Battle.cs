@@ -34,7 +34,7 @@ public static class Battle
       OfferReward(ref gameContents, node.guild, node.enemy.marketSize);
     }
 
-    gameContents.player.health = battleTracker.playerHealth;
+    gameContents.player.health = battleTracker.player.health;
 
     return fightResult;
   }
@@ -67,12 +67,12 @@ public static class Battle
 
   private static FightResult GetFightResult(ref BattleTracker battleTracker)
   {
-    if (battleTracker.playerHealth <= 0)
+    if (battleTracker.player.health <= 0)
     {
       return FightResult.PLAYER_LOSE;
     }
     
-    if (battleTracker.enemyHealth <= 0)
+    if (battleTracker.enemy.health <= 0)
     {
       return FightResult.PLAYER_WIN;
     }
@@ -93,10 +93,10 @@ public static class Battle
 
     Terminal.PrintBattleState(battleTracker);
 
-    var canRecruit = battlePack.market.GetDisplayedCards_Affordable(battleTracker.power, battleTracker.manna).Count > 0;
+    var canRecruit = battlePack.market.GetDisplayedCards_Affordable(battleTracker.player.power, battleTracker.player.manna).Count > 0;
     var playerTurnAction = BattlePhases.RunActionSelectionPhase(canRecruit);
 
-    battleTracker.playerIsDefending = playerTurnAction == PlayerTurnAction.DEFEND;
+    battleTracker.player.isDefending = playerTurnAction == PlayerTurnAction.DEFEND;
 
     switch (playerTurnAction)
     {
@@ -132,7 +132,7 @@ public static class Battle
     var key = nextEnemyTurnAction.Item1;
     var value = nextEnemyTurnAction.Item2;
 
-    battleTracker.enemyIsDefending = key == EnemyTurnAction.D;
+    battleTracker.enemy.isDefending = key == EnemyTurnAction.D;
 
     switch (key)
     {

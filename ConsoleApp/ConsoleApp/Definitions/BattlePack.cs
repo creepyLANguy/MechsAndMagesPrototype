@@ -5,6 +5,7 @@ using MaM.Helpers;
 
 namespace MaM.Definitions;
 
+//TODO - Include the CombatantTrackers as members and initialise with their healths in constructor. 
 public class BattlePack
 {
   public Market market;
