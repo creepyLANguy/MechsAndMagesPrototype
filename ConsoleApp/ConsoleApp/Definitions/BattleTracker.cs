@@ -1,5 +1,6 @@
 namespace MaM.Definitions;
 
+//TODO - delete this and move player and enemy into BattlePack
 public class BattleTracker
 {
   public BattleResources player = new();

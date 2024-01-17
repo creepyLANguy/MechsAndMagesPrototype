@@ -5,7 +5,7 @@ using MaM.Helpers;
 
 namespace MaM.Definitions;
 
-//TODO - rename to something that makes more sense, or perhaps include it in the battle resources???
+//TODO - Include the CombatantTrackers as members and initialise with their healths in constructor. 
 public class BattlePack
 {
   public Market market;
