@@ -7,28 +7,28 @@ namespace MaM.NodeVisitLogic
   {
     public static void RunPassAction(ref BattleTracker b)
     {
-      b.power = 0;
+      b.player.power = 0;
     }
 
     public static void RunAttackAction(ref BattleTracker b)
     {
       int attackValue;
-      if (b.enemyIsDefending)
+      if (b.enemy.isDefending)
       {
-        attackValue = b.power < b.threat ? 0 : b.power - b.threat;
-        b.threat = attackValue > 0 ? 0 : b.threat - b.power;
+        attackValue = b.player.power < b.enemy.power ? 0 : b.player.power - b.enemy.power;
+        b.enemy.power = attackValue > 0 ? 0 : b.enemy.power - b.player.power;
       }
       else
       {
-        attackValue = b.power;
+        attackValue = b.player.power;
       }
       
       if (attackValue > 0)
       {
-        b.enemyHealth -= attackValue;
+        b.enemy.health -= attackValue;
       }
 
-      b.power = 0;
+      b.player.power = 0;
     }
 
     public static void RunDefendAction(ref BattleTracker battleTracker)
@@ -37,7 +37,7 @@ namespace MaM.NodeVisitLogic
 
     public static void RunRecruitAction(ref BattlePack battlePack, ref BattleTracker b)
     {
-      while (battlePack.market.GetDisplayedCards_Affordable(b.power, b.manna).Count > 0)
+      while (battlePack.market.GetDisplayedCards_Affordable(b.player.power, b.player.manna).Count > 0)
       {
         Terminal.PrintBattleState(b);
         Terminal.PromptToRecruit(battlePack.market.GetDisplayedCards_All());

@@ -40,21 +40,21 @@ class Terminal
     
     Console.WriteLine(dashes);
 
-    Console.WriteLine("Your Life:\t" + battleTracker.playerHealth);
+    Console.WriteLine("Your Life:\t" + battleTracker.player.health);
 
-    Console.WriteLine("Your Power:\t" + battleTracker.power);
+    Console.WriteLine("Your Power:\t" + battleTracker.player.power);
 
-    Console.WriteLine("Your Manna:\t" + battleTracker.manna); 
+    Console.WriteLine("Your Manna:\t" + battleTracker.player.manna); 
     
-    Console.WriteLine("Your Defense:\t" + (battleTracker.playerIsDefending ? "ACTIVE" : "NONE"));
+    Console.WriteLine("Your Defense:\t" + (battleTracker.player.isDefending ? "ACTIVE" : "NONE"));
 
     Console.WriteLine(dashes);
 
-    Console.WriteLine("Enemy Life:\t" + battleTracker.enemyHealth);
+    Console.WriteLine("Enemy Life:\t" + battleTracker.enemy.health);
     
-    Console.WriteLine("Enemy Threat:\t" + battleTracker.threat);
+    Console.WriteLine("Enemy Threat:\t" + battleTracker.enemy.power);
 
-    Console.WriteLine("Enemy Defense:\t" + (battleTracker.enemyIsDefending ? "ACTIVE" : "NONE"));
+    Console.WriteLine("Enemy Defense:\t" + (battleTracker.enemy.isDefending ? "ACTIVE" : "NONE"));
 
     Console.WriteLine(dashes);
   }

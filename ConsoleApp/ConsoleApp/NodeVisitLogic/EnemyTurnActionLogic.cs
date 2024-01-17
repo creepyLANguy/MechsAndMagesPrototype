@@ -10,38 +10,38 @@ namespace MaM.NodeVisitLogic
     {
       Terminal.EnemyTurnActionPass();
 
-      b.threat = 0;
+      b.enemy.power = 0;
     }
 
     public static void RunBuffAction(ref BattleTracker b, int value)
     {
       Terminal.EnemyTurnActionBuff(value);
 
-      b.threat += value;
+      b.enemy.power += value;
     }
 
     public static void RunAttackAction(ref BattleTracker b)
     {
-      Terminal.EnemyTurnActionAttack(b.threat);
+      Terminal.EnemyTurnActionAttack(b.enemy.power);
 
       int attackValue;
-      if (b.playerIsDefending)
+      if (b.player.isDefending)
       {
-        attackValue = b.threat < b.power ? 0 : b.threat - b.power;
-        b.power = attackValue > 0 ? 0 : b.power - b.threat;
+        attackValue = b.enemy.power < b.player.power ? 0 : b.enemy.power - b.player.power;
+        b.player.power = attackValue > 0 ? 0 : b.player.power - b.enemy.power;
       }
       else
       {
-        attackValue = b.threat;
+        attackValue = b.enemy.power;
       }
 
       if (attackValue > 0)
       {
-        b.playerHealth -= attackValue;
-        b.manna += attackValue;
+        b.player.health -= attackValue;
+        b.player.manna += attackValue;
       }
 
-      b.threat = 0;
+      b.enemy.power = 0;
     }
 
     public static void RunDefendAction(ref BattleTracker b)
@@ -51,7 +51,7 @@ namespace MaM.NodeVisitLogic
 
     public static void RunLeechAction(ref BattleTracker b)
     {
-      var leechable = Math.Min(b.threat, b.manna);
+      var leechable = Math.Min(b.enemy.power, b.player.manna);
 
       Terminal.EnemyTurnActionLeech(leechable);
 
@@ -60,9 +60,9 @@ namespace MaM.NodeVisitLogic
         return;
       }
 
-      b.threat = Math.Max(0, b.threat - leechable);
-      b.manna = Math.Max(0, b.manna - leechable);
-      b.enemyHealth += leechable;
+      b.enemy.power= Math.Max(0, b.enemy.power- leechable);
+      b.player.manna = Math.Max(0, b.player.manna - leechable);
+      b.enemy.health += leechable;
     }
   }
 }

@@ -5,6 +5,7 @@ using MaM.Helpers;
 
 namespace MaM.Definitions;
 
+//TODO - rename to something that makes more sense, or perhaps include it in the battle resources???
 public class BattlePack
 {
   public Market market;
