@@ -5,12 +5,12 @@ namespace MaM.NodeVisitLogic
 {
   class PlayerTurnActionLogic
   {
-    public static void RunPassAction(ref BattleTracker b)
+    public static void RunPassAction(ref BattlePack b)
     {
       b.player.power = 0;
     }
 
-    public static void RunAttackAction(ref BattleTracker b)
+    public static void RunAttackAction(ref BattlePack b)
     {
       int attackValue;
       if (b.enemy.isDefending)
@@ -31,16 +31,16 @@ namespace MaM.NodeVisitLogic
       b.player.power = 0;
     }
 
-    public static void RunDefendAction(ref BattleTracker battleTracker)
+    public static void RunDefendAction(ref BattlePack b)
     {
     }
 
-    public static void RunRecruitAction(ref BattlePack battlePack, ref BattleTracker b)
+    public static void RunRecruitAction(ref BattlePack b)
     {
-      while (battlePack.market.GetDisplayedCards_Affordable(b.player.power, b.player.manna).Count > 0)
+      while (b.market.GetDisplayedCards_Affordable(b.player.power, b.player.manna).Count > 0)
       {
         Terminal.PrintBattleState(b);
-        Terminal.PromptToRecruit(battlePack.market.GetDisplayedCards_All());
+        Terminal.PromptToRecruit(b.market.GetDisplayedCards_All());
 
         var choice = UserInput.GetInt();
         if (choice == 0)
@@ -49,21 +49,21 @@ namespace MaM.NodeVisitLogic
         }
         --choice;
 
-        while (choice >= battlePack.market.GetDisplayedCards_All().Count)
+        while (choice >= b.market.GetDisplayedCards_All().Count)
         {
           Terminal.PromptInvalidChoiceTryAgain();
           choice = UserInput.GetInt();
         }
 
-        var chosenCard = battlePack.market.TryFetch(choice, ref b);
+        var chosenCard = b.market.TryFetch(choice, ref b);
         if (chosenCard == null)
         {
-          var intendedCard = battlePack.market.GetDisplayedCards_All()[choice];
+          var intendedCard = b.market.GetDisplayedCards_All()[choice];
           Terminal.ShowRecruitFailed(intendedCard);
           continue;
         }
 
-        battlePack.graveyard.Add((Card)chosenCard);
+        b.graveyard.Add((Card)chosenCard);
       }
     }
   }

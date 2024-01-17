@@ -8,15 +8,15 @@ namespace MaM.NodeVisitLogic
 {
     class BattlePhases
   {
-    public static void RunMulliganPhase(ref Player player, ref BattlePack battlePack)
+    public static void RunMulliganPhase(ref Player player, ref BattlePack b)
     {
       var mulliganCost = 1;
 
       while (true)
       {
-        Terminal.PrintHand(battlePack.hand.GetAllCardsInHand());
+        Terminal.PrintHand(b.hand.GetAllCardsInHand());
 
-        Terminal.PrintMarket(battlePack.market.GetDisplayedCards_All());
+        Terminal.PrintMarket(b.market.GetDisplayedCards_All());
 
         if (player.health - mulliganCost <= 0)
         {
@@ -35,7 +35,7 @@ namespace MaM.NodeVisitLogic
         }
 
         player.health -= mulliganCost;
-        battlePack.Mulligan();
+        b.Mulligan();
         ++mulliganCost;
       }
     }
@@ -46,13 +46,13 @@ namespace MaM.NodeVisitLogic
       return (PlayerTurnAction)UserInput.GetInt();
     }
 
-    public static void RunPlayCardsPhase(ref BattlePack battlePack, ref BattleTracker battleTracker)
+    public static void RunPlayCardsPhase(ref BattlePack b)
     {
-      while (battlePack.hand.GetAllCardsInHand().Count > 0)
+      while (b.hand.GetAllCardsInHand().Count > 0)
       {
-        var canPlayAll = battlePack.hand.HasCardsWithOrderSensitiveEffects() == false;
+        var canPlayAll = b.hand.HasCardsWithOrderSensitiveEffects() == false;
 
-        Terminal.PromptToPlayCard(ref battlePack, canPlayAll);
+        Terminal.PromptToPlayCard(ref b, canPlayAll);
 
 #if DEBUG
         var selection = canPlayAll ? 0 : 1;
@@ -60,7 +60,7 @@ namespace MaM.NodeVisitLogic
         var selection = UserInput.GetInt();
 #endif
         
-        var allCardsInHand = battlePack.hand.GetAllCardsInHand();
+        var allCardsInHand = b.hand.GetAllCardsInHand();
 
         if (selection < 0)
         {
@@ -70,45 +70,45 @@ namespace MaM.NodeVisitLogic
         {
           foreach (var card in allCardsInHand)
           {
-            ProcessCardEffects(card, ref battlePack, ref battleTracker);
+            ProcessCardEffects(card, ref b);
           }
-          battlePack.graveyard.AddRange(allCardsInHand);
-          battlePack.hand.Clear();
+          b.graveyard.AddRange(allCardsInHand);
+          b.hand.Clear();
         }
         else if (selection <= allCardsInHand.Count)
         {
           --selection;
           var selectedCard = allCardsInHand[selection];
-          ProcessCardEffects(selectedCard, ref battlePack, ref battleTracker);
-          battlePack.field.Add(selectedCard);
-          battlePack.hand.Remove_Single(selectedCard);
+          ProcessCardEffects(selectedCard, ref b);
+          b.field.Add(selectedCard);
+          b.hand.Remove_Single(selectedCard);
         }
       }
     }
 
-    private static void ProcessCardEffects(Card card, ref BattlePack battlePack, ref BattleTracker battleTracker)
+    private static void ProcessCardEffects(Card card, ref BattlePack b)
     {
       //Make sure this power gain happens first in case a card has to stomp itself.
-      battleTracker.player.power += card.power;
+      b.player.power += card.power;
 
       for (var i = 0; i < card.abilityCount; ++i)
       {
         switch (card.ability)
         {
           case CardAbility.DRAW:
-            PerformDraw(ref battlePack);
+            PerformDraw(ref b);
             break;
           case CardAbility.HEAL:
-            PerformHeal(ref battleTracker);
+            PerformHeal(ref b);
             break;
           case CardAbility.STOMP:
-            PerformStomp(ref battlePack, card);
+            PerformStomp(ref b, card);
             break;
           case CardAbility.CYCLE:
-            PerformCycle(ref battlePack);
+            PerformCycle(ref b);
             break;
           case CardAbility.SHUN:
-            PerformShun(ref battlePack);
+            PerformShun(ref b);
             break;
           case CardAbility.NONE:
           default:
@@ -117,89 +117,89 @@ namespace MaM.NodeVisitLogic
       }
     }
 
-    private static void PerformDraw(ref BattlePack battlePack)
+    private static void PerformDraw(ref BattlePack b)
     {
-      battlePack.hand.Draw_Single(ref battlePack.deck, ref battlePack.graveyard);
-      Terminal.ShowDrew(battlePack.hand.GetAllCardsInHand());
+      b.hand.Draw_Single(ref b.deck, ref b.graveyard);
+      Terminal.ShowDrew(b.hand.GetAllCardsInHand());
     }
 
-    private static void PerformHeal(ref BattleTracker battleTracker)
+    private static void PerformHeal(ref BattlePack b)
     {
-      battleTracker.player.health += 1;
-      Terminal.ShowHealed(battleTracker.player.health);
+      b.player.health += 1;
+      Terminal.ShowHealed(b.player.health);
     }
 
-    private static void PerformStomp(ref BattlePack battlePack, Card playedCard)
+    private static void PerformStomp(ref BattlePack b, Card playedCard)
     {
       //TODO - test all stomp flows. 
 
       var stompedCard = playedCard;
 
-      var cardsInHandCount = battlePack.hand.GetAllCardsInHand().Count;
+      var cardsInHandCount = b.hand.GetAllCardsInHand().Count;
 
       var coinToss = UbiRandom.Next(0, 2);
       var stompFromHand = coinToss == 1 && cardsInHandCount > 0;
 
       if (stompFromHand)
       {
-        StompFromHand(ref battlePack);
+        StompFromHand(ref b);
       }
       else
       {
-        if (battlePack.field.Count == 1) //playedCard is the only one on the field
+        if (b.field.Count == 1) //playedCard is the only one on the field
         {
           if (cardsInHandCount > 0)
           {
             stompFromHand = true;
-            StompFromHand(ref battlePack);
+            StompFromHand(ref b);
           }
           else
           {
-            StompSelf(ref battlePack);
+            StompSelf(ref b);
           }
         }
         else
         {
-          StompFromField(ref battlePack);
+          StompFromField(ref b);
         }
       }
       
-      Terminal.ShowStomped(ref battlePack, stompedCard, stompFromHand);
+      Terminal.ShowStomped(ref b, stompedCard, stompFromHand);
 
-      void StompSelf(ref BattlePack battlePack)
+      void StompSelf(ref BattlePack b)
       {
-        battlePack.field.Remove(stompedCard);
-        battlePack.scrapheap.Add(stompedCard);
+        b.field.Remove(stompedCard);
+        b.scrapheap.Add(stompedCard);
       }
 
-      void StompFromHand(ref BattlePack battlePack)
+      void StompFromHand(ref BattlePack b)
       {
         var randomIndex = UbiRandom.Next(0, cardsInHandCount);
-        stompedCard = battlePack.hand.GetCardAtIndex(randomIndex);
-        battlePack.hand.Remove_Single(stompedCard);
-        battlePack.scrapheap.Add(stompedCard);
+        stompedCard = b.hand.GetCardAtIndex(randomIndex);
+        b.hand.Remove_Single(stompedCard);
+        b.scrapheap.Add(stompedCard);
       }      
       
-      void StompFromField(ref BattlePack battlePack)
+      void StompFromField(ref BattlePack b)
       {
-        var stompableCardsOnField = battlePack.field.Where(card => card.id != playedCard.id).ToList();
+        var stompableCardsOnField = b.field.Where(card => card.id != playedCard.id).ToList();
         var randomIndex = UbiRandom.Next(0, stompableCardsOnField.Count);
         stompedCard = stompableCardsOnField[randomIndex];
-        battlePack.field.Remove(stompedCard);
-        battlePack.scrapheap.Add(stompedCard);
+        b.field.Remove(stompedCard);
+        b.scrapheap.Add(stompedCard);
       }
     }
 
-    private static void PerformCycle(ref BattlePack battlePack)
+    private static void PerformCycle(ref BattlePack b)
     {
-      battlePack.market.Cycle();
-      Terminal.ShowCycled(battlePack.market.GetDisplayedCards_All());
+      b.market.Cycle();
+      Terminal.ShowCycled(b.market.GetDisplayedCards_All());
     }
 
-    private static void PerformShun(ref BattlePack battlePack)
+    private static void PerformShun(ref BattlePack b)
     {
       //TODO - test shun
-      Terminal.PromptShun(battlePack.hand.GetAllCardsInHand());
+      Terminal.PromptShun(b.hand.GetAllCardsInHand());
 
 #if DEBUG
       var selection = 0;
@@ -207,11 +207,11 @@ namespace MaM.NodeVisitLogic
         var selection = UserInput.GetInt() - 1;
 #endif
 
-      var selectedCard = battlePack.hand.GetCardAtIndex(selection);
-      battlePack.scrapheap.Add(selectedCard);
-      battlePack.hand.Remove_Single(selectedCard);
+      var selectedCard = b.hand.GetCardAtIndex(selection);
+      b.scrapheap.Add(selectedCard);
+      b.hand.Remove_Single(selectedCard);
 
-      PerformDraw(ref battlePack);
+      PerformDraw(ref b);
     }
   }
 }

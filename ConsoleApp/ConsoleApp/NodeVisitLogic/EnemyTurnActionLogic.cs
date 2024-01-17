@@ -6,21 +6,21 @@ namespace MaM.NodeVisitLogic
 {
     class EnemyTurnActionLogic
   {
-    public static void RunPassAction(ref BattleTracker b)
+    public static void RunPassAction(ref BattlePack b)
     {
       Terminal.EnemyTurnActionPass();
 
       b.enemy.power = 0;
     }
 
-    public static void RunBuffAction(ref BattleTracker b, int value)
+    public static void RunBuffAction(ref BattlePack b, int value)
     {
       Terminal.EnemyTurnActionBuff(value);
 
       b.enemy.power += value;
     }
 
-    public static void RunAttackAction(ref BattleTracker b)
+    public static void RunAttackAction(ref BattlePack b)
     {
       Terminal.EnemyTurnActionAttack(b.enemy.power);
 
@@ -44,12 +44,12 @@ namespace MaM.NodeVisitLogic
       b.enemy.power = 0;
     }
 
-    public static void RunDefendAction(ref BattleTracker b)
+    public static void RunDefendAction(ref BattlePack b)
     {
       Terminal.EnemyTurnActionDefend();
     }
 
-    public static void RunLeechAction(ref BattleTracker b)
+    public static void RunLeechAction(ref BattlePack b)
     {
       var leechable = Math.Min(b.enemy.power, b.player.manna);
 

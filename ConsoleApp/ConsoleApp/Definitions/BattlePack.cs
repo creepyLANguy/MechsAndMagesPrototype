@@ -8,6 +8,9 @@ namespace MaM.Definitions;
 //TODO - Include the CombatantTrackers as members and initialise with their healths in constructor. 
 public class BattlePack
 {
+  public Combatant player;
+  public Combatant enemy;
+
   public Market market;
 
   public Stack<Card> deck;
@@ -27,6 +30,9 @@ public class BattlePack
   { 
     this.node = node;
     this.gameContents = gameContents;
+
+    player = new(gameContents.player.health);
+    enemy = new(node.enemy.health);
 
     SetupMarket(node.fightType);
 
