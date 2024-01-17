@@ -32,7 +32,7 @@ class Terminal
     Console.WriteLine("\n[Turn]\t\t" + name);
   }
 
-  public static void PrintBattleState(BattleTracker battleTracker)
+  public static void PrintBattleState(BattlePack b)
   {
     const string dashes = "---";
 
@@ -40,21 +40,21 @@ class Terminal
     
     Console.WriteLine(dashes);
 
-    Console.WriteLine("Your Life:\t" + battleTracker.player.health);
+    Console.WriteLine("Your Life:\t" + b.player.health);
 
-    Console.WriteLine("Your Power:\t" + battleTracker.player.power);
+    Console.WriteLine("Your Power:\t" + b.player.power);
 
-    Console.WriteLine("Your Manna:\t" + battleTracker.player.manna); 
+    Console.WriteLine("Your Manna:\t" + b.player.manna); 
     
-    Console.WriteLine("Your Defense:\t" + (battleTracker.player.isDefending ? "ACTIVE" : "NONE"));
+    Console.WriteLine("Your Defense:\t" + (b.player.isDefending ? "ACTIVE" : "NONE"));
 
     Console.WriteLine(dashes);
 
-    Console.WriteLine("Enemy Life:\t" + battleTracker.enemy.health);
+    Console.WriteLine("Enemy Life:\t" + b.enemy.health);
     
-    Console.WriteLine("Enemy Threat:\t" + battleTracker.enemy.power);
+    Console.WriteLine("Enemy Threat:\t" + b.enemy.power);
 
-    Console.WriteLine("Enemy Defense:\t" + (battleTracker.enemy.isDefending ? "ACTIVE" : "NONE"));
+    Console.WriteLine("Enemy Defense:\t" + (b.enemy.isDefending ? "ACTIVE" : "NONE"));
 
     Console.WriteLine(dashes);
   }
@@ -282,9 +282,9 @@ class Terminal
     Console.WriteLine("Saved");
   }
 
-  public static void PromptToPlayCard(ref BattlePack battlePack, bool canPlayAll)
+  public static void PromptToPlayCard(ref BattlePack b, bool canPlayAll)
   {
-    var allCardsInHand = battlePack.hand.GetAllCardsInHand();
+    var allCardsInHand = b.hand.GetAllCardsInHand();
 
     Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
 
@@ -412,11 +412,11 @@ class Terminal
     PrintMarket(marketCardsDisplayed);
   }
 
-  public static void ShowStomped(ref BattlePack battlePack, Card stompedCard, bool stompFromHand)
+  public static void ShowStomped(ref BattlePack b, Card stompedCard, bool stompFromHand)
   {
     var location = stompFromHand ? "Hand" : "Field";
     var cardName = GetPrintableCardName(stompedCard.name);
     Console.WriteLine("\nStomped from " + location + " : " + cardName);
-    PrintCards(stompFromHand ? battlePack.hand.GetAllCardsInHand() : battlePack.field);
+    PrintCards(stompFromHand ? b.hand.GetAllCardsInHand() : b.field);
   }
 }
