@@ -79,6 +79,11 @@ public class Hand
     current.Remove(card);
   }
 
+  public int GetCurrentCount()
+  {
+    return current.Count;
+  }
+
   public List<Card> GetAllCardsInHand()
   {
     return current;

@@ -1,48 +1,48 @@
 ﻿Quantity,Id,Name,Guild,PowerCost,MannaCost,Power,Ability,AbilityCount
 3,#1,Olifonte,Green,8,2,10,Shun,1
-3,#2,Humble Shrew,Green,2,0,3,Heal,2
-3,#3,Furned Mole,Green,4,0,4,Draw,3
-3,#4,Jabawham,Green,10,0,11,,1
-3,#5,Zee Queen,Green,7,0,7,Heal,2
-3,#6,Infested Stump,Green,4,4,8,Cycle,3
-3,#7,Eggless Hatchling,Green,0,6,7,Draw,2
-3,#8,Vined Rapsin,Green,6,0,5,Heal,1
-3,#9,Stone Ent,Green,6,6,13,,
-3,#10,Spiked Cherrybarb,Green,2,0,3,,
-3,#11,Stinger,Green,1,0,3,Draw,4
-3,#12,Rebounding Spur,Green,3,1,6,,
-3,#13,Zip Larva,Red,2,0,2,Cycle,1
-3,#14,Averted Whamp,Red,3,2,5,,
+3,#2,Humble Shrew,Green,2,0,3,Shun,2
+3,#3,Furned Mole,Green,4,0,4,Shun,3
+3,#4,Jabawham,Green,10,0,11,Shun,1
+3,#5,Zee Queen,Green,7,0,7,Shun,2
+3,#6,Infested Stump,Green,4,4,8,Shun,3
+3,#7,Eggless Hatchling,Green,0,6,7,Shun,2
+3,#8,Vined Rapsin,Green,6,0,5,Shun,1
+3,#9,Stone Ent,Green,6,6,13,Shun,
+3,#10,Spiked Cherrybarb,Green,2,0,3,Shun,
+3,#11,Stinger,Green,1,0,3,Shun,4
+3,#12,Rebounding Spur,Green,3,1,6,Shun,
+3,#13,Zip Larva,Red,2,0,2,Shun,1
+3,#14,Averted Whamp,Red,3,2,5,Shun,
 3,#15,Shock Ore,Red,1,0,2,Shun,1
-3,#16,Magma Orvel,Red,8,5,14,,
-3,#17,Enforcer Orvel,Red,5,0,5,,
-3,#18,Integration Goad,Red,3,0,3,Heal,1
-3,#19,Scald Rheptus,Red,3,3,6,,
-3,#20,Noholm ,Red,6,0,6,Stomp,1
-3,#21,Plasma Root,Red,2,2,4,Draw,1
+3,#16,Magma Orvel,Red,8,5,14,Shun,
+3,#17,Enforcer Orvel,Red,5,0,5,Shun,
+3,#18,Integration Goad,Red,3,0,3,Shun,1
+3,#19,Scald Rheptus,Red,3,3,6,Shun,
+3,#20,Noholm ,Red,6,0,6,Shun,1
+3,#21,Plasma Root,Red,2,2,4,Shun,1
 3,#22,Rhipsawn Stallion,Red,9,3,13,Shun,1
-3,#23,Writ Marshal,Red,1,1,4,,
-3,#24,Trapped Oak,Black,0,2,3,Heal,2
-3,#25,Callico,Black,0,3,4,,
-3,#26,Unit Ardor,Black,2,3,6,Draw,2
-3,#27,Blythe Hawk,Black,2,7,10,,
-3,#28,Hammercrest,Black,0,3,5,Heal,1
-3,#29,Cursed Scenika,Black,5,13,20,,
-3,#30,Festering Boldric,Black,1,10,13,Draw,5
-3,#31,Layby Weedle,Black,4,1,7,Stomp,2
-3,#32,Gunsten,Black,7,1,9,Heal,2
-3,#33,Siege Patrol Unit,Black,3,1,6,Draw,1
-3,#34,Warped Visionary,Black,3,3,8,Cycle,3
-3,#35,Brigadier,Blue,3,0,3,Draw,1
-3,#36,Federal Augst,Blue,1,1,3,,
-3,#37,Frontierman,Blue,2,0,2,,
-3,#38,Squant Helm,Blue,2,4,6,Draw,1
-3,#39,Marked Sagel,Blue,3,4,8,Heal,1
-3,#40,Berigon Scorch,Blue,3,3,6,Stomp,2
-3,#41,Mobile Hamel,Blue,4,3,7,,
-3,#42,Sharpened Hamel,Blue,4,2,6,Cycle,2
-3,#43,Reinforced Barge,Blue,5,2,7,Draw,1
-3,#44,Armada Shard,Blue,5,1,6,Stomp,1
+3,#23,Writ Marshal,Red,1,1,4,Shun,
+3,#24,Trapped Oak,Black,0,2,3,Shun,2
+3,#25,Callico,Black,0,3,4,Shun,
+3,#26,Unit Ardor,Black,2,3,6,Shun,2
+3,#27,Blythe Hawk,Black,2,7,10,Shun,
+3,#28,Hammercrest,Black,0,3,5,Shun,1
+3,#29,Cursed Scenika,Black,5,13,20,Shun,
+3,#30,Festering Boldric,Black,1,10,13,Shun,5
+3,#31,Layby Weedle,Black,4,1,7,Shun,2
+3,#32,Gunsten,Black,7,1,9,Shun,2
+3,#33,Siege Patrol Unit,Black,3,1,6,Shun,1
+3,#34,Warped Visionary,Black,3,3,8,Shun,3
+3,#35,Brigadier,Blue,3,0,3,Shun,1
+3,#36,Federal Augst,Blue,1,1,3,Shun,
+3,#37,Frontierman,Blue,2,0,2,Shun,
+3,#38,Squant Helm,Blue,2,4,6,Shun,1
+3,#39,Marked Sagel,Blue,3,4,8,Shun,1
+3,#40,Berigon Scorch,Blue,3,3,6,Shun,2
+3,#41,Mobile Hamel,Blue,4,3,7,Shun,
+3,#42,Sharpened Hamel,Blue,4,2,6,Shun,2
+3,#43,Reinforced Barge,Blue,5,2,7,Shun,1
+3,#44,Armada Shard,Blue,5,1,6,Shun,1
 3,#45,Nexic Mask,Blue,6,1,7,,
 8,#46,Fawn,Neutral,0,0,1,,
 2,#47,Mule,Neutral,0,0,2,,

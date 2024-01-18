@@ -390,6 +390,12 @@ class Terminal
 
   public static void PromptShun(List<Card> hand)
   {
+    if (hand.Count == 0)
+    {
+      Console.WriteLine("\nNo cards in hand to Shun.");
+      return;
+    }
+
     Console.WriteLine("\nShun a card from your hand: ");
     PrintCards(hand);
   }

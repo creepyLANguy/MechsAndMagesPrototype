@@ -48,41 +48,45 @@ namespace MaM.NodeVisitLogic
 
     public static void RunPlayCardsPhase(ref BattlePack b)
     {
-      while (b.hand.GetAllCardsInHand().Count > 0)
+      while (b.hand.GetCurrentCount() > 0)
       {
-        var canPlayAll = b.hand.HasCardsWithOrderSensitiveEffects() == false;
+        RunPlayCardsPhase_Helper(ref b);
+      }
+    }
 
-        Terminal.PromptToPlayCard(ref b, canPlayAll);
+    private static void RunPlayCardsPhase_Helper(ref BattlePack b)
+    {
+      var canPlayAll = b.hand.HasCardsWithOrderSensitiveEffects() == false;
+
+      Terminal.PromptToPlayCard(ref b, canPlayAll);
 
 #if DEBUG
-        var selection = canPlayAll ? 0 : 1;
+      var selection = canPlayAll ? 0 : 1;
 #else
         var selection = UserInput.GetInt();
 #endif
-        
-        var allCardsInHand = b.hand.GetAllCardsInHand();
 
-        if (selection < 0)
+      if (selection < 0)
+      {
+        return;
+      }
+      else if (selection == 0)
+      {
+        var allCardsInHand = b.hand.GetAllCardsInHand();
+        foreach (var card in allCardsInHand)
         {
-          return;
+          ProcessCardEffects(card, ref b);
         }
-        else if (selection == 0)
-        {
-          foreach (var card in allCardsInHand)
-          {
-            ProcessCardEffects(card, ref b);
-          }
-          b.graveyard.AddRange(allCardsInHand);
-          b.hand.Clear();
-        }
-        else if (selection <= allCardsInHand.Count)
-        {
-          --selection;
-          var selectedCard = allCardsInHand[selection];
-          ProcessCardEffects(selectedCard, ref b);
-          b.field.Add(selectedCard);
-          b.hand.Remove_Single(selectedCard);
-        }
+        b.graveyard.AddRange(allCardsInHand);
+        b.hand.Clear();
+      }
+      else if (selection <= b.hand.GetCurrentCount())
+      {
+        --selection;
+        var selectedCard = b.hand.GetCardAtIndex(selection);
+        b.field.Add(selectedCard);
+        ProcessCardEffects(selectedCard, ref b);
+        b.hand.Remove_Single(selectedCard);
       }
     }
 
@@ -135,7 +139,7 @@ namespace MaM.NodeVisitLogic
 
       var stompedCard = playedCard;
 
-      var cardsInHandCount = b.hand.GetAllCardsInHand().Count;
+      var cardsInHandCount = b.hand.GetCurrentCount();
 
       var coinToss = UbiRandom.Next(0, 2);
       var stompFromHand = coinToss == 1 && cardsInHandCount > 0;
@@ -200,6 +204,11 @@ namespace MaM.NodeVisitLogic
     {
       //TODO - test shun
       Terminal.PromptShun(b.hand.GetAllCardsInHand());
+
+      if (b.hand.GetCurrentCount() == 0)
+      {
+        return;
+      }
 
 #if DEBUG
       var selection = 0;
