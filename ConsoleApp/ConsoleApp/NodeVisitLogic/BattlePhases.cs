@@ -127,8 +127,6 @@ namespace MaM.NodeVisitLogic
 
     private static void PerformStomp(ref BattlePack b, Card playedCard)
     {
-      //TODO - test all stomp flows. 
-
       var stompedCard = playedCard;
 
       var cardsInHandCount = b.hand.GetCurrentCount();
