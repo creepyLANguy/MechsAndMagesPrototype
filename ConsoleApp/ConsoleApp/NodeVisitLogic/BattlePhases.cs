@@ -194,7 +194,6 @@ namespace MaM.NodeVisitLogic
 
     private static void PerformShun(ref BattlePack b)
     {
-      //TODO - test shun
       Terminal.PromptShun(b.hand.GetAllCardsInHand());
 
       if (b.hand.GetCurrentCount() == 0)
