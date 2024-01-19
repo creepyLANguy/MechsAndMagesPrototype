@@ -33,7 +33,11 @@ public static class EnemyReader
     foreach (var split in splits)
     {
       var marker = StringSplitters.GetAlphabeticPart(split);
-      if (Enum.TryParse<EnemyTurnAction>(marker, out var enemyTurnAction))
+      if (marker == string.Empty)
+      {
+        list.Add(new Tuple<EnemyTurnAction, int>(EnemyTurnAction.B, StringSplitters.GetNumericPart(split)));
+      }
+      else if (Enum.TryParse<EnemyTurnAction>(marker, out var enemyTurnAction))
       {
         var numericValue = StringSplitters.GetNumericPart(split);
         list.Add(new Tuple<EnemyTurnAction, int>(enemyTurnAction, numericValue));
