@@ -77,8 +77,8 @@ namespace MaM.NodeVisitLogic
         --selection;
         var selectedCard = b.hand.GetCardAtIndex(selection);
         b.field.Add(selectedCard);
-        ProcessCardEffects(selectedCard, ref b);
         b.hand.Remove_Single(selectedCard);
+        ProcessCardEffects(selectedCard, ref b);
       }
     }
 
