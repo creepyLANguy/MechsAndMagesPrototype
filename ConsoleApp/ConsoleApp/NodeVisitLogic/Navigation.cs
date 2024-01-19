@@ -84,12 +84,8 @@ public static class Navigation
     }
 
     Terminal.PromptForStartingNode(ref firstRow);
-
-#if DEBUG
-    const int input = 0;
-#else 
-    var input = UserInput.GetInt() - 1;
-#endif
+    
+    var input = UserInput.GetInt(1) - 1;
 
     var selectedNode = firstRow[input];
 
@@ -103,20 +99,15 @@ public static class Navigation
   {
     var currentNode = map.nodes[player.currentNodeX, player.currentNodeY];
 
-    Terminal.PromptForNextNode(ref currentNode, ref map);
-
-#if DEBUG
-    const int input = 0;
-#else
-    var input = UserInput.GetInt() - 1;
-#endif
-
     var destList = new List<Node>();
     foreach (var (x, y) in currentNode.destinations)
     {
       var node = map.nodes[x, y];
       destList.Add(node);
     }
+
+    Terminal.PromptForNextNode(ref currentNode, ref map);
+    var input = UserInput.GetInt(1) - 1;
 
     var (item1, item2) 
       = currentNode.destinations.First(dest => dest.Item1 == destList[input].x && dest.Item2 == destList[input].y);

@@ -24,11 +24,8 @@ namespace MaM.NodeVisitLogic
         }
 
         Terminal.OfferMulligan(player.health, mulliganCost);
-#if DEBUG
-        var choice = NO;
-#else
-      var choice = (YesNoChoice)UserInput.GetInt();
-#endif
+
+        var choice = (YesNoChoice) UserInput.GetInt((int?) NO);
         if (choice == NO)
         {
           break;
@@ -59,13 +56,8 @@ namespace MaM.NodeVisitLogic
       var canPlayAll = b.hand.HasCardsWithOrderSensitiveEffects() == false;
 
       Terminal.PromptToPlayCard(ref b, canPlayAll);
-
-#if DEBUG
-      var selection = canPlayAll ? 0 : 1;
-#else
-        var selection = UserInput.GetInt();
-#endif
-
+      
+      var selection = UserInput.GetInt(canPlayAll ? 0 : 1);
       if (selection < 0)
       {
         return;
@@ -209,13 +201,8 @@ namespace MaM.NodeVisitLogic
       {
         return;
       }
-
-#if DEBUG
-      var selection = 0;
-#else
-        var selection = UserInput.GetInt() - 1;
-#endif
-
+      
+      var selection = UserInput.GetInt(1) - 1;
       var selectedCard = b.hand.GetCardAtIndex(selection);
       b.scrapheap.Add(selectedCard);
       b.hand.Remove_Single(selectedCard);

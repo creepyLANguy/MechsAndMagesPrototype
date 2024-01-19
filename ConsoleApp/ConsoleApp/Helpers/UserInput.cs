@@ -12,8 +12,15 @@ public static class UserInput
     return Get();
   }
 
-  public static int GetInt()
+  public static int GetInt(int? debugModeDefaultValue = null)
   {
+#if DEBUG
+    if (debugModeDefaultValue != null)
+    {
+      return (int) debugModeDefaultValue;
+    }
+#endif
+
     var input = GetString();
 
     while (string.IsNullOrEmpty(input))

@@ -1,6 +1,7 @@
 ﻿using MaM.Helpers;
 using MaM.Definitions;
 using MaM.NodeVisitLogic;
+using static MaM.Menus.MainMenuItem;
 
 namespace MaM.Menus;
 
@@ -12,17 +13,14 @@ public static class MainMenu
 
     Terminal.ShowMainMenu();
 
-#if DEBUG
-    var choice = MainMenuItem.PLAY;
-#else 
-    var choice = (MainMenuItem)UserInput.GetInt();
-#endif
+    var choice = (MainMenuItem) UserInput.GetInt((int?) PLAY);
     switch (choice)
     {
-      case MainMenuItem.PLAY:
+      case PLAY:
         var saveFile = SaveGameHelper.PromptUserToSelectSaveSlot();
         Navigation.Run(SaveGame.GameConfigFilename, saveFile, SaveGame.CryptoKey);
         break;
+      case EXIT:
       default:
         keepRunning = ExitMenu.Show();
         break;

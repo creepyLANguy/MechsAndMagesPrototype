@@ -110,12 +110,7 @@ public static class SaveGameHelper
 
     Terminal.PromptForSaveSlot(list);
 
-#if DEBUG
-    const int choice = 0;
-#else
-    var choice = UserInput.GetInt();
-#endif
-
+    var choice = UserInput.GetInt(0);
     var saveFile = (choice == 0 ? DateTime.Now.Ticks + SaveGame.SaveFileExtension : allFiles[choice - 1]);
     return saveFile;
   }

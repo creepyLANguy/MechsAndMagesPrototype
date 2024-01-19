@@ -152,12 +152,7 @@ public static class Battle
 
     Terminal.PromptToChooseReward(offeredRewards);
 
-#if DEBUG
-    var choice = 0;
-#else
-    var choice = UserInput.GetInt() - 1;
-#endif
-
+    var choice = UserInput.GetInt(1) - 1;
     while (choice >= offeredRewards.Count)
     {
       Terminal.PromptInvalidChoiceTryAgain();
