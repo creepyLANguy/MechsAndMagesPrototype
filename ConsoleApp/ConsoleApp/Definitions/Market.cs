@@ -21,7 +21,7 @@ public class Market
     var mergedList = MergeListsAlternating(cards_player, cards_enemy);
     mergedList.Reverse(0, mergedList.Count);
 
-    pool = new(mergedList);
+    pool = new Stack<Card>(mergedList);
   }
 
   private static List<T> MergeListsAlternating<T>(List<T> list1, List<T> list2)

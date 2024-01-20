@@ -30,8 +30,8 @@ public class BattlePack
     this.node = node;
     this.gameContents = gameContents;
 
-    player = new(gameContents.player.health);
-    enemy = new(node.enemy.health);
+    player = new Combatant(gameContents.player.health);
+    enemy = new Combatant(node.enemy.health);
 
     SetupMarket(node.fightType);
 
