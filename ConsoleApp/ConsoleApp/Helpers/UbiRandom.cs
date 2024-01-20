@@ -35,10 +35,10 @@ namespace MaM.Helpers
       return _random.Next(upperExclusive);
     }
 
-    public static int Next(int inclusiveLower, int upperExclusive)
+    public static int Next(int lowerInclusive, int upperExclusive)
     {
       EnsureInitialized();
-      return _random.Next(inclusiveLower, upperExclusive);
+      return _random.Next(lowerInclusive, upperExclusive);
     }
 
     public static double NextDouble()
