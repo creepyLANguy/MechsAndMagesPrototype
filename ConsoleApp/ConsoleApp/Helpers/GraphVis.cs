@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using MaM.Definitions;
 using MaM.Enums;
@@ -9,7 +10,7 @@ public static class GraphVis
 {
   public static void SaveMapsAsDotFiles(ref Journey journey, bool verbose)
   {
-    var folderName = "DEBUG_MAPS" + FileSystem.directorySeparator;
+    var folderName = "DEBUG_MAPS" + Path.DirectorySeparatorChar;
 
     for (var i = 0; i < journey.maps.Count; ++i)
     {

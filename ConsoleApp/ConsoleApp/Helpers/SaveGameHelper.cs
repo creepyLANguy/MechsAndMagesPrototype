@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -92,7 +92,7 @@ public static class SaveGameHelper
 
     var allFiles =
       Directory.EnumerateFiles(SaveGame.SaveFileDirectory)
-        .Select(file => file.Substring(file.IndexOf(FileSystem.directorySeparator, StringComparison.Ordinal) + 1))
+        .Select(file => file[(file.IndexOf(Path.DirectorySeparatorChar, StringComparison.Ordinal) + 1)..])
         .ToList();
 
     foreach (var file in allFiles)

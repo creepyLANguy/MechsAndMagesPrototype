@@ -8,7 +8,7 @@ public static class UserInput
   {
     if (value == null)
     {
-      return default(T);
+      return default;
     }
 
     Terminal.Print("\n>> " + value);
