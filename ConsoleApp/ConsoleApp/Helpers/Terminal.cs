@@ -29,7 +29,7 @@ class Terminal
 
   public static void Turn(string name)
   {
-    Console.WriteLine("\n[Turn]\t\t" + name);
+    Console.WriteLine("\n[Turn]" + Tab + Tab + name);
   }
 
   public static void PrintBattleState(BattlePack b)
@@ -40,21 +40,21 @@ class Terminal
     
     Console.WriteLine(dashes);
 
-    Console.WriteLine("Your Life:\t" + b.player.health);
+    Console.WriteLine("Your Life:" + Tab + b.player.health);
 
-    Console.WriteLine("Your Power:\t" + b.player.power);
+    Console.WriteLine("Your Power:" + Tab + b.player.power);
 
-    Console.WriteLine("Your Manna:\t" + b.player.manna); 
+    Console.WriteLine("Your Manna:" + Tab + b.player.manna); 
     
-    Console.WriteLine("Your Defense:\t" + (b.player.isDefending ? "ACTIVE" : "NONE"));
+    Console.WriteLine("Your Defense:" + Tab + (b.player.isDefending ? "ACTIVE" : "NONE"));
 
     Console.WriteLine(dashes);
 
-    Console.WriteLine("Enemy Life:\t" + b.enemy.health);
+    Console.WriteLine("Enemy Life:" + Tab + b.enemy.health);
     
-    Console.WriteLine("Enemy Threat:\t" + b.enemy.power);
+    Console.WriteLine("Enemy Threat:" + Tab + b.enemy.power);
 
-    Console.WriteLine("Enemy Defense:\t" + (b.enemy.isDefending ? "ACTIVE" : "NONE"));
+    Console.WriteLine("Enemy Defense:" + Tab + (b.enemy.isDefending ? "ACTIVE" : "NONE"));
 
     Console.WriteLine(dashes);
   }
@@ -223,9 +223,9 @@ class Terminal
     {
       Console.WriteLine(
         ++n + ")" +
-        "\t[" + node.x + ", " + node.y + "]" +
-        "\t" + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty) + 
-        (node.nodeType == NodeType.FIGHT ? "\t" + ((Fight)node).guild : "")
+        Tab + "[" + node.x + ", " + node.y + "]" +
+        Tab + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty) + 
+        (node.nodeType == NodeType.FIGHT ? Tab + ((Fight)node).guild : "")
       );
     }
   }
@@ -239,8 +239,8 @@ class Terminal
       var node = map.nodes[x, y];
       Console.WriteLine(
         ++n + ")" +
-        "\t[" + node.x + ", " + node.y + "]" +
-        "\t" + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty)
+        Tab + "[" + node.x + ", " + node.y + "]" +
+        Tab + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty)
       );
     }
   }
