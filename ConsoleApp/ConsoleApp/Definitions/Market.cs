@@ -7,13 +7,13 @@ namespace MaM.Definitions;
 
 public class Market
 {
-  private int marketSize;
-  private Stack<Card> pool = new();
-  private List<Card> display = new();
+  private int _marketSize;
+  private Stack<Card> _pool;
+  private List<Card> _display = new();
 
   public Market(int marketSize, List<Card> cards_player, List<Card> cards_enemy)
   {
-    this.marketSize = marketSize;
+    _marketSize = marketSize;
 
     cards_player.Shuffle();
     cards_enemy.Shuffle();
@@ -21,7 +21,7 @@ public class Market
     var mergedList = MergeListsAlternating(cards_player, cards_enemy);
     mergedList.Reverse(0, mergedList.Count);
 
-    pool = new(mergedList);
+    _pool = new Stack<Card>(mergedList);
   }
 
   private static List<T> MergeListsAlternating<T>(List<T> list1, List<T> list2)
@@ -48,14 +48,14 @@ public class Market
 
   public bool Fill()
   {
-    if (pool.Count == 0)
+    if (_pool.Count == 0)
     {
       return false;
     }
 
-    while (display.Count < marketSize)
+    while (_display.Count < _marketSize)
     {
-      display.Add(pool.Pop());
+      _display.Add(_pool.Pop());
     }
 
     return true;
@@ -63,7 +63,7 @@ public class Market
 
   public Card? TryFetch(int index, ref BattlePack b)
   {
-    var card = display[index];
+    var card = _display[index];
 
     if (card.powerCost > b.player.power)
     {
@@ -75,14 +75,14 @@ public class Market
       return null;
     }
 
-    if (pool.Count > 0)
+    if (_pool.Count > 0)
     {
-      display[index] = pool.Pop();
+      _display[index] = _pool.Pop();
     }
     else
     {
-      marketSize -= 1;
-      display.Remove(card);
+      _marketSize -= 1;
+      _display.Remove(card);
     }
 
     b.player.power -= card.powerCost;
@@ -93,22 +93,22 @@ public class Market
 
   public void Cycle()
   {
-    var tempPool = pool.ToList();
-    tempPool.AddRange(display);
+    var tempPool = _pool.ToList();
+    tempPool.AddRange(_display);
     tempPool.Reverse(0, tempPool.Count);
-    pool = new Stack<Card>(tempPool);
+    _pool = new Stack<Card>(tempPool);
 
-    display.Clear();
+    _display.Clear();
     Fill();
   }
 
   public List<Card> GetDisplayedCards_All()
   {
-    return display;
+    return _display;
   }
 
   public List<Card> GetDisplayedCards_Affordable(int power, int manna)
-    {
-      return display.Where(card => power >= card.powerCost && manna >= card.mannaCost).ToList();
-    }
+  {
+    return _display.Where(card => power >= card.powerCost && manna >= card.mannaCost).ToList();
+  }
 }

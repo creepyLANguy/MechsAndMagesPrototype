@@ -18,13 +18,15 @@ public static class GameGenerator
 
     var gameState = SaveGameHelper.IsLegit(saveFilename) 
       ? SaveGameHelper.Read(saveFilename, cards, cryptoKey) 
-      : new GameState(DateTime.Now, UbiRandom.GetCurrentSeed(), null);
+      : new GameState(DateTime.Now, null, UbiRandom.GetCurrentSeed(), UbiRandom.GetCallHistory());
 
     return GenerateGameContents(ref gameConfig, ref gameState, ref cards);
   }
     
   private static GameContents GenerateGameContents(ref GameConfig gameConfig, ref GameState gameState, ref List<Card> cards)
   {
+    UbiRandom.ForceInitialise(gameState.randomSeed, gameState.randomCallHistory);
+
     var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards);
 
     var journey = GetJourney(ref gameConfig);

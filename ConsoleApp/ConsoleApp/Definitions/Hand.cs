@@ -96,7 +96,7 @@ public class Hand
 
   public bool HasCardsWithOrderSensitiveEffects()
   {
-    var orderSensitiveEffects = new List<CardAbility>()
+    var orderSensitiveEffects = new List<CardAbility>
     {
       CardAbility.SHUN,
       CardAbility.DRAW,

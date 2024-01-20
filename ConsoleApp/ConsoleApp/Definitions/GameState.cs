@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MaM.Definitions;
 
 public struct GameState
 {
   public DateTime time;
-  public int      randomSeed;
   public Player   player;
+  public int randomSeed;
+  public UbiRandomCallHistory randomCallHistory;
 
-  public GameState(DateTime time, int randomSeed, Player player)
+  public GameState(DateTime time, Player player, int randomSeed, UbiRandomCallHistory randomCallHistory)
   {
-    this.time       = time;
+    this.time = time;
+    this.player = player;
     this.randomSeed = randomSeed;
-    this.player     = player;
+    this.randomCallHistory = randomCallHistory;
   }
 }

@@ -62,8 +62,13 @@ public static class Navigation
     return;
 
     //Nested convenience function definition.
-    void AutoSave() 
-      => SaveGameHelper.Save(gameContents.seed, ref player, saveFilename, cryptoKey);
+    void AutoSave()
+      => SaveGameHelper.Save(
+          UbiRandom.GetCurrentSeed(),
+          UbiRandom.GetCallHistory(),
+          ref player,
+          saveFilename,
+          cryptoKey);
   }
 
   private static Node GetNextNode(ref Player player, ref Map map) 

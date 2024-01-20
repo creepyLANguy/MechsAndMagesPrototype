@@ -37,9 +37,9 @@ public static class SaveGameHelper
     return gameState;
   }
 
-  public static bool Save(int randomSeed, ref Player player, string filename, string cryptoKey = null)
+  public static bool Save(int randomSeed, UbiRandomCallHistory randomCallHistory, ref Player player, string filename, string cryptoKey = null)
   {
-    var gameState = new GameState(DateTime.Now, randomSeed, player);
+    var gameState = new GameState(DateTime.Now, player, randomSeed, randomCallHistory);
     return SaveGameStateToFile(ref gameState, filename, cryptoKey);
   }
 
