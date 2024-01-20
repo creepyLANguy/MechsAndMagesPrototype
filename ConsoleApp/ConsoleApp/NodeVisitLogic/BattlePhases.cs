@@ -58,27 +58,34 @@ namespace MaM.NodeVisitLogic
       Terminal.PromptToPlayCard(ref b, canPlayAll);
       
       var selection = UserInput.GetInt(canPlayAll ? 0 : 1);
-      if (selection < 0)
+      switch (selection)
       {
-        return;
-      }
-      else if (selection == 0)
-      {
-        var allCardsInHand = b.hand.GetAllCardsInHand();
-        foreach (var card in allCardsInHand)
+        case < 0:
+          return;
+        case 0:
         {
-          ProcessCardEffects(card, ref b);
+          var allCardsInHand = b.hand.GetAllCardsInHand();
+          b.field.AddRange(allCardsInHand);
+          b.hand.Clear();
+          foreach (var card in b.field)
+          {
+            ProcessCardEffects(card, ref b);
+          }
+          break;
         }
-        b.graveyard.AddRange(allCardsInHand);
-        b.hand.Clear();
-      }
-      else if (selection <= b.hand.GetCurrentCount())
-      {
-        --selection;
-        var selectedCard = b.hand.GetCardAtIndex(selection);
-        b.field.Add(selectedCard);
-        b.hand.Remove_Single(selectedCard);
-        ProcessCardEffects(selectedCard, ref b);
+        default:
+        {
+          if (selection <= b.hand.GetCurrentCount())
+          {
+            --selection;
+            var selectedCard = b.hand.GetCardAtIndex(selection);
+            b.field.Add(selectedCard);
+            b.hand.Remove_Single(selectedCard);
+            ProcessCardEffects(selectedCard, ref b);
+          }
+
+          break;
+        }
       }
     }
 
