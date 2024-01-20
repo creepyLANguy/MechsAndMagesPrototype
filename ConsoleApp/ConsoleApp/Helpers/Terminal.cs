@@ -425,4 +425,14 @@ class Terminal
     Console.WriteLine("\nStomped from " + location + " : " + cardName);
     PrintCards(stompFromHand ? b.hand.GetAllCardsInHand() : b.field);
   }
+
+  public static void PromptForManualSeed()
+  {
+    Console.WriteLine("\nEnter a positive integer to manually seed the journey, else enter 0 to use a random seed:");
+  }
+
+  public static void Print<T>(T value)
+  {
+    Console.WriteLine(value);
+  }
 }

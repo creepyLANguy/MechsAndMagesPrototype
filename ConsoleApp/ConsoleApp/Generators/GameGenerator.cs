@@ -16,6 +16,8 @@ public static class GameGenerator
 
     var cards = CardReader.GetCardsFromExcel(gameConfig.cardsExcelFile);
 
+    PromptForManualSeed();
+
     var gameState = SaveGameHelper.IsLegit(saveFilename) 
       ? SaveGameHelper.Read(saveFilename, cards, cryptoKey) 
       : new GameState(DateTime.Now, UbiRandom.GetCurrentSeed(), null);
@@ -113,5 +115,15 @@ public static class GameGenerator
   {
     Terminal.PromptForCardDraft(ref offeredCards);
     return offeredCards[UserInput.GetInt(1) - 1];
+  }
+
+  private static void PromptForManualSeed()
+  {
+    Terminal.PromptForManualSeed();
+    var seed = UserInput.GetInt(0);
+    if (seed > 0)
+    {
+      UbiRandom.ForceInit(seed);
+    }
   }
 }

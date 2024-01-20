@@ -46,5 +46,11 @@ namespace MaM.Helpers
       EnsureInitialized();
       return _random.NextDouble();
     }
+
+    public static void ForceInit(int seed)
+    {
+      _seed = seed;
+      _random = new Random((int)_seed);
+    }
   }
 }

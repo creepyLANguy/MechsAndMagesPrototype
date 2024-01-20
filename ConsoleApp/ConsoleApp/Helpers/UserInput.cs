@@ -4,6 +4,17 @@ namespace MaM.Helpers;
 
 public static class UserInput
 {
+  private static T PrintAndReturnValue<T>(T value)
+  {
+    if (value == null)
+    {
+      return default(T);
+    }
+
+    Terminal.Print("\n>> " + value);
+    return value;
+  }
+
   private static string GetString_Force()
   {
     var input = Console.ReadLine();
@@ -19,7 +30,7 @@ public static class UserInput
   public static string GetString(string debugModeDefaultValue = null)
   {
 #if DEBUG
-    return debugModeDefaultValue ?? GetString_Force();
+    return PrintAndReturnValue(debugModeDefaultValue) ?? GetString_Force();
 #else
     return GetString_Force();
 #endif
@@ -28,7 +39,7 @@ public static class UserInput
   public static int GetInt(int? debugModeDefaultValue = null)
   {
 #if DEBUG
-    return debugModeDefaultValue ?? int.Parse(GetString());
+    return PrintAndReturnValue(debugModeDefaultValue) ?? int.Parse(GetString());
 #else
     return int.Parse(GetString_Force());
 #endif
