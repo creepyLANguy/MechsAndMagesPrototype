@@ -85,12 +85,7 @@ public static class GameGenerator
   private static string GetPlayerName()
   {
     Terminal.PromptForName();
-
-#if DEBUG
-    return "DebugPlayer";
-#else
-    return UserInput.Get();
-#endif
+    return UserInput.GetString("DebugPlayer");
   }
 
   //Note, prolly important to pass a copy of random as in the future, with prior completion bonuses awarded, we may be using random an indeterminate amount of times here.
@@ -117,11 +112,6 @@ public static class GameGenerator
   private static Card GetSelectedCard(ref List<Card> offeredCards)
   {
     Terminal.PromptForCardDraft(ref offeredCards);
-
-#if DEBUG
-    return offeredCards[0];
-#else
-    return offeredCards[int.Parse(UserInput.Get() ?? string.Empty) - 1];
-#endif
+    return offeredCards[UserInput.GetInt(1) - 1];
   }
 }
