@@ -59,14 +59,20 @@ public class Hand
     return current.Count != defaultSize;
   }
 
-  public void Draw_Single(ref Stack<Card> deck, ref List<Card> graveyard)
+  public bool Draw_Single(ref Stack<Card> deck, ref List<Card> graveyard)
   {
     if (deck.Count == 0 && graveyard.Count > 0)
     {
       MoveGraveyardToDeck(ref deck, ref graveyard);
     }
+    else if (deck.Count == 0)
+    {
+      return false;
+    }
 
     current.Add(deck.Pop());
+
+    return true;
   }
 
   public void Clear()

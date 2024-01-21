@@ -400,25 +400,29 @@ class Terminal
     PrintCards(hand);
   }
 
-  public static void ShowDrew(List<Card> hand)
+  public static void ShowDrawResult(List<Card> hand, bool successfullyDrew)
   {
-    Console.WriteLine("\nDrew an additional card.");
+    Console.WriteLine(
+      successfullyDrew
+      ? "\nDrew an additional card."
+      : "\nDeck and graveyard empty - could not draw card.");
+
     PrintHand(hand);
   }  
   
-  public static void ShowHealed(int health)
+  public static void ShowHealResult(int health)
   {
     Console.WriteLine("\nHealing applied.");
     PrintHealth(health);
   }
 
-  public static void ShowCycled(List<Card> marketCardsDisplayed)
+  public static void ShowCycleResult(List<Card> marketCardsDisplayed)
   {
     Console.WriteLine("\nCycled the market.");
     PrintMarket(marketCardsDisplayed);
   }
 
-  public static void ShowStomped(ref BattlePack b, Card stompedCard, bool stompFromHand)
+  public static void ShowStompResult(ref BattlePack b, Card stompedCard, bool stompFromHand)
   {
     var location = stompFromHand ? "Hand" : "Field";
     var cardName = GetPrintableCardName(stompedCard.name);

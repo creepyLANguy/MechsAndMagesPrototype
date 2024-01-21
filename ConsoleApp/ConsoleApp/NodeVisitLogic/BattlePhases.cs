@@ -122,14 +122,14 @@ namespace MaM.NodeVisitLogic
 
     private static void PerformDraw(ref BattlePack b)
     {
-      b.hand.Draw_Single(ref b.deck, ref b.graveyard);
-      Terminal.ShowDrew(b.hand.GetAllCardsInHand());
+      var drawResult = b.hand.Draw_Single(ref b.deck, ref b.graveyard);
+      Terminal.ShowDrawResult(b.hand.GetAllCardsInHand(), drawResult);
     }
 
     private static void PerformHeal(ref BattlePack b)
     {
       b.player.health += 1;
-      Terminal.ShowHealed(b.player.health);
+      Terminal.ShowHealResult(b.player.health);
     }
 
     private static void PerformStomp(ref BattlePack b, Card playedCard)
@@ -165,7 +165,7 @@ namespace MaM.NodeVisitLogic
         }
       }
       
-      Terminal.ShowStomped(ref b, stompedCard, stompFromHand);
+      Terminal.ShowStompResult(ref b, stompedCard, stompFromHand);
 
       void StompSelf(ref BattlePack b)
       {
@@ -194,7 +194,7 @@ namespace MaM.NodeVisitLogic
     private static void PerformCycle(ref BattlePack b)
     {
       b.market.Cycle();
-      Terminal.ShowCycled(b.market.GetDisplayedCards_All());
+      Terminal.ShowCycleResult(b.market.GetDisplayedCards_All());
     }
 
     private static void PerformShun(ref BattlePack b)
