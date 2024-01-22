@@ -29,10 +29,8 @@ public static class GraphVis
 
     for (var i = 0; i < journey.maps.Count; ++i)
     {
-      var dotFileString = GenerateDotFileContents(journey.maps[i], "Map_" + (i + 1), verbose);
-
       var dotFilename = "Map_" + (i + 1) + "_" + DateTime.Now.Ticks + ".dot";
-
+      var dotFileString = GenerateDotFileContents(journey.maps[i], "Map_" + (i + 1), verbose);
       FileHelper.WriteFileToDrive(dotFilename, dotFileString, folderName);
     }
   }
@@ -60,6 +58,7 @@ public static class GraphVis
   private static void AddRelationshipsSection(ref StringBuilder mainBuffer, Map map)
   {
     mainBuffer.Append("\n//Relationships : \n");
+
     for (var y = 0; y < map.height; ++y)
     {
       for (var x = 0; x < map.width; ++x)
@@ -103,9 +102,7 @@ public static class GraphVis
           continue;
         }
 
-        var nodeLabel = GetNodeLabel(node);
-
-        mainBuffer.Append(nodeLabel + "\n");
+        mainBuffer.Append(GetNodeLabel(node) + "\n");
       }
     }
   }
@@ -113,10 +110,7 @@ public static class GraphVis
   private static string GetNodeName(Node node)
   {
     var nodeName = "nodeColourBlack" + node.x + "y" + node.y + "_";
-
-    nodeName += GetNodeTypeDescriptor(node);
-
-    return nodeName;
+    return nodeName + GetNodeTypeDescriptor(node);
   }
 
   private static string GetNodeLabel(Node node)
@@ -124,10 +118,7 @@ public static class GraphVis
     var nodeName = GetNodeName(node);
     var descriptor = GetNodeTypeDescriptor(node).Replace("_", "\\n");
     var decorations = GetNodeDecorations(node);
-
-    var nodeLabel = nodeName + "[label=\"" + descriptor + "\"" + decorations + "];";
-
-    return nodeLabel;
+    return nodeName + "[label=\"" + descriptor + "\"" + decorations + "];";
   }
 
   private static string GetNodeTypeDescriptor(Node node)
@@ -166,8 +157,9 @@ public static class GraphVis
 
     var fillStyle = node.isMystery ? "none" : "filled";
     var colour = GetColourForNode(node);
+    var fontColour = (node.isMystery ? colour : "white");
     var shape = GetShapeForNode(node);
-    return " style=" + fillStyle + " color=\"" + colour + "\"" + " shape=\"" + shape + "\"";
+    return " style=" + fillStyle + " color=\"" + colour + "\" fontcolor =\"" + fontColour + "\" shape=\"" + shape + "\"";
   }
 
   private static string GetColourForNode(Node node)
@@ -203,7 +195,7 @@ public static class GraphVis
       }
     }
 
-    return colour + (node.isMystery ? $"\" fontcolor=\"{colour}" : "\" fontcolor=\"white");
+    return colour;
   }
 
   private static string GetShapeForNode(Node node)
