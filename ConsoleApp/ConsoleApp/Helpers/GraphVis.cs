@@ -145,10 +145,8 @@ public static class GraphVis
         str = NodeType.CAMPSITE.ToString();
         break;
       case NodeType.FIGHT:
-      {
         str = NodeType.FIGHT + "_" + ((Fight)node).fightType + "_" + ((Fight) node).guild;
         break;
-      }
     }
 
     if (node.isMystery)
