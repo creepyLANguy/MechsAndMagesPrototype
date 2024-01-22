@@ -27,6 +27,7 @@ public static class GraphVis
     var mainBuffer = new StringBuilder(); 
       
     mainBuffer.Append("digraph " + mapName + " {" + "\n");
+    mainBuffer.Append("node[shape = circle]\n");
 
     mainBuffer.Append("\n//Relationships : \n");
     for (var y = 0; y < map.height; ++y)
@@ -140,8 +141,8 @@ public static class GraphVis
       return "";
     }
 
-    var fillStyle = (node.isMystery) ? "none" : "filled";
-    return "shape=box style=" + fillStyle + " color=\"" + GetColourForNode(node)+ "\"";
+    var fillStyle = node.isMystery ? "none" : "filled";
+    return "style=" + fillStyle + " color=\"" + GetColourForNode(node)+ "\"";
   }
 
   private static string GetColourForNode(Node node)
