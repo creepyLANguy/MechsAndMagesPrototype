@@ -26,7 +26,7 @@ public static class Battle
 
     Terminal.PrintFightResult(fightResult);
 
-    if (node.fightType == FightType.ELITE)
+    if (node.fightType == FightType.ELITE || node.isMystery)
     {
       OfferReward(ref gameContents, node.guild, node.enemy.marketSize);
     }
