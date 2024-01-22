@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using MaM.Definitions;
@@ -8,6 +8,21 @@ namespace MaM.Helpers;
 
 public static class GraphVis
 {
+  private const string DefaultNodeColour = "white";
+  private const string DefaultNodeShape = "circle";
+  private const string DefaultNodeAttributes = "fixedsize=true width=2.5 height=2.5 penwidth=10";
+  private const string DefaultEdgeAttributes = "penwidth=2";
+
+  private const string NodeColourCamp = "orange";
+  private const string NodeColourGreen = "green3";//"darkolivegreen1";
+  private const string NodeColourRed = "red";//"pink";
+  private const string NodeColourBlue = "blue";//"lightblue";
+  private const string NodeColourBlack = "black";//"grey";
+
+  private const string NodeShapeCamp = "triangle";
+  private const string NodeShapeElite = "pentagon";
+  private const string NodeShapeBoss = "star";
+
   public static void SaveMapsAsDotFiles(ref Journey journey, bool verbose)
   {
     var folderName = "DEBUG_MAPS" + Path.DirectorySeparatorChar;
@@ -27,8 +42,23 @@ public static class GraphVis
     var mainBuffer = new StringBuilder(); 
       
     mainBuffer.Append("digraph " + mapName + " {" + "\n");
-    mainBuffer.Append("node[shape = circle]\n");
+    mainBuffer.Append("node[shape=" + DefaultNodeShape + " " + DefaultNodeAttributes + "]\n");
+    mainBuffer.Append("edge[" + DefaultEdgeAttributes + "]\n");
 
+    AddRelationshipsSection(ref mainBuffer, map);
+
+    if (verbose == false)
+    {
+      AddNodeLabelsSection(ref mainBuffer, map);
+    }
+
+    mainBuffer.Append('}');
+
+    return mainBuffer.ToString();
+  }
+
+  private static void AddRelationshipsSection(ref StringBuilder mainBuffer, Map map)
+  {
     mainBuffer.Append("\n//Relationships : \n");
     for (var y = 0; y < map.height; ++y)
     {
@@ -56,20 +86,12 @@ public static class GraphVis
         }
       }
     }
-
-    if (verbose == false)
-    {
-      AddNodeLabelsSection(ref mainBuffer, ref map);
-    }
-
-    mainBuffer.Append('}');
-
-    return mainBuffer.ToString();
   }
 
-  private static void AddNodeLabelsSection(ref StringBuilder mainBuffer, ref Map map)
+  private static void AddNodeLabelsSection(ref StringBuilder mainBuffer, Map map)
   {
     mainBuffer.Append("\n//Labels : \n");
+
     for (var y = 0; y < map.height; ++y)
     {
       for (var x = 0; x < map.width; ++x)
@@ -90,7 +112,7 @@ public static class GraphVis
 
   private static string GetNodeName(Node node)
   {
-    var nodeName = "x" + node.x + "y" + node.y + "_";
+    var nodeName = "nodeColourBlack" + node.x + "y" + node.y + "_";
 
     nodeName += GetNodeTypeDescriptor(node);
 
@@ -99,8 +121,11 @@ public static class GraphVis
 
   private static string GetNodeLabel(Node node)
   {
-    var nodeLabel = 
-      GetNodeName(node) + "[label = \"" + GetNodeTypeDescriptor(node) + "\"" + GetNodeDecorations(node) + "];";
+    var nodeName = GetNodeName(node);
+    var descriptor = GetNodeTypeDescriptor(node).Replace("_", "\\n");
+    var decorations = GetNodeDecorations(node);
+
+    var nodeLabel = nodeName + "[label=\"" + descriptor + "\"" + decorations + "];";
 
     return nodeLabel;
   }
@@ -142,34 +167,66 @@ public static class GraphVis
     }
 
     var fillStyle = node.isMystery ? "none" : "filled";
-    return "style=" + fillStyle + " color=\"" + GetColourForNode(node)+ "\"";
+    var colour = GetColourForNode(node);
+    var shape = GetShapeForNode(node);
+    return " style=" + fillStyle + " color=\"" + colour + "\"" + " shape=\"" + shape + "\"";
   }
 
   private static string GetColourForNode(Node node)
   {
+    var colour = DefaultNodeColour;
+
     switch (node.nodeType)
     {
       case NodeType.CAMPSITE:
-        return "orange";
+        colour = NodeColourCamp;
+        break;
       case NodeType.FIGHT:
       {
         switch (((Fight)node).guild)
         {
           case Guild.GREEN:
-            return "darkolivegreen1";
+            colour = NodeColourGreen;
+            break;
           case Guild.RED:
-            return "pink";
+            colour = NodeColourRed;
+            break;
           case Guild.BLUE:
-            return "lightblue";
+            colour = NodeColourBlue;
+            break;
           case Guild.BLACK:
-            return "grey";
+            colour = NodeColourBlack;
+            break;
           case Guild.NEUTRAL:
           default:
-              return "white";
-        }
+            break;
+          }
+        break;
       }
-      default:
-        return "white";
     }
+
+    return colour + (node.isMystery ? $"\" fontcolor=\"{colour}" : "\" fontcolor=\"white");
+  }
+
+  private static string GetShapeForNode(Node node)
+  {
+    var shape = DefaultNodeShape;
+    if (node.GetType() == typeof(Campsite))
+    {
+      shape = NodeShapeCamp;
+    }
+    else if (node.GetType() == typeof(Fight))
+    {
+      if (((Fight)node).fightType == FightType.ELITE)
+      {
+        shape = NodeShapeElite;
+      }
+      else if (((Fight) node).fightType == FightType.BOSS)
+      {
+        shape = NodeShapeBoss;
+      }
+    }
+
+    return shape;
   }
 }
