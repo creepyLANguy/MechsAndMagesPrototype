@@ -98,9 +98,8 @@ public static class GraphVis
 
   private static string GetNodeLabel(Node node)
   {
-    var nodeLabel = GetNodeTypeDescriptor(node);
-
-    nodeLabel = GetNodeName(node) + "[label = \"" + nodeLabel + "\"];";
+    var nodeLabel = 
+      GetNodeName(node) + "[label = \"" + GetNodeTypeDescriptor(node) + "\"" + GetNodeDecorations(node) + "];";
 
     return nodeLabel;
   }
@@ -117,32 +116,59 @@ public static class GraphVis
     switch (node.nodeType)
     {
       case NodeType.CAMPSITE:
-        str = "Campsite";
+        str = NodeType.CAMPSITE.ToString();
         break;
       case NodeType.FIGHT:
       {
-        switch (((Fight)node).fightType)
-        {
-          case FightType.NORMAL:
-            str = "NORMAL";
-            break;
-          case FightType.ELITE:
-            str = "ELITE";
-            break;
-          case FightType.BOSS:
-            str = "BOSS";
-            break;
-        }
-
+        str = NodeType.FIGHT + "_" + ((Fight)node).fightType + "_" + ((Fight) node).guild;
         break;
       }
     }
 
     if (node.isMystery)
     {
-      str += "_Mystery";
+      str += "_MYSTERY";
     }
 
     return str;
+  }
+
+  private static string GetNodeDecorations(Node node)
+  {
+    if (node == null || node.nodeType == NodeType.BLANK)
+    {
+      return "";
+    }
+
+    var fillStyle = (node.isMystery) ? "none" : "filled";
+    return "shape=box style=" + fillStyle + " color=\"" + GetColourForNode(node)+ "\"";
+  }
+
+  private static string GetColourForNode(Node node)
+  {
+    switch (node.nodeType)
+    {
+      case NodeType.CAMPSITE:
+        return "orange";
+      case NodeType.FIGHT:
+      {
+        switch (((Fight)node).guild)
+        {
+          case Guild.GREEN:
+            return "darkolivegreen1";
+          case Guild.RED:
+            return "pink";
+          case Guild.BLUE:
+            return "lightblue";
+          case Guild.BLACK:
+            return "grey";
+          case Guild.NEUTRAL:
+          default:
+              return "white";
+        }
+      }
+      default:
+        return "white";
+    }
   }
 }

@@ -8,8 +8,8 @@ using MaM.Enums;
 namespace MaM.Helpers;
 class Terminal
 {
-  private const char Tab = '\t';
-  private const char Pipe = '|';
+  private const string Tab = "\t";
+  private const string Pipe = "|";
 
   private static string GetPrintableCardName(string cardName)
   {
@@ -20,6 +20,23 @@ class Terminal
     return cardName.Length <= printableCardNameLength
       ? cardName.PadRight(printableCardNameLength, spacer)
       : cardName.Substring(0, 1 + (printableCardNameLength - ellipsis.Length)) + ellipsis;
+  }
+
+  private static void PrintNode(Node node, int n)
+  {
+    var fightDetails =
+      node.nodeType == NodeType.FIGHT
+        ? Tab + (((Fight)node).fightType + Tab + ((Fight)node).guild)
+        : "";
+
+    var buff =
+      n + ")" +
+      Tab + "[" + node.x + ", " + node.y + "]" +
+      Tab + node.nodeType +
+      fightDetails + 
+      (node.isMystery ? Tab + "MYSTERY" : string.Empty);
+
+    Console.WriteLine(buff);
   }
 
   public static void StartBattle()
@@ -221,12 +238,8 @@ class Terminal
     var n = 0;
     foreach (var node in firstRow)
     {
-      Console.WriteLine(
-        ++n + ")" +
-        Tab + "[" + node.x + ", " + node.y + "]" +
-        Tab + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty) + 
-        (node.nodeType == NodeType.FIGHT ? Tab + ((Fight)node).guild : "")
-      );
+      PrintNode(node, ++n);
+      ++n;
     }
   }
 
@@ -237,11 +250,7 @@ class Terminal
     foreach (var (x, y) in currentNode.destinations)
     {
       var node = map.nodes[x, y];
-      Console.WriteLine(
-        ++n + ")" +
-        Tab + "[" + node.x + ", " + node.y + "]" +
-        Tab + node.nodeType + (node.isMystery ? "_Mystery" : string.Empty)
-      );
+      PrintNode(node, ++n);
     }
   }
 
