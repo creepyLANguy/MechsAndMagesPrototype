@@ -10,7 +10,7 @@ namespace MaM.Generators;
 public static class JourneyGenerator
 {
   public static Journey GenerateJourney(
-    int journeyLength, 
+    int journeyLength,
     List<MapConfig> mapConfigs,
     ref List<Enemy> normalEnemies,
     ref List<Enemy> eliteEnemies,
@@ -23,15 +23,15 @@ public static class JourneyGenerator
     for (var index = 0; index < journeyLength; ++index)
     {
       var mapConfig = index < mapConfigs.Count ? mapConfigs[index] : mapConfigs[^1];
-      
+
       var map = GenerateMap(
-        index, 
-        mapConfig, 
-        ref normalEnemies, 
-        ref eliteEnemies, 
-        ref bosses, 
+        index,
+        mapConfig,
+        ref normalEnemies,
+        ref eliteEnemies,
+        ref bosses,
         campsiteCardsOnOfferCount);
-      
+
       journey.maps.Add(map);
     }
 
@@ -39,7 +39,7 @@ public static class JourneyGenerator
   }
 
   private static Map GenerateMap(
-    int index, 
+    int index,
     MapConfig mapConfig,
     ref List<Enemy> normalEnemies,
     ref List<Enemy> eliteEnemies,
@@ -76,10 +76,10 @@ public static class JourneyGenerator
     AttachBossNode(ref map);
 
     CompleteSetupOfAllNodes(
-      ref map, 
-      ref normalEnemies, 
-      ref eliteEnemies, 
-      ref bosses, 
+      ref map,
+      ref normalEnemies,
+      ref eliteEnemies,
+      ref bosses,
       campsiteCardsOnOfferCount);
 
     return map;
@@ -98,11 +98,9 @@ public static class JourneyGenerator
 
   private static void SetDestinationsForFirstRowNodes(ref Map map, MapConfig mapConfig)
   {
-    for (var i = 0; i < mapConfig.pathDensity; ++i)
+    for (var i = 0; i < mapConfig.width; ++i)
     {
-      var x = UbiRandom.Next(mapConfig.width);
-
-      SetDestinationForNode(ref map, x, 0);
+      SetDestinationForNode(ref map, i, 0, mapConfig);
     }
   }
 
@@ -117,35 +115,30 @@ public static class JourneyGenerator
           continue;
         }
 
-        SetDestinationForNode(ref map, x, y);
+        SetDestinationForNode(ref map, x, y, mapConfig);
       }
     }
   }
 
-  private static void SetDestinationForNode(ref Map map, int x, int y)
+  private static void SetDestinationForNode(ref Map map, int x, int y, MapConfig mapconfig)
   {
-    if (map.nodes[x, y].destinations != null && map.nodes[x, y].destinations.Count == 3)
-    {
-      return;
-    }
-
     map.nodes[x, y].destinations ??= new HashSet<Tuple<int, int>>();
 
-    var min = -1;
-    var max = 1;
-
-    if (x == 0)
+    for (var i = -1; i <= 1; ++i)
     {
-      min = 0;
-    }
-    else if (x == map.width - 1)
-    {
-      max = 0;
+      if (x + i >= 0 && x + i < map.width && UbiRandom.NextDouble() > mapconfig.edgeDropProbability)
+      {
+        map.nodes[x, y].destinations.Add(new Tuple<int, int>(x + i, y + 1));
+        map.nodes[x + i, y + 1].isDestination = true;
+      }
     }
 
-    var chosenDestinationX = x + UbiRandom.Next(min, max + 1);
-    map.nodes[x, y].destinations.Add(new Tuple<int, int>(chosenDestinationX, y + 1));
-    map.nodes[chosenDestinationX, y + 1].isDestination = true;
+    if (map.nodes[x, y].destinations.Count == 0)
+    {
+      var randomX = UbiRandom.Next(x - 1 < 0 ? 0 : x - 1, x + 1 >= map.width ? map.width : x + 1);
+      map.nodes[x, y].destinations.Add(new Tuple<int, int>(randomX, y + 1));
+      map.nodes[randomX, y + 1].isDestination = true;
+    }
   }
 
   private static void NullifyUnconnectedNodes(ref Map map)
@@ -197,7 +190,7 @@ public static class JourneyGenerator
     {
       bag.Add(NodeType.CAMPSITE);
     }
-      
+
     var eliteCount = mapConfig.eliteFrequency * bagSize;
     for (var i = 0; i < eliteCount; ++i)
     {
@@ -340,11 +333,11 @@ public static class JourneyGenerator
 
   private static void SetupCampsite(ref Node node, int campsiteCardsOnOfferCount)
   {
-    ((Campsite) node).countCardsOnOffer = campsiteCardsOnOfferCount;
+    ((Campsite)node).countCardsOnOffer = campsiteCardsOnOfferCount;
   }
 
   private static void SetupFight(
-    ref Node node, 
+    ref Node node,
     ref Map map,
     ref List<Enemy> normalEnemies,
     ref List<Enemy> eliteEnemies,
@@ -379,7 +372,7 @@ public static class JourneyGenerator
     bosses.Shuffle();
     var boss = bosses.First();
     boss.health *= (1 + mapIndex);
-    ((Fight) node).enemy = boss;
+    ((Fight)node).enemy = boss;
     bosses.Remove(boss);
   }
 
