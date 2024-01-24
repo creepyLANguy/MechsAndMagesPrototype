@@ -98,9 +98,12 @@ public static class JourneyGenerator
 
   private static void SetDestinationsForFirstRowNodes(ref Map map, MapConfig mapConfig)
   {
-    for (var i = 0; i < mapConfig.width; ++i)
+    var shuffledNodeIndexes = Enumerable.Range(0, mapConfig.width).ToList();
+    shuffledNodeIndexes.Shuffle();
+
+    foreach (var x in shuffledNodeIndexes)
     {
-      SetDestinationForNode(ref map, i, 0, mapConfig);
+      SetDestinationsForNode(ref map, x, 0, mapConfig);
     }
   }
 
@@ -108,29 +111,45 @@ public static class JourneyGenerator
   {
     for (var y = 1; y < mapConfig.height - 2; ++y)
     {
-      for (var x = 0; x < mapConfig.width; ++x)
+      var shuffledNodeIndexes = Enumerable.Range(0, mapConfig.width).ToList();
+      shuffledNodeIndexes.Shuffle();
+
+      foreach (var x in shuffledNodeIndexes)
       {
         if (map.nodes[x, y].isDestination == false)
         {
           continue;
         }
 
-        SetDestinationForNode(ref map, x, y, mapConfig);
+        SetDestinationsForNode(ref map, x, y, mapConfig);
       }
     }
   }
 
-  private static void SetDestinationForNode(ref Map map, int x, int y, MapConfig mapconfig)
+  private static void SetDestinationsForNode(ref Map map, int x, int y, MapConfig mapconfig)
   {
     map.nodes[x, y].destinations ??= new HashSet<Tuple<int, int>>();
 
     for (var i = -1; i <= 1; ++i)
     {
-      if (x + i >= 0 && x + i < map.width && UbiRandom.NextDouble() > mapconfig.edgeDropProbability)
+      var candidateDestination = new Tuple<int, int>(x + i, y + 1);
+
+      if (x + i < 0 || x + i >= map.width)
       {
-        map.nodes[x, y].destinations.Add(new Tuple<int, int>(x + i, y + 1));
-        map.nodes[x + i, y + 1].isDestination = true;
+        continue;
       }
+      if (UbiRandom.NextDouble() <= mapconfig.edgeDropProbability)
+      {
+        continue;
+      }
+      //prevent crossovers.
+      if (i != 0 && map.nodes[x + i, y].destinations != null && map.nodes[x + i, y].destinations.Contains(candidateDestination))
+      {
+        continue; 
+      }
+
+      map.nodes[x, y].destinations.Add(candidateDestination);
+      map.nodes[x + i, y + 1].isDestination = true;
     }
 
     if (map.nodes[x, y].destinations.Count == 0)
