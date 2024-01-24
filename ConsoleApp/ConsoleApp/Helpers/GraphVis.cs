@@ -15,11 +15,16 @@ public static class GraphVis
   private const string DefaultNodeAttributes = "fixedsize=true width=2.5 height=2.5 penwidth=10";
   private const string DefaultEdgeAttributes = "penwidth=2";
 
+  //private const string NodeColourCamp = "tan1";
+  //private const string NodeColourGreen = "darkolivegreen1";
+  //private const string NodeColourRed = "pink";
+  //private const string NodeColourBlue = "lightblue";
+  //private const string NodeColourBlack = "grey";
   private const string NodeColourCamp = "orange";
-  private const string NodeColourGreen = "green3";//"darkolivegreen1";
-  private const string NodeColourRed = "red";//"pink";
-  private const string NodeColourBlue = "blue";//"lightblue";
-  private const string NodeColourBlack = "black";//"grey";
+  private const string NodeColourGreen = "green3";
+  private const string NodeColourRed = "red";
+  private const string NodeColourBlue = "blue";
+  private const string NodeColourBlack = "black";
 
   private const string NodeShapeCamp = "triangle";
   private const string NodeShapeElite = "pentagon";
