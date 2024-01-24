@@ -5,7 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>MaM</AssemblyName>
     <RootNamespace>MaM</RootNamespace>
-    <Configurations>Debug;Release;FullTrace</Configurations>
+    <Configurations>Debug;Release;FullTrace;GenerateDebugMaps</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

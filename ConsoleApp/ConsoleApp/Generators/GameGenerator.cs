@@ -10,6 +10,12 @@ namespace MaM.Generators;
 
 public static class GameGenerator
 {
+  public static void GenerateDebugMaps()
+  {
+    var gameConfig = GameConfigReader.GetGameConfigFromFile(SaveGame.GameConfigFilename);
+    GetJourney(ref gameConfig);
+  }
+
   public static GameContents Generate(string gameConfigFilename, string saveFilename, string cryptoKey = null)
   {
     var gameConfig = GameConfigReader.GetGameConfigFromFile(gameConfigFilename);
@@ -52,7 +58,7 @@ public static class GameGenerator
       ref bosses,
       gameConfig.campsiteCardsOnOfferCount);
 
-#if DEBUG
+#if DEBUG || GENERATEDEBUGMAPS
     GraphVis.SaveMapsAsDotFiles(ref journey, false);
 #endif
 

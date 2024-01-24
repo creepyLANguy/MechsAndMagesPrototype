@@ -8,6 +8,8 @@ namespace MaM.Helpers;
 
 public static class GraphVis
 {
+  private const string DefaultGraphDirection = "rankdir=\"BT\"";
+
   private const string DefaultNodeColour = "white";
   private const string DefaultNodeShape = "circle";
   private const string DefaultNodeAttributes = "fixedsize=true width=2.5 height=2.5 penwidth=10";
@@ -40,6 +42,7 @@ public static class GraphVis
     var mainBuffer = new StringBuilder(); 
       
     mainBuffer.Append("digraph " + mapName + " {" + "\n");
+    mainBuffer.Append(DefaultGraphDirection + "\n");
     mainBuffer.Append("node[shape=" + DefaultNodeShape + " " + DefaultNodeAttributes + "]\n");
     mainBuffer.Append("edge[" + DefaultEdgeAttributes + "]\n");
 

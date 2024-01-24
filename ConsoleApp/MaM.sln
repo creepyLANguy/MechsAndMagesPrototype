@@ -9,6 +9,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		FullTrace|Any CPU = FullTrace|Any CPU
+		GenerateDebugMaps|Any CPU = GenerateDebugMaps|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -16,6 +17,8 @@ Global
 		{276F2B64-5B1F-452C-824B-B59CFCD27148}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{276F2B64-5B1F-452C-824B-B59CFCD27148}.FullTrace|Any CPU.ActiveCfg = FullTrace|Any CPU
 		{276F2B64-5B1F-452C-824B-B59CFCD27148}.FullTrace|Any CPU.Build.0 = FullTrace|Any CPU
+		{276F2B64-5B1F-452C-824B-B59CFCD27148}.GenerateDebugMaps|Any CPU.ActiveCfg = GenerateDebugMaps|Any CPU
+		{276F2B64-5B1F-452C-824B-B59CFCD27148}.GenerateDebugMaps|Any CPU.Build.0 = GenerateDebugMaps|Any CPU
 		{276F2B64-5B1F-452C-824B-B59CFCD27148}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{276F2B64-5B1F-452C-824B-B59CFCD27148}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
