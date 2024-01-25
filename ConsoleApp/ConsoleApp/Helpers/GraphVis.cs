@@ -73,10 +73,7 @@ public static class GraphVis
       {
         var node = map.nodes[x, y];
 
-        if (node == null)
-        {
-          continue;
-        }
+        if (node == null) continue;
 
         var nodeName = GetNodeName(node);
 
@@ -105,10 +102,7 @@ public static class GraphVis
       {
         var node = map.nodes[x, y];
 
-        if (node == null)
-        {
-          continue;
-        }
+        if (node == null) continue;
 
         mainBuffer.Append(GetNodeLabel(node) + "\n");
       }

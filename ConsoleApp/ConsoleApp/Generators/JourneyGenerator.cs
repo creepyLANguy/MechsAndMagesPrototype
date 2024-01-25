@@ -116,11 +116,8 @@ public static class JourneyGenerator
 
       foreach (var x in shuffledNodeIndexes)
       {
-        if (map.nodes[x, y].isDestination == false)
-        {
-          continue;
-        }
-
+        if (map.nodes[x, y].isDestination == false) continue;
+        
         SetDestinationsForNode(ref map, x, y, mapConfig);
       }
     }
@@ -134,29 +131,31 @@ public static class JourneyGenerator
     {
       var candidateDestination = new Tuple<int, int>(x + i, y + 1);
 
-      if (x + i < 0 || x + i >= map.width)
-      {
-        continue;
-      }
-      if (UbiRandom.NextDouble() <= mapconfig.edgeDropProbability)
-      {
-        continue;
-      }
-      //prevent crossovers.
-      if (i != 0 && map.nodes[x + i, y].destinations != null && map.nodes[x + i, y].destinations.Contains(candidateDestination))
-      {
-        continue; 
-      }
+      if (ShouldSkipThisIteration(i, candidateDestination, ref map)) continue;
 
       map.nodes[x, y].destinations.Add(candidateDestination);
       map.nodes[x + i, y + 1].isDestination = true;
     }
 
+    //TODO - confirm if forcing connections here are probably leading to crossovers anyway. 
     if (map.nodes[x, y].destinations.Count == 0)
     {
       var randomX = UbiRandom.Next(x - 1 < 0 ? 0 : x - 1, x + 1 >= map.width ? map.width : x + 1);
       map.nodes[x, y].destinations.Add(new Tuple<int, int>(randomX, y + 1));
       map.nodes[randomX, y + 1].isDestination = true;
+    }
+
+
+    bool ShouldSkipThisIteration(int i, Tuple<int, int> candidateDestination, ref Map map)
+    {
+      if (x + i < 0 || x + i >= map.width) return true;
+
+      if (UbiRandom.NextDouble() <= mapconfig.edgeDropProbability) return true;
+
+      //prevents crossovers.
+      return i != 0 && 
+             map.nodes[x + i, y].destinations != null && 
+             map.nodes[x + i, y].destinations.Contains(candidateDestination);
     }
   }
 
@@ -178,10 +177,7 @@ public static class JourneyGenerator
   {
     for (var x = 0; x < map.width; ++x)
     {
-      if (map.nodes[x, 0] == null)
-      {
-        continue;
-      }
+      if (map.nodes[x, 0] == null) continue;
 
       var baseNode = new Node(map.nodes[x, 0]);
       map.nodes[x, 0] = new Fight(baseNode, FightType.NORMAL);
@@ -232,10 +228,7 @@ public static class JourneyGenerator
     {
       for (var y = 1; y < map.height; ++y)
       {
-        if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.BLANK)
-        {
-          continue;
-        }
+        if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.BLANK) continue;
 
         var baseNode = new Node(map.nodes[x, y]);
 
@@ -260,10 +253,7 @@ public static class JourneyGenerator
     {
       for (var y = 0; y < map.height; ++y)
       {
-        if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.BLANK)
-        {
-          continue;
-        }
+        if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.BLANK) continue;
 
         var baseNode = new Node(map.nodes[x, y]);
         map.nodes[x, y] = new Fight(baseNode, FightType.NORMAL);
@@ -277,10 +267,7 @@ public static class JourneyGenerator
     {
       for (var y = 1; y < map.height; ++y)
       {
-        if (map.nodes[x, y] == null)
-        {
-          continue;
-        }
+        if (map.nodes[x, y] == null) continue;
 
         var isMystery = UbiRandom.NextDouble() <= mapConfig.mysteryFrequency;
         map.nodes[x, y].isMystery = isMystery;
@@ -295,10 +282,7 @@ public static class JourneyGenerator
 
     for (var x = 0; x < map.width; ++x)
     {
-      if (map.nodes[x, finalCampsite.y - 1] == null)
-      {
-        continue;
-      }
+      if (map.nodes[x, finalCampsite.y - 1] == null) continue;
 
       map.nodes[x, finalCampsite.y - 1].destinations.Clear();
       map.nodes[x, finalCampsite.y - 1].destinations.Add(new Tuple<int, int>(finalCampsite.x, finalCampsite.y));
@@ -332,10 +316,7 @@ public static class JourneyGenerator
       {
         var node = map.nodes[x, y];
 
-        if (node == null || node.nodeType == NodeType.BLANK)
-        {
-          continue;
-        }
+        if (node == null || node.nodeType == NodeType.BLANK) continue;
 
         switch (node.nodeType)
         {

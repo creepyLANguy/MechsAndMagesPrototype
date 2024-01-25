@@ -103,10 +103,7 @@ class Terminal
     var message = "\nSelect an action:";
     foreach (PlayerTurnAction turnAction in Enum.GetValues(typeof(PlayerTurnAction)))
     {
-      if (turnAction == PlayerTurnAction.RECRUIT && canRecruit == false)
-      {
-        continue;
-      }
+      if (turnAction == PlayerTurnAction.RECRUIT && canRecruit == false) continue;
 
       message += "\n" + turnAction.ToString("D") + ") " + turnAction.ToString().ToSentenceCase();
     }
