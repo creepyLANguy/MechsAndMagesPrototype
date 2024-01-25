@@ -7,6 +7,7 @@ using MaM.Helpers;
 
 namespace MaM.Generators;
 
+//TODO - consider refactoring to use generic distribution bag class for guilds and nodetypes.
 public static class JourneyGenerator
 {
   public static Journey GenerateJourney(
@@ -58,22 +59,24 @@ public static class JourneyGenerator
 
     NullifyUnconnectedNodes(ref map);
 
-    SetFirstFloorActiveNodesAsNormalFights(ref map);
+    var guildDistributionBag = new GuildDistributionBag(GetGuildDistributionTemplate(mapConfig));
+
+    SetFirstFloorActiveNodesAsNormalFights(ref map, ref guildDistributionBag);
 
     //Note, fights in the bag are all Elites. 
     //NORMAL fights are filled in later for all unassigned nodes.
-    var bag = GenerateNodeTypeDistributionBag(ref map, mapConfig);
+    var nodeTypeDistributionBag = GenerateNodeTypeDistributionBag(ref map, mapConfig);
 
     //Row 1 -> top row
-    AssignBagItems(ref map, ref bag);
+    AssignBagItems(ref map, ref nodeTypeDistributionBag, ref guildDistributionBag);
 
-    AssignNormalFightsToRemainingBlankNodes(ref map);
+    AssignNormalFightsToRemainingBlankNodes(ref map, ref guildDistributionBag);
 
     AssignMysteryNodes(ref map, mapConfig);
 
     AttachFinalCampsiteNode(ref map);
 
-    AttachBossNode(ref map);
+    AttachBossNode(ref map, ref guildDistributionBag);
 
     CompleteSetupOfAllNodes(
       ref map,
@@ -83,6 +86,20 @@ public static class JourneyGenerator
       campsiteCardsOnOfferCount);
 
     return map;
+  }
+
+  private static Dictionary<Guild, int> GetGuildDistributionTemplate(MapConfig mapConfig)
+  {
+    //TODO - consider making this read values from config or something.
+    var defaultGuildWeight = Math.Max(1, mapConfig.width / 2);
+    var guildDistributionTemplate = new Dictionary<Guild, int>
+    {
+      {Guild.RED, defaultGuildWeight},
+      {Guild.BLUE, defaultGuildWeight},
+      {Guild.GREEN, defaultGuildWeight},
+      {Guild.BLACK, defaultGuildWeight}
+    };
+    return guildDistributionTemplate;
   }
 
   private static void PopulateMapWithBlankNodes(ref Map map)
@@ -173,14 +190,14 @@ public static class JourneyGenerator
     }
   }
 
-  private static void SetFirstFloorActiveNodesAsNormalFights(ref Map map)
+  private static void SetFirstFloorActiveNodesAsNormalFights(ref Map map, ref GuildDistributionBag guildDistributionBag)
   {
     for (var x = 0; x < map.width; ++x)
     {
       if (map.nodes[x, 0] == null) continue;
 
       var baseNode = new Node(map.nodes[x, 0]);
-      map.nodes[x, 0] = new Fight(baseNode, FightType.NORMAL);
+      map.nodes[x, 0] = new Fight(baseNode, FightType.NORMAL, guildDistributionBag.Take());
     }
   }
 
@@ -222,7 +239,7 @@ public static class JourneyGenerator
     return bag;
   }
 
-  private static void AssignBagItems(ref Map map, ref List<NodeType> bag)
+  private static void AssignBagItems(ref Map map, ref List<NodeType> nodeTypeDistributionBag, ref GuildDistributionBag guildDistributionBag)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -232,22 +249,22 @@ public static class JourneyGenerator
 
         var baseNode = new Node(map.nodes[x, y]);
 
-        switch (bag.First())
+        switch (nodeTypeDistributionBag.First())
         {
           case NodeType.CAMPSITE:
             map.nodes[x, y] = new Campsite(baseNode);
             break;
           case NodeType.FIGHT:
-            map.nodes[x, y] = new Fight(baseNode, FightType.ELITE);
+            map.nodes[x, y] = new Fight(baseNode, FightType.ELITE, guildDistributionBag.Take());
             break;
         }
 
-        bag.Remove(bag.First());
+        nodeTypeDistributionBag.Remove(nodeTypeDistributionBag.First());
       }
     }
   }
 
-  private static void AssignNormalFightsToRemainingBlankNodes(ref Map map)
+  private static void AssignNormalFightsToRemainingBlankNodes(ref Map map, ref GuildDistributionBag guildDistributionBag)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -256,7 +273,7 @@ public static class JourneyGenerator
         if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.BLANK) continue;
 
         var baseNode = new Node(map.nodes[x, y]);
-        map.nodes[x, y] = new Fight(baseNode, FightType.NORMAL);
+        map.nodes[x, y] = new Fight(baseNode, FightType.NORMAL, guildDistributionBag.Take());
       }
     }
   }
@@ -291,11 +308,11 @@ public static class JourneyGenerator
     map.nodes[finalCampsite.x, finalCampsite.y] = finalCampsite;
   }
 
-  private static void AttachBossNode(ref Map map)
+  private static void AttachBossNode(ref Map map, ref GuildDistributionBag guildDistributionBag)
   {
     var baseNodeForBoss = new Node(NodeType.FIGHT, false, 0, map.height - 1, false, true, null);
 
-    var bossNode = new Fight(baseNodeForBoss, FightType.BOSS);
+    var bossNode = new Fight(baseNodeForBoss, FightType.BOSS, guildDistributionBag.Take());
 
     map.nodes[0, map.height - 2].destinations.Add(new Tuple<int, int>(bossNode.x, bossNode.y));
 

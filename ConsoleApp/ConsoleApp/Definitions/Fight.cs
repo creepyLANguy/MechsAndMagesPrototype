@@ -13,7 +13,7 @@ public class Fight : Node
   public Fight(
     Node baseNode,
     FightType fightType,
-    Enemy enemy = null
+    Guild guild
   ) : base(
     baseNode.nodeType,
     baseNode.isMystery,
@@ -24,23 +24,9 @@ public class Fight : Node
     baseNode.destinations
   )
   {
-    this.fightType = fightType;
-    this.enemy = enemy ?? new Enemy();
     nodeType = NodeType.FIGHT;
-
-    guild = GetRandomNonNeutralGuild();
+    enemy = new Enemy();
+    this.fightType = fightType;
+    this.guild = guild;
   }
-
-  private static Guild GetRandomNonNeutralGuild()
-  {
-    var chosen = Guild.NEUTRAL;
-    var values = Enum.GetValues(typeof(Guild));
-    while (chosen == Guild.NEUTRAL)
-    {
-      chosen = (Guild) values.GetValue(UbiRandom.Next(values.Length));
-    }
-
-    return chosen;
-  }
-  
 }
