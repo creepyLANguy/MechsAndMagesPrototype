@@ -123,7 +123,7 @@ public static class JourneyGenerator
     }
   }
 
-  private static void SetDestinationsForNode(ref Map map, int x, int y, MapConfig mapconfig)
+  private static void SetDestinationsForNode(ref Map map, int x, int y, MapConfig mapConfig)
   {
     map.nodes[x, y].destinations ??= new HashSet<Tuple<int, int>>();
 
@@ -150,7 +150,7 @@ public static class JourneyGenerator
     {
       if (x + i < 0 || x + i >= map.width) return true;
 
-      if (UbiRandom.NextDouble() <= mapconfig.edgeDropProbability) return true;
+      if (UbiRandom.NextDouble() <= mapConfig.edgeDropProbability) return true;
 
       //prevents crossovers.
       return i != 0 && 
