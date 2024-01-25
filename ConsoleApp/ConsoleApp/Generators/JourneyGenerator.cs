@@ -7,7 +7,6 @@ using MaM.Helpers;
 
 namespace MaM.Generators;
 
-//TODO - consider refactoring to use generic distribution bag class for guilds and nodetypes.
 public static class JourneyGenerator
 {
   public static Journey GenerateJourney(
@@ -59,17 +58,11 @@ public static class JourneyGenerator
 
     NullifyUnconnectedNodes(ref map);
 
-    var guildDistributionBag = new DistributionBag<Guild>(GetGuildDistributionTemplate(mapConfig));
+    var guildDistributionBag = GenerateGuildDistributionBag(mapConfig);
 
     SetFirstFloorActiveNodesAsNormalFights(ref map, ref guildDistributionBag);
 
-    //Note, fights in the bag are all Elites. 
-    //NORMAL fights are filled in later for all unassigned nodes.
-    var bagSize = CalculateBagSize(ref map);
-    var nodeTypeDistributionBag = GenerateNodeTypeDistributionBag(mapConfig, bagSize);
-
-    //Row 1 -> top row
-    AssignBagItems(ref map, ref nodeTypeDistributionBag, ref guildDistributionBag);
+    AssignElitesAndCampsites(ref map, mapConfig, ref guildDistributionBag);
 
     AssignNormalFightsToRemainingBlankNodes(ref map, ref guildDistributionBag);
 
@@ -87,20 +80,6 @@ public static class JourneyGenerator
       campsiteCardsOnOfferCount);
 
     return map;
-  }
-
-  private static Dictionary<Guild, int> GetGuildDistributionTemplate(MapConfig mapConfig)
-  {
-    //TODO - consider making this read values from config or something.
-    var defaultGuildWeight = Math.Max(1, mapConfig.width / 2);
-    var guildDistributionTemplate = new Dictionary<Guild, int>
-    {
-      {Guild.RED, defaultGuildWeight},
-      {Guild.BLUE, defaultGuildWeight},
-      {Guild.GREEN, defaultGuildWeight},
-      {Guild.BLACK, defaultGuildWeight}
-    };
-    return guildDistributionTemplate;
   }
 
   private static void PopulateMapWithBlankNodes(ref Map map)
@@ -155,7 +134,7 @@ public static class JourneyGenerator
       map.nodes[x + i, y + 1].isDestination = true;
     }
 
-    //TODO - confirm if forcing connections here are probably leading to crossovers anyway. 
+    //TODO - confirm if forcing connections here are probably leading to crossovers. 
     if (map.nodes[x, y].destinations.Count == 0)
     {
       var randomX = UbiRandom.Next(x - 1 < 0 ? 0 : x - 1, x + 1 >= map.width ? map.width : x + 1);
@@ -191,6 +170,14 @@ public static class JourneyGenerator
     }
   }
 
+  private static DistributionBag<Guild> GenerateGuildDistributionBag(MapConfig mapConfig)
+  {
+    var distributions = 
+      Enum.GetValues<Guild>().Where(guild => guild != Guild.NEUTRAL).ToDictionary(guild => guild, _ => mapConfig.guildQuantityInBag);
+
+    return new DistributionBag<Guild>(distributions);
+  }
+
   private static void SetFirstFloorActiveNodesAsNormalFights(ref Map map, ref DistributionBag<Guild> guildDistributionBag)
   {
     for (var x = 0; x < map.width; ++x)
@@ -202,7 +189,50 @@ public static class JourneyGenerator
     }
   }
 
-  private static int CalculateBagSize(ref Map map)
+  private static void AssignElitesAndCampsites(ref Map map, MapConfig mapConfig, ref DistributionBag<Guild> guildDistributionBag)
+  {
+    var nodeTypeDistributionBag = GenerateNodeTypeDistributionBag(map, mapConfig);
+
+    for (var x = 0; x < map.width; ++x)
+    {
+      for (var y = 1; y < map.height; ++y)
+      {
+        if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.BLANK) continue;
+
+        var baseNode = new Node(map.nodes[x, y]);
+
+        switch (nodeTypeDistributionBag.Take())
+        {
+          case NodeType.CAMPSITE:
+            map.nodes[x, y] = new Campsite(baseNode);
+            break;
+          case NodeType.FIGHT:
+            map.nodes[x, y] = new Fight(baseNode, FightType.ELITE, guildDistributionBag.Take());
+            break;
+        }
+      }
+    }
+  }
+
+  private static DistributionBag<NodeType> GenerateNodeTypeDistributionBag(Map map, MapConfig mapConfig)
+  {
+    var bagSize = CalculateBagSize(map);
+
+    var distributionTemplate = new Dictionary<NodeType, int>();
+
+    var campsiteCount = (int)(mapConfig.campsiteFrequency * bagSize);
+    distributionTemplate.Add(NodeType.CAMPSITE, campsiteCount);
+
+    var eliteCount = (int)(mapConfig.eliteFrequency * bagSize);
+    distributionTemplate.Add(NodeType.FIGHT, eliteCount);
+
+    var remainingCapacity = bagSize - (campsiteCount + eliteCount);
+    distributionTemplate.Add(NodeType.BLANK, remainingCapacity);
+    
+    return new DistributionBag<NodeType>(distributionTemplate);
+  }
+
+  private static int CalculateBagSize(Map map)
   {
     var bagSize = 0;
     for (var x = 0; x < map.width; ++x)
@@ -216,57 +246,6 @@ public static class JourneyGenerator
       }
     }
     return bagSize;
-  }
-
-  private static List<NodeType> GenerateNodeTypeDistributionBag(MapConfig mapConfig, int bagSize)
-  {
-    var bag = new List<NodeType>();
-
-    var campsiteCount = mapConfig.campsiteFrequency * bagSize;
-    for (var i = 0; i < campsiteCount; ++i)
-    {
-      bag.Add(NodeType.CAMPSITE);
-    }
-
-    var eliteCount = mapConfig.eliteFrequency * bagSize;
-    for (var i = 0; i < eliteCount; ++i)
-    {
-      bag.Add(NodeType.FIGHT);
-    }
-
-    while (bag.Count < bagSize)
-    {
-      bag.Add(NodeType.BLANK);
-    }
-
-    bag.Shuffle();
-
-    return bag;
-  }
-
-  private static void AssignBagItems(ref Map map, ref List<NodeType> nodeTypeDistributionBag, ref DistributionBag<Guild> guildDistributionBag)
-  {
-    for (var x = 0; x < map.width; ++x)
-    {
-      for (var y = 1; y < map.height; ++y)
-      {
-        if (map.nodes[x, y] == null || map.nodes[x, y].nodeType != NodeType.BLANK) continue;
-
-        var baseNode = new Node(map.nodes[x, y]);
-
-        switch (nodeTypeDistributionBag.First())
-        {
-          case NodeType.CAMPSITE:
-            map.nodes[x, y] = new Campsite(baseNode);
-            break;
-          case NodeType.FIGHT:
-            map.nodes[x, y] = new Fight(baseNode, FightType.ELITE, guildDistributionBag.Take());
-            break;
-        }
-
-        nodeTypeDistributionBag.Remove(nodeTypeDistributionBag.First());
-      }
-    }
   }
 
   private static void AssignNormalFightsToRemainingBlankNodes(ref Map map, ref DistributionBag<Guild> guildDistributionBag)
