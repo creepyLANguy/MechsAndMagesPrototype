@@ -9,4 +9,6 @@ public struct MapConfig
   public double campsiteFrequency;
   public double mysteryFrequency;
   public double eliteFrequency;
+
+  public int guildQuantityInBag;
 }
