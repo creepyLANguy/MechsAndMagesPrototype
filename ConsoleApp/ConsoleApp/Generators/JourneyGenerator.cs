@@ -59,13 +59,14 @@ public static class JourneyGenerator
 
     NullifyUnconnectedNodes(ref map);
 
-    var guildDistributionBag = new GuildDistributionBag(GetGuildDistributionTemplate(mapConfig));
+    var guildDistributionBag = new DistributionBag<Guild>(GetGuildDistributionTemplate(mapConfig));
 
     SetFirstFloorActiveNodesAsNormalFights(ref map, ref guildDistributionBag);
 
     //Note, fights in the bag are all Elites. 
     //NORMAL fights are filled in later for all unassigned nodes.
-    var nodeTypeDistributionBag = GenerateNodeTypeDistributionBag(ref map, mapConfig);
+    var bagSize = CalculateBagSize(ref map);
+    var nodeTypeDistributionBag = GenerateNodeTypeDistributionBag(mapConfig, bagSize);
 
     //Row 1 -> top row
     AssignBagItems(ref map, ref nodeTypeDistributionBag, ref guildDistributionBag);
@@ -190,7 +191,7 @@ public static class JourneyGenerator
     }
   }
 
-  private static void SetFirstFloorActiveNodesAsNormalFights(ref Map map, ref GuildDistributionBag guildDistributionBag)
+  private static void SetFirstFloorActiveNodesAsNormalFights(ref Map map, ref DistributionBag<Guild> guildDistributionBag)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -201,10 +202,8 @@ public static class JourneyGenerator
     }
   }
 
-  private static List<NodeType> GenerateNodeTypeDistributionBag(ref Map map, MapConfig mapConfig)
+  private static int CalculateBagSize(ref Map map)
   {
-    var bag = new List<NodeType>();
-
     var bagSize = 0;
     for (var x = 0; x < map.width; ++x)
     {
@@ -216,6 +215,12 @@ public static class JourneyGenerator
         }
       }
     }
+    return bagSize;
+  }
+
+  private static List<NodeType> GenerateNodeTypeDistributionBag(MapConfig mapConfig, int bagSize)
+  {
+    var bag = new List<NodeType>();
 
     var campsiteCount = mapConfig.campsiteFrequency * bagSize;
     for (var i = 0; i < campsiteCount; ++i)
@@ -239,7 +244,7 @@ public static class JourneyGenerator
     return bag;
   }
 
-  private static void AssignBagItems(ref Map map, ref List<NodeType> nodeTypeDistributionBag, ref GuildDistributionBag guildDistributionBag)
+  private static void AssignBagItems(ref Map map, ref List<NodeType> nodeTypeDistributionBag, ref DistributionBag<Guild> guildDistributionBag)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -264,7 +269,7 @@ public static class JourneyGenerator
     }
   }
 
-  private static void AssignNormalFightsToRemainingBlankNodes(ref Map map, ref GuildDistributionBag guildDistributionBag)
+  private static void AssignNormalFightsToRemainingBlankNodes(ref Map map, ref DistributionBag<Guild> guildDistributionBag)
   {
     for (var x = 0; x < map.width; ++x)
     {
@@ -308,7 +313,7 @@ public static class JourneyGenerator
     map.nodes[finalCampsite.x, finalCampsite.y] = finalCampsite;
   }
 
-  private static void AttachBossNode(ref Map map, ref GuildDistributionBag guildDistributionBag)
+  private static void AttachBossNode(ref Map map, ref DistributionBag<Guild> guildDistributionBag)
   {
     var baseNodeForBoss = new Node(NodeType.FIGHT, false, 0, map.height - 1, false, true, null);
 

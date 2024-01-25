@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
-using MaM.Enums;
 
 namespace MaM.Helpers
 {
-    //TODO - implement as a generic distribution bag
-    public class GuildDistributionBag
-    {
-        private readonly List<Guild> _items;
-        private readonly Dictionary<Guild, int> _distributionTemplate;
+  public class DistributionBag<T>
+  {
+        private readonly List<T> _items;
+        private readonly Dictionary<T, int> _distributionTemplate;
         private readonly bool _shuffleBagOnFill;
         private readonly bool _shuffleBagOnTake;
 
-        public GuildDistributionBag(Dictionary<Guild, int> distributionTemplate, bool shuffleBagOnFill = true, bool shuffleBagOnTake = false)
+        public DistributionBag(Dictionary<T, int> distributionTemplate, bool shuffleBagOnFill = true, bool shuffleBagOnTake = false)
         {
-            _items = new List<Guild>();
+            _items = new List<T>();
 
             _distributionTemplate = distributionTemplate;
 
@@ -39,7 +37,7 @@ namespace MaM.Helpers
             }
         }
 
-        public Guild Take()
+        public T Take()
         {
             if (_items.Count == 0)
             {
