@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace MaM.Helpers
 {
@@ -10,6 +11,8 @@ namespace MaM.Helpers
     private readonly bool _shuffleBagOnFill;
     private readonly bool _shuffleBagOnTake;
 
+    private readonly Stack<T> _history;
+
     public DistributionBag(Dictionary<T, int> distributionTemplate, bool shuffleBagOnFill = true, bool shuffleBagOnTake = false)
     {
       _items = new List<T>();
@@ -18,6 +21,8 @@ namespace MaM.Helpers
 
       _shuffleBagOnFill = shuffleBagOnFill;
       _shuffleBagOnTake = shuffleBagOnTake;
+
+      _history = new Stack<T>();
 
       Fill();
     }
@@ -52,7 +57,53 @@ namespace MaM.Helpers
 
       var chosen = _items[0];
       _items.RemoveAt(0);
+      _history.Push(chosen);
       return chosen;
+    }
+
+    public List<T> Take(int count)
+    {
+      var chosen = new List<T>();
+      while (chosen.Count < count)
+      {
+        chosen.Add(Take());
+      }
+      return chosen;
+    }
+
+    public T GetMostRecent()
+      => _history.Count > 0 ? _history.Peek() : default;
+
+    public List<T> GetMostRecent(int count)
+      => _history.Take(count).ToList();
+
+    public Stack<T> GetHistory()
+      => _history;
+
+    public T Retake()
+    {
+      if (_history.TryPop(out var result))
+      {
+        _items.Add(result);
+      }
+
+      _items.Shuffle();
+      return Take();
+    }
+
+    public List<T> Retake(int count)
+    {
+      for (var i = 0; i < count; i++)
+      {
+        if (_history.Count == 0)
+        {
+          break;
+        }
+
+        _items.Add(_history.Pop());
+      }
+
+      return Take(count);
     }
   }
 }

@@ -33,22 +33,30 @@ public static class GameGenerator
     
   private static GameContents GenerateGameContents(ref GameConfig gameConfig, ref GameState gameState, ref List<Card> cards)
   {
-    var player = gameState.player ?? GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards);
+    var player = 
+      gameState.player ?? 
+      GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards);
 
     var journey = GetJourney(ref gameConfig);
 
     journey.currentMapIndex = player.completedMapCount;
 
-    var gameContents = new GameContents(player, journey, cards, gameConfig.handSize, gameState.randomSeed);
+    var gameContents = 
+      new GameContents(player, journey, cards, gameConfig.handSize, gameState.randomSeed);
 
     return gameContents;
   }
 
   private static Journey GetJourney(ref GameConfig gameConfig)
   {
-    var normalEnemies = EnemyReader.GetEnemiesFromExcel(gameConfig.normalEnemiesExcelFile);
-    var eliteEnemies = EnemyReader.GetEnemiesFromExcel(gameConfig.eliteEnemiesExcelFile);
-    var bosses = EnemyReader.GetEnemiesFromExcel(gameConfig.bossesExcelFile);
+    var normalEnemies = 
+      EnemyReader.GetEnemiesFromExcel(gameConfig.normalEnemiesExcelFile);
+    
+    var eliteEnemies = 
+      EnemyReader.GetEnemiesFromExcel(gameConfig.eliteEnemiesExcelFile);
+    
+    var bosses = 
+      EnemyReader.GetEnemiesFromExcel(gameConfig.bossesExcelFile);
 
     var journey = JourneyGenerator.GenerateJourney(
       gameConfig.journeyLength,
