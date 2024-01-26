@@ -51,6 +51,7 @@ public class Player
   public List<Tuple<int, int>>  completedNodeLocations;
   public int                    completedMapCount;
   public int                    health;
+  [JsonIgnore]
   private List<Card>            _deck;
   [JsonProperty]
   private List<string> _deckCardIds;

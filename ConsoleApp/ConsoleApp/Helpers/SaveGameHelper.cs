@@ -35,7 +35,7 @@ public static class SaveGameHelper
     var cardIds = gameState.player.GetDeckCardIds();
     var deck = CardReader.GetCardsFromIds(cardIds, ref cards);
 
-    gameState.player?.SetDeck(deck);//AL.
+    gameState.player?.SetDeck(deck);
 
     return gameState;
   }
@@ -54,15 +54,7 @@ public static class SaveGameHelper
       return false;
     }
 
-    var backupDeck = gameState.player.GetDeck().ToList();
-
-    //We remove full card lists before exporting as these bloat the save file.
-    //Make sure that you repopulate the player's deck based on the stored ids when resuming a save state.
-    gameState.player.SetDeck(null);
-
     var content = ObjectToJson(gameState, true);
-      
-    gameState.player.SetDeck(backupDeck);
 
     if (cryptoKey != null)
     {
