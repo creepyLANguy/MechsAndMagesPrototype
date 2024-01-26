@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace MaM.Helpers
 {
@@ -95,27 +96,11 @@ namespace MaM.Helpers
       return Take(count);
     }
 
-    //TODO - test GetLastTaken()
     public T GetMostRecent()
-    {
-      return _history.Peek();
-    }
+      => _history.Peek();
 
-    //TODO - test GetLastTaken(int count)
-    public List<T> GetMostRecent(int count)
-    {
-      var items = new List<T>();
-      while (items.Count < count)
-      {
-        if (_history.Count == 0)
-        {
-          continue;
-        }
-
-        _items.Add(_history.Peek());
-      }
-      return items;
-    }
+    public List<T> GetMostRecent(int count) 
+      => _history.Take(count).ToList();
 
     //TODO - test GetFullHistory()
     public Stack<T> GetFullHistory()
