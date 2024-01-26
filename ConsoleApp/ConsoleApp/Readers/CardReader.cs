@@ -17,7 +17,7 @@ public struct JsonIntermediateCard
   public int    mannaCost;
   public int    power;
   public string ability;
-  public int?    abilityCount;
+  public int?   abilityCount;
 }
 
 public static class CardReader
