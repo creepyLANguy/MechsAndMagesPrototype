@@ -61,7 +61,6 @@ namespace MaM.Helpers
       return chosen;
     }
 
-    //TODO - test Take(int count)
     public List<T> Take(int count)
     {
       var chosen = new List<T>();
@@ -72,22 +71,33 @@ namespace MaM.Helpers
       return chosen;
     }
 
-    //TODO - test Retake()
+    public T GetMostRecent()
+      => _history.Count > 0 ? _history.Peek() : default;
+
+    public List<T> GetMostRecent(int count)
+      => _history.Take(count).ToList();
+
+    public Stack<T> GetHistory()
+      => _history;
+
     public T Retake()
     {
-      _items.Add(_history.Pop());
+      if (_history.TryPop(out var result))
+      {
+        _items.Add(result);
+      }
+
       _items.Shuffle();
       return Take();
     }
 
-    //TODO - test Retake(int count)
     public List<T> Retake(int count)
     {
       for (var i = 0; i < count; i++)
       {
         if (_history.Count == 0)
         {
-          continue;
+          break;
         }
 
         _items.Add(_history.Pop());
@@ -95,15 +105,5 @@ namespace MaM.Helpers
 
       return Take(count);
     }
-
-    public T GetMostRecent()
-      => _history.Peek();
-
-    public List<T> GetMostRecent(int count) 
-      => _history.Take(count).ToList();
-
-    //TODO - test GetFullHistory()
-    public Stack<T> GetFullHistory()
-      => _history;
   }
 }
