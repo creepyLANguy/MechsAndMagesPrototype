@@ -32,7 +32,9 @@ public static class SaveGameHelper
 
     var gameState = JsonConvert.DeserializeObject<GameState>(content);
 
-    gameState.player?.SetDeck(CardReader.GetCardsFromIds(gameState.player.GetDeckCardIds(), ref cards));
+    var cardIds = gameState.player.GetDeckCardIds();
+    var deck = CardReader.GetCardsFromIds(cardIds, ref cards);
+    gameState.player?.SetDeck(deck);
 
     return gameState;
   }

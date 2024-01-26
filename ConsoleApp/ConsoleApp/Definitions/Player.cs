@@ -19,7 +19,7 @@ public class Player
     completedNodeLocations  = player.completedNodeLocations?.ToList();
     completedMapCount       = player.completedMapCount;
     health                  = player.health;
-    _deck                    = player._deck?.ToList();
+    _deck                   = player._deck?.ToList();
     
     RefreshDeckCardIds();
   }
@@ -55,14 +55,16 @@ public class Player
   [JsonProperty]
   private List<string> _deckCardIds;
 
-  public List<Card> GetDeck()
-  {
-    return _deck;
-  }
+  public List<string> GetDeckCardIds()
+    => _deckCardIds;
+
+  public List<Card> GetDeck() 
+    => _deck;
 
   public void SetDeck(List<Card> deck)
   {
     _deck = deck;
+    RefreshDeckCardIds();
   }
 
   public void AddToDeck(Card card)
@@ -80,11 +82,5 @@ public class Player
   private void RefreshDeckCardIds()
   {
     _deckCardIds = _deck?.Select(card => card.id).ToList();
-  }
-
-  public List<string> GetDeckCardIds()
-  {
-    RefreshDeckCardIds();
-    return _deckCardIds;
   }
 }
