@@ -124,7 +124,7 @@ class Terminal
     Console.WriteLine("filename was null");
   }
 
-  private static void PrintCards(List<Card> cards)
+  private static void PrintCards(List<Card> cards, bool showCosts = true)
   {
     for (var index = 0; index < cards.Count; index++)
     {
@@ -143,12 +143,13 @@ class Terminal
         Tab + Pipe +
         "Guild : " + card.guild +
         Tab + Pipe +
-        "Power Cost : " + ("" + card.powerCost).PadRight(3) +
-        Tab + Pipe +
-        "Manna Cost : " + ("" + card.mannaCost).PadRight(3) +
-        Tab + Pipe +
-        "Total Cost : " + ("" + (card.powerCost + card.mannaCost)).PadRight(3) +
-        Tab + Pipe +
+        (showCosts ? 
+          "Power Cost : " + ("" + card.powerCost).PadRight(3) + 
+          Tab + Pipe + 
+          "Manna Cost : " + ("" + card.mannaCost).PadRight(3) + 
+          Tab + Pipe + 
+          "Total Cost : " + ("" + (card.powerCost + card.mannaCost)).PadRight(3) + 
+          Tab + Pipe : "") +
         "Power : " + ("" + card.power).PadRight(2) +
         Tab + Pipe +
         "Ability : " + abilityString
@@ -233,10 +234,9 @@ class Terminal
   {
     Console.WriteLine("\nPlease select your starting location:");
     var n = 0;
-    foreach (var node in firstRow)
+    foreach (var startingNode in firstRow)
     {
-      PrintNode(node, ++n);
-      ++n;
+      PrintNode(startingNode, ++n);
     }
   }
 
@@ -292,14 +292,14 @@ class Terminal
   {
     var allCardsInHand = b.hand.GetAllCardsInHand();
 
-    Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
+    Console.WriteLine(" \nPlay a card by specifying its number in the list :");
 
     if (canPlayAll)
     {
       Console.WriteLine("0) PLAY ALL CARDS");
     }
 
-    PrintCards(allCardsInHand);
+    PrintCards(allCardsInHand, false);
     Console.WriteLine("-1) SKIP TO NEXT PHASE");
   }
 
@@ -339,6 +339,11 @@ class Terminal
   {
     Console.WriteLine("\nYou could not recruit " + card.name);
     Console.WriteLine("Please select another card and make sure you have the required amounts of power and manna.");
+  }
+
+  public static void ShowRecruited(Card card)
+  {
+    Console.WriteLine("\nYou recruited : " + card.name);
   }
 
   public static void PromptInvalidChoiceTryAgain()
