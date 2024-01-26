@@ -137,7 +137,10 @@ public static class JourneyGenerator
     //TODO - confirm if forcing connections here are probably leading to crossovers. 
     if (map.nodes[x, y].destinations.Count == 0)
     {
-      var randomX = UbiRandom.Next(x - 1 < 0 ? 0 : x - 1, x + 1 >= map.width ? map.width : x + 1);
+      var lowerInclusive = x - 1 < 0 ? 0 : x - 1;
+      var upperExclusive = x + 1 >= map.width ? map.width : x + 1;
+      var randomX = UbiRandom.Next(lowerInclusive, upperExclusive);
+
       map.nodes[x, y].destinations.Add(new Tuple<int, int>(randomX, y + 1));
       map.nodes[randomX, y + 1].isDestination = true;
     }
