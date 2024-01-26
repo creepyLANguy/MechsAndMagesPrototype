@@ -83,6 +83,8 @@ public static class Battle
 
     Terminal.PrintBattleState(b);
 
+    Terminal.PrintMarket(b.market.GetDisplayedCards_All());
+
     var canRecruit = b.market.GetDisplayedCards_Affordable(b.player.power, b.player.manna).Count > 0;
     var playerTurnAction = BattlePhases.RunActionSelectionPhase(canRecruit);
 

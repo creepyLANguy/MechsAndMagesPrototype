@@ -433,6 +433,11 @@ class Terminal
     PrintMarket(marketCardsDisplayed);
   }
 
+  public static void ShowStompFailed()
+  {
+    Console.WriteLine("\nStomp failed - hand and field likely empty.");
+  }
+
   public static void ShowStompResult(ref BattlePack b, Card stompedCard, bool stompFromHand)
   {
     var location = stompFromHand ? "Hand" : "Field";

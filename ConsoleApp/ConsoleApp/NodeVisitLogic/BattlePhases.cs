@@ -67,10 +67,12 @@ namespace MaM.NodeVisitLogic
           var allCardsInHand = b.hand.GetAllCardsInHand();
           b.field.AddRange(allCardsInHand);
           b.hand.Clear();
-          foreach (var card in b.field)
+          for (var index = 0; index < b.field.Count; index++) //battlefield can change due to card effects, causing a foreach to crash.
           {
+            var card = b.field[index];
             ProcessCardEffects(card, ref b);
           }
+
           break;
         }
         default:
@@ -134,9 +136,15 @@ namespace MaM.NodeVisitLogic
 
     private static void PerformStomp(ref BattlePack b, Card playedCard)
     {
-      var stompedCard = playedCard;
+      var stompCandidate = playedCard;
 
       var cardsInHandCount = b.hand.GetCurrentCount();
+
+      if (cardsInHandCount == 0 && b.field.Count == 0)
+      {
+        Terminal.ShowStompFailed();
+        return;
+      }
 
       var coinToss = UbiRandom.Next(0, 2);
       var stompFromHand = coinToss == 1 && cardsInHandCount > 0;
@@ -165,29 +173,29 @@ namespace MaM.NodeVisitLogic
         }
       }
       
-      Terminal.ShowStompResult(ref b, stompedCard, stompFromHand);
+      Terminal.ShowStompResult(ref b, stompCandidate, stompFromHand);
 
       void StompSelf(ref BattlePack b)
       {
-        b.field.Remove(stompedCard);
-        b.scrapheap.Add(stompedCard);
+        b.field.Remove(stompCandidate);
+        b.scrapheap.Add(stompCandidate);
       }
 
       void StompFromHand(ref BattlePack b)
       {
         var randomIndex = UbiRandom.Next(0, cardsInHandCount);
-        stompedCard = b.hand.GetCardAtIndex(randomIndex);
-        b.hand.Remove_Single(stompedCard);
-        b.scrapheap.Add(stompedCard);
+        stompCandidate = b.hand.GetCardAtIndex(randomIndex);
+        b.hand.Remove_Single(stompCandidate);
+        b.scrapheap.Add(stompCandidate);
       }      
       
       void StompFromField(ref BattlePack b)
       {
         var stompableCardsOnField = b.field.Where(card => card.id != playedCard.id).ToList();
         var randomIndex = UbiRandom.Next(0, stompableCardsOnField.Count);
-        stompedCard = stompableCardsOnField[randomIndex];
-        b.field.Remove(stompedCard);
-        b.scrapheap.Add(stompedCard);
+        stompCandidate = stompableCardsOnField[randomIndex];
+        b.field.Remove(stompCandidate);
+        b.scrapheap.Add(stompCandidate);
       }
     }
 

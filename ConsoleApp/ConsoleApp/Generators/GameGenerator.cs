@@ -22,9 +22,13 @@ public static class GameGenerator
 
     var cards = CardReader.GetCardsFromExcel(gameConfig.cardsExcelFile);
 
-    PromptForManualSeed();
-
-    var gameState = SaveGameHelper.IsLegit(saveFilename) 
+    var isLegitSaveFile = SaveGameHelper.IsLegit(saveFilename);
+    if (isLegitSaveFile == false)
+    {
+      PromptForManualSeed();
+    }
+    
+    var gameState = isLegitSaveFile 
       ? SaveGameHelper.Read(saveFilename, cards, cryptoKey) 
       : new GameState(DateTime.Now, UbiRandom.GetCurrentSeed(), null);
 
