@@ -64,6 +64,7 @@ namespace MaM.NodeVisitLogic
         }
 
         b.graveyard.Add((Card)chosenCard);
+        Terminal.ShowRecruited((Card) chosenCard);
       }
     }
   }
