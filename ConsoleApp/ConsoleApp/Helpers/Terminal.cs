@@ -396,7 +396,7 @@ class Terminal
 
   public static void PrintHealth(int health)
   {
-    Console.WriteLine("\nYour health :" + health);
+    Console.WriteLine("\nYour life :" + health);
   }
 
   public static void PromptShun(List<Card> hand)

@@ -81,9 +81,10 @@ public static class Battle
 
     BattlePhases.RunPlayCardsPhase(ref b);
 
-    Terminal.PrintBattleState(b);
 
     Terminal.PrintMarket(b.market.GetDisplayedCards_All());
+
+    Terminal.PrintBattleState(b);
 
     var canRecruit = b.market.GetDisplayedCards_Affordable(b.player.power, b.player.manna).Count > 0;
     var playerTurnAction = BattlePhases.RunActionSelectionPhase(canRecruit);
