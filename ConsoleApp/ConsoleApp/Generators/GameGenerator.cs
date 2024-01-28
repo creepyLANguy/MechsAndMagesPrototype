@@ -137,6 +137,10 @@ public static class GameGenerator
 
   private static void PromptForManualSeed()
   {
+#if DEBUG
+    return;
+#endif
+
     Terminal.PromptForManualSeed();
     var seed = UserInput.GetInt(0);
     if (seed > 0)

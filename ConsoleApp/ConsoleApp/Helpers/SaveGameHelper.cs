@@ -35,7 +35,7 @@ public static class SaveGameHelper
     var cardIds = gameState.player.GetDeckCardIds();
     var deck = CardReader.GetCardsFromIds(cardIds, ref cards);
 
-    gameState.player?.SetDeck(deck);
+    gameState.player.SetDeck(deck);
 
     return gameState;
   }
