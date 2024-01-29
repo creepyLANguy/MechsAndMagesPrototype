@@ -1,7 +1,7 @@
 ﻿using MaM.Definitions;
 using MaM.Generators;
 using MaM.Helpers;
-using MaM.NodeVisitLogic;
+using MaM.GameplayLogic;
 using MaM.Readers;
 
 namespace MaM;

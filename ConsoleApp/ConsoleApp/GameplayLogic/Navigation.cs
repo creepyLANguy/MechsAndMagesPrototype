@@ -6,7 +6,7 @@ using MaM.Enums;
 using MaM.Generators;
 using MaM.Helpers;
 
-namespace MaM.NodeVisitLogic;
+namespace MaM.GameplayLogic;
 
 public static class Navigation
 {

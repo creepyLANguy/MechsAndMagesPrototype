@@ -2,7 +2,7 @@
 using MaM.Definitions;
 using MaM.Helpers;
 
-namespace MaM.NodeVisitLogic
+namespace MaM.GameplayLogic
 {
     class EnemyTurnActionLogic
   {
