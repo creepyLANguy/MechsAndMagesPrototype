@@ -7,109 +7,113 @@ namespace MaM.Helpers;
 
 public class Hand
 {
-    private int defaultSize;
-    private List<Card> current = new();
+  private int defaultSize;
+  private List<Card> current = new();
 
-    public Hand(int defaultSize)
+  public Hand(int defaultSize)
+  {
+    this.defaultSize = defaultSize;
+  }
+
+  private static void MoveGraveyardToDeck(ref Stack<Card> deck, ref List<Card> graveyard)
+  {
+    graveyard.Shuffle();
+    while (graveyard.Count > 0)
     {
-        this.defaultSize = defaultSize;
+      deck.Push(graveyard[0]);
+      graveyard.RemoveAt(0);
+    }
+  }
+
+  public bool Draw_Full(ref Stack<Card> deck, ref List<Card> graveyard)
+  {
+    var cardsToDraw = defaultSize - current.Count;
+
+    if (cardsToDraw <= 0)
+    {
+      return false;
     }
 
-    private static void MoveGraveyardToDeck(ref Stack<Card> deck, ref List<Card> graveyard)
+    while (deck.Count > 0)
     {
-        graveyard.Shuffle();
-        deck = new Stack<Card>(new List<Card>(graveyard));
-        graveyard.Clear();
+      Draw_Single(ref deck, ref graveyard);
+
+      if (current.Count == defaultSize)
+      {
+        break;
+      }
     }
 
-    public bool Draw_Full(ref Stack<Card> deck, ref List<Card> graveyard)
+    if (current.Count != defaultSize)
     {
-        var cardsToDraw = defaultSize - current.Count;
+      MoveGraveyardToDeck(ref deck, ref graveyard);
 
-        if (cardsToDraw <= 0)
+      while (deck.Count > 0)
+      {
+        Draw_Single(ref deck, ref graveyard);
+
+        if (current.Count == defaultSize)
         {
-            return false;
+          break;
         }
-
-        while (deck.Count > 0)
-        {
-            Draw_Single(ref deck, ref graveyard);
-
-            if (current.Count == defaultSize)
-            {
-                break;
-            }
-        }
-
-        if (current.Count != defaultSize)
-        {
-            MoveGraveyardToDeck(ref deck, ref graveyard);
-
-            while (deck.Count > 0)
-            {
-                Draw_Single(ref deck, ref graveyard);
-
-                if (current.Count == defaultSize)
-                {
-                    break;
-                }
-            }
-        }
-
-        return current.Count != defaultSize;
+      }
     }
 
-    public bool Draw_Single(ref Stack<Card> deck, ref List<Card> graveyard)
+    return current.Count != defaultSize;
+  }
+
+  public bool Draw_Single(ref Stack<Card> deck, ref List<Card> graveyard)
+  {
+    if (deck.Count == 0 && graveyard.Count > 0)
     {
-        if (deck.Count == 0 && graveyard.Count > 0)
-        {
-            MoveGraveyardToDeck(ref deck, ref graveyard);
-        }
-        else if (deck.Count == 0)
-        {
-            return false;
-        }
-
-        current.Add(deck.Pop());
-
-        return true;
+      MoveGraveyardToDeck(ref deck, ref graveyard);
+    }
+    else if (deck.Count == 0)
+    {
+      return false;
     }
 
-    public void Clear()
-    {
-        current.Clear();
-    }
+    current.Add(deck.Pop());
 
-    public void Remove_Single(Card card)
-    {
-        current.Remove(card);
-    }
+    return true;
+  }
 
-    public int GetCurrentCount()
-    {
-        return current.Count;
-    }
+  public void Clear()
+  {
+    current.Clear();
+  }
 
-    public List<Card> GetAllCardsInHand()
-    {
-        return current;
-    }
+  public void Remove_Single(Card card)
+  {
+      current.Remove(card);
+  }
 
-    public Card GetCardAtIndex(int index)
-    {
-        return current[index];
-    }
+  public int GetCurrentCount()
+  {
+    return current.Count;
+  }
 
-    public bool HasCardsWithOrderSensitiveEffects()
-    {
-        var orderSensitiveEffects = new List<CardAbility>()
+  public List<Card> GetAllCardsInHand()
+  {
+    return current;
+  }
+
+  public Card GetCardAtIndex(int index)
+  {
+    return current[index];
+  }
+
+  public bool HasCardsWithOrderSensitiveEffects()
+  { 
+    var orderSensitiveEffects = new List<CardAbility>()
     {
       CardAbility.SHUN,
       CardAbility.DRAW,
       CardAbility.CYCLE,
       CardAbility.STOMP
-    };
 
-        return current.Any(card => orderSensitiveEffects.Contains(card.ability));
-    }
+    }; 
+
+    return current.Any(card => orderSensitiveEffects.Contains(card.ability));
+  }
 }
