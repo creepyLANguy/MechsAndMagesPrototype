@@ -66,7 +66,7 @@ namespace MaM.GameplayLogic
           var allCardsInHand = b.hand.GetAllCardsInHand();
           b.field.AddRange(allCardsInHand);
           b.hand.Clear();
-          for (var index = 0; index < b.field.Count; index++) //battlefield can change due to card effects, causing a foreach to crash.
+          for (var index = 0; index < b.field.Count; index++) //foreach may crash as battlefield changes due to card effects 
           {
             var card = b.field[index];
             CardEffects.Process(card, ref b);

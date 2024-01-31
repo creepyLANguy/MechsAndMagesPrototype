@@ -9,8 +9,8 @@ public static class Crypto
 {
   // Generate a 64-bit/8-byte key.
   // Symmetrically used, so safely distribute to authorized parties that may decrypt the file.
-  public static string GenerateKey() => 
-    Encoding.Unicode.GetString(DES.Create().Key);
+  public static string GenerateKey() 
+    => Encoding.Unicode.GetString(DES.Create().Key);
   
   public static string EncryptString(string input, string key)
   {

@@ -29,17 +29,22 @@ public static class EnemyReader
       return list;
     }
 
-    var splits = turnActions.Split(StringLiterals.ListDelim).ToList();
+    var splits = turnActions
+      .Split(StringLiterals.ListDelim)
+      .Where(split => split.Length > 0)
+      .ToList();
+
     foreach (var split in splits)
     {
-      var marker = StringSplitters.GetAlphabeticPart(split);
-      if (marker == string.Empty)
+      var numericValue = StringSplitters.GetNumericPart(split);
+
+      var actionMarker = StringSplitters.GetAlphabeticPart(split);
+      if (actionMarker == string.Empty)
       {
-        list.Add(new Tuple<EnemyTurnAction, int>(EnemyTurnAction.B, StringSplitters.GetNumericPart(split)));
+        list.Add(new Tuple<EnemyTurnAction, int>(EnemyTurnAction.B, numericValue));
       }
-      else if (Enum.TryParse<EnemyTurnAction>(marker, out var enemyTurnAction))
+      else if (Enum.TryParse<EnemyTurnAction>(actionMarker, out var enemyTurnAction))
       {
-        var numericValue = StringSplitters.GetNumericPart(split);
         list.Add(new Tuple<EnemyTurnAction, int>(enemyTurnAction, numericValue));
       }
     }
