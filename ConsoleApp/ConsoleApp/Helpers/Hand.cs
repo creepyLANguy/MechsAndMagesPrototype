@@ -7,12 +7,12 @@ namespace MaM.Helpers;
 
 public class Hand
 {
-  private int defaultSize;
+  private int baseSize;
   private List<Card> current = new();
 
-  public Hand(int defaultSize)
+  public Hand(int baseSize)
   {
-    this.defaultSize = defaultSize;
+    this.baseSize = baseSize;
   }
 
   private static void MoveGraveyardToDeck(ref Stack<Card> deck, ref List<Card> graveyard)
@@ -27,7 +27,7 @@ public class Hand
 
   public bool Draw_Full(ref Stack<Card> deck, ref List<Card> graveyard)
   {
-    var cardsToDraw = defaultSize - current.Count;
+    var cardsToDraw = baseSize - current.Count;
 
     if (cardsToDraw <= 0)
     {
@@ -38,13 +38,13 @@ public class Hand
     {
       Draw_Single(ref deck, ref graveyard);
 
-      if (current.Count == defaultSize)
+      if (current.Count == baseSize)
       {
         break;
       }
     }
 
-    if (current.Count != defaultSize)
+    if (current.Count != baseSize)
     {
       MoveGraveyardToDeck(ref deck, ref graveyard);
 
@@ -52,14 +52,14 @@ public class Hand
       {
         Draw_Single(ref deck, ref graveyard);
 
-        if (current.Count == defaultSize)
+        if (current.Count == baseSize)
         {
           break;
         }
       }
     }
 
-    return current.Count != defaultSize;
+    return current.Count != baseSize;
   }
 
   public bool Draw_Single(ref Stack<Card> deck, ref List<Card> graveyard)
