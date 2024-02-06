@@ -111,7 +111,6 @@ public class Hand
       CardAbility.DRAW,
       CardAbility.CYCLE,
       CardAbility.STOMP
-
     }; 
 
     return current.Any(card => orderSensitiveEffects.Contains(card.ability));

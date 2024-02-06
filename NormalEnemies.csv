@@ -1,7 +1,7 @@
-﻿Id,Name,Health,MarketSize,Quantity,TurnActions
-NE_A,NormalEnemy_A,50,4,10,"4,A,8,A,15,D,10,D,5,A,7,L"
-NE_B,NormalEnemy_B,50,4,10,"3,A,7,A,12,D,14,D,3,A,12,L"
-NE_C,NormalEnemy_C,50,4,10,"5,A,10,A,10,D,8,D,7,A,2,L"
-NE_D,NormalEnemy_D,50,4,10,"4,A,5,A,112,D,25,10,L"
-NE_E,NormalEnemy_E,50,4,10,"4,D,8,D,15,D,10,A,15,A,10,L"
-NE_F,NormalEnemy_F,50,4,10,"2,A,2,A,5,D,15,D,25,A,15,L"
+﻿Id,Name,Health,MarketSize,Quantity,TurnActions,EstimatedTotalPower,P/H Ratio
+NE_A,NormalEnemy_A,50,4,10,",4,A,8,A,15,D,10,D,5,A,7,L",49,98
+NE_B,NormalEnemy_B,50,4,10,",3,A,7,A,12,D,14,D,3,A,12,L",51,102
+NE_C,NormalEnemy_C,50,4,10,",5,A,10,A,10,D,8,D,7,A,2,L",42,84
+NE_D,NormalEnemy_D,50,4,10,",4,A,5,A,12,D,25,10,L",56,112
+NE_E,NormalEnemy_E,50,4,10,",4,D,8,D,15,D,10,A,15,A,10,L",62,124
+NE_F,NormalEnemy_F,50,4,10,",2,A,2,A,5,D,15,D,25,A,15,L",64,128
