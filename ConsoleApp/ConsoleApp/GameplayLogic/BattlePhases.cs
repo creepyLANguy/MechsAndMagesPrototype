@@ -3,90 +3,89 @@ using MaM.Enums;
 using MaM.Helpers;
 using static MaM.Enums.YesNoChoice;
 
-namespace MaM.GameplayLogic
+namespace MaM.GameplayLogic;
+
+class BattlePhases
 {
-  class BattlePhases
+  public static void RunMulliganPhase(ref Player player, ref BattlePack b)
   {
-    public static void RunMulliganPhase(ref Player player, ref BattlePack b)
-    {
-      var mulliganCost = 1;
+    var mulliganCost = 1;
 
-      while (true)
+    while (true)
+    {
+      Terminal.PrintHand(b.hand.GetAllCardsInHand());
+
+      Terminal.PrintMarket(b.market.GetDisplayedCards_All());
+
+      if (player.health - mulliganCost <= 0)
       {
-        Terminal.PrintHand(b.hand.GetAllCardsInHand());
-
-        Terminal.PrintMarket(b.market.GetDisplayedCards_All());
-
-        if (player.health - mulliganCost <= 0)
-        {
-          return;
-        }
-
-        Terminal.OfferMulligan(player.health, mulliganCost);
-
-        var choice = (YesNoChoice) UserInput.GetInt((int?) NO);
-        if (choice == NO)
-        {
-          break;
-        }
-
-        player.health -= mulliganCost;
-        b.Mulligan();
-        ++mulliganCost;
+        return;
       }
-    }
 
-    public static PlayerTurnAction RunActionSelectionPhase(bool canRecruit)
-    {
-      Terminal.PromptForAction(canRecruit);
-      return (PlayerTurnAction)UserInput.GetInt();
-    }
+      Terminal.OfferMulligan(player.health, mulliganCost);
 
-    public static void RunPlayCardsPhase(ref BattlePack b)
-    {
-      while (b.hand.GetCurrentCount() > 0)
+      var choice = (YesNoChoice) UserInput.GetInt((int?) NO);
+      if (choice == NO)
       {
-        RunPlayCardsPhase_Helper(ref b);
+        break;
       }
+
+      player.health -= mulliganCost;
+      b.Mulligan();
+      ++mulliganCost;
     }
+  }
 
-    private static void RunPlayCardsPhase_Helper(ref BattlePack b)
+  public static PlayerTurnAction RunActionSelectionPhase(bool canRecruit)
+  {
+    Terminal.PromptForAction(canRecruit);
+    return (PlayerTurnAction)UserInput.GetInt();
+  }
+
+  public static void RunPlayCardsPhase(ref BattlePack b)
+  {
+    while (b.hand.GetCurrentCount() > 0)
     {
-      var canPlayAll = b.hand.HasCardsWithOrderSensitiveEffects() == false;
+      RunPlayCardsPhase_Helper(ref b);
+    }
+  }
 
-      Terminal.PromptToPlayCard(ref b, canPlayAll);
+  private static void RunPlayCardsPhase_Helper(ref BattlePack b)
+  {
+    var canPlayAll = b.hand.HasCardsWithOrderSensitiveEffects() == false;
+
+    Terminal.PromptToPlayCard(ref b, canPlayAll);
       
-      var selection = UserInput.GetInt(canPlayAll ? 0 : 1);
-      switch (selection)
+    var selection = UserInput.GetInt(canPlayAll ? 0 : 1);
+    switch (selection)
+    {
+      case < 0:
+        return;
+      case 0:
       {
-        case < 0:
-          return;
-        case 0:
+        var allCardsInHand = b.hand.GetAllCardsInHand();
+        b.field.AddRange(allCardsInHand);
+        b.hand.Clear();
+        for (var index = 0; index < b.field.Count; index++) //foreach may crash as battlefield changes due to card effects 
         {
-          var allCardsInHand = b.hand.GetAllCardsInHand();
-          b.field.AddRange(allCardsInHand);
-          b.hand.Clear();
-          for (var index = 0; index < b.field.Count; index++) //foreach may crash as battlefield changes due to card effects 
-          {
-            var card = b.field[index];
-            CardEffects.Process(card, ref b);
-          }
-
-          break;
+          var card = b.field[index];
+          CardEffects.Process(card, ref b);
         }
-        default:
+
+        break;
+      }
+      default:
+      {
+        if (selection <= b.hand.GetCurrentCount())
         {
-          if (selection <= b.hand.GetCurrentCount())
-          {
-            --selection;
-            var selectedCard = b.hand.GetCardAtIndex(selection);
-            b.field.Add(selectedCard);
-            b.hand.Remove_Single(selectedCard);
-            CardEffects.Process(selectedCard, ref b);
-          }
-
-          break;
+          --selection;
+          var selectedCard = b.hand.GetCardAtIndex(selection);
+          b.field.Add(selectedCard);
+          b.hand.Remove_Single(selectedCard);
+          CardEffects.Process(selectedCard, ref b);
         }
+
+        break;
       }
     }
   }
