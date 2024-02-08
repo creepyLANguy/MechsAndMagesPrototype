@@ -2,9 +2,9 @@
 
 public enum Guild
 {
-    NEUTRAL,
-    GREEN,
-    RED,
-    BLUE,
-    BLACK
+  NEUTRAL,
+  GREEN,
+  RED,
+  BLUE,
+  BLACK
 }

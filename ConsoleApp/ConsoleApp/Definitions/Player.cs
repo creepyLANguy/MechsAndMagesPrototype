@@ -54,7 +54,7 @@ public class Player
   [JsonIgnore]
   private List<Card>            _deck;
   [JsonProperty]
-  private List<string> _deckCardIds;
+  private List<string>          _deckCardIds;
 
   public List<string> GetDeckCardIds()
     => _deckCardIds;

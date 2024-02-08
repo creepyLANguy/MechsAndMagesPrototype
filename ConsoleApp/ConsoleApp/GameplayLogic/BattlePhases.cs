@@ -5,7 +5,7 @@ using static MaM.Enums.YesNoChoice;
 
 namespace MaM.GameplayLogic
 {
-    class BattlePhases
+  class BattlePhases
   {
     public static void RunMulliganPhase(ref Player player, ref BattlePack b)
     {

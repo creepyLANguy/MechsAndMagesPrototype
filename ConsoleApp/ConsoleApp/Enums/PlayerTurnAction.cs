@@ -2,8 +2,8 @@ namespace MaM.Enums;
 
 enum PlayerTurnAction
 {
-    NONE,
-    ATTACK,
-    DEFEND,
-    RECRUIT,
+  NONE,
+  ATTACK,
+  DEFEND,
+  RECRUIT,
 }

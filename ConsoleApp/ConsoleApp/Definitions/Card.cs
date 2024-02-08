@@ -15,13 +15,13 @@ public struct Card
     int abilityCount
   )
   {
-    this.id = id;
-    this.name = name;
-    this.guild = guild;
-    this.powerCost = powerCost;
-    this.mannaCost= mannaCost;
-    this.power = power;
-    this.ability = ability;
+    this.id           = id;
+    this.name         = name;
+    this.guild        = guild;
+    this.powerCost    = powerCost;
+    this.mannaCost    = mannaCost;
+    this.power        = power;
+    this.ability      = ability;
     this.abilityCount = abilityCount;
   }
 

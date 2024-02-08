@@ -51,15 +51,11 @@ public class BattlePack
     var playerCardsContribution = gameContents.player.GetDeck().Where(card => card.guild != Guild.NEUTRAL).ToList();
 
     var enemyCardsContribution =
-      fightType == FightType.BOSS
+      fightType == FightType.BOSS 
         ? gameContents.cards
         : gameContents.cards.Where(card => card.guild == node.guild).ToList();
-
-        market = new Market(
-      node.enemy.marketSize,
-      playerCardsContribution,
-      enemyCardsContribution
-    );
+    
+    market = new Market(node.enemy.marketSize, playerCardsContribution, enemyCardsContribution);
 
     market.Fill();
   }
@@ -93,21 +89,21 @@ public class BattlePack
   }
 
   public void Mulligan()
+  {
+    var cardsInHand = hand.GetAllCardsInHand();
+    foreach (var card in cardsInHand)
     {
-      var cardsInHand = hand.GetAllCardsInHand();
-      foreach (var card in cardsInHand)
-      {
-        deck.Push(card);
-      }
-
-      var shuffledDeck = deck.ToList();
-      shuffledDeck.Shuffle();
-
-      hand.Clear();
-      hand.Draw_Full(ref deck, ref graveyard);
-
-      market.Cycle();
+      deck.Push(card);
     }
+
+    var shuffledDeck = deck.ToList();
+    shuffledDeck.Shuffle();
+
+    hand.Clear();
+    hand.Draw_Full(ref deck, ref graveyard);
+
+    market.Cycle();
+  }
 
   public void MoveHandToGraveyard()
   {
