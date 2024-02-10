@@ -28,14 +28,14 @@ public static class Navigation
 
         AutoSave();
 
-        if (VisitNode(ref node, ref gameContents) == FightResult.PLAYER_LOSE)
+        var visitNodeResult = VisitNode(ref node, ref gameContents);
+
+        if (visitNodeResult == FightResult.PLAYER_LOSE)
         {
           Terminal.ShowDeath(ref gameContents.journey);
           SaveGameHelper.ArchiveRun(saveFilename);
           return;
         }
-
-        AutoSave();
 
         node.isComplete = true;
         player.completedNodeLocations.Add(new Tuple<int, int>(player.currentNodeX, player.currentNodeY));
@@ -123,7 +123,7 @@ public static class Navigation
     switch (node.nodeType)
     {
       case NodeType.FIGHT:
-        return Battle.Run((Fight)node, ref gameContents);
+        return BattleTurns.Run((Fight)node, ref gameContents);
       case NodeType.CAMPSITE:
         return Rest.Run((Campsite)node, ref gameContents);
       default:

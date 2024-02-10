@@ -1,35 +1,35 @@
-﻿using MaM.Definitions;
+﻿using System.Linq;
+using MaM.Definitions;
 using MaM.Enums;
 using MaM.Helpers;
-using System.Linq;
 
 namespace MaM.GameplayLogic;
 
 class CardEffects
 {
-  public static void Process(Card card, ref BattlePack b)
+  public static void Process(Card card)
   {
     //Make sure this power gain happens first in case a card has to stomp itself.
-    b.player.power += card.power;
+    Battle.Player.power += card.power;
 
     for (var i = 0; i < card.abilityCount; ++i)
     {
       switch (card.ability)
       {
         case CardAbility.DRAW:
-          PerformDraw(ref b);
+          PerformDraw();
           break;
         case CardAbility.HEAL:
-          PerformHeal(ref b);
+          PerformHeal();
           break;
         case CardAbility.STOMP:
-          PerformStomp(ref b, card);
+          PerformStomp(card);
           break;
         case CardAbility.CYCLE:
-          PerformCycle(ref b);
+          PerformCycle();
           break;
         case CardAbility.SHUN:
-          PerformShun(ref b);
+          PerformShun();
           break;
         case CardAbility.NONE:
         default:
@@ -38,25 +38,25 @@ class CardEffects
     }
   }
 
-  private static void PerformDraw(ref BattlePack b)
+  private static void PerformDraw()
   {
-    var drawResult = b.hand.Draw_Single(ref b.deck, ref b.graveyard);
-    Terminal.ShowDrawResult(b.hand.GetAllCardsInHand(), drawResult);
+    var drawResult = Battle.Hand.Draw_Single();
+    Terminal.ShowDrawResult(Battle.Hand.GetAllCardsInHand(), drawResult);
   }
 
-  private static void PerformHeal(ref BattlePack b)
+  private static void PerformHeal()
   {
-    b.player.health += 1;
-    Terminal.ShowHealResult(b.player.health);
+    Battle.Player.health += 1;
+    Terminal.ShowHealResult(Battle.Player.health);
   }
 
-  private static void PerformStomp(ref BattlePack b, Card playedCard)
+  private static void PerformStomp(Card playedCard)
   {
     var stompCandidate = playedCard;
 
-    var cardsInHandCount = b.hand.GetCurrentCount();
+    var cardsInHandCount = Battle.Hand.GetCurrentCount();
 
-    if (cardsInHandCount == 0 && b.field.Count == 0)
+    if (cardsInHandCount == 0 && Battle.Field.Count == 0)
     {
       Terminal.ShowStompFailed();
       return;
@@ -67,74 +67,74 @@ class CardEffects
 
     if (stompFromHand)
     {
-      StompFromHand(ref b);
+      StompFromHand();
     }
     else
     {
-      if (b.field.Count == 1) //playedCard is the only one on the field
+      if (Battle.Field.Count == 1) //playedCard is the only one on the field
       {
         if (cardsInHandCount > 0)
         {
           stompFromHand = true;
-          StompFromHand(ref b);
+          StompFromHand();
         }
         else
         {
-          StompSelf(ref b);
+          StompSelf();
         }
       }
       else
       {
-        StompFromField(ref b);
+        StompFromField();
       }
     }
 
-    Terminal.ShowStompResult(ref b, stompCandidate, stompFromHand);
+    Terminal.ShowStompResult(stompCandidate, stompFromHand);
 
-    void StompSelf(ref BattlePack b)
+    void StompSelf()
     {
-      b.field.Remove(stompCandidate);
-      b.scrapheap.Add(stompCandidate);
+      Battle.Field.Remove(stompCandidate);
+      Battle.Scrapheap.Add(stompCandidate);
     }
 
-    void StompFromHand(ref BattlePack b)
+    void StompFromHand()
     {
       var randomIndex = UbiRandom.Next(0, cardsInHandCount);
-      stompCandidate = b.hand.GetCardAtIndex(randomIndex);
-      b.hand.Remove_Single(stompCandidate);
-      b.scrapheap.Add(stompCandidate);
+      stompCandidate = Battle.Hand.GetCardAtIndex(randomIndex);
+      Battle.Hand.Remove_Single(stompCandidate);
+      Battle.Scrapheap.Add(stompCandidate);
     }
 
-    void StompFromField(ref BattlePack b)
+    void StompFromField()
     {
-      var stompableCardsOnField = b.field.Where(card => card.id != playedCard.id).ToList();
+      var stompableCardsOnField = Battle.Field.Where(card => card.id != playedCard.id).ToList();
       var randomIndex = UbiRandom.Next(0, stompableCardsOnField.Count);
       stompCandidate = stompableCardsOnField[randomIndex];
-      b.field.Remove(stompCandidate);
-      b.scrapheap.Add(stompCandidate);
+      Battle.Field.Remove(stompCandidate);
+      Battle.Scrapheap.Add(stompCandidate);
     }
   }
 
-  private static void PerformCycle(ref BattlePack b)
+  private static void PerformCycle()
   {
-    b.market.Cycle();
-    Terminal.ShowCycleResult(b.market.GetDisplayedCards_All());
+    Battle.Market.Cycle();
+    Terminal.ShowCycleResult(Battle.Market.GetDisplayedCards_All());
   }
 
-  private static void PerformShun(ref BattlePack b)
+  private static void PerformShun()
   {
-    Terminal.PromptShun(b.hand.GetAllCardsInHand());
+    Terminal.PromptShun(Battle.Hand.GetAllCardsInHand());
 
-    if (b.hand.GetCurrentCount() == 0)
+    if (Battle.Hand.GetCurrentCount() == 0)
     {
       return;
     }
 
     var selection = UserInput.GetInt(1) - 1;
-    var selectedCard = b.hand.GetCardAtIndex(selection);
-    b.scrapheap.Add(selectedCard);
-    b.hand.Remove_Single(selectedCard);
+    var selectedCard = Battle.Hand.GetCardAtIndex(selection);
+    Battle.Scrapheap.Add(selectedCard);
+    Battle.Hand.Remove_Single(selectedCard);
 
-    PerformDraw(ref b);
+    PerformDraw();
   }
 }

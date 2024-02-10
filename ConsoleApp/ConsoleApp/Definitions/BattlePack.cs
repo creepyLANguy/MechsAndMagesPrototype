@@ -71,7 +71,7 @@ public class BattlePack
   private void SetupHand()
   {
     hand = new Hand(gameContents.handSize);
-    hand.Draw_Full(ref deck, ref graveyard);
+    hand.Draw_Full();
   }
   private void SetupField()
   {
@@ -100,7 +100,7 @@ public class BattlePack
     shuffledDeck.Shuffle();
 
     hand.Clear();
-    hand.Draw_Full(ref deck, ref graveyard);
+    hand.Draw_Full();
 
     market.Cycle();
   }

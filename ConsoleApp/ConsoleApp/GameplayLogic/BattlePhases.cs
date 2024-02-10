@@ -7,15 +7,15 @@ namespace MaM.GameplayLogic;
 
 class BattlePhases
 {
-  public static void RunMulliganPhase(ref Player player, ref BattlePack b)
+  public static void RunMulliganPhase(ref Player player)
   {
     var mulliganCost = 1;
 
     while (true)
     {
-      Terminal.PrintHand(b.hand.GetAllCardsInHand());
+      Terminal.PrintHand(Battle.Hand.GetAllCardsInHand());
 
-      Terminal.PrintMarket(b.market.GetDisplayedCards_All());
+      Terminal.PrintMarket(Battle.Market.GetDisplayedCards_All());
 
       if (player.health - mulliganCost <= 0)
       {
@@ -31,7 +31,7 @@ class BattlePhases
       }
 
       player.health -= mulliganCost;
-      b.Mulligan();
+      Battle.Mulligan();
       ++mulliganCost;
     }
   }
@@ -42,19 +42,19 @@ class BattlePhases
     return (PlayerTurnAction)UserInput.GetInt();
   }
 
-  public static void RunPlayCardsPhase(ref BattlePack b)
+  public static void RunPlayCardsPhase()
   {
-    while (b.hand.GetCurrentCount() > 0)
+    while (Battle.Hand.GetCurrentCount() > 0)
     {
-      RunPlayCardsPhase_Helper(ref b);
+      RunPlayCardsPhase_Helper();
     }
   }
 
-  private static void RunPlayCardsPhase_Helper(ref BattlePack b)
+  private static void RunPlayCardsPhase_Helper()
   {
-    var canPlayAll = b.hand.HasCardsWithOrderSensitiveEffects() == false;
+    var canPlayAll = Battle.Hand.HasCardsWithOrderSensitiveEffects() == false;
 
-    Terminal.PromptToPlayCard(ref b, canPlayAll);
+    Terminal.PromptToPlayCard(canPlayAll);
       
     var selection = UserInput.GetInt(canPlayAll ? 0 : 1);
     switch (selection)
@@ -63,26 +63,26 @@ class BattlePhases
         return;
       case 0:
       {
-        var allCardsInHand = b.hand.GetAllCardsInHand();
-        b.field.AddRange(allCardsInHand);
-        b.hand.Clear();
-        for (var index = 0; index < b.field.Count; index++) //foreach may crash as battlefield changes due to card effects 
+        var allCardsInHand = Battle.Hand.GetAllCardsInHand();
+        Battle.Field.AddRange(allCardsInHand);
+        Battle.Hand.Clear();
+        for (var index = 0; index < Battle.Field.Count; index++) //foreach may crash as battlefield changes due to card effects 
         {
-          var card = b.field[index];
-          CardEffects.Process(card, ref b);
+          var card = Battle.Field[index];
+          CardEffects.Process(card);
         }
 
         break;
       }
       default:
       {
-        if (selection <= b.hand.GetCurrentCount())
+        if (selection <= Battle.Hand.GetCurrentCount())
         {
           --selection;
-          var selectedCard = b.hand.GetCardAtIndex(selection);
-          b.field.Add(selectedCard);
-          b.hand.Remove_Single(selectedCard);
-          CardEffects.Process(selectedCard, ref b);
+          var selectedCard = Battle.Hand.GetCardAtIndex(selection);
+          Battle.Field.Add(selectedCard);
+          Battle.Hand.Remove_Single(selectedCard);
+          CardEffects.Process(selectedCard);
         }
 
         break;

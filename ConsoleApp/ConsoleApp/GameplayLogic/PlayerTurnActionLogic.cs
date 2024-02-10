@@ -5,42 +5,42 @@ namespace MaM.GameplayLogic;
 
 class PlayerTurnActionLogic
 {
-  public static void RunPassAction(ref BattlePack b)
+  public static void RunPassAction()
   {
-    b.player.power = 0;
+    Battle.Player.power = 0;
   }
 
-  public static void RunAttackAction(ref BattlePack b)
+  public static void RunAttackAction()
   {
     int attackValue;
-    if (b.enemy.isDefending)
+    if (Battle.Enemy.isDefending)
     {
-      attackValue = b.player.power < b.enemy.power ? 0 : b.player.power - b.enemy.power;
-      b.enemy.power = attackValue > 0 ? 0 : b.enemy.power - b.player.power;
+      attackValue = Battle.Player.power < Battle.Enemy.power ? 0 : Battle.Player.power - Battle.Enemy.power;
+      Battle.Enemy.power = attackValue > 0 ? 0 : Battle.Enemy.power - Battle.Player.power;
     }
     else
     {
-      attackValue = b.player.power;
+      attackValue = Battle.Player.power;
     }
       
     if (attackValue > 0)
     {
-      b.enemy.health -= attackValue;
+      Battle.Enemy.health -= attackValue;
     }
 
-    b.player.power = 0;
+    Battle.Player.power = 0;
   }
 
-  public static void RunDefendAction(ref BattlePack b)
+  public static void RunDefendAction()
   {
   }
 
-  public static void RunRecruitAction(ref BattlePack b)
+  public static void RunRecruitAction()
   {
-    while (b.market.GetDisplayedCards_Affordable(b.player.power, b.player.manna).Count > 0)
+    while (Battle.Market.GetDisplayedCards_Affordable(Battle.Player.power, Battle.Player.manna).Count > 0)
     {
-      Terminal.PrintBattleState(b);
-      Terminal.PromptToRecruit(b.market.GetDisplayedCards_All());
+      Terminal.PrintBattleState();
+      Terminal.PromptToRecruit(Battle.Market.GetDisplayedCards_All());
 
       var choice = UserInput.GetInt();
       if (choice == 0)
@@ -49,21 +49,21 @@ class PlayerTurnActionLogic
       }
       --choice;
 
-      while (choice >= b.market.GetDisplayedCards_All().Count)
+      while (choice >= Battle.Market.GetDisplayedCards_All().Count)
       {
         Terminal.PromptInvalidChoiceTryAgain();
         choice = UserInput.GetInt();
       }
 
-      var chosenCard = b.market.TryFetch(choice, ref b);
+      var chosenCard = Battle.Market.TryFetch(choice);
       if (chosenCard == null)
       {
-        var intendedCard = b.market.GetDisplayedCards_All()[choice];
+        var intendedCard = Battle.Market.GetDisplayedCards_All()[choice];
         Terminal.ShowRecruitFailed(intendedCard);
         continue;
       }
 
-      b.graveyard.Add((Card)chosenCard);
+      Battle.Graveyard.Add((Card)chosenCard);
       Terminal.ShowRecruited((Card) chosenCard);
     }
   }

@@ -61,16 +61,16 @@ public class Market
     return true;
   }
 
-  public Card? TryFetch(int index, ref BattlePack b)
+  public Card? TryFetch(int index)
   {
     var card = display[index];
 
-    if (card.powerCost > b.player.power)
+    if (card.powerCost > Battle.Player.power)
     {
       return null;
     }
 
-    if (card.mannaCost > b.player.manna)
+    if (card.mannaCost > Battle.Player.manna)
     {
       return null;
     }
@@ -85,8 +85,8 @@ public class Market
       display.Remove(card);
     }
 
-    b.player.power -= card.powerCost;
-    b.player.manna -= card.mannaCost;
+    Battle.Player.power -= card.powerCost;
+    Battle.Player.manna -= card.mannaCost;
 
     return card;
   }

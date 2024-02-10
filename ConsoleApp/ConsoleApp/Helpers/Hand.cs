@@ -15,17 +15,17 @@ public class Hand
     this.baseSize = baseSize;
   }
 
-  private static void MoveGraveyardToDeck(ref Stack<Card> deck, ref List<Card> graveyard)
+  private static void MoveGraveyardToDeck()
   {
-    graveyard.Shuffle();
-    while (graveyard.Count > 0)
+    Battle.Graveyard.Shuffle();
+    while (Battle.Graveyard.Count > 0)
     {
-      deck.Push(graveyard[0]);
-      graveyard.RemoveAt(0);
+      Battle.Deck.Push(Battle.Graveyard[0]);
+      Battle.Graveyard.RemoveAt(0);
     }
   }
 
-  public bool Draw_Full(ref Stack<Card> deck, ref List<Card> graveyard)
+  public bool Draw_Full()
   {
     var cardsToDraw = baseSize - current.Count;
 
@@ -34,9 +34,9 @@ public class Hand
       return false;
     }
 
-    while (deck.Count > 0)
+    while (Battle.Deck.Count > 0)
     {
-      Draw_Single(ref deck, ref graveyard);
+      Draw_Single();
 
       if (current.Count == baseSize)
       {
@@ -46,11 +46,11 @@ public class Hand
 
     if (current.Count != baseSize)
     {
-      MoveGraveyardToDeck(ref deck, ref graveyard);
+      MoveGraveyardToDeck();
 
-      while (deck.Count > 0)
+      while (Battle.Deck.Count > 0)
       {
-        Draw_Single(ref deck, ref graveyard);
+        Draw_Single();
 
         if (current.Count == baseSize)
         {
@@ -62,18 +62,18 @@ public class Hand
     return current.Count != baseSize;
   }
 
-  public bool Draw_Single(ref Stack<Card> deck, ref List<Card> graveyard)
+  public bool Draw_Single()
   {
-    if (deck.Count == 0 && graveyard.Count > 0)
+    if (Battle.Deck.Count == 0 && Battle.Graveyard.Count > 0)
     {
-      MoveGraveyardToDeck(ref deck, ref graveyard);
+      MoveGraveyardToDeck();
     }
-    else if (deck.Count == 0)
+    else if (Battle.Deck.Count == 0)
     {
       return false;
     }
 
-    current.Add(deck.Pop());
+    current.Add(Battle.Deck.Pop());
 
     return true;
   }

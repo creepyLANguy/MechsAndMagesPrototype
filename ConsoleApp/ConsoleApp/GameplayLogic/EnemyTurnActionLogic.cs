@@ -1,57 +1,56 @@
 ﻿using System;
-using MaM.Definitions;
 using MaM.Helpers;
 
 namespace MaM.GameplayLogic;
 
 class EnemyTurnActionLogic
 {
-  public static void RunPassAction(ref BattlePack b)
+  public static void RunPassAction()
   {
     Terminal.EnemyTurnActionPass();
 
-    b.enemy.power = 0;
+    Battle.Enemy.power = 0;
   }
 
-  public static void RunBuffAction(ref BattlePack b, int value)
+  public static void RunBuffAction(int value)
   {
     Terminal.EnemyTurnActionBuff(value);
 
-    b.enemy.power += value;
+    Battle.Enemy.power += value;
   }
 
-  public static void RunAttackAction(ref BattlePack b)
+  public static void RunAttackAction()
   {
-    Terminal.EnemyTurnActionAttack(b.enemy.power);
+    Terminal.EnemyTurnActionAttack(Battle.Enemy.power);
 
     int attackValue;
-    if (b.player.isDefending)
+    if (Battle.Player.isDefending)
     {
-      attackValue = b.enemy.power < b.player.power ? 0 : b.enemy.power - b.player.power;
-      b.player.power = attackValue > 0 ? 0 : b.player.power - b.enemy.power;
+      attackValue = Battle.Enemy.power < Battle.Player.power ? 0 : Battle.Enemy.power - Battle.Player.power;
+      Battle.Player.power = attackValue > 0 ? 0 : Battle.Player.power - Battle.Enemy.power;
     }
     else
     {
-      attackValue = b.enemy.power;
+      attackValue = Battle.Enemy.power;
     }
 
     if (attackValue > 0)
     {
-      b.player.health -= attackValue;
-      b.player.manna += attackValue;
+      Battle.Player.health -= attackValue;
+      Battle.Player.manna += attackValue;
     }
 
-    b.enemy.power = 0;
+    Battle.Enemy.power = 0;
   }
 
-  public static void RunDefendAction(ref BattlePack b)
+  public static void RunDefendAction()
   {
     Terminal.EnemyTurnActionDefend();
   }
 
-  public static void RunLeechAction(ref BattlePack b)
+  public static void RunLeechAction()
   {
-    var leechable = Math.Min(b.enemy.power, b.player.manna);
+    var leechable = Math.Min(Battle.Enemy.power, Battle.Player.manna);
 
     Terminal.EnemyTurnActionLeech(leechable);
 
@@ -60,8 +59,8 @@ class EnemyTurnActionLogic
       return;
     }
 
-    b.enemy.power= Math.Max(0, b.enemy.power- leechable);
-    b.player.manna = Math.Max(0, b.player.manna - leechable);
-    b.enemy.health += leechable;
+    Battle.Enemy.power= Math.Max(0, Battle.Enemy.power- leechable);
+    Battle.Player.manna = Math.Max(0, Battle.Player.manna - leechable);
+    Battle.Enemy.health += leechable;
   }
 }
