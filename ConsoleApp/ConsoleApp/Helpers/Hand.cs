@@ -7,12 +7,12 @@ namespace MaM.Helpers;
 
 public class Hand
 {
-  private int baseSize;
-  private List<Card> current = new();
+  private readonly int _baseSize;
+  private readonly List<Card> _current = new();
 
   public Hand(int baseSize)
   {
-    this.baseSize = baseSize;
+    _baseSize = baseSize;
   }
 
   private static void MoveGraveyardToDeck()
@@ -27,7 +27,7 @@ public class Hand
 
   public bool Draw_Full()
   {
-    var cardsToDraw = baseSize - current.Count;
+    var cardsToDraw = _baseSize - _current.Count;
 
     if (cardsToDraw <= 0)
     {
@@ -38,13 +38,13 @@ public class Hand
     {
       Draw_Single();
 
-      if (current.Count == baseSize)
+      if (_current.Count == _baseSize)
       {
         break;
       }
     }
 
-    if (current.Count != baseSize)
+    if (_current.Count != _baseSize)
     {
       MoveGraveyardToDeck();
 
@@ -52,14 +52,14 @@ public class Hand
       {
         Draw_Single();
 
-        if (current.Count == baseSize)
+        if (_current.Count == _baseSize)
         {
           break;
         }
       }
     }
 
-    return current.Count != baseSize;
+    return _current.Count != _baseSize;
   }
 
   public bool Draw_Single()
@@ -73,34 +73,34 @@ public class Hand
       return false;
     }
 
-    current.Add(Battle.Deck.Pop());
+    _current.Add(Battle.Deck.Pop());
 
     return true;
   }
 
   public void Clear()
   {
-    current.Clear();
+    _current.Clear();
   }
 
   public void Remove_Single(Card card)
   {
-      current.Remove(card);
+      _current.Remove(card);
   }
 
   public int GetCurrentCount()
   {
-    return current.Count;
+    return _current.Count;
   }
 
   public List<Card> GetAllCardsInHand()
   {
-    return current;
+    return _current;
   }
 
   public Card GetCardAtIndex(int index)
   {
-    return current[index];
+    return _current[index];
   }
 
   public bool HasCardsWithOrderSensitiveEffects()
@@ -113,6 +113,6 @@ public class Hand
       CardAbility.STOMP
     }; 
 
-    return current.Any(card => orderSensitiveEffects.Contains(card.ability));
+    return _current.Any(card => orderSensitiveEffects.Contains(card.ability));
   }
 }
