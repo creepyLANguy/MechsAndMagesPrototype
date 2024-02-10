@@ -9,7 +9,7 @@ public class Market
 {
   private int _marketSize;
   private Stack<Card> _pool;
-  private List<Card> _display = new();
+  private readonly List<Card> _display = new();
 
   public Market(int marketSize, List<Card> playerCards, List<Card> enemyCards)
   {

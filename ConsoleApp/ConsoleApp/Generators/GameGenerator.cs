@@ -39,7 +39,7 @@ public static class GameGenerator
   {
     var player = 
       gameState.player ?? 
-      GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelections, ref cards);
+      GenerateNewPlayer(gameConfig.playerConfig, gameConfig.initialCardSelectionSizes, ref cards);
 
     var journey = GetJourney(ref gameConfig);
 
@@ -77,7 +77,7 @@ public static class GameGenerator
     return journey;
   }
 
-  private static Player GenerateNewPlayer(PlayerConfig playerConfig, List<InitialCardSelection> initialSelections, ref List<Card> cards)
+  private static Player GenerateNewPlayer(PlayerConfig playerConfig, List<int> initialCardSelectionSizes, ref List<Card> cards)
   {
     var playerName = GetPlayerName();
 
@@ -86,7 +86,7 @@ public static class GameGenerator
     var selectionSet = cards.Where(card => card.guild != Guild.NEUTRAL).ToList();
     selectionSet.Shuffle();
 
-    var selectedCards = PromptPlayerForInitialCardSelections(ref initialSelections, ref selectionSet);
+    var selectedCards = PromptPlayerForInitialCardSelections(ref initialCardSelectionSizes, ref selectionSet);
     deck.AddRange(selectedCards);
 
     var player = new Player(
@@ -109,15 +109,15 @@ public static class GameGenerator
   }
 
   //Note, prolly important to pass a copy of random as in the future, with prior completion bonuses awarded, we may be using random an indeterminate amount of times here.
-  private static List<Card> PromptPlayerForInitialCardSelections(ref List<InitialCardSelection> initialCardSelections, ref List<Card> cards)
+  private static List<Card> PromptPlayerForInitialCardSelections(ref List<int> initialCardSelectionSizes, ref List<Card> cards)
   {
     var allSelectedCards = new List<Card>();
 
-    foreach (var initialCardSelection in initialCardSelections)
+    foreach (var selectionSize in initialCardSelectionSizes)
     {
       cards.Shuffle();
 
-      var offeredCards = cards.Take(initialCardSelection.cardCount).ToList();
+      var offeredCards = cards.Take(selectionSize).ToList();
 
       var selectedCard = GetSelectedCard(ref offeredCards);
 

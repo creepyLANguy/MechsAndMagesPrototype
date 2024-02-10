@@ -22,8 +22,8 @@ public class BattlePack
 
   public List<Card> scrapheap;
 
-  private Fight _node;
-  private GameContents _gameContents;
+  private readonly Fight _node;
+  private readonly GameContents _gameContents;
 
   public BattlePack(Fight node, ref GameContents gameContents)
   { 

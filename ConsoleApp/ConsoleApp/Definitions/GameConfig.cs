@@ -10,7 +10,7 @@ public struct GameConfig
   public string                     bossesExcelFile;
   public List<MapConfig>            mapConfigs;
   public PlayerConfig               playerConfig;
-  public List<InitialCardSelection> initialCardSelections;
+  public List<int>                  initialCardSelectionSizes;
   public int                        journeyLength;
   public int                        handSize;
   public int                        campsiteCardsOnOfferCount;
