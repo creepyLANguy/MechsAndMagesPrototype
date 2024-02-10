@@ -19,7 +19,7 @@ class Terminal
 
     return cardName.Length <= printableCardNameLength
       ? cardName.PadRight(printableCardNameLength, spacer)
-      : cardName.Substring(0, 1 + (printableCardNameLength - ellipsis.Length)) + ellipsis;
+      : cardName[..(1 + (printableCardNameLength - ellipsis.Length))] + ellipsis;
   }
 
   private static void PrintNode(Node node, int n)
