@@ -3,7 +3,7 @@ using MaM.Definitions;
 using MaM.Enums;
 using MaM.Helpers;
 
-namespace MaM.GameplayLogic;
+namespace MaM.PlayLogic;
 
 public static class Rest
 {

@@ -1,6 +1,6 @@
 ﻿using MaM.Helpers;
 using MaM.Definitions;
-using MaM.GameplayLogic;
+using MaM.PlayLogic;
 using static MaM.Menus.MainMenuItem;
 
 namespace MaM.Menus;

@@ -1,7 +1,7 @@
 ﻿using MaM.Definitions;
 using MaM.Helpers;
 
-namespace MaM.GameplayLogic;
+namespace MaM.PlayLogic;
 
 class PlayerTurnActionLogic
 {

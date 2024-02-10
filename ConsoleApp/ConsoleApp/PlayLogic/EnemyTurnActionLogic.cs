@@ -1,7 +1,7 @@
 ﻿using System;
 using MaM.Helpers;
 
-namespace MaM.GameplayLogic;
+namespace MaM.PlayLogic;
 
 class EnemyTurnActionLogic
 {
@@ -50,17 +50,17 @@ class EnemyTurnActionLogic
 
   public static void RunLeechAction()
   {
-    var leechable = Math.Min(Battle.Enemy.power, Battle.Player.manna);
+    var amountToLeech = Math.Min(Battle.Enemy.power, Battle.Player.manna);
 
-    Terminal.EnemyTurnActionLeech(leechable);
+    Terminal.EnemyTurnActionLeech(amountToLeech);
 
-    if (leechable <= 0)
+    if (amountToLeech <= 0)
     {
       return;
     }
 
-    Battle.Enemy.power= Math.Max(0, Battle.Enemy.power- leechable);
-    Battle.Player.manna = Math.Max(0, Battle.Player.manna - leechable);
-    Battle.Enemy.health += leechable;
+    Battle.Enemy.power= Math.Max(0, Battle.Enemy.power- amountToLeech);
+    Battle.Player.manna = Math.Max(0, Battle.Player.manna - amountToLeech);
+    Battle.Enemy.health += amountToLeech;
   }
 }

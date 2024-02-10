@@ -3,7 +3,7 @@ using MaM.Enums;
 using MaM.Helpers;
 using static MaM.Enums.YesNoChoice;
 
-namespace MaM.GameplayLogic;
+namespace MaM.PlayLogic;
 
 class BattlePhases
 {
