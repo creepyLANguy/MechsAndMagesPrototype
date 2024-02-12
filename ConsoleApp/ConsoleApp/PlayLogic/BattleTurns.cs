@@ -65,7 +65,7 @@ public static class BattleTurns
       return FightResult.PLAYER_LOSE;
     }
     
-    if (Battle.Player.health <= 0)
+    if (Battle.Enemy.health <= 0)
     {
       return FightResult.PLAYER_WIN;
     }
