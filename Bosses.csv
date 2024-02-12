@@ -1,4 +1,4 @@
 ﻿Id,Name,Health,MarketSize,Quantity,TurnActions,EstimatedTotalPower,P/H Ratio
-B_A,Boss_A,120,1,1,",20,A,30,A,45,D,20,L,35,A,D,35,D,10,A,45,D,L,45,A",285,238
-B_B,Boss_B,150,2,1,",10,A,25,A,25,D,5,L,20,A,D,15,D,10,A,40,D,L,30,A",180,120
-B_C,Boss_C,165,2,1,",20,A,10,A,5,D,5,L,20,A,D,15,D,5,A,20,D,L,30,A",130,79
+B_A,Boss_A,140,1,1,",40,A,30,A,30,D,10,L,10,A,D,25,D,5,A,40,D,L,20,A",210,150
+B_B,Boss_B,150,2,1,",30,A,25,A,25,D,5,L,20,A,D,15,D,10,A,60,D,L,30,A",220,146.6666667
+B_C,Boss_C,165,2,1,",40,A,40,A,15,D,5,L,20,A,D,15,D,15,A,40,D,L,50,A",240,145.4545455
