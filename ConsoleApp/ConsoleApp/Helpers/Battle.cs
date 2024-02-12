@@ -33,7 +33,8 @@ public static class Battle
 
   public static void Start(Fight node, ref GameContents gameContents)
   {
-    _battlePack = new BattlePack(node, ref gameContents);
+    _battlePack = new BattlePack();
+    _battlePack.Initialize(node, ref gameContents);
   }
   
   public static void End()

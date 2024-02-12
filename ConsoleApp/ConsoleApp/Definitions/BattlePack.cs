@@ -22,11 +22,11 @@ public class BattlePack
 
   public List<Card> scrapheap;
 
-  private readonly Fight _node;
-  private readonly GameContents _gameContents;
+  private Fight _node;
+  private GameContents _gameContents;
 
-  public BattlePack(Fight node, ref GameContents gameContents)
-  { 
+  public void Initialize(Fight node, ref GameContents gameContents)
+  {
     _node = node;
     _gameContents = gameContents;
 
