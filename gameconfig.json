@@ -35,17 +35,7 @@
   "playerConfig": {
     "health": 100,    
   },
-  "initialCardSelections": [
-    {
-      "cardCount": 4
-    },
-    {
-      "cardCount": 3
-    },
-    {
-      "cardCount": 2
-    }
-  ],
+  "initialCardSelectionSizes": [4, 3, 2],
   "campsiteCardsOnOfferCount": 6,
   "journeyLength": 3,
   "handSize": 4,

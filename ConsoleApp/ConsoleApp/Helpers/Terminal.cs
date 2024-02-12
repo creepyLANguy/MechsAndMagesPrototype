@@ -19,7 +19,7 @@ class Terminal
 
     return cardName.Length <= printableCardNameLength
       ? cardName.PadRight(printableCardNameLength, spacer)
-      : cardName.Substring(0, 1 + (printableCardNameLength - ellipsis.Length)) + ellipsis;
+      : cardName[..(1 + (printableCardNameLength - ellipsis.Length))] + ellipsis;
   }
 
   private static void PrintNode(Node node, int n)
@@ -49,7 +49,7 @@ class Terminal
     Console.WriteLine("\n[Turn]" + Tab + Tab + name);
   }
 
-  public static void PrintBattleState(BattlePack b)
+  public static void PrintBattleState()
   {
     const string dashes = "---";
 
@@ -57,21 +57,21 @@ class Terminal
     
     Console.WriteLine(dashes);
 
-    Console.WriteLine("Your Life:" + Tab + b.player.health);
+    Console.WriteLine("Your Life:" + Tab + Battle.Player.health);
 
-    Console.WriteLine("Your Power:" + Tab + b.player.power);
+    Console.WriteLine("Your Power:" + Tab + Battle.Player.power);
 
-    Console.WriteLine("Your Manna:" + Tab + b.player.manna); 
+    Console.WriteLine("Your Manna:" + Tab + Battle.Player.manna); 
     
-    Console.WriteLine("Your Defense:" + Tab + (b.player.isDefending ? "ACTIVE" : "NONE"));
+    Console.WriteLine("Your Defense:" + Tab + (Battle.Player.isDefending ? "ACTIVE" : "NONE"));
 
     Console.WriteLine(dashes);
 
-    Console.WriteLine("Enemy Life:" + Tab + b.enemy.health);
+    Console.WriteLine("Enemy Life:" + Tab + Battle.Enemy.health);
     
-    Console.WriteLine("Enemy Threat:" + Tab + b.enemy.power);
+    Console.WriteLine("Enemy Threat:" + Tab + Battle.Enemy.power);
 
-    Console.WriteLine("Enemy Defense:" + Tab + (b.enemy.isDefending ? "ACTIVE" : "NONE"));
+    Console.WriteLine("Enemy Defense:" + Tab + (Battle.Enemy.isDefending ? "ACTIVE" : "NONE"));
 
     Console.WriteLine(dashes);
   }
@@ -288,9 +288,9 @@ class Terminal
     Console.WriteLine("Saved");
   }
 
-  public static void PromptToPlayCard(ref BattlePack b, bool canPlayAll)
+  public static void PromptToPlayCard(bool canPlayAll)
   {
-    var allCardsInHand = b.hand.GetAllCardsInHand();
+    var allCardsInHand = Battle.Hand.GetAllCardsInHand();
 
     Console.WriteLine(" \nPlay a card by specifying its number in the list :");
 
@@ -438,12 +438,12 @@ class Terminal
     Console.WriteLine("\nStomp failed - hand and field likely empty.");
   }
 
-  public static void ShowStompResult(ref BattlePack b, Card stompedCard, bool stompFromHand)
+  public static void ShowStompResult(Card stompedCard, bool stompFromHand)
   {
     var location = stompFromHand ? "Hand" : "Field";
     var cardName = GetPrintableCardName(stompedCard.name);
     Console.WriteLine("\nStomped from " + location + " : " + cardName);
-    PrintCards(stompFromHand ? b.hand.GetAllCardsInHand() : b.field);
+    PrintCards(stompFromHand ? Battle.Hand.GetAllCardsInHand() : Battle.Field);
   }
 
   public static void PromptForManualSeed()

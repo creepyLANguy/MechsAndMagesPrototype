@@ -77,8 +77,10 @@ public static class SaveGameHelper
    
   public static string PromptUserToSelectSaveSlot()
   {
-    var list = new List<Tuple<string, int>>();
-    list.Add(new Tuple<string, int>("Begin A New Save Slot", 0));
+    var list = new List<Tuple<string, int>>
+    {
+      new("Begin A New Save Slot", 0)
+    };
 
     if (Directory.Exists(SaveGame.SaveFileDirectory) == false)
     {

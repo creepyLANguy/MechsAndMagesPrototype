@@ -3,25 +3,22 @@ using MaM.Definitions;
 using MaM.Enums;
 using MaM.Helpers;
 
-namespace MaM.GameplayLogic;
+namespace MaM.PlayLogic;
 
-public static class Battle
+public static class BattleTurns
 {
   public static FightResult Run(Fight node, ref GameContents gameContents)
   {
     Terminal.StartBattle();
 
-    var battlePack = new BattlePack(node, ref gameContents);
+    Battle.Start(node, ref gameContents);
 
-    BattlePhases.RunMulliganPhase(ref gameContents.player, ref battlePack);
+    BattlePhases.RunMulliganPhase(ref gameContents.player);
 
     var fightResult = FightResult.NONE;
     while (fightResult == FightResult.NONE)
     {
-      fightResult = RunTurns(
-        ref gameContents,
-        ref battlePack,
-        ref node.enemy);
+      fightResult = RunTurns(ref gameContents, ref node.enemy);
     }
 
     Terminal.PrintFightResult(fightResult);
@@ -31,43 +28,44 @@ public static class Battle
       OfferReward(ref gameContents, node.guild, node.enemy.marketSize);
     }
 
-    gameContents.player.health = battlePack.player.health;
+    gameContents.player.health = Battle.Player.health;
+
+    Battle.End();
 
     return fightResult;
   }
 
   private static FightResult RunTurns(
     ref GameContents gameContents,
-    ref BattlePack b,
     ref Enemy enemy)
   {
-    Terminal.PrintBattleState(b);
+    Terminal.PrintBattleState();
 
     Terminal.Turn(gameContents.player.name);
-    ExecuteTurnForPlayer(ref b);
+    ExecuteTurnForPlayer();
 
-    var resultPlayerAction = GetFightResult(ref b);
+    var resultPlayerAction = GetFightResult();
     if (resultPlayerAction != FightResult.NONE)
     {
       return resultPlayerAction;
     }
 
-    Terminal.PrintBattleState(b);
+    Terminal.PrintBattleState();
 
     Terminal.Turn(enemy.name);
-    ExecuteTurnForComputer(ref enemy, ref b);
+    ExecuteTurnForComputer(ref enemy);
 
-    return GetFightResult(ref b);
+    return GetFightResult();
   }
 
-  private static FightResult GetFightResult(ref BattlePack b)
+  private static FightResult GetFightResult()
   {
-    if (b.player.health <= 0)
+    if (Battle.Player.health <= 0)
     {
       return FightResult.PLAYER_LOSE;
     }
     
-    if (b.enemy.health <= 0)
+    if (Battle.Enemy.health <= 0)
     {
       return FightResult.PLAYER_WIN;
     }
@@ -75,46 +73,44 @@ public static class Battle
     return FightResult.NONE;
   }
 
-  private static void ExecuteTurnForPlayer(ref BattlePack b)
+  private static void ExecuteTurnForPlayer()
   {
-    b.hand.Draw_Full(ref b.deck, ref b.graveyard);
+    Battle.Hand.Draw_Full();
 
-    BattlePhases.RunPlayCardsPhase(ref b);
+    BattlePhases.RunPlayCardsPhase();
 
 
-    Terminal.PrintMarket(b.market.GetDisplayedCards_All());
+    Terminal.PrintMarket(Battle.Market.GetDisplayedCards_All());
 
-    Terminal.PrintBattleState(b);
+    Terminal.PrintBattleState();
 
-    var canRecruit = b.market.GetDisplayedCards_Affordable(b.player.power, b.player.manna).Count > 0;
+    var canRecruit = Battle.Market.GetDisplayedCards_Affordable(Battle.Player.power, Battle.Player.manna).Count > 0;
     var playerTurnAction = BattlePhases.RunActionSelectionPhase(canRecruit);
 
-    b.player.isDefending = playerTurnAction == PlayerTurnAction.DEFEND;
+    Battle.Player.isDefending = playerTurnAction == PlayerTurnAction.DEFEND;
 
     switch (playerTurnAction)
     {
       case PlayerTurnAction.ATTACK:
-        PlayerTurnActionLogic.RunAttackAction(ref b);
+        PlayerTurnActionLogic.RunAttackAction();
         break;
       case PlayerTurnAction.DEFEND:
-        PlayerTurnActionLogic.RunDefendAction(ref b);
+        PlayerTurnActionLogic.RunDefendAction();
         break;
       case PlayerTurnAction.RECRUIT:
-        PlayerTurnActionLogic.RunRecruitAction(ref b);
+        PlayerTurnActionLogic.RunRecruitAction();
         break;
       case PlayerTurnAction.NONE:
       default:
-        PlayerTurnActionLogic.RunPassAction(ref b);
+        PlayerTurnActionLogic.RunPassAction();
         break;
     }
 
-    b.MoveHandToGraveyard();
-    b.MoveFieldToGraveyard();
+    Battle.MoveHandToGraveyard();
+    Battle.MoveFieldToGraveyard();
   }
 
-  private static void ExecuteTurnForComputer(
-    ref Enemy enemy,
-    ref BattlePack b)
+  private static void ExecuteTurnForComputer(ref Enemy enemy)
   {
     var nextEnemyTurnAction = enemy.turnActions.First();
     enemy.turnActions.Remove(nextEnemyTurnAction);
@@ -123,25 +119,25 @@ public static class Battle
     var key = nextEnemyTurnAction.Item1;
     var value = nextEnemyTurnAction.Item2;
 
-    b.enemy.isDefending = key == EnemyTurnAction.D;
+    Battle.Enemy.isDefending = key == EnemyTurnAction.D;
 
     switch (key)
     {
       case EnemyTurnAction.B:
-        EnemyTurnActionLogic.RunBuffAction(ref b, value);
+        EnemyTurnActionLogic.RunBuffAction(value);
         break;
       case EnemyTurnAction.A:
-        EnemyTurnActionLogic.RunAttackAction(ref b);
+        EnemyTurnActionLogic.RunAttackAction();
         break;
       case EnemyTurnAction.D:
-        EnemyTurnActionLogic.RunDefendAction(ref b);
+        EnemyTurnActionLogic.RunDefendAction();
         break;
       case EnemyTurnAction.L:
-        EnemyTurnActionLogic.RunLeechAction(ref b);
+        EnemyTurnActionLogic.RunLeechAction();
         break;
       case EnemyTurnAction.N:
       default:
-        EnemyTurnActionLogic.RunPassAction(ref b);
+        EnemyTurnActionLogic.RunPassAction();
         break;
     }
   }

@@ -7,100 +7,100 @@ namespace MaM.Helpers;
 
 public class Hand
 {
-  private int baseSize;
-  private List<Card> current = new();
+  private readonly int _baseSize;
+  private readonly List<Card> _current = new();
 
   public Hand(int baseSize)
   {
-    this.baseSize = baseSize;
+    _baseSize = baseSize;
   }
 
-  private static void MoveGraveyardToDeck(ref Stack<Card> deck, ref List<Card> graveyard)
+  private static void MoveGraveyardToDeck()
   {
-    graveyard.Shuffle();
-    while (graveyard.Count > 0)
+    Battle.Graveyard.Shuffle();
+    while (Battle.Graveyard.Count > 0)
     {
-      deck.Push(graveyard[0]);
-      graveyard.RemoveAt(0);
+      Battle.Deck.Push(Battle.Graveyard[0]);
+      Battle.Graveyard.RemoveAt(0);
     }
   }
 
-  public bool Draw_Full(ref Stack<Card> deck, ref List<Card> graveyard)
+  public bool Draw_Full()
   {
-    var cardsToDraw = baseSize - current.Count;
+    var cardsToDraw = _baseSize - _current.Count;
 
     if (cardsToDraw <= 0)
     {
       return false;
     }
 
-    while (deck.Count > 0)
+    while (Battle.Deck.Count > 0)
     {
-      Draw_Single(ref deck, ref graveyard);
+      Draw_Single();
 
-      if (current.Count == baseSize)
+      if (_current.Count == _baseSize)
       {
         break;
       }
     }
 
-    if (current.Count != baseSize)
+    if (_current.Count != _baseSize)
     {
-      MoveGraveyardToDeck(ref deck, ref graveyard);
+      MoveGraveyardToDeck();
 
-      while (deck.Count > 0)
+      while (Battle.Deck.Count > 0)
       {
-        Draw_Single(ref deck, ref graveyard);
+        Draw_Single();
 
-        if (current.Count == baseSize)
+        if (_current.Count == _baseSize)
         {
           break;
         }
       }
     }
 
-    return current.Count != baseSize;
+    return _current.Count != _baseSize;
   }
 
-  public bool Draw_Single(ref Stack<Card> deck, ref List<Card> graveyard)
+  public bool Draw_Single()
   {
-    if (deck.Count == 0 && graveyard.Count > 0)
+    if (Battle.Deck.Count == 0 && Battle.Graveyard.Count > 0)
     {
-      MoveGraveyardToDeck(ref deck, ref graveyard);
+      MoveGraveyardToDeck();
     }
-    else if (deck.Count == 0)
+    else if (Battle.Deck.Count == 0)
     {
       return false;
     }
 
-    current.Add(deck.Pop());
+    _current.Add(Battle.Deck.Pop());
 
     return true;
   }
 
   public void Clear()
   {
-    current.Clear();
+    _current.Clear();
   }
 
   public void Remove_Single(Card card)
   {
-      current.Remove(card);
+      _current.Remove(card);
   }
 
   public int GetCurrentCount()
   {
-    return current.Count;
+    return _current.Count;
   }
 
   public List<Card> GetAllCardsInHand()
   {
-    return current;
+    return _current;
   }
 
   public Card GetCardAtIndex(int index)
   {
-    return current[index];
+    return _current[index];
   }
 
   public bool HasCardsWithOrderSensitiveEffects()
@@ -113,6 +113,6 @@ public class Hand
       CardAbility.STOMP
     }; 
 
-    return current.Any(card => orderSensitiveEffects.Contains(card.ability));
+    return _current.Any(card => orderSensitiveEffects.Contains(card.ability));
   }
 }

@@ -22,13 +22,13 @@ public class BattlePack
 
   public List<Card> scrapheap;
 
-  private Fight node;
-  private GameContents gameContents;
+  private Fight _node;
+  private GameContents _gameContents;
 
-  public BattlePack(Fight node, ref GameContents gameContents)
-  { 
-    this.node = node;
-    this.gameContents = gameContents;
+  public void Initialize(Fight node, ref GameContents gameContents)
+  {
+    _node = node;
+    _gameContents = gameContents;
 
     player = new Combatant(gameContents.player.health);
     enemy = new Combatant(node.enemy.health);
@@ -48,21 +48,21 @@ public class BattlePack
 
   private void SetupMarket(FightType fightType)
   {
-    var playerCardsContribution = gameContents.player.GetDeck().Where(card => card.guild != Guild.NEUTRAL).ToList();
+    var playerCardsContribution = _gameContents.player.GetDeck().Where(card => card.guild != Guild.NEUTRAL).ToList();
 
     var enemyCardsContribution =
       fightType == FightType.BOSS 
-        ? gameContents.cards
-        : gameContents.cards.Where(card => card.guild == node.guild).ToList();
+        ? _gameContents.cards
+        : _gameContents.cards.Where(card => card.guild == _node.guild).ToList();
     
-    market = new Market(node.enemy.marketSize, playerCardsContribution, enemyCardsContribution);
+    market = new Market(_node.enemy.marketSize, playerCardsContribution, enemyCardsContribution);
 
     market.Fill();
   }
 
   private void SetupDeck()
   {
-    var startingCards = gameContents.player.GetDeck().Where(card => card.guild == Guild.NEUTRAL).ToList();
+    var startingCards = _gameContents.player.GetDeck().Where(card => card.guild == Guild.NEUTRAL).ToList();
     startingCards.Shuffle();
 
     deck = new Stack<Card>(startingCards);
@@ -70,8 +70,8 @@ public class BattlePack
 
   private void SetupHand()
   {
-    hand = new Hand(gameContents.handSize);
-    hand.Draw_Full(ref deck, ref graveyard);
+    hand = new Hand(_gameContents.handSize);
+    hand.Draw_Full();
   }
   private void SetupField()
   {
@@ -100,7 +100,7 @@ public class BattlePack
     shuffledDeck.Shuffle();
 
     hand.Clear();
-    hand.Draw_Full(ref deck, ref graveyard);
+    hand.Draw_Full();
 
     market.Cycle();
   }
