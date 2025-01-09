@@ -135,6 +135,7 @@ class CardEffects
     Battle.Scrapheap.Add(selectedCard);
     Battle.Hand.Remove_Single(selectedCard);
 
+    //Only allow a card draw if another card was successfully shunned from hand. 
     PerformDraw();
   }
 }
