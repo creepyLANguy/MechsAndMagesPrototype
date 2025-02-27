@@ -7,12 +7,27 @@ namespace MaM.Helpers;
 
 public class Hand
 {
-  private readonly int _baseSize;
+  private int _baseSize;
   private readonly List<Card> _current = new();
 
   public Hand(int baseSize)
   {
     _baseSize = baseSize;
+  }
+
+  public int GetBaseHandSize() 
+    => _baseSize; 
+  
+  public bool SetBaseHandSize(int newSize)
+  {
+    if (newSize < 0)
+    {
+      return false;
+    }
+
+    _baseSize = newSize;
+
+    return _baseSize == newSize;
   }
 
   private static void MoveGraveyardToDeck()

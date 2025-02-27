@@ -24,7 +24,7 @@ public static class UserInput
       Console.ReadLine();
     }
 
-    return input;
+    return input.Trim();
   }
 
   public static string GetString(string debugModeDefaultValue = null)
