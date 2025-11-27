@@ -6,10 +6,19 @@ public static class Algos
 {
   public static void Shuffle<T>(this IList<T> list)
   {
-    for (var i = list.Count - 1; i > 0; --i)
+    var temp = new List<T>();
+
+    while (list.Count > 0)
     {
-      var randomIndex = UbiRandom.Next(i + 1);
-      (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
+      var randomIndex = UbiRandom.Next(list.Count);
+      temp.Add(list[randomIndex]);
+      list.RemoveAt(randomIndex);
+    }
+
+    list.Clear();
+    foreach (var item in temp)
+    {
+      list.Add(item);
     }
   }
 }

@@ -91,15 +91,13 @@ public class BattlePack
   public void Mulligan()
   {
     var cardsInHand = hand.GetAllCardsInHand();
-    foreach (var card in cardsInHand)
-    {
-      deck.Push(card);
-    }
-
-    var shuffledDeck = deck.ToList();
-    shuffledDeck.Shuffle();
-
+    var deck_list = deck.ToList();
+    deck_list.AddRange(cardsInHand);    
     hand.Clear();
+
+    deck_list.Shuffle();
+    deck = new Stack<Card>(deck_list);
+
     hand.Draw_Full();
 
     market.Cycle();

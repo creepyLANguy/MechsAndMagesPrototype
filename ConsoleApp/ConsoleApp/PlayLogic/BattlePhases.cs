@@ -19,6 +19,7 @@ class BattlePhases
 
       if (player.health - mulliganCost <= 0)
       {
+        Battle.Player.health = player.health;
         return;
       }
 
