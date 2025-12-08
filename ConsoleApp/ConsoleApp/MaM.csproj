@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Aspose.Cells" Version="22.4.0" />
+    <PackageReference Include="ConsoleTableExt" Version="3.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 

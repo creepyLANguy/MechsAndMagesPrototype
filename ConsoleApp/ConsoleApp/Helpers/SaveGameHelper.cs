@@ -77,9 +77,9 @@ public static class SaveGameHelper
    
   public static string PromptUserToSelectSaveSlot()
   {
-    var list = new List<Tuple<string, int>>
+    var list = new List<List<object>>
     {
-      new("Begin A New Save Slot", 0)
+      new () { "0", "New Slot" }
     };
 
     if (Directory.Exists(SaveGame.SaveFileDirectory) == false)
@@ -96,15 +96,18 @@ public static class SaveGameHelper
     {
       var game = Read(file, cryptoKey: SaveGame.CryptoKey);
 
-      var displayString =
-        game.time.ToString(CultureInfo.CurrentCulture) +
-        //"\t\tSeed: " + game.randomSeed +
-        "\t\tMap: " + (game.player.completedMapCount + 1) +
-        "\t\tNode: " + (game.player.completedNodeLocations.Count + 1) +
-        "\t\tHealth: " + game.player.health + 
-        "\t\t" + game.player.name;
-
-      list.Add(new Tuple<string, int>(displayString, list.Count));
+      var rowItems = new List<object>()
+      { 
+        list.Count.ToString(),
+        game.time.ToString(CultureInfo.CurrentCulture),
+        game.randomSeed,
+        (game.player.completedMapCount + 1),
+        (game.player.completedNodeLocations.Count + 1),
+        game.player.health,
+        game.player.name
+      };
+        
+      list.Add(rowItems);
     }
 
     Terminal.PromptForSaveSlot(list);

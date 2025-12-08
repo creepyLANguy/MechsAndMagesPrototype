@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MaM.Menus;
 using System.Linq;
 using MaM.Enums;
+using ConsoleTableExt;
 
 namespace MaM.Helpers;
 class Terminal
@@ -33,7 +34,7 @@ class Terminal
       n + ")" +
       Tab + "[" + node.x + ", " + node.y + "]" +
       Tab + node.nodeType +
-      fightDetails + 
+      fightDetails +
       (node.isMystery ? Tab + "MYSTERY" : string.Empty);
 
     Console.WriteLine(buff);
@@ -54,21 +55,21 @@ class Terminal
     const string dashes = "---";
 
     Console.WriteLine();
-    
+
     Console.WriteLine(dashes);
 
     Console.WriteLine("Your Life:" + Tab + Battle.Player.health);
 
     Console.WriteLine("Your Power:" + Tab + Battle.Player.power);
 
-    Console.WriteLine("Your Manna:" + Tab + Battle.Player.manna); 
-    
+    Console.WriteLine("Your Manna:" + Tab + Battle.Player.manna);
+
     Console.WriteLine("Your Defense:" + Tab + (Battle.Player.isDefending ? "ACTIVE" : "NONE"));
 
     Console.WriteLine(dashes);
 
     Console.WriteLine("Enemy Life:" + Tab + Battle.Enemy.health);
-    
+
     Console.WriteLine("Enemy Threat:" + Tab + Battle.Enemy.power);
 
     Console.WriteLine("Enemy Defense:" + Tab + (Battle.Enemy.isDefending ? "ACTIVE" : "NONE"));
@@ -81,7 +82,7 @@ class Terminal
     Console.WriteLine("\nYour Hand:");
     PrintCards(cards);
   }
-    
+
   public static void PrintMarket(List<Card> cards)
   {
     Console.WriteLine("\nThe Market:");
@@ -90,8 +91,8 @@ class Terminal
 
   public static void OfferMulligan(int playerHealth, int mulliganCost)
   {
-    var message = 
-      "Life : " + playerHealth + 
+    var message =
+      "Life : " + playerHealth +
       "\nMulligan this hand and cycle the market by paying " + mulliganCost + " life?" +
       "\n" + YesNoChoice.YES.ToString("D") + ") " + YesNoChoice.YES.ToString().ToSentenceCase() +
       "\n" + YesNoChoice.NO.ToString("D") + ") " + YesNoChoice.NO.ToString().ToSentenceCase();
@@ -110,14 +111,10 @@ class Terminal
     Console.WriteLine(message);
   }
 
-  public static void PromptForSaveSlot(List<Tuple<string, int>> list)
-  {
-    Console.WriteLine("\nPlease select a save slot:");
-    foreach (var (item1, item2) in list)
-    {
-      Console.WriteLine(item2 + ") " + item1);
-    }
-  }
+  public static void PromptForSaveSlot(List<List<object>> list)
+    => PrintViaConsoleTableBuilder(list,
+        "Please Select A Save Slot",
+        new[] { "Option", "Date/Time", "Map", "Node", "Health", "Player Name" });
 
   public static void ShowFilenameWasNull()
   {
@@ -452,7 +449,18 @@ class Terminal
   }
 
   public static void Print<T>(T value)
-  {
-    Console.WriteLine(value);
-  }
+    => Console.WriteLine(value);
+
+public static void PrintViaConsoleTableBuilder(
+  List<List<object>> list, 
+  string title, 
+  string[] columns, 
+  ConsoleColor titleColour = ConsoleColor.Black, 
+  ConsoleColor titleBackgroundColour = ConsoleColor.Gray, 
+  TableAligntment tableAlignment = TableAligntment.Center)
+    => ConsoleTableBuilder
+        .From(list)
+        .WithTitle(title, titleColour, titleBackgroundColour)
+        .WithColumn(columns)
+        .ExportAndWriteLine(tableAlignment);
 }
