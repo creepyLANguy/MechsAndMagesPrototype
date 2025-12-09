@@ -41,14 +41,10 @@ class Terminal
   }
 
   public static void StartBattle()
-  {
-    Console.WriteLine("\n[Start Battle]\n");
-  }
+    => Console.WriteLine("\n[Start Battle]\n");
 
-  public static void Turn(string name)
-  {
-    Console.WriteLine("\n[Turn]" + Tab + Tab + name);
-  }
+  public static void PrintTurnOwner(string name) 
+    => Console.WriteLine("\n[PrintTurnOwner]" + Tab + Tab + name);
 
   public static void PrintBattleState()
   {
@@ -112,9 +108,9 @@ class Terminal
   }
 
   public static void PromptForSaveSlot(List<List<object>> list)
-    => PrintViaConsoleTableBuilder(list,
+    => PrintAsTable(list,
         "Please Select A Save Slot",
-        new[] { "Option", "Date/Time", "Map", "Node", "Health", "Player Name" });
+        new[] { "Option", "Date/Time", "Seed", "Map", "Node", "Health", "Player Name" });
 
   public static void ShowFilenameWasNull()
   {
@@ -157,22 +153,10 @@ class Terminal
   }
 
   public static void ShowMainMenu()
-  {
-    var requestString =
-      "\nMain Menu" +
-      "\n" + MainMenuItem.PLAY.ToString("D") + ") " + MainMenuItem.PLAY.ToString().ToSentenceCase() +
-      "\n" + MainMenuItem.EXIT.ToString("D") + ") " + MainMenuItem.EXIT.ToString().ToSentenceCase();
-    Console.WriteLine(requestString);
-  }    
-    
+    => PrintMenuAsTable(typeof(MainMenuItem), "Main Menu");
+
   public static void ShowExitMenu()
-  {
-    var requestString =
-      "\nAre you sure you want to exit?" +
-      "\n" + YesNoChoice.YES.ToString("D") + ") " + YesNoChoice.YES.ToString().ToSentenceCase() +
-      "\n" + YesNoChoice.NO.ToString("D") + ") " + YesNoChoice.NO.ToString().ToSentenceCase();
-    Console.WriteLine(requestString);
-  }
+    => PrintMenuAsTable(typeof(YesNoChoice), "Are you sure you want to exit?");
 
   public static void PromptForName()
   {
@@ -451,16 +435,42 @@ class Terminal
   public static void Print<T>(T value)
     => Console.WriteLine(value);
 
-public static void PrintViaConsoleTableBuilder(
-  List<List<object>> list, 
-  string title, 
-  string[] columns, 
-  ConsoleColor titleColour = ConsoleColor.Black, 
-  ConsoleColor titleBackgroundColour = ConsoleColor.Gray, 
-  TableAligntment tableAlignment = TableAligntment.Center)
-    => ConsoleTableBuilder
-        .From(list)
-        .WithTitle(title, titleColour, titleBackgroundColour)
-        .WithColumn(columns)
-        .ExportAndWriteLine(tableAlignment);
+  public static void PrintAsTable(
+    List<List<object>> list, 
+    string title, 
+    string[] columns, 
+    ConsoleColor titleColour = ConsoleColor.Black, 
+    ConsoleColor titleBackgroundColour = ConsoleColor.Gray, 
+    TableAligntment tableAlignment = TableAligntment.Center)
+      => ConsoleTableBuilder
+          .From(list)
+          .WithTitle(title, titleColour, titleBackgroundColour)
+          .WithColumn(columns)
+          .ExportAndWriteLine(tableAlignment);
+
+  public static void PrintMenuAsTable(
+    object optionsEnum,
+    string title,
+    ConsoleColor titleColour = ConsoleColor.Black,
+    ConsoleColor titleBackgroundColour = ConsoleColor.Gray,
+    TableAligntment tableAlignment = TableAligntment.Center)
+  {
+    var rows = new List<List<object>>();
+
+    foreach (var value in Enum.GetValues(optionsEnum as Type))
+    {
+      rows.Add(new List<object>
+      {
+        Convert.ToInt32(value),
+        value.ToString().ToSentenceCase()
+      });
+    }
+
+    ConsoleTableBuilder
+      .From(rows)
+      .WithTitle(title, titleColour, titleBackgroundColour)
+      //.WithColumn("Key", "Option")
+      .WithMinLength(new Dictionary<int, int> {{ 0, title.Length }})
+      .ExportAndWriteLine(tableAlignment);
+  }
 }

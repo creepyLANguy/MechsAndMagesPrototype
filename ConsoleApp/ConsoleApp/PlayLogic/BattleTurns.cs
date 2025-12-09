@@ -41,7 +41,7 @@ public static class BattleTurns
   {
     Terminal.PrintBattleState();
 
-    Terminal.Turn(gameContents.player.name);
+    Terminal.PrintTurnOwner(gameContents.player.name);
     ExecuteTurnForPlayer();
 
     var resultPlayerAction = GetFightResult();
@@ -52,7 +52,7 @@ public static class BattleTurns
 
     Terminal.PrintBattleState();
 
-    Terminal.Turn(enemy.name);
+    Terminal.PrintTurnOwner(enemy.name);
     ExecuteTurnForComputer(ref enemy);
 
     return GetFightResult();
