@@ -9,9 +9,6 @@ using ConsoleTableExt;
 namespace MaM.Helpers;
 class Terminal
 {
-  private const string Tab = "\t";
-  private const string Pipe = "|";
-
   private static string GetPrintableCardName(string cardName)
   {
     const int printableCardNameLength = 14;
@@ -25,17 +22,19 @@ class Terminal
 
   private static void PrintNode(Node node, int n)
   {
+    const string tab = "\t";
+
     var fightDetails =
       node.nodeType == NodeType.FIGHT
-        ? Tab + (((Fight)node).fightType + Tab + ((Fight)node).guild)
+        ? tab + (((Fight)node).fightType + tab + ((Fight)node).guild)
         : "";
 
     var buff =
       n + ")" +
-      Tab + "[" + node.x + ", " + node.y + "]" +
-      Tab + node.nodeType +
+      tab + "[" + node.x + ", " + node.y + "]" +
+      tab + node.nodeType +
       fightDetails +
-      (node.isMystery ? Tab + "MYSTERY" : string.Empty);
+      (node.isMystery ? tab + "MYSTERY" : string.Empty);
 
     Console.WriteLine(buff);
   }
@@ -44,59 +43,54 @@ class Terminal
     => Console.WriteLine("\n[Start Battle]\n");
 
   public static void PrintTurnOwner(string name) 
-    => Console.WriteLine("\n[PrintTurnOwner]" + Tab + Tab + name);
+    => Console.WriteLine("\nTurn Owner:\t" + name);
 
   public static void PrintBattleState()
   {
-    const string dashes = "---";
+    PrintCombatantState(Battle.Player);
+    PrintCombatantState(Battle.Enemy);
+    return;
 
-    Console.WriteLine();
+    static void PrintCombatantState(Combatant combatant)
+    {
+      //AL.
+      //TODO - print properly as table.
 
-    Console.WriteLine(dashes);
-
-    Console.WriteLine("Your Life:" + Tab + Battle.Player.health);
-
-    Console.WriteLine("Your Power:" + Tab + Battle.Player.power);
-
-    Console.WriteLine("Your Manna:" + Tab + Battle.Player.manna);
-
-    Console.WriteLine("Your Defense:" + Tab + (Battle.Player.isDefending ? "ACTIVE" : "NONE"));
-
-    Console.WriteLine(dashes);
-
-    Console.WriteLine("Enemy Life:" + Tab + Battle.Enemy.health);
-
-    Console.WriteLine("Enemy Threat:" + Tab + Battle.Enemy.power);
-
-    Console.WriteLine("Enemy Defense:" + Tab + (Battle.Enemy.isDefending ? "ACTIVE" : "NONE"));
-
-    Console.WriteLine(dashes);
+      var combatantName = combatant == Battle.Player ? "You" : "Enemy";
+      
+      var buff = "";
+      buff += "\n" + combatantName + " Life: \t" + combatant.health;
+      buff += "\n" + combatantName + " Power:\t" + combatant.power;
+      buff += "\n" + combatantName + " Manna: \t" + combatant.manna;
+      buff += "\n" + combatantName + " Defense: \t" + (combatant.isDefending ? "ACTIVE" : "NONE");
+      Console.WriteLine(buff);
+    }
   }
 
   public static void PrintHand(List<Card> cards)
-  {
-    Console.WriteLine("\nYour Hand:");
-    PrintCards(cards);
-  }
+    => PrintCards(cards, "Your Hand:");
 
   public static void PrintMarket(List<Card> cards)
-  {
-    Console.WriteLine("\nThe Market:");
-    PrintCards(cards);
-  }
+    => PrintCards(cards, "The Market:");
 
   public static void OfferMulligan(int playerHealth, int mulliganCost)
   {
+    //AL.
+    //TODO - print properly as table.
+
     var message =
-      "Life : " + playerHealth +
+      "Life : " + playerHealth + "\n" +
       "\nMulligan this hand and cycle the market by paying " + mulliganCost + " life?" +
-      "\n" + YesNoChoice.YES.ToString("D") + ") " + YesNoChoice.YES.ToString().ToSentenceCase() +
-      "\n" + YesNoChoice.NO.ToString("D") + ") " + YesNoChoice.NO.ToString().ToSentenceCase();
+      "\n" + YesNoChoice.YES.ToString("D") + ") " + nameof(YesNoChoice.YES).ToSentenceCase() +
+      "\n" + YesNoChoice.NO.ToString("D") + ") " + nameof(YesNoChoice.NO).ToSentenceCase();
     Console.WriteLine(message);
   }
 
   public static void PromptForAction(bool canRecruit)
   {
+    //AL.
+    //TODO - print properly as table.
+
     var message = "\nSelect an action:";
     foreach (PlayerTurnAction turnAction in Enum.GetValues(typeof(PlayerTurnAction)))
     {
@@ -113,12 +107,21 @@ class Terminal
         new[] { "Option", "Date/Time", "Seed", "Map", "Node", "Health", "Player Name" });
 
   public static void ShowFilenameWasNull()
+    => Console.WriteLine("filename was null");
+  
+  private static void PrintCards(List<Card> cards, string title = "", bool showCosts = true)
   {
-    Console.WriteLine("filename was null");
-  }
+    Console.WriteLine();
 
-  private static void PrintCards(List<Card> cards, bool showCosts = true)
-  {
+    var cols = new List<string>();
+    cols.AddRange(new List<string> { "Option", "Card Name", "Guild" });
+    if (showCosts)
+    {
+      cols.AddRange(new List<string> { "Power Cost", "Manna Cost", "Total Cost" });
+    }
+    cols.AddRange(new List<string> { "Power", "Ability" });
+
+    var list = new List<List<object>>();
     for (var index = 0; index < cards.Count; index++)
     {
       var card = cards[index];
@@ -128,26 +131,21 @@ class Terminal
       {
         abilityString += ", " + card.abilityCount;
       }
-      
-      Console.WriteLine(
-        index + 1 + ")" +
-        Tab +
-        GetPrintableCardName(card.name) +
-        Tab + Pipe +
-        "Guild : " + card.guild +
-        Tab + Pipe +
-        (showCosts ? 
-          "Power Cost : " + ("" + card.powerCost).PadRight(3) + 
-          Tab + Pipe + 
-          "Manna Cost : " + ("" + card.mannaCost).PadRight(3) + 
-          Tab + Pipe + 
-          "Total Cost : " + ("" + (card.powerCost + card.mannaCost)).PadRight(3) + 
-          Tab + Pipe : "") +
-        "Power : " + ("" + card.power).PadRight(2) +
-        Tab + Pipe +
-        "Ability : " + abilityString
-      );
+
+      list.Add(new List<object> {(index + 1), GetPrintableCardName(card.name), card.guild});
+      if (showCosts)
+      {
+        list[index].AddRange(new List<object>
+        {
+          ("" + card.powerCost).PadRight(3), 
+          ("" + card.mannaCost).PadRight(3),
+          ("" + card.powerCost + card.mannaCost).PadRight(3)
+        });
+      }
+      list[index].AddRange(new List<object> { ("" + card.power).PadRight(2),abilityString });
     }
+
+    PrintAsTable(list, "", cols.ToArray());
 
     Console.WriteLine();
   }
@@ -159,19 +157,15 @@ class Terminal
     => PrintMenuAsTable(typeof(YesNoChoice), "Are you sure you want to exit?");
 
   public static void PromptForName()
-  {
-    Console.WriteLine("\nEnter your name:");
-  }
+    => Console.WriteLine("\nEnter your name:");
 
   public static void PromptForCardDraft(ref List<Card> offeredCards)
-  {
-    Console.WriteLine(" \nSelect one of the following cards by specifying its number in the list :");
-    PrintCards(offeredCards);
-  }
+    => PrintCards(offeredCards, "Select one of the following cards by specifying its number in the list");
 
   public static void ShowDeath(ref Journey journey)
   {
     Console.WriteLine("\nYOU DIED\nCompletion Percent : " + GetCompletionPercentage(ref journey) + "%");
+    return;
 
     static double GetCompletionPercentage(ref Journey journey, int decimalPlaces = 0)
     {
@@ -193,23 +187,21 @@ class Terminal
   }
 
   public static void ShowCompletedNode(int count, int mapHeight, int mapIndex, int mapsCount)
-  {
-    Console.WriteLine("\nCompleted Node " + count + " of " + mapHeight + ", of Map " + (mapIndex + 1) + " of " + mapsCount);
-  }
-
+    => Console.WriteLine(
+      "\n" +
+      "Completed Node " + count +
+      " of " + mapHeight +
+      ", of Map " + (mapIndex + 1) +
+      " of " + mapsCount);
+  
   public static void ShowCompletedMap(int mapIndex)
-  {
-    Console.WriteLine("\nCompleted Map " + (mapIndex + 1));
-  }
+    => Console.WriteLine("\nCompleted Map " + (mapIndex + 1));
 
   public static void ShowCompletedRun()
-  {
-    Console.WriteLine(
-      "\nCONGRATULATIONS!" + 
+    => Console.WriteLine(
+      "\nCONGRATULATIONS!" +
       "\nRun completed." +
-      "\n\nReturning to main menu..."
-    );
-  }
+      "\n\nReturning to main menu...");
 
   public static void PromptForStartingNode(ref List<Node> firstRow)
   {
@@ -233,44 +225,31 @@ class Terminal
   }
 
   public static void FileHelperSave(string filename)
-  {
-    Console.WriteLine("\nSaving " + filename);
-  }
+    => Console.WriteLine("\nSaving " + filename);
 
   public static void FileHelperFolderNotFound(string folderName)
-  {
-    Console.WriteLine("\nError - could not find folder : " + folderName);
-  }
+    => Console.WriteLine("\nError - could not find folder : " + folderName);
 
   public static void FileHelperDeleting(string filename)
-  {
-    Console.WriteLine("\nDeleting " + filename);
-  }
+    => Console.WriteLine("\nDeleting " + filename);
 
   public static void FileHelperDeleteFailed(string filename, string eMessage)
-  {
-    Console.WriteLine("\nFAILED TO DELETE FILE \'" + filename + "\' ON DRIVE!");
-    Console.WriteLine(eMessage);
-  }
+    => Console.WriteLine("\nFAILED TO DELETE FILE \'" + filename + "\' ON DRIVE!\n" + eMessage);
 
   public static void FileHelperDeleted()
-  {
-    Console.WriteLine("Deleted");
-  }
+    => Console.WriteLine("Deleted");
 
   public static void FileHelperWriteFailed(string filename, string eMessage)
-  {
-    Console.WriteLine("\nFAILED TO WRITE FILE \'" + filename + "\' TO DRIVE!");
-    Console.WriteLine(eMessage);
-  }
+    => Console.WriteLine("\nFAILED TO WRITE FILE \'" + filename + "\' TO DRIVE!\n" + eMessage);
 
   public static void FileHelperWritten()
-  {
-    Console.WriteLine("Saved");
-  }
+    => Console.WriteLine("Saved");
 
   public static void PromptToPlayCard(bool canPlayAll)
   {
+    //AL.
+    //TODO - print properly as table. 
+
     var allCardsInHand = Battle.Hand.GetAllCardsInHand();
 
     Console.WriteLine(" \nPlay a card by specifying its number in the list :");
@@ -280,57 +259,46 @@ class Terminal
       Console.WriteLine("0) PLAY ALL CARDS");
     }
 
-    PrintCards(allCardsInHand, false);
+    PrintCards(allCardsInHand, "", false);
     Console.WriteLine("-1) SKIP TO NEXT PHASE");
   }
 
   public static void EnemyTurnActionBuff(int value)
-  {
-    Console.WriteLine("\nEnemy BUFFS for " + value);
-  }
+    => Console.WriteLine("\nEnemy BUFFS for " + value);
 
   public static void EnemyTurnActionAttack(int threat)
-  {
-    Console.WriteLine("\nEnemy ATTACKS for " + threat);
-  }
+    => Console.WriteLine("\nEnemy ATTACKS for " + threat);
 
   public static void EnemyTurnActionDefend()
-  {
-    Console.WriteLine("\nEnemy is DEFENDING");
-  }
+    => Console.WriteLine("\nEnemy is DEFENDING");
 
   public static void EnemyTurnActionLeech(int threat)
-  {
-    Console.WriteLine("\nEnemy LEECHES for " + threat);
-  }
+    => Console.WriteLine("\nEnemy LEECHES for " + threat);
 
   public static void EnemyTurnActionPass()
-  {
-    Console.WriteLine("\nEnemy PASSES");
-  }
+    => Console.WriteLine("\nEnemy PASSES");
 
   public static void PromptToRecruit(List<Card> offeredCards)
   {
+    //AL.
+    //TODO - print properly as table.
+
     Console.WriteLine("\nSelect one of the following cards to recruit :");
     Console.WriteLine("\n0) SKIP TO NEXT PHASE");
     PrintCards(offeredCards);
   }
 
   public static void ShowRecruitFailed(Card card)
-  {
-    Console.WriteLine("\nYou could not recruit " + card.name);
-    Console.WriteLine("Please select another card and make sure you have the required amounts of power and manna.");
-  }
+    => Console.WriteLine(
+      "\nYou could not recruit " + card.name +
+      "\nPlease select another card and make sure you have the required amounts of power and manna."
+      );
 
   public static void ShowRecruited(Card card)
-  {
-    Console.WriteLine("\nYou recruited : " + card.name);
-  }
+    => Console.WriteLine("\nYou recruited : " + card.name);
 
   public static void PromptInvalidChoiceTryAgain()
-  {
-    Console.WriteLine("\nInvalid choice, please make sure your option exists in the list and try again...");
-  }
+    => Console.WriteLine("\nInvalid choice, please make sure your option exists in the list and try again...");
 
   public static void PrintFightResult(FightResult fightResult)
   {
@@ -351,34 +319,26 @@ class Terminal
   }
 
   public static void PromptToChooseReward(List<Card> offeredRewards)
-  {
-    Console.WriteLine("\nChoose a reward: ");
-    PrintCards(offeredRewards);
-  }
+    => PrintCards(offeredRewards, "Choose a reward");
 
   public static void OfferCampsiteExchange()
   {
-    Console.WriteLine("Get some rest and choose one of the following:");
+    //AL.
+    //TODO - print properly as table.
+
+    Console.WriteLine("\nGet some rest and choose one of the following:");
     Console.WriteLine("1) Sacrifice a card, gain double its total cost as life points.");
     Console.WriteLine("2) Choose a card and pay twice its total cost in life points.");
-  }  
-  
-  public static void PromptExchangeLifeForCard(ref List<Card> cards)
-  {
-    Console.WriteLine("\nSelect one of the following cards :");
-    PrintCards(cards);
-  }  
-  
-  public static void PromptExchangeCardForLife(List<Card> cards)
-  {
-    Console.WriteLine("\nSelect one of the following cards :");
-    PrintCards(cards);
   }
 
+  public static void PromptExchangeLifeForCard(ref List<Card> cards)
+    => PrintCards(cards, "Select one of the following cards");
+
+  public static void PromptExchangeCardForLife(List<Card> cards)
+    => PrintCards(cards, "Select one of the following cards");
+  
   public static void PrintHealth(int health)
-  {
-    Console.WriteLine("\nYour life :" + health);
-  }
+    => Console.WriteLine("\nYour life :" + health);
 
   public static void PromptShun(List<Card> hand)
   {
@@ -388,8 +348,7 @@ class Terminal
       return;
     }
 
-    Console.WriteLine("\nShun a card from your hand: ");
-    PrintCards(hand);
+    PrintCards(hand, "\nShun a card from your hand");
   }
 
   public static void ShowDrawResult(List<Card> hand, bool successfullyDrew)
@@ -415,22 +374,16 @@ class Terminal
   }
 
   public static void ShowStompFailed()
-  {
-    Console.WriteLine("\nStomp failed - hand and field likely empty.");
-  }
+    => Console.WriteLine("\nStomp failed - hand and field likely empty.");
 
   public static void ShowStompResult(Card stompedCard, bool stompFromHand)
-  {
-    var location = stompFromHand ? "Hand" : "Field";
-    var cardName = GetPrintableCardName(stompedCard.name);
-    Console.WriteLine("\nStomped from " + location + " : " + cardName);
-    PrintCards(stompFromHand ? Battle.Hand.GetAllCardsInHand() : Battle.Field);
-  }
+    => PrintCards(
+      stompFromHand ? Battle.Hand.GetAllCardsInHand() : Battle.Field,
+      "Stomped from " + (stompFromHand ? "Hand" : "Field") + " : " + GetPrintableCardName(stompedCard.name)
+      );
 
   public static void PromptForManualSeed()
-  {
-    Console.WriteLine("\nEnter a positive integer to manually seed the journey, else enter 0 to use a random seed:");
-  }
+    => Console.WriteLine("\nEnter a positive integer to manually seed the journey, else enter 0 to use a random seed:");
 
   public static void Print<T>(T value)
     => Console.WriteLine(value);
@@ -457,7 +410,7 @@ class Terminal
   {
     var rows = new List<List<object>>();
 
-    foreach (var value in Enum.GetValues(optionsEnum as Type))
+    foreach (var value in Enum.GetValues((Type) optionsEnum))
     {
       rows.Add(new List<object>
       {
