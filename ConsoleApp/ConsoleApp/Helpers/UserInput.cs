@@ -17,6 +17,7 @@ public static class UserInput
 
   private static string GetString_Force()
   {
+    Terminal.Print("\n>> ");
     var input = Console.ReadLine();
 
     while (string.IsNullOrEmpty(input))
