@@ -267,7 +267,7 @@ class Terminal
       Print("\n\n0) PLAY ALL CARDS");
     }
 
-    PrintCards(allCardsInHand, "Your Hand", false);
+    PrintCards(allCardsInHand, "Current Hand", false);
     Print("-1) SKIP TO NEXT PHASE");
   }
 
